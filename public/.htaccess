@@ -3,7 +3,6 @@
         Options -MultiViews
     </IfModule>
 
-    RewriteBase /twhl
     RewriteEngine On
 
     # Redirect Trailing Slashes...
