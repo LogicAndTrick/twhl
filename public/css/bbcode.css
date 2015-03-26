@@ -1,0 +1,15 @@
+span.strikethrough {
+  text-decoration: line-through;
+}
+span.underline {
+  text-decoration: underline;
+}
+span.blue {
+  color: blue;
+}
+span.green {
+  color: green;
+}
+span.purple {
+  color: purple;
+}

@@ -53,7 +53,32 @@
 		</div>
 	</nav>
 
-	@yield('content')
+    <div class="container">
+	    @yield('content')
+    </div>
+
+    @if (app('config')->get('app.debug'))
+        <div class="container">
+            <table class="table table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>Query</th>
+                        <th>Parameters</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (DB::getQueryLog() as $query)
+                    <tr>
+                        <td>{{ $query['query'] }}</td>
+                        <td>{{ print_r($query['bindings'], true) }}</td>
+                        <td>{{ $query['time'] }}ms</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

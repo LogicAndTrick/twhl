@@ -140,10 +140,14 @@ return [
 		 * Application Service Providers...
 		 */
 		'App\Providers\AppServiceProvider',
+        'App\Providers\HelpersServiceProvider',
+        'App\Providers\BBCodeServiceProvider',
 		'App\Providers\BusServiceProvider',
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
-		'App\Providers\RouteServiceProvider',
+        'App\Providers\RouteServiceProvider',
+
+        'App\Providers\StartupServiceProvider'
 
 	],
 
@@ -192,6 +196,8 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+
+        'Date'      => 'App\Helpers\Date'
 
 	],
 
