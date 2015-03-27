@@ -88,15 +88,19 @@ class Parser
     }
 
     public function ParseResult($text, $scope = '') {
+        $result = new ParseResult();
+        $result->text = $this->ParseBlock($result, $text, $scope);
+        return $result;
+    }
+
+    public function ParseBlock($result, $text, $scope = '') {
         $text = str_replace("\r", "", $text);
         $elements = $this->SplitElements($text, $scope);
-        $result = new ParseResult();
         $str = '';
         foreach ($elements as $e) {
             $str .= $e->Parse($result, $scope) . "\n";
         }
-        $result->text = trim($str);
-        return $result;
+        return trim($str);
     }
 
     public function SplitElements($text, $scope) {

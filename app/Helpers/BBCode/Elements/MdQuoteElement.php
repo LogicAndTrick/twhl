@@ -25,11 +25,11 @@ class MdQuoteElement extends Element {
         $arr[] = trim(substr($value, 1));
         while ($lines->Next()) {
             $value = trim($lines->Value());
-            if (strlen($value) == 0) {
+            if (strlen($value) == 0 || $value[0] != '>') {
                 $lines->Back();
                 break;
             }
-            $arr[] = $value;
+            $arr[] = trim(substr($value, 1));
         }
         $el = new MdQuoteElement();
         $el->parser = $parser;
@@ -39,6 +39,6 @@ class MdQuoteElement extends Element {
 
     function Parse($result, $scope)
     {
-        return '<blockquote>' . $this->parser->ParseBBCode($result, $this->text, $scope, 'block') . '</blockquote>';
+        return '<blockquote>' . $this->parser->ParseBlock($result, $this->text, $scope) . '</blockquote>';
     }
 }

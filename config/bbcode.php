@@ -21,9 +21,16 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\QuickLinkTag', 'scopes' => [ ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\WikiLinkTag',  'scopes' => [ ] ],
 
+        // Embedded
+        [ 'class' => 'App\Helpers\BBCode\Tags\ImageTag',     'scopes' => [ ], 'token' => 'img' ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\ImageTag',     'scopes' => [ ], 'token' => 'simg' ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WIkiImageTag', 'scopes' => [ ] ],
+
+        //[ 'class' => 'App\Helpers\BBCode\Tags\YoutubeTag', 'scopes' => [ ] ],
+
         // Custom
-        [ 'class' => 'App\Helpers\BBCode\Tags\QuoteTag', 'scopes' => [ ], ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',  'scopes' => [ ]  ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\QuoteTag', 'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',  'scopes' => [ ] ],
     ],
     'elements' => [
         [ 'class' => 'App\Helpers\BBCode\Elements\MdHeadingElement', 'scopes' => [] ],

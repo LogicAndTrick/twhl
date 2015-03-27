@@ -43,6 +43,6 @@ class MdCodeElement extends Element {
 
     function Parse($result, $scope)
     {
-        return '<pre>' . $this->parser->CleanString($this->text) . '</pre>';
+        return '<pre><code>' . $this->parser->CleanString($this->text) . '</code></pre>';
     }
 }

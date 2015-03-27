@@ -11,6 +11,20 @@ class BBCodeTest extends TestCase {
     }
     */
 
+    public function testWikiImages()
+    {
+        $input = [
+            '[img:test.png]',
+        ];
+        $expected = [
+            '<img src="/wiki/embed/test.png" />',
+        ];
+        for ($i = 0; $i < count($input); $i++) {
+            $output = app('bbcode')->Parse($input[$i]);
+            $this->assertEquals($expected[$i], $output);
+        }
+    }
+
     public function testWikiLinks()
     {
         $input = [
