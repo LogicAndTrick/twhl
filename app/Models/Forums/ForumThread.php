@@ -17,7 +17,7 @@ class ForumThread extends Model {
 
     public function posts()
     {
-        return $this->hasMany('App\Models\Forums\ForumPost');
+        return $this->hasMany('App\Models\Forums\ForumPost', 'thread_id');
     }
 
 }

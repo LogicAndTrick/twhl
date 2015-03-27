@@ -17,7 +17,7 @@ class ForumPost extends Model {
 
     public function thread()
     {
-        return $this->belongsTo('App\Models\Forums\ForumThread');
+        return $this->belongsTo('App\Models\Forums\ForumThread', 'thread_id');
     }
 
     public function user()

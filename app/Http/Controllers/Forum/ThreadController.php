@@ -12,12 +12,12 @@ class ThreadController extends Controller {
         $this->middleware('auth', ['only' => ['getCreate', 'postCreate', 'getEdit', 'postEdit', 'getDelete', 'postDelete']]);
 	}
 
-	public function getIndex()
+	public function getIndex($id)
 	{
-        return 'asdf';
+        return 1;
 	}
 
-    public function getView($id, $page)
+    public function getView($id, $page = 1)
     {
         $thread = ForumThread::with(['forum'])->find($id);
         $post_query = ForumPost::with('user')->where('thread_id', '=', $id);

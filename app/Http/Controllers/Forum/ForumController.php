@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Forums\Forum;
+use App\Models\Forums\ForumThread;
 
 class ForumController extends Controller {
 
@@ -20,7 +21,10 @@ class ForumController extends Controller {
 
     public function getView($id)
     {
-        return 'asdf';
+        $threads = ForumThread::with(['forum'])->where('forum_id', '=', $id)->get();
+        return view('forums/forum/view', [
+            'threads' => $threads
+        ]);
     }
 
 }
