@@ -10,7 +10,7 @@ class DefaultElement extends Element
     function __construct($parser, $lines)
     {
         $this->parser = $parser;
-        $this->text = implode("\n", $lines);
+        $this->text = trim(implode("\n", $lines));
     }
 
     function Parse($result, $scope)

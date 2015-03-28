@@ -1,16 +1,105 @@
+.bbcode {
 
-span.strikethrough {
-  text-decoration: line-through;
-}
-span.underline {
-  text-decoration: underline;
-}
-span.blue {
-  color: blue;
-}
-span.green {
-  color: green;
-}
-span.purple {
-  color: purple;
+  span.strikethrough {
+    text-decoration: line-through;
+  }
+  span.underline {
+    text-decoration: underline;
+  }
+  span.blue {
+    color: blue;
+  }
+  span.green {
+    color: green;
+  }
+  span.purple {
+    color: purple;
+  }
+
+  // Caption panel
+  .caption-panel {
+    display: inline-block;
+    border: 1px solid #dedede;
+    max-width: 100%;
+
+    .caption-body {
+      padding: 5px;
+      display: block;
+      max-width: 100%;
+    }
+
+    .caption {
+      display: block;
+      padding: 0 5px 5px;
+      text-align: center;
+    }
+  }
+
+  // Embedded images / video
+  .embedded {
+    display: block;
+    text-align: center;
+    margin: 5px auto;
+
+    &.inline {
+      display: inline-block;
+      max-width: 200px;
+      vertical-align: middle;
+      margin: 0;
+      .caption-panel { border : 0; }
+      .caption-body { padding: 0; }
+    }
+
+    &.left, &.right {
+      width: 50%;
+      margin: 0 5px 5px;
+    }
+
+    &.left { float: left; clear: left; }
+    &.right { float: right; clear: right; }
+
+    &.large {  }
+    &.medium { max-width: 400px;  }
+    &.small { max-width: 200px; }
+    &.thumb { max-width: 100px; }
+  }
+
+  table .embedded {
+    .embedded.inline;
+  }
+
+  .video .caption-panel {
+    display: block;
+  }
+
+  // JS lazy-loading video / Bootstrap responsive video embed
+  .video-content {
+
+    .embed-responsive;
+    .embed-responsive.embed-responsive-16by9;
+
+    .uninitialised {
+      .embed-responsive .embed-responsive-item;
+
+      cursor: pointer;
+      background-size: cover;
+      background-position: center center;
+
+      &::after {
+        background-color: rgba(128, 200, 255, 0.4);
+        bottom: 0;
+        content: "";
+        display: block;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-image: url('../images/video_overlay.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 15% auto;
+      }
+    }
+  }
+
 }

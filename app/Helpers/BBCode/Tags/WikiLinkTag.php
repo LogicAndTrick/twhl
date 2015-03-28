@@ -38,9 +38,9 @@ class WikiLinkTag extends LinkTag {
             $text = isset($regs[3]) && $regs[3] ? $regs[3] : $page;
             $page = str_ireplace(' ', '_', $page);
             $page = preg_replace('%[^a-z0-9-_()]%si', '', $page);
-            // todo generate url properly
-            $url = '/wiki/' . $page . ($bkmk ? '#' . $bkmk : '');
-            return '<a href="' . $url . '">' . $parser->CleanString($text) . '</a>';
+            $result->AddMeta('WikiLink', $page);
+            $url = url('/wiki/' . $page . ($bkmk ? '#' . $bkmk : ''));
+            return '<a href="' . $parser->CleanString($url) . '">' . $parser->CleanString($text) . '</a>';
         } else {
             return false;
         }

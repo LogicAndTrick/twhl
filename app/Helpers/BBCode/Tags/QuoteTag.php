@@ -19,7 +19,7 @@ class QuoteTag extends Tag {
         $str = '<' . $this->element;
         if ($this->element_class) $str .= ' class="' . $this->element_class . '"';
         $str .= '>';
-        if (array_key_exists('name', $options)) $str .= '<strong>' . $options['name'] . ' said:</strong>';
+        if (array_key_exists('name', $options)) $str .= '<strong>' . $parser->CleanString($options['name']) . ' said:</strong>';
         $str .= $parser->ParseBBCode($result, $text, $scope, $this->block ? 'block' : 'inline');
         $str .= '</' . $this->element . '>';
         return $str;

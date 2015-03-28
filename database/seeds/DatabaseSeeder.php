@@ -156,11 +156,11 @@ asd
 ##* bullet in a number
 ##*# number in a bullet in a number etc etc
 
-Preformatted text
+ Preformatted text
 
-Still the same preformatted text
+ Still the same preformatted text
 
-New preformatted text block
+ New preformatted text block
 
 [[Test]]
 [[Test|Test page]]
@@ -184,10 +184,10 @@ None of these pictures should be inline:
 [img:twhl.png]
 [img:twhl.png|Picture of TWHL]
 
-[img:twhl.png|left|Picture of TWHL]
+[img:http://twhl.info/images/logo_final2.jpg|left|Picture of TWHL]
+[img:twhl.png|url:http://twhl.info|right|Picture of TWHL]
 [img:twhl.png|right|Picture of TWHL]
-[img:twhl.png|right|Picture of TWHL]
-[img:twhl.png|right|Picture of TWHL]
+[img:twhl.png|url:Test|right|Picture of TWHL]
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin non metus sit amet risus vestibulum porttitor eu eu dui. Sed consectetur consequat nibh, id ornare dui accumsan ac. Aliquam erat volutpat. Ut ornare magna sit amet metus malesuada pharetra. Mauris arcu urna, malesuada ac vehicula in, facilisis ut tellus. Donec velit libero, dignissim sed auctor at, bibendum eget nulla. Nullam tincidunt, lacus sodales volutpat suscipit, nisl lorem condimentum ante, sit amet varius nibh ligula sed dui. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer consectetur elementum commodo. Proin non metus id diam elementum imperdiet. Phasellus pellentesque aliquam nisl id consequat. In luctus luctus mattis.
 
 [img:twhl.png|thumb|Picture of TWHL]

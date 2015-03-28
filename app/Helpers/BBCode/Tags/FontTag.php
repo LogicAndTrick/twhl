@@ -20,7 +20,7 @@ class FontTag extends Tag {
             $str .= ' style="';
             if (array_key_exists('color', $options) && FontTag::IsValidColor($options['color'])) $str .= 'color: ' . $options['color'] . ';';
             else if (array_key_exists('colour', $options) && FontTag::IsValidColor($options['colour'])) $str .= 'color: ' . $options['colour'] . ';';
-            if (array_key_exists('size', $options) && FontTag::IsValidSize($options['size'])) $str .= 'font-size: ' . $options['size'] . ';';
+            if (array_key_exists('size', $options) && FontTag::IsValidSize($options['size'])) $str .= 'font-size: ' . $options['size'] . 'px;';
             $str .= '"';
         }
         $str .= '>';

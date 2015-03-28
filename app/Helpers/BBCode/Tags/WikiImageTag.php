@@ -37,26 +37,49 @@ class WikiImageTag extends LinkTag {
             $params = isset($regs[2]) ? explode('|', trim($regs[2])) : [];
             $src = $image;
             if (strstr($image, '/') === false) {
-                // add image reference
-                $src = '/wiki/embed/' . $image;
+                $result->AddMeta('WikiImage', $image);
+                $src = url('/wiki/embed/' . $image);
             }
-            return '<img src="' . $src . '" />';
-            // --- todo: classes, titles, captions, etc
-            $text = isset($regs[3]) && $regs[3] ? $regs[3] : $page;
-            $page = str_ireplace(' ', '_', $page);
-            $page = preg_replace('%[^a-z0-9-_()]%si', '', $page);
-            // todo generate url properly
-            $url = '/wiki/' . $page . ($bkmk ? '#' . $bkmk : '');
-            return '<a href="' . $url . '">' . $parser->CleanString($text) . '</a>';
+            $url = null;
+            $caption = null;
+            $classes = ['embedded', 'image'];
+            if ($this->element_class) $classes[] = $this->element_class;
+            foreach ($params as $p) {
+                $l = strtolower($p);
+                if ($this->IsClass($l)) $classes[] = $l;
+                else if (strlen($l) > 4 && substr($l, 0, 4) == 'url:') $url = trim(substr($p, 4));
+                else $caption = trim($p);
+            }
+            if ($url && $this->ValidateUrl($url)) {
+                if (!preg_match('%^[a-z]{2,10}://%i', $url)) {
+                    $result->AddMeta('WikiLink', $url);
+                    $url = url('/wiki/' . $url);
+                }
+            } else {
+                $url = '';
+            }
+            if ($caption) $caption = $parser->CleanString($caption);
+            return '<span class="' . implode(' ', $classes) . '">'
+                 . ($url ? '<a href="' . $parser->CleanString($url) . '">' : '')
+                 . '<span class="caption-panel">'
+                 . '<img class="caption-body" src="' . $parser->CleanString($src) . '" alt="' . ($caption ? $caption : 'User posted image') . '" />'
+                 . ($caption ? '<span class="caption">' . $caption . '</span>' : '')
+                 . '</span>'
+                 . ($url ? '</a>' : '')
+                 . '</span>';
         } else {
             return false;
         }
     }
 
-    public function Validate($options, $text)
+    private function ValidateUrl($url)
     {
-        $url = $text;
-        if (array_key_exists('url', $options)) $url = $options['url'];
         return stristr($url, '<script') === false && preg_match('%^([a-z]{2,10}://)?([^]"\n ]+?)$%i', $url);
+    }
+
+    private $valid_classes = [ 'large', 'medium', 'small', 'thumb', 'left', 'right', 'center', 'inline' ];
+
+    private function IsClass($param) {
+        return array_search($param, $this->valid_classes) !== false;
     }
 }

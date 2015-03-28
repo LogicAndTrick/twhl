@@ -13,7 +13,7 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
 
         // Standard block
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'pre',    'element' => 'pre', 'block' => true ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\PreTag',   'scopes' => [ ] ],
 
         // Links
         [ 'class' => 'App\Helpers\BBCode\Tags\LinkTag',      'scopes' => [ ], 'token' => 'url' ],
@@ -26,11 +26,13 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\ImageTag',     'scopes' => [ ], 'token' => 'simg' ],
         [ 'class' => 'App\Helpers\BBCode\Tags\WIkiImageTag', 'scopes' => [ ] ],
 
-        //[ 'class' => 'App\Helpers\BBCode\Tags\YoutubeTag', 'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\YoutubeTag',     'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WikiYoutubeTag', 'scopes' => [ ] ],
 
         // Custom
-        [ 'class' => 'App\Helpers\BBCode\Tags\QuoteTag', 'scopes' => [ ] ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',  'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\QuoteTag',         'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',          'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ ] ],
     ],
     'elements' => [
         [ 'class' => 'App\Helpers\BBCode\Elements\MdHeadingElement', 'scopes' => [] ],

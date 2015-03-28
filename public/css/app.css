@@ -6226,20 +6226,142 @@ button.close {
     display: none !important;
   }
 }
-span.strikethrough {
+.bbcode span.strikethrough {
   text-decoration: line-through;
 }
-span.underline {
+.bbcode span.underline {
   text-decoration: underline;
 }
-span.blue {
+.bbcode span.blue {
   color: blue;
 }
-span.green {
+.bbcode span.green {
   color: green;
 }
-span.purple {
+.bbcode span.purple {
   color: purple;
+}
+.bbcode .caption-panel {
+  display: inline-block;
+  border: 1px solid #dedede;
+  max-width: 100%;
+}
+.bbcode .caption-panel .caption-body {
+  padding: 5px;
+  display: block;
+  max-width: 100%;
+}
+.bbcode .caption-panel .caption {
+  display: block;
+  padding: 0 5px 5px;
+  text-align: center;
+}
+.bbcode .embedded {
+  display: block;
+  text-align: center;
+  margin: 5px auto;
+}
+.bbcode .embedded.inline {
+  display: inline-block;
+  max-width: 200px;
+  vertical-align: middle;
+  margin: 0;
+}
+.bbcode .embedded.inline .caption-panel {
+  border: 0;
+}
+.bbcode .embedded.inline .caption-body {
+  padding: 0;
+}
+.bbcode .embedded.left,
+.bbcode .embedded.right {
+  width: 50%;
+  margin: 0 5px 5px;
+}
+.bbcode .embedded.left {
+  float: left;
+  clear: left;
+}
+.bbcode .embedded.right {
+  float: right;
+  clear: right;
+}
+.bbcode .embedded.medium {
+  max-width: 400px;
+}
+.bbcode .embedded.small {
+  max-width: 200px;
+}
+.bbcode .embedded.thumb {
+  max-width: 100px;
+}
+.bbcode table .embedded {
+  display: inline-block;
+  max-width: 200px;
+  vertical-align: middle;
+  margin: 0;
+}
+.bbcode table .embedded .caption-panel {
+  border: 0;
+}
+.bbcode table .embedded .caption-body {
+  padding: 0;
+}
+.bbcode .video .caption-panel {
+  display: block;
+}
+.bbcode .video-content {
+  position: relative;
+  display: block;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  padding-bottom: 56.25%;
+}
+.bbcode .video-content .embed-responsive-item,
+.bbcode .video-content iframe,
+.bbcode .video-content embed,
+.bbcode .video-content object,
+.bbcode .video-content video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  border: 0;
+}
+.bbcode .video-content.embed-responsive-16by9 {
+  padding-bottom: 56.25%;
+}
+.bbcode .video-content.embed-responsive-4by3 {
+  padding-bottom: 75%;
+}
+.bbcode .video-content .uninitialised {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center center;
+}
+.bbcode .video-content .uninitialised::after {
+  background-color: rgba(128, 200, 255, 0.4);
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-image: url('../images/video_overlay.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 15% auto;
 }
 body,
 label,

@@ -7,24 +7,27 @@ class YoutubeTag extends Tag {
     function __construct()
     {
         $this->token = 'youtube';
-        $this->element = 'iframe';
+        $this->element = 'div';
         $this->main_option = 'id';
         $this->options = array('id');
-        $this->element_class = 'youtube';
     }
 
     public function FormatResult($result, $parser, $scope, $options, $text)
     {
-        $str = '<iframe width="640" height="390" frameborder="0" allowfullscreen';
-        if ($this->element_class) $str .= ' class="' . $this->element_class . '"';
-        $id = $text;
-        if (array_key_exists('id', $options)) {
-            $id = $options['id'];
-        }
-        $url = "https://www.youtube.com/embed/{$id}?rel=0";
-        $str .= ' src="' . $url . '"';
-        $str .= '></iframe>';
-        return $str;
+        $id = array_key_exists('id', $options) ? $options['id'] : $text;
+        $classes = ['embedded', 'video'];
+        if ($this->element_class) $classes[] = $this->element_class;
+        $impl = implode(' ', $classes);
+
+        return "<div class='{$impl}'>"
+                    . "<div class='caption-panel'>"
+                        . "<div class='video-container caption-body'>"
+                            . "<div class='video-content'>"
+                                . "<div class='uninitialised' data-youtube-id='$id' style='background-image: url(\"https://i.ytimg.com/vi/{$id}/hqdefault.jpg\");'></div>"
+                            . "</div>"
+                        . "</div>"
+                    . "</div>"
+                . "</div>";
     }
 
     public function Validate($options, $text)
