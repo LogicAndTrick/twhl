@@ -35,6 +35,12 @@ class WikiYoutubeTag extends LinkTag {
         if (preg_match('/^([^|\]]*?)(?:\|([^\]]*?))?$/i', $str, $regs)) {
         	$id = $regs[1];
             $params = isset($regs[2]) ? explode('|', trim($regs[2])) : [];
+
+            if (!$this->ValidateId($id)) {
+                $state->Seek($index, true);
+                return false;
+            }
+
             $caption = null;
             $classes = ['embedded', 'video'];
             if ($this->element_class) $classes[] = $this->element_class;
@@ -58,13 +64,14 @@ class WikiYoutubeTag extends LinkTag {
                     . "</div>";
 
         } else {
+            $state->Seek($index, true);
             return false;
         }
     }
 
-    private function ValidateUrl($url)
+    private function ValidateId($id)
     {
-        return stristr($url, '<script') === false && preg_match('%^([a-z]{2,10}://)?([^]"\n ]+?)$%i', $url);
+        return preg_match('%^[a-zA-Z0-9_-]{6,11}$%i', $id);
     }
 
     private $valid_classes = [ 'large', 'medium', 'small', 'left', 'right', 'center' ];

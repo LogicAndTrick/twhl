@@ -143,6 +143,12 @@ class Parser
         return $text;
     }
 
+    public function CleanUrl($text) {
+        $text = $this->CleanString($text);
+        $text = str_replace(' ', '%20', $text);
+        return $text;
+    }
+
     public function PostProcessString($result, $text, $scope) {
         $str = $text;
         foreach ($this->processors as $pp) {

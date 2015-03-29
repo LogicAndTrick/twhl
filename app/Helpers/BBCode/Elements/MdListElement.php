@@ -113,6 +113,5 @@ class MdListElement extends Element {
     {
         $tree = $this->CreateListTree($this->lines);
         return $this->PrintTree($result, $tree, $scope);
-        return '<blockquote>' . $this->parser->ParseBBCode($result, $this->text, $scope, 'block') . '</blockquote>';
     }
 }

@@ -27,7 +27,7 @@ class ImageTag extends Tag {
         if ($this->token == 'simg') $classes[] = 'inline';
 
         return '<span class="' . implode(' ', $classes) . '"><span class="caption-panel">'
-             . '<img class="caption-body" src="' . $parser->CleanString($url) . '" alt="User posted image" />'
+             . '<img class="caption-body" src="' . $parser->CleanUrl($url) . '" alt="User posted image" />'
              . '</span></span>';
     }
 

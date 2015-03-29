@@ -37,7 +37,7 @@ class QuickLinkTag extends LinkTag {
             $text = isset($regs[2]) && $regs[2] ? $regs[2] : $url;
             $options = ['url' => $url];
             if (!$this->Validate($options, $text)) return false;
-            return '<a href="' . $parser->CleanString($url) . '">' . $parser->CleanString($text) . '</a>';
+            return '<a href="' . $parser->CleanUrl($url) . '">' . $parser->CleanString($text) . '</a>';
         } else {
             return false;
         }

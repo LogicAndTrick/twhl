@@ -40,7 +40,7 @@ class WikiLinkTag extends LinkTag {
             $page = preg_replace('%[^a-z0-9-_()]%si', '', $page);
             $result->AddMeta('WikiLink', $page);
             $url = url('/wiki/' . $page . ($bkmk ? '#' . $bkmk : ''));
-            return '<a href="' . $parser->CleanString($url) . '">' . $parser->CleanString($text) . '</a>';
+            return '<a href="' . $parser->CleanUrl($url) . '">' . $parser->CleanString($text) . '</a>';
         } else {
             return false;
         }

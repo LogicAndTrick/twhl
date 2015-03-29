@@ -25,7 +25,7 @@ class LinkTag extends Tag {
         } else if (!preg_match('%^([a-z]{2,10}://)%i', $url)) {
             $url = 'http://' . $url;
         }
-        $str .= ' href="' . $parser->CleanString($url) . '"';
+        $str .= ' href="' . $parser->CleanUrl($url) . '"';
         $str .= '>';
         if (array_key_exists('url', $options)) {
             $str .= $parser->ParseBBCode($result, $text, $scope, $this->block ? 'block' : 'inline');
