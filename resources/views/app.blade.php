@@ -59,6 +59,7 @@
     </div>
 
     @if (app('config')->get('app.debug'))
+        <hr/>
         <div class="container">
             <table class="table table-bordered table-condensed">
                 <thead>

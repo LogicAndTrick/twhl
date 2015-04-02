@@ -21,6 +21,7 @@ Route::controllers([
 
     'forum' => 'Forum\ForumController',
     'thread' => 'Forum\ThreadController',
+    'post' => 'Forum\PostController',
 
     'wiki' => 'Wiki\WikiController',
 ]);

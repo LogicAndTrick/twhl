@@ -9,7 +9,8 @@ class ThreadController extends Controller {
 
 	public function __construct()
 	{
-        $this->middleware('auth', ['only' => ['getCreate', 'postCreate', 'getEdit', 'postEdit', 'getDelete', 'postDelete']]);
+        // $this->middleware('auth', ['only' => ['getCreate', 'postCreate', 'getEdit', 'postEdit', 'getDelete', 'postDelete']]);
+        // $this->permission('view', 'whatever');
 	}
 
 	public function getIndex($id)
@@ -23,7 +24,6 @@ class ThreadController extends Controller {
         $post_query = ForumPost::with('user')->where('thread_id', '=', $id);
         $count = $post_query->getQuery()->getCountForPagination();
         $posts = $post_query->skip(($page - 1) * 50)->take(50)->get();
-        $forums = Forum::with(['last_post', 'last_post.thread', 'last_post.user'])->get();
         return view('forums/thread/view', [
             'thread' => $thread,
             'posts' => $posts

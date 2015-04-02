@@ -21,4 +21,15 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Forums\ForumPost');
     }
 
+    public function permissions()
+    {
+        return $this->belongsToMany('App\Models\Accounts\Permission', 'user_permissions');
+    }
+
+    public function hasPermission($name)
+    {
+        return count($this->permissions->filter(function($p) use ($name) {
+            return $p->name == $name;
+        })) > 0;
+    }
 }

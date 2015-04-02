@@ -4,7 +4,7 @@
     @foreach ($forums as $forum)
         <div class="row">
             <div class="col-md-8">
-                <h3><a href="{{ act('forum', 'view', $forum->id) }}">{{ $forum->name }}</a></h3>
+                <h3><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></h3>
                 <p>
                     {{ $forum->description }}
                 </p>
@@ -23,4 +23,10 @@
             </div>
         </div>
     @endforeach
+    @if (permission('ForumAdmin'))
+        <hr/>
+        <p>
+            <a href="{{ act('forum', 'create') }}">Create new forum</a>
+        </p>
+    @endif
 @endsection

@@ -3,12 +3,14 @@
 use App\Http\Controllers\Controller;
 use App\Models\Forums\Forum;
 use App\Models\Forums\ForumThread;
+use Request;
 
 class ForumController extends Controller {
 
+    // TODO Forums: edit, delete on forums
 	public function __construct()
 	{
-        $this->middleware('auth', ['only' => ['getCreate', 'postCreate', 'getEdit', 'postEdit', 'getDelete', 'postDelete']]);
+        $this->permission(['create', 'edit', 'delete'], 'ForumAdmin');
 	}
 
 	public function getIndex()
@@ -19,12 +21,39 @@ class ForumController extends Controller {
         ]);
 	}
 
-    public function getView($id)
+    public function getView($slug, $page = 1)
     {
-        $threads = ForumThread::with(['forum'])->where('forum_id', '=', $id)->get();
+        // TODO Forums: pagination
+        $forum = Forum::where('slug', '=', $slug)->firstOrFail();
+        $thread_query = ForumThread::where('forum_id', '=', $forum->id);
+        $count = $thread_query->getQuery()->getCountForPagination();
+        $threads = $thread_query->skip(($page - 1) * 50)->take(50)->get();
         return view('forums/forum/view', [
             'threads' => $threads
         ]);
+    }
+
+    // Administrative Tasks
+
+    public function getCreate() {
+        // TODO Forums: pick from a list of permissions
+        return view('forums/forum/create', [
+
+        ]);
+    }
+
+    public function postCreate() {
+        $this->validate(Request::instance(), [
+            'forum_name' => 'required|max:255',
+            'slug' => 'required|max:15|unique:forums,slug',
+            'description' => 'required',
+        ]);
+        Forum::Create([
+            'name' => Request::input('forum_name'),
+            'slug' => Request::input('slug'),
+            'description' => Request::input('description'),
+        ]);
+        return redirect('forum/index');
     }
 
 }

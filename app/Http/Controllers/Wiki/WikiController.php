@@ -6,13 +6,19 @@ class WikiController extends Controller {
 
 	public function __construct()
 	{
-        // $this->middleware('auth', ['only' => ['getCreate', 'postCreate', 'getEdit', 'postEdit', 'getDelete', 'postDelete']]);
+        $this->permission(['create', 'createupload'], 'WikiCreate');
+        $this->permission(['edit', 'editupload', 'revert', 'revertupload'], 'WikiEdit');
+        $this->permission(['delete', 'deleteupload'], 'WikiDelete');
 	}
 
 	public function getIndex()
 	{
         return 'asdf';
 	}
+
+    public function getPage($page, $revision = 0) {
+        return $page;
+    }
 
     public function getEmbed($id)
     {

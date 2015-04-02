@@ -12,4 +12,12 @@
         </div>
         <hr/>
     @endforeach
+    @if (permission('ForumCreate'))
+        @form(post/create)
+            <h3>Add Post</h3>
+            <input type="hidden" name="thread_id" value="{{ $thread->id }}" />
+            @text(content_text) = Post Content
+            @submit
+        @endform
+    @endif
 @endsection

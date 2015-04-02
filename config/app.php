@@ -139,7 +139,8 @@ return [
 		/*
 		 * Application Service Providers...
 		 */
-		'App\Providers\AppServiceProvider',
+        'App\Providers\AppServiceProvider',
+        'App\Providers\BladeServiceProvider',
         'App\Providers\HelpersServiceProvider',
         'App\Providers\BBCodeServiceProvider',
 		'App\Providers\BusServiceProvider',

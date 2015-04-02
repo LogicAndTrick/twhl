@@ -7,6 +7,7 @@ class ForumPost extends Model {
 
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    protected $fillable = ['forum_id', 'thread_id', 'user_id', 'content_text', 'content_html'];
 
     protected $table = 'forum_posts';
 

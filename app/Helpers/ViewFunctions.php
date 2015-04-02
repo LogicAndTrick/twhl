@@ -34,7 +34,10 @@ if (!function_exists('act'))
 
         if (!array_key_exists($controller, $mappings)) throw new Exception('Undefined action mapping: ' . $controller);
 
-        $act = 'get'.strtoupper(substr($action, 0, 1)).substr($action, 1);
+        $act = $action;
+        if (substr($action, 0, 3) != 'get' && substr($action, 0, 4) != 'post') {
+            $act = 'get'.strtoupper(substr($action, 0, 1)).substr($action, 1);
+        }
         $arr = array();
         for ($i = 2; $i < func_num_args(); $i++) {
             $arg = func_get_arg($i);
@@ -52,5 +55,15 @@ if (!function_exists('actlink'))
         $args[] = array('href' => call_user_func_array('act', $args));
         array_splice($args, 0, 2);
         return tag('a', $args, $text);
+    }
+}
+
+if (!function_exists('permission'))
+{
+    function permission($permission = true) {
+        $user = Auth::user();
+        if ($permission === true && !$user) return false;
+        if (is_string($permission) && (!$user || !$user->hasPermission($permission))) return false;
+        return true;
     }
 }

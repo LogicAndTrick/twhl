@@ -9,8 +9,10 @@ class CreateForumsTable extends Migration {
 	{
         Schema::create('forums', function(Blueprint $table) {
             $table->increments('id');
+            $table->string('slug', 15);
             $table->string('name');
             $table->text('description');
+            $table->text('permission_name')->nullable();
             $table->integer('stat_threads');
             $table->integer('stat_posts');
             $table->unsignedInteger('last_post_id');
