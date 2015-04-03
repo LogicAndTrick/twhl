@@ -12,7 +12,7 @@ class Forum extends Model {
     use ForumPermission;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['name', 'description', 'slug'];
+    protected $fillable = ['name', 'description', 'slug', 'permission_id'];
 
     protected $table = 'forums';
 
@@ -50,10 +50,9 @@ trait ForumPermission
 class ForumPermissionScope implements ScopeInterface
 {
     private $permission_sql = '(
-    permission_name is null
-    or permission_name in (
-        select p.name from permissions p
-        left join user_permissions up on p.id = up.permission_id
+    permission_id is null
+    or permission_id in (
+        select up.permission_id from user_permissions up
         left join users u on up.user_id = u.id
         where u.id = ?
     ))';

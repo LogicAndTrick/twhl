@@ -4,7 +4,12 @@
     @foreach ($forums as $forum)
         <div class="row">
             <div class="col-md-8">
-                <h3><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></h3>
+                <h3>
+                    <a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a>
+                    @if (permission('ForumAdmin'))
+                        <a href="{{ act('forum', 'edit', $forum->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                    @endif
+                </h3>
                 <p>
                     {{ $forum->description }}
                 </p>

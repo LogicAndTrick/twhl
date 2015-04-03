@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Forums\Forum;
 use App\Models\Forums\ForumThread;
 use Request;
+use Input;
 
 class ForumController extends Controller {
 
@@ -36,7 +37,6 @@ class ForumController extends Controller {
     // Administrative Tasks
 
     public function getCreate() {
-        // TODO Forums: pick from a list of permissions
         return view('forums/forum/create', [
 
         ]);
@@ -47,12 +47,40 @@ class ForumController extends Controller {
             'forum_name' => 'required|max:255',
             'slug' => 'required|max:15|unique:forums,slug',
             'description' => 'required',
+            'permission_id' => 'integer'
         ]);
         Forum::Create([
             'name' => Request::input('forum_name'),
             'slug' => Request::input('slug'),
             'description' => Request::input('description'),
+            'permission_id' => Request::input('permission_id')
         ]);
+        return redirect('forum/index');
+    }
+
+    public function getEdit($id) {
+        $forum = Forum::where('id', '=', $id)->firstOrFail();
+        return view('forums/forum/edit', [
+            'forum' => $forum
+        ]);
+    }
+
+    public function postEdit() {
+        $id = intval(Request::input('id'));
+        $forum = Forum::where('id', '=', $id)->firstOrFail();
+        $this->validate(Request::instance(), [
+            'forum_name' => 'required|max:255',
+            'slug' => 'required|max:15|unique:forums,slug,'.$id,
+            'description' => 'required',
+            'permission_id' => 'integer'
+        ]);
+        $forum->update([
+            'name' => Request::input('forum_name'),
+            'slug' => Request::input('slug'),
+            'description' => Request::input('description'),
+            'permission_id' => Request::input('permission_id'),
+        ]);
+        $forum->save();
         return redirect('forum/index');
     }
 

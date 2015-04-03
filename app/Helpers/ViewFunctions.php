@@ -29,7 +29,11 @@ if (!function_exists('act'))
             'thread' => 'Forum\ThreadController',
             'post' => 'Forum\PostController',
 
-            'home' => 'HomeController'
+            'home' => 'HomeController',
+
+            'wiki' => 'Wiki\WikiController',
+
+            'api' => 'Api\ApiController'
         );
 
         if (!array_key_exists($controller, $mappings)) throw new Exception('Undefined action mapping: ' . $controller);

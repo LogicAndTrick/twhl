@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model {
 
     protected $table = 'permissions';
+    protected $visible = [ 'id', 'name', 'description', 'is_default' ];
 
     public function users()
     {

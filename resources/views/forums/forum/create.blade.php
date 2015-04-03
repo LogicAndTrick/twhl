@@ -7,6 +7,7 @@
         @text(name:forum_name) = Name
         @text(slug) = URL Slug
         @text(description) = Description
+        @autocomplete(permission_id api/permissions clearable=true) = Required Permission
         @submit
     @endform
 @endsection
