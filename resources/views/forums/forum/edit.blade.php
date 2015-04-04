@@ -2,7 +2,7 @@
 
 @section('content')
     @form(forum/edit)
-        <h3>Edit Forum</h3>
+        <h3>Edit Forum: {{ $forum->name }}</h3>
         @hidden(id $forum)
         @text(name:forum_name $forum) = Name
         @text(slug $forum) = URL Slug

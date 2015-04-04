@@ -2,12 +2,17 @@
 
 @section('content')
     @foreach ($forums as $forum)
-        <div class="row">
+        <div class="row {{ $forum->deleted_at ? 'inactive' : '' }}">
             <div class="col-md-8">
                 <h3>
                     <a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a>
                     @if (permission('ForumAdmin'))
-                        <a href="{{ act('forum', 'edit', $forum->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                        @if ($forum->deleted_at)
+                            <a href="{{ act('forum', 'restore', $forum->id) }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-repeat"></span></a>
+                        @else
+                            <a href="{{ act('forum', 'delete', $forum->id) }}" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a href="{{ act('forum', 'edit', $forum->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                        @endif
                     @endif
                 </h3>
                 <p>
@@ -31,6 +36,7 @@
     @if (permission('ForumAdmin'))
         <hr/>
         <p>
+            <a href="{{ act('forum', 'index') }}?deleted">Show deleted forums</a> |
             <a href="{{ act('forum', 'create') }}">Create new forum</a>
         </p>
     @endif

@@ -122,8 +122,6 @@ class BladeServiceProvider extends ServiceProvider {
                 return "$wht<button type='submit' class='btn btn-default'>$text</button>";
             }, $view);
         });
-
-        // <button type="submit" class="btn btn-default">Submit</button>
 	}
 
 }

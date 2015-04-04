@@ -3,12 +3,13 @@
 use App\Http\Controllers\Controller;
 use App\Models\Forums\Forum;
 use App\Models\Forums\ForumThread;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Request;
 use Input;
 
 class ForumController extends Controller {
 
-    // TODO Forums: edit, delete on forums
 	public function __construct()
 	{
         $this->permission(['create', 'edit', 'delete'], 'ForumAdmin');
@@ -16,21 +17,31 @@ class ForumController extends Controller {
 
 	public function getIndex()
 	{
-        $forums = Forum::with(['last_post', 'last_post.thread', 'last_post.user'])->get();
+        $forums = Forum::with(['last_post', 'last_post.thread', 'last_post.user']);
+        if (Input::get('deleted') !== null && permission('ForumAdmin')) $forums = $forums->withTrashed();
 		return view('forums/forum/index', [
-            'forums' => $forums
+            'forums' => $forums->get()
         ]);
 	}
 
-    public function getView($slug, $page = 1)
+    public function getView($slug)
     {
-        // TODO Forums: pagination
+        // TODO Forums: thread listing - open/sticky icons, user avatars
+        $page = intval(Input::get('page')) ?: 1;
         $forum = Forum::where('slug', '=', $slug)->firstOrFail();
-        $thread_query = ForumThread::where('forum_id', '=', $forum->id);
+        $thread_query = ForumThread::where('forum_threads.forum_id', '=', $forum->id)
+            ->with(['last_post', 'last_post.user', 'user'])
+            ->leftJoin('forum_posts as p', 'p.id', '=', 'forum_threads.last_post_id')
+            ->select('forum_threads.*')
+            ->orderBy('is_sticky', 'desc')
+            ->orderBy('p.created_at', 'desc')
+            ->orderBy('forum_threads.updated_at', 'desc');
         $count = $thread_query->getQuery()->getCountForPagination();
         $threads = $thread_query->skip(($page - 1) * 50)->take(50)->get();
+        $pag = new LengthAwarePaginator($threads, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);
         return view('forums/forum/view', [
-            'threads' => $threads
+            'threads' => $pag,
+            'forum' => $forum
         ]);
     }
 
@@ -81,6 +92,34 @@ class ForumController extends Controller {
             'permission_id' => Request::input('permission_id'),
         ]);
         $forum->save();
+        return redirect('forum/index');
+    }
+
+    public function getDelete($id) {
+        $forum = Forum::where('id', '=', $id)->firstOrFail();
+        return view('forums/forum/delete', [
+            'forum' => $forum
+        ]);
+    }
+
+    public function postDelete() {
+        $id = intval(Request::input('id'));
+        $forum = Forum::where('id', '=', $id)->firstOrFail();
+        $forum->delete();
+        return redirect('forum/index');
+    }
+
+    public function getRestore($id) {
+        $forum = Forum::onlyTrashed()->where('id', '=', $id)->firstOrFail();
+        return view('forums/forum/restore', [
+            'forum' => $forum
+        ]);
+    }
+
+    public function postRestore() {
+        $id = intval(Request::input('id'));
+        $forum = Forum::withTrashed()->where('id', '=', $id)->firstOrFail();
+        $forum->restore();
         return redirect('forum/index');
     }
 

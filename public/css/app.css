@@ -6582,10 +6582,15 @@ fieldset[disabled] .select2-pagination-next.active {
   margin-left: 5px;
   padding: 3px 5px 1px;
 }
-body,
-label,
-.checkbox label {
-  font-weight: 300;
+h1 .btn,
+h2 .btn,
+h3 .btn {
+  float: right;
+  margin: 0 2px;
+}
+.inactive {
+  font-style: italic;
+  opacity: 0.5;
 }
 
 /*# sourceMappingURL=app.css.map */
