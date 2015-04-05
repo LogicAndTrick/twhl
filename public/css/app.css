@@ -6592,5 +6592,8 @@ h3 .btn {
   font-style: italic;
   opacity: 0.5;
 }
+textarea.form-control {
+  height: 350px;
+}
 
 /*# sourceMappingURL=app.css.map */

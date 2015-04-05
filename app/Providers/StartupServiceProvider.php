@@ -1,10 +1,10 @@
 <?php namespace App\Providers;
 
 use App\Helpers\ExtensionMimeTypeGuesser;
-use Illuminate\Support\Facades\App;
+use App\Helpers\PaginationPresenter;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 class StartupServiceProvider extends ServiceProvider {
@@ -21,6 +21,10 @@ class StartupServiceProvider extends ServiceProvider {
 	{
         $guesser = MimeTypeGuesser::getInstance();
         $guesser->register(new ExtensionMimeTypeGuesser());
+
+        Paginator::presenter(function($presenter) {
+            return new PaginationPresenter($presenter);
+        });
 	}
 
 }

@@ -23,9 +23,9 @@
                 <span class="label label-info">{{ $forum->stat_posts }} posts in {{ $forum->stat_threads }} threads</span>
                 <p>
                     @if ($forum->last_post)
-                    Last post: {{ Date::TimeAgo($forum->last_post->updated_at) }}
+                    Last post: {{ Date::TimeAgo($forum->last_post->created_at) }}
                     <br>
-                    In thread: <a href="{{ act('thread', 'view', $forum->last_post->thread->id, 'last') }}">{{ $forum->last_post->thread->title }}</a>
+                    In thread: <a href="{{ act('thread', 'view', $forum->last_post->thread->id) }}?page=last">{{ $forum->last_post->thread->title }}</a>
                     <br>
                     By user: <a href="#">{{ $forum->last_post->user->name }}</a>
                     @endif

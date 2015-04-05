@@ -18,7 +18,7 @@
             @foreach ($threads as $thread)
                 <tr>
                     <td>
-                        <i class="glyphicon glyphicon-twhl icon-twhl-{$cls}{$col}"></i> <a href="{{ act('thread', 'view', $thread->id, 'last') }}">{{ $thread->title }}</a><br>
+                        <a href="{{ act('thread', 'view', $thread->id) }}?page=last">{{ $thread->title }}</a><br>
                         by <a href="#">{{ $thread->user->name }}</a>,
                         {{ Date::TimeAgo($thread->created_at) }}
                     </td>
@@ -26,7 +26,7 @@
                     <td>{{ $thread->stat_views }}</td>
                     <td class="last-post">
                         @if ($thread->last_post)
-                            <a href="{{ act('thread', 'view', $thread->id, 'last') }}#post-{{ $thread->last_post->id }}">{{ Date::TimeAgo($thread->last_post->updated_at) }}</a><br>
+                            <a href="{{ act('thread', 'view', $thread->id) }}?page=last#post-{{ $thread->last_post->id }}">{{ Date::TimeAgo($thread->last_post->created_at) }}</a><br>
                             by <a href="#">{{ $thread->last_post->user->name }}</a>
                         @endif
                     </td>
@@ -35,5 +35,12 @@
         </tbody>
     </table>
     {!! $threads->render() !!}
+
+    @if (permission('ForumCreate'))
+        <hr/>
+        <p>
+            <a href="{{ act('thread', 'create', $forum->id) }}">Create new thread</a>
+        </p>
+    @endif
 
 @endsection

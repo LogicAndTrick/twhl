@@ -29,5 +29,11 @@ class UserTableSeeder extends \Illuminate\Database\Seeder
             $p_admin->id,
             $p_forum_admin->id
         ]);
+
+        $user = User::create([
+            'name' => 'user',
+            'email' => 'user@twhl.info',
+            'password' => bcrypt('user'),
+        ]);
     }
 }

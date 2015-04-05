@@ -13,6 +13,7 @@ class Forum extends Model {
 
     protected $dates = ['deleted_at'];
     protected $fillable = ['name', 'description', 'slug', 'permission_id'];
+    protected $visible = [ 'id', 'slug', 'name', 'description' ];
 
     protected $table = 'forums';
 

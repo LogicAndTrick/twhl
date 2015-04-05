@@ -75,6 +75,58 @@ class BladeServiceProvider extends ServiceProvider {
             }, $view);
         });
 
+        // @checkbox
+        /*
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Check me out
+            </label>
+          </div>
+        */
+
+        // @checkbox(name:mapped_name $model) = Label
+        Blade::extend(function($view, $compiler) {
+            $pattern = '/(?<!\w)(\s*)@checkbox\s*\(([^)]*)\)*(?: = ([^\r\n]*))?/';
+            return preg_replace_callback($pattern, function($matches) {
+                $wht = $matches[1];
+                $parameters = explode(' ', $matches[2]);
+                $param = explode(':', $parameters[0]);
+                $name = $param[0];
+                $mapped_param = count($param) > 1 ? $param[1] : $name;
+                $label = isset($matches[3]) ? $matches[3] : $name;
+                $id = preg_replace('/[^a-z0-9]/i', '_', $name) . '_' . rand(10000, 99999);
+                $label = htmlspecialchars($label);
+                $model_var = array_first($parameters, function($k, $x) { return $x[0] == '$'; }) ?: '$__undefined__';
+                $collect_value = "<?php echo (Request::old('$mapped_param') ?: (isset($model_var) ? $model_var->$name : false) ?: false) ? 'checked' : ''; ?>";
+                return "$wht<div class='checkbox<?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? ' has-error' : ''; ?>'>"
+                    ."$wht    <label for='$id'><input type='checkbox' id='$id' name='$mapped_param' $collect_value /> $label</label>"
+                    ."$wht    <?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? '<p class=\'help-block\'>' . (\$errors->first('$name') ?: \$errors->first('$mapped_param')) . '</p>' : ''; ?>"
+                ."$wht</div>";
+            }, $view);
+        });
+
+        // @textarea(name:mapped_name $model) = Label
+        Blade::extend(function($view, $compiler) {
+            $pattern = '/(?<!\w)(\s*)@textarea\s*\(([^)]*)\)*(?: = ([^\r\n]*))?/';
+            return preg_replace_callback($pattern, function($matches) {
+                $wht = $matches[1];
+                $parameters = explode(' ', $matches[2]);
+                $param = explode(':', $parameters[0]);
+                $name = $param[0];
+                $mapped_param = count($param) > 1 ? $param[1] : $name;
+                $label = isset($matches[3]) ? $matches[3] : $name;
+                $id = preg_replace('/[^a-z0-9]/i', '_', $name) . '_' . rand(10000, 99999);
+                $label = htmlspecialchars($label);
+                $model_var = array_first($parameters, function($k, $x) { return $x[0] == '$'; }) ?: '$__undefined__';
+                $collect_value = "<?php echo htmlspecialchars(Request::old('$mapped_param') ?: (isset($model_var) ? $model_var->$name : null) ?: ''); ?>";
+                return "$wht<div class='form-group<?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? ' has-error' : ''; ?>'>"
+                    ."$wht    <label for='$id'>$label</label>"
+                    ."$wht    <textarea class='form-control' id='$id' placeholder='$label' name='$mapped_param'>$collect_value</textarea>"
+                    ."$wht    <?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? '<p class=\'help-block\'>' . (\$errors->first('$name') ?: \$errors->first('$mapped_param')) . '</p>' : ''; ?>"
+                ."$wht</div>";
+            }, $view);
+        });
+
         // @autocomplete(name:mapped_name url $model ...) = Label
         Blade::extend(function($view, $compiler) {
             $pattern = '/(?<!\w)(\s*)@autocomplete\s*\(([^)]*)\)*(?: = ([^\r\n]*))?/';

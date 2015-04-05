@@ -43,7 +43,8 @@ class CreateForumPostsTable extends Migration {
             BEGIN
                 UPDATE forums
                 SET last_post_id = (SELECT id from forum_posts WHERE forum_id = fid AND deleted_at IS NULL ORDER BY created_at DESC LIMIT 1),
-                stat_posts = (SELECT COUNT(*) FROM forum_posts WHERE forum_id = fid AND deleted_at IS NULL)
+                stat_posts = (SELECT COUNT(*) FROM forum_posts WHERE forum_id = fid AND deleted_at IS NULL),
+                stat_threads = (SELECT COUNT(*) FROM forum_threads WHERE forum_id = fid AND deleted_at IS NULL)
                 WHERE id = fid;
             END;");
 

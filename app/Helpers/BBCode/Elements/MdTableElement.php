@@ -48,7 +48,7 @@ class MdTableElement extends Element {
             if ($c == '[') $level++;
             else if ($c == ']') $level--;
             else if (($c == '|' && $level == 0) || $i == $len - 1) {
-                $ret[] = substr($text, $last, $i-$last);
+                $ret[] = substr($text, $last, ($i-$last) + ($i == $len - 1 ? 1 : 0));
                 $last = $i + 1;
             }
         }

@@ -12,7 +12,7 @@ class ForumController extends Controller {
 
 	public function __construct()
 	{
-        $this->permission(['create', 'edit', 'delete'], 'ForumAdmin');
+        $this->permission(['create', 'edit', 'delete', 'restore'], 'ForumAdmin');
 	}
 
 	public function getIndex()
@@ -118,7 +118,7 @@ class ForumController extends Controller {
 
     public function postRestore() {
         $id = intval(Request::input('id'));
-        $forum = Forum::withTrashed()->where('id', '=', $id)->firstOrFail();
+        $forum = Forum::onlyTrashed()->where('id', '=', $id)->firstOrFail();
         $forum->restore();
         return redirect('forum/index');
     }

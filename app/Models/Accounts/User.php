@@ -14,6 +14,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $table = 'users';
 	protected $fillable = ['name', 'email', 'password'];
 	protected $hidden = ['password', 'remember_token'];
+    protected $visible = [ 'id', 'name', 'avatar_custom', 'avatar_file', 'title_custom', 'title_text' ];
     protected $dates = ['deleted_at'];
 
     public function posts()

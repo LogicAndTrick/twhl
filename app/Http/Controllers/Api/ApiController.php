@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api;
  
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\Permission;
+use App\Models\Accounts\User;
+use App\Models\Forums\Forum;
 use Input;
 
 class ApiController extends Controller {
 
     public function __construct()
     {
+        $this->permission(['format'], true);
         $this->permission(['permissions'], 'Admin');
     }
 
@@ -21,9 +24,14 @@ class ApiController extends Controller {
             if ($ids) $query = $query-> whereIn('id', $ids);
         }
 
+        if (!is_array($filter_cols)) $filter_cols = [$filter_cols];
+
+        foreach ($filter_cols as $v) {
+            $query = $query->orderBy($v);
+        }
+
         $filter = Input::get('filter');
         if (!$filter) return $query;
-        if (!is_array($filter_cols)) $filter_cols = [$filter_cols];
         $filter .= '%';
         $args = [];
         $sql = '1 != 1';
@@ -76,6 +84,22 @@ class ApiController extends Controller {
     public function getPermissions()
     {
         return $this->call(Permission::where('id', '>', 0), 'name');
+    }
+
+    public function getForums()
+    {
+        return $this->call(Forum::where('id', '>', 0), 'name');
+    }
+
+    public function getUsers()
+    {
+        return $this->call(User::where('id', '>', 0), 'name');
+    }
+
+    public function postFormat() {
+        $field = Input::get('field') ?: 'text';
+        $text = Input::input($field) ?: '';
+        return app('bbcode')->Parse($text);
     }
 }
 

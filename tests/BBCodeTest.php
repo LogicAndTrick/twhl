@@ -11,6 +11,20 @@ class BBCodeTest extends TestCase {
     }
     */
 
+    public function testMdTables()
+    {
+        $input = [
+            "|= Heading\n|- Cell",
+        ];
+        $expected = [
+            '<table class="table table-bordered"><tr><th>Heading</th></tr><tr><td>Cell</td></tr></table>',
+        ];
+        for ($i = 0; $i < count($input); $i++) {
+            $output = app('bbcode')->Parse($input[$i]);
+            $this->assertEquals($expected[$i], $output);
+        }
+    }
+
     public function testWikiImages()
     {
         $input = [
