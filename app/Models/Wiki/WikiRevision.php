@@ -32,6 +32,28 @@ class WikiRevision extends Model {
         return $this->getMeta(WikiRevisionMeta::CATEGORY);
     }
 
+    public function getUpload() {
+        $id = $this->getMeta(WikiRevisionMeta::UPLOAD_ID, true);
+        return $id ? WikiUpload::find($id) : null;
+    }
+
+    public function getFileSize() {
+        return $this->getMeta(WikiRevisionMeta::FILE_SIZE, true);
+    }
+
+    public function getImageWidth() {
+        return $this->getMeta(WikiRevisionMeta::IMAGE_WIDTH, true);
+    }
+
+    public function getImageHeight() {
+        return $this->getMeta(WikiRevisionMeta::IMAGE_HEIGHT, true);
+    }
+
+    public function getEmbedSlug() {
+        if (substr($this->slug, 0, 7) == 'upload:') return substr($this->slug, 7);
+        else return $this->slug;
+    }
+
     private function getMeta($type, $first = false) {
         $r = [];
         foreach ($this->wiki_revision_metas as $meta) {

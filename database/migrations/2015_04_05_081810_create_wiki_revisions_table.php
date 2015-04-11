@@ -17,7 +17,7 @@ class CreateWikiRevisionsTable extends Migration {
             $table->string('title', 200);
             $table->text('content_text');
             $table->text('content_html');
-            $table->string('message');
+            $table->string('message', 500);
 			$table->timestamps();
             $table->softDeletes();
 

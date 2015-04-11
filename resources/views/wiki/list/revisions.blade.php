@@ -9,7 +9,7 @@
             <tr>
                 <th class="compare-column"></th>
                 <th class="compare-column"></th>
-                <th>Date</th>
+                <th>Revision</th>
                 <th>User</th>
                 <th>Message</th>
                 <th>Revert</th>
@@ -20,7 +20,7 @@
                 <tr>
                     <td><input type="radio" name="compare1" value="{{ $rev->id }}" {{ $rev->id == $revision->id ? 'checked' : '' }} /></td>
                     <td><input type="radio" name="compare2" value="{{ $rev->id }}" {{ $rev->id == $next_id ? 'checked' : '' }} /></td>
-                    <td><a href="{{ act('wiki', 'page', $rev->slug, $rev->id) }}">{{ Date::TimeAgo( $rev->created_at ) }}</a></td>
+                    <td><a href="{{ act('wiki', 'page', $rev->slug, $rev->id) }}">#{{ $rev->id }} - {{ Date::TimeAgo( $rev->created_at ) }}</a></td>
                     <td>{{ $rev->user->name }}</td>
                     <td>{{ $rev->message }}</td>
                     <td>

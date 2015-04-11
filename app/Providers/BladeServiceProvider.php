@@ -23,10 +23,11 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('form');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['url'], ['method' => 'post']);
+                $parameters = $this->parseBladeTemplatePattern($matches, ['url'], ['method' => 'post', 'upload' => false]);
                 $url = url($parameters['url']);
                 $method = $parameters['method'];
-                return "{$matches[1]}<form action='$url' method='$method'><input type='hidden' name='_token' value='<?php echo csrf_token(); ?>'>";
+                $upload = $parameters['upload'] ? "enctype='multipart/form-data'" : '';
+                return "{$matches[1]}<form action='$url' method='$method' $upload><input type='hidden' name='_token' value='<?php echo csrf_token(); ?>'>";
             }, $view);
         });
 
@@ -162,6 +163,31 @@ class BladeServiceProvider extends ServiceProvider {
                 "$error_message</div><script type='text/javascript'>$(function() {" .
                 "$('#$id').autocomplete($json_args);" .
                 "});</script>";
+            }, $view);
+        });
+
+        // @file(name:mapped_name) = Label
+        Blade::extend(function($view, $compiler) {
+            $pattern = $this->createBladeTemplatePattern('file');
+            return preg_replace_callback($pattern, function($matches) {
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+
+                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
+                "<input type='file' id='$id' placeholder='$label' name='$mapped_name' />" .
+                "$error_message</div>";
             }, $view);
         });
 

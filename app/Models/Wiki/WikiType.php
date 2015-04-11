@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class WikiType extends Model {
 
     const PAGE = 1;
-    const IMAGE = 2;
+    const UPLOAD = 2;
     const CATEGORY = 3;
 
 	//

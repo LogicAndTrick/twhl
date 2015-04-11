@@ -38,6 +38,8 @@ if (!function_exists('act'))
 
         if (!array_key_exists($controller, $mappings)) throw new Exception('Undefined action mapping: ' . $controller);
 
+        $action = preg_replace_callback('/(^|-)([a-z])/i', function ($g) { return strtoupper($g[2]); }, $action);
+
         $act = $action;
         if (substr($action, 0, 3) != 'get' && substr($action, 0, 4) != 'post') {
             $act = 'get'.strtoupper(substr($action, 0, 1)).substr($action, 1);
@@ -69,5 +71,23 @@ if (!function_exists('permission'))
         if ($permission === true && !$user) return false;
         if (is_string($permission) && (!$user || !$user->hasPermission($permission))) return false;
         return true;
+    }
+}
+
+if (!function_exists('format_filesize'))
+{
+    function format_filesize($bytes)
+    {
+        if ($bytes < 1024) return $bytes . 'b';
+        $kbytes = $bytes / 1024;
+        if ($kbytes < 1024) return round($kbytes, 2) . 'kb';
+        $mbytes = $kbytes / 1024;
+        if ($mbytes < 1024) return round($mbytes, 2) . 'mb';
+        $gbytes = $mbytes / 1024;
+        if ($gbytes < 1024) return round($gbytes, 2) . 'gb';
+        $tbytes = $gbytes / 1024;
+        if ($tbytes < 1024) return round($tbytes, 2) . 'tb';
+        $pbytes = $tbytes / 1024;
+        return round($pbytes, 2) . 'pb';
     }
 }

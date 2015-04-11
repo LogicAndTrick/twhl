@@ -20,8 +20,8 @@ class CreateWikiTypesTable extends Migration {
         ]);
 
         \App\Models\Wiki\WikiType::Create([
-            'name' => 'image',
-            'description' => 'An uploaded image.'
+            'name' => 'upload',
+            'description' => 'An uploaded file.'
         ]);
 
         \App\Models\Wiki\WikiType::Create([

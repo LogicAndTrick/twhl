@@ -9,6 +9,7 @@ class WikiRevisionMeta extends Model {
     const IMAGE_WIDTH = 'w';
     const IMAGE_HEIGHT = 'h';
     const FILE_SIZE = 's';
+    const UPLOAD_ID = 'u';
 
 	//
     protected $table = 'wiki_revision_metas';
