@@ -5,30 +5,6 @@ namespace App\Helpers\BBCode;
 use App\Helpers\BBCode\Elements\DefaultElement;
 
 /**
- *
- * Markdown lists * / #
- * Markdown headings ===
- * Markdown code (whitespace)
- * Markdown-ish tables |- / |=
- * htmlspecialchars
- * quotes
- * newlines
- * autolinking
- *
- * Wiki contents
- * Wiki categories [cat:Test]
- * [[Wiki links]] / [www.example.com|Example]
- * Wiki images [img:example.png]
- *
- * Embedded image
- * Embedded youtube
- *
- * Smilies
- *
- * embedded : [youtube:oGlhgVz5r6E|small|Caption]
- * inline
- * cleanup
- *
  * Class Parser
  * @package App\Helpers\BBCode
  */

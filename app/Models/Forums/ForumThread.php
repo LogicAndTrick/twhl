@@ -72,7 +72,7 @@ class ForumThread extends Model {
         if ($this->is_sticky) return true;
 
         // 4b. Normal threads are closed if they are over 90 days old
-        if (Date::DiffMinutes(Date::Now(), $this->last_post->updated_at) > 90) return false;
+        if (Date::DiffDays(Date::Now(), $this->last_post->updated_at) > 90) return false;
 
         return true;
     }
@@ -86,7 +86,7 @@ class ForumThread extends Model {
         if (!Auth::user()) return 'You must be logged in to post a response.';
         if (!permission('ForumCreate')) return 'You do not have permission to post a response.';
         if (!$this->is_open) return 'This thread has been closed, responses cannot be posted.';
-        if (Date::DiffMinutes(Date::Now(), $this->last_post->updated_at) > 90) return 'This thread has automatically been locked because it has been idle for over 90 days.';
+        if (Date::DiffDays(Date::Now(), $this->last_post->updated_at) > 90) return 'This thread has automatically been locked because it has been idle for over 90 days.';
         return null;
     }
 }

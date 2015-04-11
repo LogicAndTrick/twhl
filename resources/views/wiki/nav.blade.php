@@ -1,0 +1,14 @@
+<div>
+    @if (isset($revision) && $revision)
+        <a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->title }}</a> |
+        @if (permission('ForumEdit'))
+            <a href="{{ act('wiki', 'edit', $revision->slug) }}">Edit</a> |
+        @endif
+        <a href="{{ act('wiki', 'history', $revision->slug) }}">History</a> |
+    @endif
+    @if (permission('ForumCreate'))
+        <a href="{{ act('wiki', 'create') }}">Create a new page</a> |
+    @endif
+    <a href="{{ act('wiki', 'pages') }}">See all pages</a> |
+    <a href="{{ act('wiki', 'categories') }}">See all categories</a>
+</div>

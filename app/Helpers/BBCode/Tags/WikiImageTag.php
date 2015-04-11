@@ -2,6 +2,8 @@
 
 namespace App\Helpers\BBCode\Tags;
  
+use App\Models\Wiki\WikiRevision;
+
 class WikiImageTag extends LinkTag {
 
     function __construct()
@@ -38,7 +40,7 @@ class WikiImageTag extends LinkTag {
             $src = $image;
             if (strstr($image, '/') === false) {
                 $result->AddMeta('WikiImage', $image);
-                $src = url('/wiki/embed/' . $image);
+                $src = url('/wiki/embed/' . WikiRevision::CreateSlug($image));
             }
             $url = null;
             $caption = null;
@@ -53,7 +55,7 @@ class WikiImageTag extends LinkTag {
             if ($url && $this->ValidateUrl($url)) {
                 if (!preg_match('%^[a-z]{2,10}://%i', $url)) {
                     $result->AddMeta('WikiLink', $url);
-                    $url = url('/wiki/' . $url);
+                    $url = url('/wiki/page/' . WikiRevision::CreateSlug($url));
                 }
             } else {
                 $url = '';

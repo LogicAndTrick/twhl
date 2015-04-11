@@ -39,6 +39,7 @@
 				<ul class="nav navbar-nav">
                     <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ url('/forum') }}">Forums</a></li>
+                    <li><a href="{{ url('/wiki') }}">Wiki</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">

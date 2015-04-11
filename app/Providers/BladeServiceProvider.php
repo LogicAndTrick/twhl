@@ -1,6 +1,8 @@
 <?php namespace App\Providers;
 
 use Blade;
+use Request;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 class BladeServiceProvider extends ServiceProvider {
@@ -18,16 +20,13 @@ class BladeServiceProvider extends ServiceProvider {
 	public function register()
 	{
         // @form(url)
-        Blade::extend(function($view, $compiler)
-        {
-            $pattern = $this->createSensibleOpenMatcher('form');
+        Blade::extend(function($view, $compiler) {
+            $pattern = $this->createBladeTemplatePattern('form');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = explode(' ', $matches[2]);
-                $url = url($parameters[0]);
-                $method = 'post';
-                $tok = '<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">';
-                // other parameters here...
-                return $matches[1]."<form action='$url' method='$method'>$tok";
+                $parameters = $this->parseBladeTemplatePattern($matches, ['url'], ['method' => 'post']);
+                $url = url($parameters['url']);
+                $method = $parameters['method'];
+                return "{$matches[1]}<form action='$url' method='$method'><input type='hidden' name='_token' value='<?php echo csrf_token(); ?>'>";
             }, $view);
         });
 
@@ -38,142 +37,205 @@ class BladeServiceProvider extends ServiceProvider {
         });
 
         // @hidden(name:mapped_name $model)
-        Blade::extend(function($view, $compiler)
-        {
-            $pattern = $this->createSensibleOpenMatcher('hidden');
+        Blade::extend(function($view, $compiler) {
+            $pattern = $this->createBladeTemplatePattern('hidden');
             return preg_replace_callback($pattern, function($matches) {
-                $wht = $matches[1];
-                $parameters = explode(' ', $matches[2]);
-                $param = explode(':', $parameters[0]);
-                $name = $param[0];
-                $mapped_param = count($param) > 1 ? $param[1] : $name;
-                $model_var = array_first($parameters, function($k, $x) { return $x[0] == '$'; }) ?: '$__undefined__';
-                $collect_value = "<?php echo (isset($model_var) ? $model_var->$name : null) ?: ''; ?>";
-                return "$wht<input type='hidden' name='$mapped_param' value='$collect_value'>";
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name']);
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); ?>";
+
+                return "{$matches[1]}<input type='hidden' name='$mapped_name' value='$collect'>";
             }, $view);
         });
 
         // @text(name:mapped_name $model) = Label
         Blade::extend(function($view, $compiler) {
-            $pattern = '/(?<!\w)(\s*)@text\s*\(([^)]*)\)*(?: = ([^\r\n]*))?/';
+            $pattern = $this->createBladeTemplatePattern('text');
             return preg_replace_callback($pattern, function($matches) {
-                $wht = $matches[1];
-                $parameters = explode(' ', $matches[2]);
-                $param = explode(':', $parameters[0]);
-                $name = $param[0];
-                $mapped_param = count($param) > 1 ? $param[1] : $name;
-                $label = isset($matches[3]) ? $matches[3] : $name;
-                $id = preg_replace('/[^a-z0-9]/i', '_', $name) . '_' . rand(10000, 99999);
-                $label = htmlspecialchars($label);
-                $model_var = array_first($parameters, function($k, $x) { return $x[0] == '$'; }) ?: '$__undefined__';
-                $collect_value = "<?php echo Request::old('$mapped_param') ?: (isset($model_var) ? $model_var->$name : null) ?: ''; ?>";
-                return "$wht<div class='form-group<?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? ' has-error' : ''; ?>'>"
-                    ."$wht    <label for='$id'>$label</label>"
-                    ."$wht    <input type='text' class='form-control' id='$id' placeholder='$label' name='$mapped_param' value='$collect_value' />"
-                    ."$wht    <?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? '<p class=\'help-block\'>' . (\$errors->first('$name') ?: \$errors->first('$mapped_param')) . '</p>' : ''; ?>"
-                ."$wht</div>";
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+
+                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); ?>";
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
+                "<input type='text' class='form-control' id='$id' placeholder='$label' name='$mapped_name' value='$collect' />" .
+                "$error_message</div>";
             }, $view);
         });
 
-        // @checkbox
-        /*
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Check me out
-            </label>
-          </div>
-        */
-
         // @checkbox(name:mapped_name $model) = Label
         Blade::extend(function($view, $compiler) {
-            $pattern = '/(?<!\w)(\s*)@checkbox\s*\(([^)]*)\)*(?: = ([^\r\n]*))?/';
+            $pattern = $this->createBladeTemplatePattern('checkbox');
             return preg_replace_callback($pattern, function($matches) {
-                $wht = $matches[1];
-                $parameters = explode(' ', $matches[2]);
-                $param = explode(':', $parameters[0]);
-                $name = $param[0];
-                $mapped_param = count($param) > 1 ? $param[1] : $name;
-                $label = isset($matches[3]) ? $matches[3] : $name;
-                $id = preg_replace('/[^a-z0-9]/i', '_', $name) . '_' . rand(10000, 99999);
-                $label = htmlspecialchars($label);
-                $model_var = array_first($parameters, function($k, $x) { return $x[0] == '$'; }) ?: '$__undefined__';
-                $collect_value = "<?php echo (Request::old('$mapped_param') ?: (isset($model_var) ? $model_var->$name : false) ?: false) ? 'checked' : ''; ?>";
-                return "$wht<div class='checkbox<?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? ' has-error' : ''; ?>'>"
-                    ."$wht    <label for='$id'><input type='checkbox' id='$id' name='$mapped_param' $collect_value /> $label</label>"
-                    ."$wht    <?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? '<p class=\'help-block\'>' . (\$errors->first('$name') ?: \$errors->first('$mapped_param')) . '</p>' : ''; ?>"
-                ."$wht</div>";
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+
+                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name') ? 'checked' : ''; ?>";
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                return "{$matches[1]}<div class='checkbox $error_class'><label for='$id'>" .
+                "<input type='checkbox' id='$id' name='$mapped_name' $collect />" .
+                "$label</label>$error_message</div>";
             }, $view);
         });
 
         // @textarea(name:mapped_name $model) = Label
         Blade::extend(function($view, $compiler) {
-            $pattern = '/(?<!\w)(\s*)@textarea\s*\(([^)]*)\)*(?: = ([^\r\n]*))?/';
+            $pattern = $this->createBladeTemplatePattern('textarea');
             return preg_replace_callback($pattern, function($matches) {
-                $wht = $matches[1];
-                $parameters = explode(' ', $matches[2]);
-                $param = explode(':', $parameters[0]);
-                $name = $param[0];
-                $mapped_param = count($param) > 1 ? $param[1] : $name;
-                $label = isset($matches[3]) ? $matches[3] : $name;
-                $id = preg_replace('/[^a-z0-9]/i', '_', $name) . '_' . rand(10000, 99999);
-                $label = htmlspecialchars($label);
-                $model_var = array_first($parameters, function($k, $x) { return $x[0] == '$'; }) ?: '$__undefined__';
-                $collect_value = "<?php echo htmlspecialchars(Request::old('$mapped_param') ?: (isset($model_var) ? $model_var->$name : null) ?: ''); ?>";
-                return "$wht<div class='form-group<?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? ' has-error' : ''; ?>'>"
-                    ."$wht    <label for='$id'>$label</label>"
-                    ."$wht    <textarea class='form-control' id='$id' placeholder='$label' name='$mapped_param'>$collect_value</textarea>"
-                    ."$wht    <?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? '<p class=\'help-block\'>' . (\$errors->first('$name') ?: \$errors->first('$mapped_param')) . '</p>' : ''; ?>"
-                ."$wht</div>";
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+
+                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); ?>";
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
+                "<textarea class='form-control' id='$id' placeholder='$label' name='$mapped_name'>$collect</textarea>" .
+                "$error_message</div>";
             }, $view);
         });
 
-        // @autocomplete(name:mapped_name url $model ...) = Label
+        // @autocomplete(name:mapped_name url $model) = Label
         Blade::extend(function($view, $compiler) {
-            $pattern = '/(?<!\w)(\s*)@autocomplete\s*\(([^)]*)\)*(?: = ([^\r\n]*))?/';
+            $pattern = $this->createBladeTemplatePattern('autocomplete');
             return preg_replace_callback($pattern, function($matches) {
-                $wht = $matches[1];
-                $parameters = explode(' ', $matches[2]);
-                $param = explode(':', $parameters[0]);
-                $name = $param[0];
-                $mapped_param = count($param) > 1 ? $param[1] : $name;
-                $url = url($parameters[1]);
-                $label = isset($matches[3]) ? $matches[3] : $name;
-                $id = preg_replace('/[^a-z0-9]/i', '_', $name) . '_' . rand(10000, 99999);
-                $label = htmlspecialchars($label);
-                $model_var = array_first($parameters, function($k, $x) { return $x[0] == '$'; }) ?: '$__undefined__';
-                $kvs = ['id' => 'id', 'name' => 'name', 'placeholder' => $label];
-                for ($i = 0; $i < count($parameters); $i++) {
-                    $p = $parameters[$i];
-                    if (!strstr($p, '=')) continue;
-                    $split = explode('=', $p);
-                    $kvs[$split[0]] = $split[1];
-                }
-                $kvs['url'] = $url;
-                $json_args = json_encode($kvs);
-                $collect_value = "<?php
-                    \$sel_value = Request::old('$mapped_param') ?: (isset($model_var) ? $model_var->$name : null) ?: null;
-                    echo \$sel_value ? '<option value=\'' . \$sel_value . '\' selected>' . '</option>' : '';
-                ?>";
-                return "$wht<div class='form-group<?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? ' has-error' : ''; ?>'>"
-                    ."$wht    <label for='$id'>$label</label>"
-                    ."$wht    <div class='controls'><select class='autocomplete' id='$id' name='$mapped_param'>$collect_value</select></div>"
-                    ."$wht    <?php echo \$errors->has('$name') || \$errors->has('$mapped_param') ? '<p class=\'help-block\'>' . (\$errors->first('$name') ?: \$errors->first('$mapped_param')) . '</p>' : ''; ?>"
-                ."$wht</div><script type='text/javascript'>$(function() {
-                        $('#$id').autocomplete($json_args);
-                    });</script>";
+                $parameters = $this->parseBladeTemplatePattern($matches, ['model_name', 'url'], ['clearable' => false, 'placeholder' => '', 'id' => 'id', 'name' => 'name'], 'label');
+
+                $expl_name = explode(':', $parameters['model_name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+
+                $parameters['url'] = url($parameters['url']);
+                if (!$parameters['placeholder']) $parameters['placeholder'] = array_get($parameters, 'label', $name);
+                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $collect = "<?php \$sel_value = \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); " .
+                "echo \$sel_value ? '<option value=\'' . \$sel_value . '\' selected>' . \$sel_value . '</option>' : ''; ?>";
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                $json_args = json_encode($parameters);
+
+                return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
+                "<div class='controls'><select class='autocomplete' id='$id' name='$mapped_name'>$collect</select></div>" .
+                "$error_message</div><script type='text/javascript'>$(function() {" .
+                "$('#$id').autocomplete($json_args);" .
+                "});</script>";
             }, $view);
         });
 
-        // @submit
+        // @submit = Label
         Blade::extend(function($view, $compiler) {
-            $pattern = '/(?<!\w)(\s*)@submit(?:\(([^)]*)\))?(\s*)/';
+            $pattern = $this->createBladeTemplatePattern('submit');
             return preg_replace_callback($pattern, function($matches) {
-                $wht = $matches[1];
-                $text = isset($matches[1]) ? trim($matches[1]) : '';
-                if (!$text) $text = 'Submit';
-                return "$wht<button type='submit' class='btn btn-default'>$text</button>";
+                $parameters = $this->parseBladeTemplatePattern($matches, [], [], 'label');
+
+                $label = htmlspecialchars( array_get($parameters, 'label', 'Submit') );
+
+                return "{$matches[1]}<button type='submit' class='btn btn-default'>$label</button>";
             }, $view);
         });
 	}
+
+    private function generateHtmlId($name) {
+        return htmlspecialchars( preg_replace('/[^a-z0-9]/i', '_', $name) ) . '_' . rand(10000, 99999);
+    }
+
+    private function createBladeTemplatePattern($name) {
+        return '/(?<!\w)(\s*)@' . $name . '\s*?(?:\(([^)]*)\))?(?: ?= ?([^\r\n]*))?(?!\w)/';
+    }
+
+    private function parseBladeTemplatePattern($matches, $required = [], $named = [], $eq = false) {
+        $ret = [
+            '_' => []
+        ];
+        $i = 0;
+        $parameters = isset($matches[2]) ? explode(' ', $matches[2]) : [];
+        $creq = count($required);
+        for (; $i < $creq; $i++) {
+            $ret[$required[$i]] = $parameters[$i];
+        }
+        $n = [];
+        for (; $i < count($parameters); $i++) {
+            if (!$parameters[$i]) continue;
+            $spl = explode('=', $parameters[$i]);
+            if (count($spl) == 2) $n[$spl[0]] = $spl[1];
+            else if ($parameters[$i][0] == '$') $ret['$'] = $parameters[$i];
+            else $ret['_'][] = $parameters[$i];
+        }
+        foreach ($named as $k => $v) {
+            if (array_key_exists($k, $n)) $ret[$k] = $n[$k];
+            else $ret[$k] = $v;
+        }
+        if ($eq && isset($matches[3]) && $matches[3]) $ret[$eq] = $matches[3];
+        return $ret;
+    }
+
+    public static function FirstErrorMessage($errors, $names) {
+        if (!is_array($names)) $names = [$names];
+        foreach ($names as $n) {
+            if ($errors->has($n)) return $errors->first($n);
+        }
+        return null;
+    }
+
+    public static function ErrorMessageIfExists($errors, $names) {
+        $message = BladeServiceProvider::FirstErrorMessage($errors, $names);
+        return $message ? '<p class="help-block">' . $message . "</p>" : '';
+    }
+
+    public static function ErrorClass($errors, $names) {
+        $message = BladeServiceProvider::FirstErrorMessage($errors, $names);
+        return $message ? 'has-error' : '';
+    }
+
+    public static function CollectValue($value, $req_name, $model_name) {
+        $val = null;
+        if (Request::old($req_name)) $val = Request::old($req_name);
+        else if ($value instanceof Model) $val = $value->{$model_name};
+        else $val = $value;
+        return $val;
+    }
 
 }

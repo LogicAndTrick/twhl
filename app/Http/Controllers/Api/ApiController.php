@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
 use App\Models\Forums\Forum;
+use App\Models\Wiki\WikiRevision;
 use Input;
 
 class ApiController extends Controller {
@@ -81,6 +82,8 @@ class ApiController extends Controller {
         return response()->json($array);
     }
 
+    // Standard
+
     public function getPermissions()
     {
         return $this->call(Permission::where('id', '>', 0), 'name');
@@ -95,6 +98,15 @@ class ApiController extends Controller {
     {
         return $this->call(User::where('id', '>', 0), 'name');
     }
+
+    public function getWikiRevisions()
+    {
+        $q = WikiRevision::where('id', '>', 0);
+        if (Input::get('active') !== null) $q = $q->where('is_active', '=', 1);
+        return $this->call($q, 'title');
+    }
+
+    // Non-standard
 
     public function postFormat() {
         $field = Input::get('field') ?: 'text';

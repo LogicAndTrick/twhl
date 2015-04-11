@@ -2,6 +2,8 @@
 
 namespace App\Helpers\BBCode\Tags;
  
+use App\Models\Wiki\WikiRevision;
+
 class WikiLinkTag extends LinkTag {
 
     function __construct()
@@ -37,9 +39,9 @@ class WikiLinkTag extends LinkTag {
             $bkmk = isset($regs[2]) ? trim($regs[2]) : '';
             $text = isset($regs[3]) && $regs[3] ? $regs[3] : $page;
             $page = str_ireplace(' ', '_', $page);
-            $page = preg_replace('%[^a-z0-9-_()]%si', '', $page);
+            $page = preg_replace('%[^a-z0-9-_()\'\\.:]%si', '', $page);
             $result->AddMeta('WikiLink', $page);
-            $url = url('/wiki/' . $page . ($bkmk ? '#' . $bkmk : ''));
+            $url = url('/wiki/page/' . WikiRevision::CreateSlug($page) . ($bkmk ? '#' . $bkmk : ''));
             return '<a href="' . $parser->CleanUrl($url) . '">' . $parser->CleanString($text) . '</a>';
         } else {
             return false;
