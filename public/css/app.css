@@ -6399,6 +6399,48 @@ ul.wiki-categories .header {
   max-width: 95%;
   margin: 10px auto;
 }
+.vault-filter li {
+  white-space: nowrap;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color ease 0.2s;
+}
+.vault-filter li:hover {
+  background-color: #dedede;
+}
+.vault-filter li.active {
+  background-color: #337ab7;
+  color: white;
+}
+.vault-filter li.loading:hover {
+  background-color: transparent;
+}
+.vault-filter li.clear-filter {
+  text-align: center;
+}
+.filter-games {
+  width: 624px;
+  white-space: normal;
+}
+.filter-games li {
+  padding: 5px;
+  display: inline-block;
+  width: 200px;
+  margin-left: 5px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.filter-games li.clear-filter {
+  width: auto;
+  margin: 0 5px 5px;
+  display: block;
+}
+.screenshot-list li {
+  border-radius: 4px;
+  border: 1px solid #eeeeee;
+  padding: 10px;
+  background-color: #ffffff;
+}
 .select2-pagination {
   text-align: center;
 }
@@ -6708,6 +6750,78 @@ fieldset[disabled] .select2-pagination-next.active {
 .diff-container table.diff tbody th {
   width: 40px;
 }
+.slider {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 500px;
+}
+.slider .loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: none repeat scroll 0 0 rgba(0, 0, 0, 0.3);
+  color: white;
+  height: 420px;
+  line-height: 420px;
+  text-align: center;
+  z-index: 100;
+}
+.slider .slides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+}
+.slider .thumbs {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+}
+.slider .thumbs .p {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: 78px;
+  border-top: 4px solid #777777;
+  opacity: 0.7;
+}
+.slider .thumbs .p:hover {
+  border-color: #222222;
+  opacity: 1;
+}
+.slider .thumbs .p.pav {
+  border-color: #337ab7;
+  opacity: 1;
+}
+.slider .thumbs .p .i {
+  position: absolute;
+  top: 2px;
+  left: 0px;
+  max-width: 72px;
+  max-height: 72px;
+}
+.slider .arrow {
+  display: block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: #dedede;
+}
+.slider .arrow.left {
+  left: 8px;
+}
+.slider .arrow.right {
+  right: 8px;
+}
 h1 .btn,
 h2 .btn,
 h3 .btn {
@@ -6726,6 +6840,17 @@ textarea.form-control {
 }
 .dl-horizontal.dl-wide dd {
   margin-left: 260px;
+}
+.option-panel .panel-heading span {
+  padding: 0 5px;
+}
+.option-panel .panel-heading label {
+  border: 1px solid #777777;
+  border-radius: 4px;
+  padding: 1px 6px 1px 26px;
+}
+.option-panel .panel-heading label:hover {
+  background-color: #eeeeee;
 }
 
 /*# sourceMappingURL=app.css.map */

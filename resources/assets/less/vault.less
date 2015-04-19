@@ -1,0 +1,54 @@
+.vault-filter {
+  li {
+    white-space: nowrap;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    transition: background-color ease 0.2s;
+
+    &:hover {
+      background-color: #dedede;
+    }
+
+    &.active {
+      background-color: @brand-primary;
+      color: white;
+    }
+
+    &.loading:hover {
+      background-color: transparent;
+    }
+
+    &.clear-filter {
+      text-align: center;
+    }
+  }
+}
+.filter-games {
+  width: 624px;
+  white-space: normal;
+
+  li {
+    padding: 5px;
+    display: inline-block;
+    width: 200px;
+    margin-left: 5px;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &.clear-filter {
+      width: auto;
+      margin: 0 5px 5px;
+      display: block;
+    }
+  }
+}
+
+.screenshot-list {
+  li {
+    border-radius: 4px;
+    border: 1px solid @gray-lighter;
+    padding: 10px;
+    background-color: #ffffff;
+  }
+}

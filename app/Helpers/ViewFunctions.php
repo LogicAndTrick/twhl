@@ -32,6 +32,7 @@ if (!function_exists('act'))
             'home' => 'HomeController',
 
             'wiki' => 'Wiki\WikiController',
+            'vault' => 'Vault\VaultController',
 
             'api' => 'Api\ApiController'
         );

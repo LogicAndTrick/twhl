@@ -3,8 +3,10 @@
 @import "bootstrap/bootstrap";
 @import "bbcode.less";
 @import "wiki.less";
+@import "vault.less";
 @import "select2.less";
 @import "diffview.less";
+@import "slider.less";
 
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
@@ -32,4 +34,21 @@ textarea.form-control {
 .dl-horizontal.dl-wide {
   dt { width: 240px; }
   dd { margin-left: 260px; }
+}
+
+.option-panel {
+  .panel-heading {
+    span {
+      padding: 0 5px;
+    }
+    label {
+      border: 1px solid @gray-light;
+      border-radius: 4px;
+      padding: 1px 6px 1px 26px;
+
+      &:hover {
+        background-color: @gray-lighter;
+      }
+    }
+  }
 }

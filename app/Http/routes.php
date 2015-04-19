@@ -24,6 +24,7 @@ Route::controllers([
     'post' => 'Forum\PostController',
 
     'wiki' => 'Wiki\WikiController',
+    'vault' => 'Vault\VaultController',
 
     'api' => 'Api\ApiController',
 ]);

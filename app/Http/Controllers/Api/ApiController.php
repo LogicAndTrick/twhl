@@ -5,7 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
+use App\Models\Engine;
 use App\Models\Forums\Forum;
+use App\Models\Game;
+use App\Models\License;
+use App\Models\Vault\VaultCategory;
+use App\Models\Vault\VaultInclude;
+use App\Models\Vault\VaultType;
 use App\Models\Wiki\WikiRevision;
 use Input;
 
@@ -17,7 +23,7 @@ class ApiController extends Controller {
         $this->permission(['permissions'], 'Admin');
     }
 
-    private function filter($query, $filter_cols) {
+    private function filter($query, $filter_cols, $sort_cols = []) {
 
         $ids = Input::get('id');
         if ($ids) {
@@ -26,8 +32,10 @@ class ApiController extends Controller {
         }
 
         if (!is_array($filter_cols)) $filter_cols = [$filter_cols];
+        if ($sort_cols && !is_array($sort_cols)) $sort_cols = [$sort_cols];
+        if (!$sort_cols || !is_array($sort_cols) || count($sort_cols) == 0) $sort_cols = $filter_cols;
 
-        foreach ($filter_cols as $v) {
+        foreach ($sort_cols as $v) {
             $query = $query->orderBy($v);
         }
 
@@ -76,13 +84,37 @@ class ApiController extends Controller {
         ];
     }
 
-    private function call($q, $filter_cols) {
-        $filtered = $this->filter($q, $filter_cols);
+    private function call($q, $filter_cols, $sort_cols = []) {
+        $filtered = $this->filter($q, $filter_cols, $sort_cols);
         $array = $this->toArray($filtered);
         return response()->json($array);
     }
 
     // Standard
+
+    public function getEngines()
+    {
+        return $this->call(Engine::where('id', '>', 0), 'name', 'orderindex');
+    }
+
+    public function getGames()
+    {
+        return $this->call(Game::where('id', '>', 0), 'name', 'orderindex');
+    }
+
+    public function getLicenses()
+    {
+        return $this->call(License::where('id', '>', 0), 'name', 'orderindex');
+    }
+
+    // Account
+
+    public function getUsers()
+    {
+        return $this->call(User::where('id', '>', 0), 'name');
+    }
+
+    // Forum
 
     public function getPermissions()
     {
@@ -94,16 +126,30 @@ class ApiController extends Controller {
         return $this->call(Forum::where('id', '>', 0), 'name');
     }
 
-    public function getUsers()
-    {
-        return $this->call(User::where('id', '>', 0), 'name');
-    }
+    // Wiki
 
     public function getWikiRevisions()
     {
         $q = WikiRevision::where('id', '>', 0);
         if (Input::get('active') !== null) $q = $q->where('is_active', '=', 1);
         return $this->call($q, 'title');
+    }
+
+    // Vault
+
+    public function getVaultCategories()
+    {
+        return $this->call(VaultCategory::where('id', '>', 0), 'name', 'orderindex');
+    }
+
+    public function getVaultTypes()
+    {
+        return $this->call(VaultType::where('id', '>', 0), 'name', 'orderindex');
+    }
+
+    public function getVaultIncludes()
+    {
+        return $this->call(VaultInclude::where('id', '>', 0), 'name', 'orderindex');
     }
 
     // Non-standard

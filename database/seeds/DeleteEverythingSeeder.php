@@ -9,6 +9,11 @@ class DeleteEverythingSeeder extends \Illuminate\Database\Seeder
         DB::table('forum_threads')->delete();
         DB::table('forums')->delete();
 
+        DB::table('wiki_revision_metas')->delete();
+        DB::table('wiki_uploads')->delete();
+        DB::table('wiki_revisions')->delete();
+        DB::table('wiki_objects')->delete();
+
         DB::table('user_permissions')->delete();
         DB::table('users')->delete();
         DB::table('permissions')->delete();
