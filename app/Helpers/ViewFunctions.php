@@ -42,8 +42,10 @@ if (!function_exists('act'))
         $action = preg_replace_callback('/(^|-)([a-z])/i', function ($g) { return strtoupper($g[2]); }, $action);
 
         $act = $action;
-        if (substr($action, 0, 3) != 'get' && substr($action, 0, 4) != 'post') {
+        if (substr($action, 0, 3) != 'Get' && substr($action, 0, 4) != 'Post') {
             $act = 'get'.strtoupper(substr($action, 0, 1)).substr($action, 1);
+        } else {
+            $act = strtolower($action[0]) . substr($action, 1);
         }
         $arr = array();
         for ($i = 2; $i < func_num_args(); $i++) {

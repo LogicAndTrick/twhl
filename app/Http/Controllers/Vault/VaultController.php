@@ -18,8 +18,8 @@ use Auth;
 class VaultController extends Controller {
 
 	public function __construct() {
-        $this->permission(['create', 'edit'], 'VaultCreate');
-        $this->permission(['delete', 'restore'], 'VaultAdmin');
+        $this->permission(['create', 'edit', 'delete', 'createscreenshot', 'savescreenshotorder', 'deletescreenshot', 'editscreenshots'], 'VaultCreate');
+        $this->permission(['restore'], 'VaultAdmin');
 	}
 
 	public function getIndex() {
@@ -71,6 +71,43 @@ class VaultController extends Controller {
         return view('vault/create', [
             'includes' => $includes
         ]);
+    }
+
+    private function makeScreenshot($item, $screen) {
+        // We need the id to save the files, so create the db object first
+        $shot = VaultScreenshot::Create([
+            'item_id' => $item->id,
+            'is_primary' => count($item->vault_screenshots) == 0,
+            'image_thumb' => '',
+            'image_small' => '',
+            'image_medium' => '',
+            'image_large' => '',
+            'image_full' => '',
+            'image_size' => 0,
+            'order_index' => count($item->vault_screenshots)
+        ]);
+
+        // Save the screenshot at various sizes
+        $temp_dir = public_path('uploads/vault/temp');
+        $temp_name = $shot->id . '_temp.' . $screen->getClientOriginalExtension();
+        $screen->move($temp_dir, $temp_name);
+        $thumbs = Image::MakeThumbnails(
+            $temp_dir . '/' . $temp_name, Image::$vault_image_sizes,
+            public_path('uploads/vault/'), $shot->id . '.' . $screen->getClientOriginalExtension()
+        );
+        unlink($temp_dir . '/' . $temp_name);
+
+        // Update the shot object
+        $shot->update([
+            'image_thumb' => $thumbs[0] ? $thumbs[0] : $thumbs[4],
+            'image_small' => $thumbs[1] ? $thumbs[1] : $thumbs[4],
+            'image_medium' => $thumbs[2] ? $thumbs[2] : $thumbs[4],
+            'image_large' => $thumbs[3] ? $thumbs[3] : $thumbs[4],
+            'image_full' => $thumbs[4],
+            'image_size' => filesize(public_path('uploads/vault/'.$thumbs[4]))
+        ]);
+
+        return $shot;
     }
 
     public function postCreate() {
@@ -157,37 +194,7 @@ class VaultController extends Controller {
         // Upload the screenshot
         $screen = Request::file('screen');
         if ($screen) {
-            // We need the id to save the files, so create the db object first
-            $shot = VaultScreenshot::Create([
-                'item_id' => $item->id,
-                'is_primary' => true,
-                'image_thumb' => '',
-                'image_small' => '',
-                'image_medium' => '',
-                'image_large' => '',
-                'image_full' => '',
-                'image_size' => 0
-            ]);
-
-            // Save the screenshot at various sizes
-            $temp_dir = public_path('uploads/vault/temp');
-            $temp_name = $shot->id . '_temp.' . $screen->getClientOriginalExtension();
-            $screen->move($temp_dir, $temp_name);
-            $thumbs = Image::MakeThumbnails(
-                $temp_dir . '/' . $temp_name, Image::$vault_image_sizes,
-                public_path('uploads/vault/'), $shot->id . '.' . $screen->getClientOriginalExtension()
-            );
-            unlink($temp_dir . '/' . $temp_name);
-
-            // Update the shot object
-            $shot->update([
-                'image_thumb' => $thumbs[0] ? $thumbs[0] : $thumbs[4],
-                'image_small' => $thumbs[1] ? $thumbs[1] : $thumbs[4],
-                'image_medium' => $thumbs[2] ? $thumbs[2] : $thumbs[4],
-                'image_large' => $thumbs[3] ? $thumbs[3] : $thumbs[4],
-                'image_full' => $thumbs[4],
-                'image_size' => filesize(public_path('uploads/vault/'.$thumbs[4]))
-            ]);
+            $this->makeScreenshot($item, $screen);
         }
 
         return redirect('vault/index');
@@ -204,15 +211,54 @@ class VaultController extends Controller {
 
     }
 
+    public function postCreateScreenshot() {
+        $id = Request::input('id');
+        $item = VaultItem::findOrFail($id);
+        if (!$item->isEditable()) abort(422);
+
+        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+            return in_array($value->getClientOriginalExtension(), $parameters);
+        });
+        $this->validate(Request::instance(), [
+            'file' => 'required|max:2048|valid_extension:jpeg,jpg,png'
+        ], [
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
+        ]);
+
+        $file = Request::file('file');
+        $screen = $this->makeScreenshot($item, $file);
+        return response()->json($screen);
+    }
+
+    public function postSaveScreenshotOrder($id) {
+        $item = VaultItem::findOrFail($id);
+        if (!$item->isEditable()) abort(422);
+
+        $ids = Request::input('ids');
+        $screenshots = VaultScreenshot::where('item_id', '=', $id)->whereIn('id', $ids)->get();
+        if (count($screenshots) != count($item->vault_screenshots))  abort(422);
+        foreach ($screenshots as $shot) {
+            $shot->order_index = array_search($shot->id, $ids);
+            $shot->is_primary = $shot->order_index == 0;
+            $shot->save();
+        }
+        return response()->json(['success' => true]);
+    }
+
+    public function postDeleteScreenshot() {
+        $shot = VaultScreenshot::findOrFail(Request::input('id'));
+        $item = VaultItem::findOrFail($shot->item_id);
+        if (!$item->isEditable()) abort(422);
+
+        $shot->delete();
+        return response()->json(['success' => true]);
+    }
+
     public function getEditScreenshots($id) {
         $item = VaultItem::findOrFail($id);
         return view('vault/edit-screenshots', [
             'item' => $item
         ]);
-    }
-
-    public function postEditScreenshots($id) {
-
     }
 
     // Administrative Tasks

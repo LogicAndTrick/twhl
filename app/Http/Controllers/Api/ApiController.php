@@ -11,6 +11,7 @@ use App\Models\Game;
 use App\Models\License;
 use App\Models\Vault\VaultCategory;
 use App\Models\Vault\VaultInclude;
+use App\Models\Vault\VaultScreenshot;
 use App\Models\Vault\VaultType;
 use App\Models\Wiki\WikiRevision;
 use Input;
@@ -150,6 +151,11 @@ class ApiController extends Controller {
     public function getVaultIncludes()
     {
         return $this->call(VaultInclude::where('id', '>', 0), 'name', 'orderindex');
+    }
+
+    public function getVaultScreenshots($id)
+    {
+        return $this->call(VaultScreenshot::where('item_id', '=', $id), 'id', 'order_index');
     }
 
     // Non-standard

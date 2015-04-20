@@ -9,6 +9,8 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
 
+    @yield('styles', '')
+
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
 
@@ -40,6 +42,7 @@
                     <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ url('/forum') }}">Forums</a></li>
                     <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+                    <li><a href="{{ url('/vault') }}">Vault</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">

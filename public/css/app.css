@@ -6681,11 +6681,57 @@ ul.wiki-categories .header {
   margin: 0 5px 5px;
   display: block;
 }
+.screenshots-dnd-explanation {
+  display: inline-block;
+  float: right;
+  font-size: 12px;
+  line-height: 40px;
+  margin: 0 20px;
+}
+.screenshot-list.loading {
+  position: relative;
+}
+.screenshot-list.loading::after {
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 .screenshot-list li {
   border-radius: 4px;
   border: 1px solid #eeeeee;
   padding: 10px;
   background-color: #ffffff;
+}
+.screenshot-list .drag-handle {
+  display: inline-block;
+  float: right;
+  cursor: move;
+}
+.screenshot-list .drag-handle .glyphicon-menu-hamburger {
+  color: #999;
+  font-size: 26px;
+}
+.screenshot-list .media-left {
+  min-width: 200px;
+}
+.screenshot-list .media-left .media-object {
+  max-height: 60px;
+}
+.dropzone {
+  border: 2px solid #dedede;
+  border-radius: 10px;
+}
+.dropzone .dz-message {
+  font-size: 20px;
+}
+.dropzone.dz-drag-hover {
+  border-color: #337ab7;
+  background-color: #eeeeee;
 }
 .select2-pagination {
   text-align: center;

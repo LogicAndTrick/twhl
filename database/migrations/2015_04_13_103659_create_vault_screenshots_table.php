@@ -18,6 +18,7 @@ class CreateVaultScreenshotsTable extends Migration {
             $table->text('image_large');
             $table->text('image_full');
             $table->integer('image_size');
+            $table->integer('order_index');
 			$table->timestamps();
 
             $table->foreign('item_id')->references('id')->on('vault_items');

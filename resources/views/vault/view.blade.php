@@ -18,7 +18,7 @@
                     Loading...
                 </div>
                 <div class="slides" data-u="slides">
-                    @foreach($item->vault_screenshots as $sshot)
+                    @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
                     <div>
                         <img data-u="image" data-src2="{{ asset('uploads/vault/'.$sshot->image_large) }}" alt="Screenshot" />
                         <img data-u="thumb" data-src2="{{ asset('uploads/vault/'.$sshot->image_thumb) }}" alt="Thumbnail" />
