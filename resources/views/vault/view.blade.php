@@ -18,12 +18,19 @@
                     Loading...
                 </div>
                 <div class="slides" data-u="slides">
-                    @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
-                    <div>
-                        <img data-u="image" data-src2="{{ asset('uploads/vault/'.$sshot->image_large) }}" alt="Screenshot" />
-                        <img data-u="thumb" data-src2="{{ asset('uploads/vault/'.$sshot->image_thumb) }}" alt="Thumbnail" />
-                    </div>
-                    @endforeach
+                    @if (count($item->vault_screenshots) > 0)
+                        @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
+                        <div>
+                            <img data-u="image" data-src2="{{ asset('uploads/vault/'.$sshot->image_large) }}" alt="Screenshot" />
+                            <img data-u="thumb" data-src2="{{ asset('uploads/vault/'.$sshot->image_thumb) }}" alt="Thumbnail" />
+                        </div>
+                        @endforeach
+                    @else
+                        <div>
+                            <img data-u="image" data-src2="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                            <img data-u="thumb" data-src2="{{ asset('images/no-screenshot-160.png') }}" alt="Thumbnail" />
+                        </div>
+                    @endif
                 </div>
                 <div data-u="thumbnavigator" class="thumbs">
                     <div data-u="slides">
@@ -46,12 +53,27 @@
                 <li>{{ $item->stat_downloads}} downloads</li>
                 <li>{{ $item->stat_comments}} comments</li>
             </ul>
-            <a href="#">Download</a><br/>
+            <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn btn-default">Download</a><br/>
             @if ($item->file_size > 0)
                 Size: {{ format_filesize($item->file_size) }}<br/>
+            @elseif ($item->is_hosted_externally)
+                Hosted Externally<br/>
             @endif
             @if (count($item->vault_includes) > 0)
                 Download contains: {{ implode(', ', array_map(function($x) { return $x['name']; }, $item->vault_includes->toArray())) }}
+            @endif
+            @if ($item->license_id == 1)
+                <button type="button" class="btn btn-default license-button" data-toggle="tooltip" data-placement="bottom" title="{{ $item->license->description }}">
+                    <span class="glyphicon glyphicon-copyright-mark"></span>
+                    License: {{ $item->license->name }}
+                </button>
+            @else
+                <a href="{{ preg_replace('%.*(http://[^ ]*).*%i', '$1', $item->license->description) }}" target="_blank" class="btn btn-default license-button" data-toggle="tooltip" data-placement="bottom" title="{{
+                    preg_replace('%\s*(http://[^ ]*)\s*%i', '', $item->license->description)
+                }}">
+                    <span class="glyphicon glyphicon-copyright-mark"></span>
+                    License: {{ $item->license->name }}
+                </a>
             @endif
         </div>
     </div>
@@ -61,6 +83,8 @@
 @section('scripts')
     <script type="text/javascript">
         $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+
             var slider = new $JssorSlider$("vault-slider", {
                 $AutoPlay: true,
                 $AutoPlayInterval: 4000,

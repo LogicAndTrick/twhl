@@ -74,7 +74,7 @@
                 @if ($item->hasPrimaryScreenshot())
                     <img src="{{ asset('uploads/vault/'.$item->getPrimaryScreenshot()->image_small) }}" alt="{{ $item->name }}" />
                 @else
-                    <img src="{{ asset('images/image-not-found.png') }}" alt="{{ $item->name }}" />
+                    <img src="{{ asset('images/no-screenshot-160.png') }}" alt="{{ $item->name }}" />
                 @endif
                 <br/>
                 By: {{ $item->user->name }}<br/>

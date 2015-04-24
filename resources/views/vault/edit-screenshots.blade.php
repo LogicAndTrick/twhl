@@ -13,6 +13,9 @@
         <p>The primary screenshot is used as the display image for the vault item.</p>
     </div>
     <ul class="media-list screenshot-list">
+        <li>
+            <img src="{{ asset('images/loading.gif') }}" alt="Loading" /> Please wait...
+        </li>
     </ul>
     <h3>Upload Screenshots <small>Maximum size: 2mb</small></h3>
     <form id="screenshot-upload" action="{{ act('vault', 'post-create-screenshot') }}" class="dropzone" enctype="multipart/form-data">

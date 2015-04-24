@@ -2,18 +2,15 @@
 
 use App\Helpers\Image;
 use App\Http\Controllers\Controller;
-use App\Models\Forums\Forum;
-use App\Models\Forums\ForumThread;
 use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemInclude;
 use App\Models\Vault\VaultScreenshot;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
 use Request;
 use Input;
 use Auth;
+use DB;
 
 class VaultController extends Controller {
 
@@ -44,6 +41,9 @@ class VaultController extends Controller {
         $rating = Request::get('rate');
         if (is_numeric($rating)) $item_query = $item_query->where('stat_average_rating', '>=', $rating);
 
+        $users = array_filter(explode('-', Request::get('users')), function($x) { return is_numeric($x); });
+        if (count($users) > 0) $item_query = $item_query->whereIn('user_id', $users);
+
         $sort = Request::get('sort');
         $allowed_sort = ['date', 'rating', 'num_ratings', 'num_views', 'num_downloads'];
         $mapped_sort = ['created_at', 'stat_average_rating', 'stat_ratings', 'stat_views', 'stat_downloads'];
@@ -59,9 +59,18 @@ class VaultController extends Controller {
 
     public function getView($id) {
         $item = VaultItem::with(['user', 'game', 'license', 'vault_screenshots', 'vault_includes', 'vault_category', 'vault_type'])->findOrFail($id);
+        $item->stat_views++;
+        $item->save();
         return view('vault/view', [
             'item' => $item
         ]);
+    }
+
+    public function getDownload($id) {
+        $item = VaultItem::findOrFail($id);
+        $item->stat_downloads++;
+        $item->save();
+        return redirect($item->getDownloadUrl());
     }
 
     // Create / edit
@@ -145,7 +154,7 @@ class VaultController extends Controller {
             'game_id' => Request::input('game_id'),
             'category_id' => Request::input('category_id'),
             'type_id' => Request::input('type_id'),
-            'license_id' => Request::input('license_id') || 1,
+            'license_id' => Request::input('license_id') ? Request::input('license_id') : 1,
             'name' => Request::input('item_name'),
 
             'content_text' => Request::input('content_text'),
@@ -197,18 +206,113 @@ class VaultController extends Controller {
             $this->makeScreenshot($item, $screen);
         }
 
-        return redirect('vault/index');
+        return redirect('vault/view/'.$item->id);
     }
 
     public function getEdit($id) {
         $item = VaultItem::with(['vault_screenshots', 'vault_includes'])->findOrFail($id);
-        return view('vault/edit', [
+        if (!$item->isEditable()) abort(404);
+        $includes = VaultInclude::all();
 
+        $type_id = Request::old('type_id');
+        if (!$type_id) $type_id = $item->type_id;
+        $content = Request::old('content_text');
+        if (!$content) $content = $item->content_text;
+        $method = Request::old('__upload_method');
+        if (!$method) $method = $item->is_hosted_externally ? 'link' : 'file';
+        $included = Request::old('__includes');
+        if (!is_array($included)) $included = $item->vault_includes->map(function($x) { return $x->id; })->toArray();
+        $location = Request::old($method);
+        if (!$location && $method == 'link') $location = $item->file_location;
+
+
+        return view('vault/edit', [
+            'item' => $item,
+            'includes' => $includes,
+            'type_id' => $type_id,
+            '__upload_method' => $method,
+            '__includes' => $included,
+            'location' => $location,
+            'content' => $content
         ]);
     }
 
     public function postEdit() {
+        $item = VaultItem::with(['vault_screenshots', 'vault_includes'])->findOrFail(Request::input('id'));
+        if (!$item->isEditable()) abort(404);
 
+        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+            return in_array($value->getClientOriginalExtension(), $parameters);
+        });
+        $this->validate(Request::instance(), [
+            'engine_id' => 'required',
+            'game_id' => 'required',
+            'category_id' => 'required',
+            'type_id' => 'required',
+            // 'license_id' => 'required', // Default to license 1 = none
+            'item_name' => 'required|max:120',
+            'content_text' => 'required|max:10000',
+
+            '__upload_method' => 'required|in:file,link',
+            'link' => 'required_if:__upload_method,link|max:512',
+            'file' => 'required_if:__upload_method,file|max:16384|valid_extension:zip,rar,7z'
+        ], [
+            'valid_extension' => 'Only the following file formats are allowed: zip, rar, 7z'
+        ]);
+
+        $uploaded = Request::input('__upload_method') == 'file';
+        $location = Request::input('link');
+        if (!$location) $location = '';
+        $size = -1;
+
+        // Upload the map file
+        if ($uploaded) {
+            $file = Request::file('file');
+
+            $dir = public_path('uploads/vault/items');
+            $name = 'twhl-vault-' . $item->id . '.' . $file->getClientOriginalExtension();
+            $file->move($dir, $name);
+
+            $file_name = $dir . '/' . $name;
+            $size = filesize($file_name);
+
+            $item->file_location = $name;
+            $item->file_size = $size;
+            $item->save();
+        } else {
+            $item->file_location = $location;
+            $item->file_size = $size;
+        }
+
+        $item->engine_id = Request::input('engine_id');
+        $item->game_id = Request::input('game_id');
+        $item->category_id = Request::input('category_id');
+        $item->type_id = Request::input('type_id');
+        $item->license_id = Request::input('license_id') ? Request::input('license_id') : 1;
+        $item->name = Request::input('item_name');
+
+        $item->content_text = Request::input('content_text');
+        $item->content_html = app('bbcode')->Parse(Request::input('content_text'));
+
+        $item->is_hosted_externally = !$uploaded;
+
+        $item->flag_notify = !!Request::input('flag_notify');
+        $item->flag_ratings = !!Request::input('flag_ratings');
+
+        $item->save();
+
+        // Set included files
+        DB::statement('delete from vault_item_includes where item_id = ?', [$item->id]);
+        $includes = Request::input('__includes');
+        if (is_array($includes)) {
+            $incs = [];
+            foreach ($includes as $i) {
+                $incs[] = new VaultItemInclude(['include_id' => $i]);
+            }
+            $item->vault_item_includes()->saveMany($incs);
+        }
+
+        return redirect('vault/view/'.$item->id);
     }
 
     public function postCreateScreenshot() {
@@ -264,22 +368,32 @@ class VaultController extends Controller {
     // Administrative Tasks
 
     public function getDelete($id) {
-        return view('vault/delete', [
+        $item = VaultItem::findOrFail($id);
+        if (!$item->isEditable()) abort(404);
 
+        return view('vault/delete', [
+            'item' => $item
         ]);
     }
 
     public function postDelete() {
-
+        $item = VaultItem::findOrFail(Request::input('id'));
+        if (!$item->isEditable()) abort(404);
+        $item->delete();
+        return redirect('vault/index');
     }
 
     public function getRestore($id) {
+        $item = VaultItem::onlyTrashed()->findOrFail($id);
         return view('vault/restore', [
-
+            'item' => $item
         ]);
     }
 
     public function postRestore() {
-
+        $item = VaultItem::onlyTrashed()->findOrFail(Request::input('id'));
+        if (!$item->isEditable()) abort(404);
+        $item->restore();
+        return redirect('vault/view/'.$item->id);
     }
 }

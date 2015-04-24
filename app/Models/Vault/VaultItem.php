@@ -69,6 +69,12 @@ class VaultItem extends Model {
         });
     }
 
+    public function getDownloadUrl()
+    {
+        if ($this->is_hosted_externally) return $this->file_location;
+        else return asset('uploads/vault/items/'.$this->file_location);
+    }
+
     /**
      * Returns true if this item is editable by the current user.
      * @return bool
