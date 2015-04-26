@@ -25,6 +25,7 @@ Route::controllers([
 
     'wiki' => 'Wiki\WikiController',
     'vault' => 'Vault\VaultController',
+    'comment' => 'Comments\CommentController',
 
     'api' => 'Api\ApiController',
 ]);

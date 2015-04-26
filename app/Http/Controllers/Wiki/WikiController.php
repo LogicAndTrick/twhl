@@ -185,7 +185,7 @@ class WikiController extends Controller {
                 $upload = WikiUpload::Create([
                     'object_id' => $object->id,
                     'revision_id' => $revision->id,
-                    'extension' => $file->getClientOriginalExtension()
+                    'extension' => strtolower($file->getClientOriginalExtension())
                 ]);
 
                 $dir = public_path($upload->getRelativeDirectoryName());
@@ -285,7 +285,7 @@ class WikiController extends Controller {
                    (substr($value, 0, 9) != 'category:' && substr($value, 0, 7) != 'upload:');
         });
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array($value->getClientOriginalExtension(), $parameters);
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
         $rules = [
             'file' => 'max:4096|valid_extension:jpeg,jpg,png,gif',
@@ -378,7 +378,7 @@ class WikiController extends Controller {
             return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array($value->getClientOriginalExtension(), $parameters);
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
 
         $this->validate(Request::instance(), [

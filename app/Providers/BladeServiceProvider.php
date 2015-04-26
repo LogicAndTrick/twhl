@@ -19,6 +19,12 @@ class BladeServiceProvider extends ServiceProvider {
 
 	public function register()
 	{
+        // {? code ?}
+        Blade::extend(function($view, $compiler) {
+            $pattern = '/\{\?(.*?)\?\}/i';
+            return preg_replace('/\{\?(.*?)\?\}/i', '<?php $1 ?>', $view);
+        });
+
         // @form(url)
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('form');

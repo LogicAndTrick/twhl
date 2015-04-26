@@ -49,9 +49,13 @@
             <ul>
                 <li>Created: {{ Date::TimeAgo($item->created_at) }}</li>
                 <li>Updated: {{ Date::TimeAgo($item->updated_at) }}</li>
-                <li>{{ $item->stat_views}} views</li>
-                <li>{{ $item->stat_downloads}} downloads</li>
-                <li>{{ $item->stat_comments}} comments</li>
+                <li>{{ $item->stat_views}} view{{ $item->stat_views == 1 ? '' : 's' }}</li>
+                <li>{{ $item->stat_downloads}} download{{ $item->stat_downloads == 1 ? '' : 's' }}</li>
+                <li>{{ $item->stat_comments}} comment{{ $item->stat_comments == 1 ? '' : 's' }}</li>
+                @if ($item->stat_ratings > 0)
+                    <li>Average rating: {{ $item->stat_average_rating}}</li>
+                    <li>{{ $item->stat_ratings }} rating{{ $item->stat_ratings == 1 ? '' : 's' }}</li>
+                @endif
             </ul>
             <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn btn-default">Download</a><br/>
             @if ($item->file_size > 0)
@@ -78,6 +82,8 @@
         </div>
     </div>
     <div class="bbcode">{!! $item->content_html !!}</div>
+
+    @include('comments.list', [ 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::VAULT, 'article_id' => $item->id ])
 @endsection
 
 @section('scripts')

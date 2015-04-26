@@ -1,5 +1,6 @@
 <?php namespace App\Models\Vault;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;

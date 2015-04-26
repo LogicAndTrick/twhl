@@ -28,7 +28,7 @@ class CreateVaultItemsTable extends Migration {
             $table->integer('stat_downloads');
             $table->integer('stat_ratings');
             $table->integer('stat_comments');
-            $table->integer('stat_average_rating');
+            $table->decimal('stat_average_rating');
 			$table->timestamps();
             $table->softDeletes();
 

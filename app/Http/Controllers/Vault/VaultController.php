@@ -2,6 +2,7 @@
 
 use App\Helpers\Image;
 use App\Http\Controllers\Controller;
+use App\Models\Comments\Comment;
 use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemInclude;
@@ -61,8 +62,11 @@ class VaultController extends Controller {
         $item = VaultItem::with(['user', 'game', 'license', 'vault_screenshots', 'vault_includes', 'vault_category', 'vault_type'])->findOrFail($id);
         $item->stat_views++;
         $item->save();
+
+        $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::VAULT)->whereArticleId($id)->get();
         return view('vault/view', [
-            'item' => $item
+            'item' => $item,
+            'comments' => $comments
         ]);
     }
 
@@ -98,11 +102,11 @@ class VaultController extends Controller {
 
         // Save the screenshot at various sizes
         $temp_dir = public_path('uploads/vault/temp');
-        $temp_name = $shot->id . '_temp.' . $screen->getClientOriginalExtension();
+        $temp_name = $shot->id . '_temp.' . strtolower($screen->getClientOriginalExtension());
         $screen->move($temp_dir, $temp_name);
         $thumbs = Image::MakeThumbnails(
             $temp_dir . '/' . $temp_name, Image::$vault_image_sizes,
-            public_path('uploads/vault/'), $shot->id . '.' . $screen->getClientOriginalExtension()
+            public_path('uploads/vault/'), $shot->id . '.' . strtolower($screen->getClientOriginalExtension())
         );
         unlink($temp_dir . '/' . $temp_name);
 
@@ -121,7 +125,7 @@ class VaultController extends Controller {
 
     public function postCreate() {
         $func = function($attribute, $value, $parameters) {
-            return in_array($value->getClientOriginalExtension(), $parameters);
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         };
         Validator::extend('valid_extension_file', $func);
         Validator::extend('valid_extension_screen', $func);
@@ -189,7 +193,7 @@ class VaultController extends Controller {
             $file = Request::file('file');
 
             $dir = public_path('uploads/vault/items');
-            $name = 'twhl-vault-' . $item->id . '.' . $file->getClientOriginalExtension();
+            $name = 'twhl-vault-' . $item->id . '.' . strtolower($file->getClientOriginalExtension());
             $file->move($dir, $name);
 
             $file_name = $dir . '/' . $name;
@@ -242,7 +246,7 @@ class VaultController extends Controller {
         if (!$item->isEditable()) abort(404);
 
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array($value->getClientOriginalExtension(), $parameters);
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
         $this->validate(Request::instance(), [
             'engine_id' => 'required',
@@ -270,7 +274,7 @@ class VaultController extends Controller {
             $file = Request::file('file');
 
             $dir = public_path('uploads/vault/items');
-            $name = 'twhl-vault-' . $item->id . '.' . $file->getClientOriginalExtension();
+            $name = 'twhl-vault-' . $item->id . '.' . strtolower($file->getClientOriginalExtension());
             $file->move($dir, $name);
 
             $file_name = $dir . '/' . $name;
@@ -321,7 +325,7 @@ class VaultController extends Controller {
         if (!$item->isEditable()) abort(422);
 
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array($value->getClientOriginalExtension(), $parameters);
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
         $this->validate(Request::instance(), [
             'file' => 'required|max:2048|valid_extension:jpeg,jpg,png'
