@@ -10,12 +10,12 @@ use DB;
 class CommentController extends Controller {
 
     private $comment_config = [
-        //Comment::NEWS => array(
-        //    'model' => '\App\Models\News\News',
-        //    'redirect' => 'news/view/{id}',
-        //    'auth_create' => 'NewsComment',
-        //    'auth_moderate' => 'NewsAdmin'
-        //),
+        Comment::NEWS => array(
+            'model' => '\App\Models\News',
+            'redirect' => 'news/view/{id}',
+            'auth_create' => 'NewsComment',
+            'auth_moderate' => 'NewsAdmin'
+        ),
         //Comment::JOURNAL => array(
         //    'model' => '\App\Models\Journals\Journal',
         //    'redirect' => 'journals/view/{id}',
@@ -56,7 +56,7 @@ class CommentController extends Controller {
         if (!array_key_exists($type, $this->comment_config)) abort(404);
         $config = $this->comment_config[$type];
 
-        // if (!permission($config['auth_create'])) abort(404);
+        if (!permission($config['auth_create'])) abort(404);
 
         $this->validate(Request::instance(), [
             'text' => 'required|max:10000'

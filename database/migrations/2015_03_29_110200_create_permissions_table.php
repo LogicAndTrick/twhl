@@ -13,8 +13,33 @@ class CreatePermissionsTable extends Migration {
             $table->string('name', 20);
             $table->string('description');
             $table->boolean('is_default');
-			$table->timestamps();
 		});
+
+        $non_default = [
+            'Admin' => 'General admin access',
+            'ForumAdmin' => 'Create, edit, and delete forums, threads, and posts',
+            'WikiAdmin' => 'Edit locked wiki pages, delete wiki pages and uploads',
+            'VaultAdmin' => 'Edit and delete all vault items',
+            'NewsAdmin' => 'Create, edit, and delete news posts',
+            'JournalAdmin' => 'Edit and delete all journals'
+        ];
+        $default = [
+            'ForumCreate' => 'Create threads and posts in the forums',
+            'WikiCreate' => 'Create and edit wiki pages and uploads',
+            'VaultCreate' => 'Create and edit vault items',
+            'JournalCreate' => 'Create and edit journals',
+
+            'NewsComment' => 'Comment on news posts',
+            'VaultComment' => 'Comment on vault items',
+            'JournalComment' => 'Comment on journals'
+        ];
+
+        foreach ($default as $name => $description) {
+            \App\Models\Accounts\Permission::Create([ 'name' => $name, 'description' => $description, 'is_default' => true ]);
+        }
+        foreach ($non_default as $name => $description) {
+            \App\Models\Accounts\Permission::Create([ 'name' => $name, 'description' => $description, 'is_default' => false ]);
+        }
 	}
 
 	public function down()

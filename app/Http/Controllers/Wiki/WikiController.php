@@ -18,8 +18,8 @@ class WikiController extends Controller {
 	public function __construct()
 	{
         $this->permission(['create', 'createupload'], 'WikiCreate');
-        $this->permission(['edit', 'editupload', 'revert', 'revertupload'], 'WikiEdit');
-        $this->permission(['delete', 'deleteupload'], 'WikiDelete');
+        $this->permission(['edit', 'editupload', 'revert', 'revertupload'], 'WikiCreate');
+        $this->permission(['delete', 'deleteupload'], 'WikiAdmin');
 	}
 
 	public function getIndex()

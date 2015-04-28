@@ -58,6 +58,7 @@ class CreateCommentMetasTable extends Migration {
 
 	public function down()
 	{
+        DB::unprepared('DROP PROCEDURE IF EXISTS update_comment_statistics');
 		Schema::drop('comment_metas');
 	}
 

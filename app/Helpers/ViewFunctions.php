@@ -34,6 +34,7 @@ if (!function_exists('act'))
             'wiki' => 'Wiki\WikiController',
             'vault' => 'Vault\VaultController',
             'comment' => 'Comments\CommentController',
+            'news' => 'News\NewsController',
 
             'api' => 'Api\ApiController'
         );
