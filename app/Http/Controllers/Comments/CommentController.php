@@ -16,12 +16,12 @@ class CommentController extends Controller {
             'auth_create' => 'NewsComment',
             'auth_moderate' => 'NewsAdmin'
         ),
-        //Comment::JOURNAL => array(
-        //    'model' => '\App\Models\Journals\Journal',
-        //    'redirect' => 'journals/view/{id}',
-        //    'auth_create' => 'JournalComment',
-        //    'auth_moderate' => 'JournalAdmin'
-        //),
+        Comment::JOURNAL => array(
+            'model' => '\App\Models\Journal',
+            'redirect' => 'journal/view/{id}',
+            'auth_create' => 'JournalComment',
+            'auth_moderate' => 'JournalAdmin'
+        ),
         Comment::VAULT => [
             'model' => '\App\Models\Vault\VaultItem',
             'redirect' => 'vault/view/{id}',

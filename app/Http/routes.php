@@ -27,6 +27,7 @@ Route::controllers([
     'vault' => 'Vault\VaultController',
     'comment' => 'Comments\CommentController',
     'news' => 'News\NewsController',
+    'journal' => 'Journals\JournalController',
 
     'api' => 'Api\ApiController',
 ]);
