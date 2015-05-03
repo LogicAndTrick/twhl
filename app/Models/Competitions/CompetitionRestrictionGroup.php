@@ -8,4 +8,9 @@ class CompetitionRestrictionGroup extends Model {
     public $timestamps = false;
     public $fillable = ['title', 'is_multiple'];
 
+    public function restrictions()
+    {
+        return $this->hasMany('App\Models\Competitions\CompetitionRestriction', 'group_id');
+    }
+
 }

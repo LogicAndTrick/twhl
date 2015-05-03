@@ -1,8 +1,11 @@
 <?php namespace App\Models\Competitions;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CompetitionEntry extends Model {
+
+    use SoftDeletes;
 
     public $table = 'competition_entries';
     public $fillable = ['competition_id', 'user_id', 'title', 'content_html', 'content_text', 'is_hosted_externally', 'file_location'];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
+use App\Models\Competitions\CompetitionRestrictionGroup;
 use App\Models\Engine;
 use App\Models\Forums\Forum;
 use App\Models\Game;
@@ -156,6 +157,13 @@ class ApiController extends Controller {
     public function getVaultScreenshots($id)
     {
         return $this->call(VaultScreenshot::where('item_id', '=', $id), 'id', 'order_index');
+    }
+
+    // Competitions
+
+    public function getCompetitionGroups()
+    {
+        return $this->call(CompetitionRestrictionGroup::where('id', '>', 0), 'title', 'title');
     }
 
     // Non-standard

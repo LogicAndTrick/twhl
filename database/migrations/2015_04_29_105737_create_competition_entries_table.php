@@ -18,6 +18,7 @@ class CreateCompetitionEntriesTable extends Migration {
             $table->boolean('is_hosted_externally');
             $table->string('file_location', 512);
 			$table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('competition_id')->references('id')->on('competitions');
             $table->foreign('user_id')->references('id')->on('users');

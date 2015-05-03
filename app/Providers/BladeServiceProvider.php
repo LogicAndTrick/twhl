@@ -143,7 +143,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('autocomplete');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['model_name', 'url'], ['clearable' => false, 'placeholder' => '', 'id' => 'id', 'name' => 'name'], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['model_name', 'url'], ['clearable' => false, 'placeholder' => '', 'id' => 'id', 'text' => 'name'], 'label');
 
                 $expl_name = explode(':', $parameters['model_name']);
                 $name = $expl_name[0];

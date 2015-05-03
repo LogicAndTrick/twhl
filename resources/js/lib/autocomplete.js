@@ -1,7 +1,7 @@
 (function($) {
-    $.fn.autocomplete = function(config) {
+    $.fn.autocomplete = function(options) {
 
-        config = $.extend({
+        var config = $.extend({
             multiple: false,
             paginated: true,
             count: 10,
@@ -10,7 +10,7 @@
             text: 'name',
             clearable: false,
             placeholder: ''
-        }, config);
+        }, options);
 
         var require = $.fn.select2.amd.require;
         var utils = require('select2/utils');

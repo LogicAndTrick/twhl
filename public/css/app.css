@@ -7144,5 +7144,56 @@ textarea.form-control {
 .option-panel .panel-heading label:hover {
   background-color: #eeeeee;
 }
+.btn-minimal {
+  color: #337ab7;
+  font-weight: normal;
+  border-radius: 0;
+  color: #333333;
+}
+.btn-minimal,
+.btn-minimal:active,
+.btn-minimal.active,
+.btn-minimal[disabled],
+fieldset[disabled] .btn-minimal {
+  background-color: transparent;
+  box-shadow: none;
+}
+.btn-minimal,
+.btn-minimal:hover,
+.btn-minimal:focus,
+.btn-minimal:active {
+  border-color: transparent;
+}
+.btn-minimal:hover,
+.btn-minimal:focus {
+  color: #23527c;
+  text-decoration: underline;
+  background-color: transparent;
+}
+.btn-minimal[disabled]:hover,
+fieldset[disabled] .btn-minimal:hover,
+.btn-minimal[disabled]:focus,
+fieldset[disabled] .btn-minimal:focus {
+  color: #777777;
+  text-decoration: none;
+}
+.btn-minimal,
+.btn-minimal:active,
+.btn-minimal.active,
+.btn-minimal[disabled],
+fieldset[disabled] .btn-minimal {
+  background-color: #f6f6f6;
+}
+.btn-minimal:hover,
+.btn-minimal:focus {
+  text-decoration: none;
+  background-color: #dedede;
+}
+.btn-xxs {
+  padding: 2px 3px;
+  font-size: 10px;
+  line-height: 1;
+  border-radius: 10px;
+}
 
 /*# sourceMappingURL=app.css.map */

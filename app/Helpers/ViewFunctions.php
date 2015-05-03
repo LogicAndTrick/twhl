@@ -29,6 +29,12 @@ if (!function_exists('act'))
             'thread' => 'Forum\ThreadController',
             'post' => 'Forum\PostController',
 
+            'competition' => 'Competitions\CompetitionController',
+            'competition-admin' => 'Competitions\CompetitionAdminController',
+            'competition-entry' => 'Competitions\CompetitionEntryController',
+            'competition-group' => 'Competitions\CompetitionGroupController',
+            'competition-restriction' => 'Competitions\CompetitionRestrictionController',
+
             'home' => 'HomeController',
 
             'wiki' => 'Wiki\WikiController',

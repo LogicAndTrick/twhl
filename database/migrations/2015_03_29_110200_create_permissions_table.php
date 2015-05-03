@@ -21,13 +21,15 @@ class CreatePermissionsTable extends Migration {
             'WikiAdmin' => 'Edit locked wiki pages, delete wiki pages and uploads',
             'VaultAdmin' => 'Edit and delete all vault items',
             'NewsAdmin' => 'Create, edit, and delete news posts',
-            'JournalAdmin' => 'Edit and delete all journals'
+            'JournalAdmin' => 'Edit and delete all journals',
+            'CompetitionAdmin' => 'Create, edit, delete and perform administrative actions on competitions'
         ];
         $default = [
             'ForumCreate' => 'Create threads and posts in the forums',
             'WikiCreate' => 'Create and edit wiki pages and uploads',
             'VaultCreate' => 'Create and edit vault items',
             'JournalCreate' => 'Create and edit journals',
+            'CompetitionEnter' => 'Enter and vote on competitions',
 
             'NewsComment' => 'Comment on news posts',
             'VaultComment' => 'Comment on vault items',

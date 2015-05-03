@@ -52,3 +52,21 @@ textarea.form-control {
     }
   }
 }
+
+.btn-minimal {
+  .btn-link;
+  color: @btn-default-color;
+
+  &, &:active, &.active, &[disabled], fieldset[disabled] & {
+    background-color: #f6f6f6;
+  }
+
+  &:hover, &:focus {
+    text-decoration: none;
+    background-color: #dedede;
+  }
+}
+
+.btn-xxs {
+  .button-size(2px; 3px; 10px; 1; 10px);
+}

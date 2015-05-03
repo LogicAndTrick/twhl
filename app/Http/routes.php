@@ -23,6 +23,12 @@ Route::controllers([
     'thread' => 'Forum\ThreadController',
     'post' => 'Forum\PostController',
 
+    'competition' => 'Competitions\CompetitionController',
+    'competition-admin' => 'Competitions\CompetitionAdminController',
+    'competition-entry' => 'Competitions\CompetitionEntryController',
+    'competition-group' => 'Competitions\CompetitionGroupController',
+    'competition-restriction' => 'Competitions\CompetitionRestrictionController',
+
     'wiki' => 'Wiki\WikiController',
     'vault' => 'Vault\VaultController',
     'comment' => 'Comments\CommentController',
