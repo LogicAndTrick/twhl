@@ -6733,6 +6733,27 @@ ul.wiki-categories .header {
   border-color: #337ab7;
   background-color: #eeeeee;
 }
+.comp-status-message {
+  font-size: 110%;
+  display: block;
+}
+.comp-status {
+  font-size: 200%;
+  font-weight: 500;
+  display: block;
+  margin: 3px 0 10px;
+}
+.countdown.is-countdown {
+  width: 300px;
+  margin: 0 auto;
+  border-radius: 4px;
+  background-color: #fafafa;
+  border: 1px solid #777777;
+  padding: 5px 0;
+}
+.countdown.is-countdown .countdown-row {
+  display: inline-block;
+}
 .select2-pagination {
   text-align: center;
 }

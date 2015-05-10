@@ -169,11 +169,11 @@ class WikiController extends Controller {
         $meta = [];
         foreach ($parse_result->meta as $c => $v) {
             if ($c == 'WikiLink') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $val]);
+                foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $val ]);
             } else if ($c == 'WikiImage') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val]);
+                foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val ]);
             } else if ($c == 'WikiCategory') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => $val]);
+                foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $val) ]);
             }
         }
 
@@ -228,7 +228,7 @@ class WikiController extends Controller {
             return $rev == null;
         });
         Validator::extend('valid_categories', function($attribute, $value, $parameters) {
-            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9\r\n\]][^\r\n\]]*\]/i', $value);
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9 -_\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('category_name_must_exist', function($attribute, $value, $parameters) {
             if (substr($value, 0, 9) != 'category:') return true;
@@ -241,11 +241,11 @@ class WikiController extends Controller {
         });
         $this->validate(Request::instance(), [
             'title' => 'required|max:200|unique_wiki_slug|category_name_must_exist|invalid_title',
-            'content_text' => 'required|max:10000|valid_categories',
+            'content_text' => 'required|max:65536|valid_categories',
             'message' => 'max:200'
         ], [
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
-            'valid_categories' => 'Category names must only contain letters and numbers. Example: [cat:Name]',
+            'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
             'invalid_title' => "A page title cannot start with ':upload'.",
             'category_name_must_exist' => 'This category name doesn\'t exist. Apply this category to at least one object before creating the category page.'
         ]);
@@ -278,7 +278,7 @@ class WikiController extends Controller {
                 || ($obj->type_id == WikiType::UPLOAD && Request::file('file'));
         });
         Validator::extend('valid_categories', function($attribute, $value, $parameters) {
-            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9\r\n\]][^\r\n\]]*\]/i', $value);
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9 -_\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('invalid_title', function($attribute, $value, $parameters) use ($obj, $rev) {
             return ($obj->type_id != WikiType::PAGE) ||
@@ -289,14 +289,14 @@ class WikiController extends Controller {
         });
         $rules = [
             'file' => 'max:4096|valid_extension:jpeg,jpg,png,gif',
-            'content_text' => 'required|max:10000|must_change|valid_categories',
+            'content_text' => 'required|max:65536|must_change|valid_categories',
             'message' => 'max:200'
         ];
         if ($obj->type_id == WikiType::PAGE) $rules['title'] = 'required|max:200|unique_wiki_slug|invalid_title';
         $this->validate(Request::instance(), $rules, [
             'must_change' => 'At least one field must be changed to apply an edit.',
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
-            'valid_categories' => 'Category names must only contain letters and numbers. Example: [cat:Name]',
+            'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
             'invalid_title' => "A page title cannot start with ':category' or ':upload'.",
             'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
@@ -375,7 +375,7 @@ class WikiController extends Controller {
             return $rev == null;
         });
         Validator::extend('valid_categories', function($attribute, $value, $parameters) {
-            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9\r\n\]][^\r\n\]]*\]/i', $value);
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9 -_\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
@@ -384,11 +384,11 @@ class WikiController extends Controller {
         $this->validate(Request::instance(), [
             'title' => 'required|max:200|unique_wiki_slug',
             'file' => 'required|max:4096|valid_extension:jpeg,jpg,png,gif',
-            'content_text' => 'required|max:10000|valid_categories',
+            'content_text' => 'required|max:65536|valid_categories',
             'message' => 'max:200'
         ], [
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
-            'valid_categories' => 'Category names must only contain letters and numbers. Example: [cat:Name]',
+            'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
             'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
         $type = WikiType::UPLOAD;

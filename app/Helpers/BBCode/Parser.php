@@ -64,6 +64,7 @@ class Parser
     }
 
     public function ParseResult($text, $scope = '') {
+        $text = $this->CleanString($text);
         $result = new ParseResult();
         $result->text = $this->ParseBlock($result, $text, $scope);
         return $result;
@@ -97,15 +98,19 @@ class Parser
             {
                 if ($e->Matches($lines))
                 {
-                    // We've got a new element match - add the default element first
-                    if (count($default) > 0) $elements[] = new DefaultElement($this, $default);
-                    $default = array();
+                    $con = $e->Consume($this, $lines);
+                    if ($con)
+                    {
+                        // We've got a new element match - add the default element first
+                        if (count($default) > 0) $elements[] = new DefaultElement($this, $default);
+                        $default = array();
 
-                    // Add the new element
-                    $elements[] = $e->Consume($this, $lines);
-                    $matched = true;
+                        // Add the new element
+                        $elements[] = $con;
+                        $matched = true;
 
-                    break;
+                        break;
+                    }
                 }
             }
             if (!$matched) $default[] = $lines->Value();
@@ -120,7 +125,6 @@ class Parser
     }
 
     public function CleanUrl($text) {
-        $text = $this->CleanString($text);
         $text = str_replace(' ', '%20', $text);
         return $text;
     }
@@ -136,7 +140,6 @@ class Parser
     }
 
     public function ParseBBCode($result, $text, $scope, $type) {
-        $text = $this->CleanString($text);
         $state = new State($text);
         $str = '';
 

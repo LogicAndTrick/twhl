@@ -60,7 +60,7 @@ class WikiImageTag extends LinkTag {
             } else {
                 $url = '';
             }
-            if ($caption) $caption = $parser->CleanString($caption);
+            if ($caption) $caption = $caption;
             return '<span class="' . implode(' ', $classes) . '">'
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'

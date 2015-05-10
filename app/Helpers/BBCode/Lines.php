@@ -30,4 +30,14 @@ class Lines
     {
         return $this->lines[$this->index];
     }
+
+    public function Current()
+    {
+        return $this->index;
+    }
+
+    public function SetCurrent($index)
+    {
+        $this->index = $index;
+    }
 }

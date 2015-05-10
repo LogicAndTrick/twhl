@@ -15,7 +15,7 @@ class PreTag extends Tag {
         $str = '<' . $this->element;
         if ($this->element_class) $str .= ' class="' . $this->element_class . '"';
         $str .= '><code>';
-        $str .= $parser->CleanString($text);
+        $str .= $text;
         $str .= '</code></' . $this->element . '>';
         return $str;
     }

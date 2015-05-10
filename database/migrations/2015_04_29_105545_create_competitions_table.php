@@ -19,7 +19,7 @@ class CreateCompetitionsTable extends Migration {
             $table->string('brief_attachment');
             $table->date('open_date');
             $table->date('close_date');
-            $table->date('voting_close_date');
+            $table->date('voting_close_date')->nullable();
             $table->text('outro_text');
             $table->text('outro_html');
 			$table->timestamps();

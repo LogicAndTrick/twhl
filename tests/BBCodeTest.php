@@ -11,6 +11,14 @@ class BBCodeTest extends TestCase {
     }
     */
 
+    public function testQuoteBug()
+    {
+        $input = '[b]#include "userdata.h"[/b]';
+        $expected = '<strong>#include &quot;userdata.h&quot;</strong>';
+        $output = app('bbcode')->Parse($input);
+        $this->assertEquals($expected, $output);
+    }
+
     public function testMdTables()
     {
         $input = [

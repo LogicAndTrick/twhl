@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
+use App\Models\Competitions\CompetitionJudgeType;
 use App\Models\Competitions\CompetitionRestrictionGroup;
+use App\Models\Competitions\CompetitionStatus;
+use App\Models\Competitions\CompetitionType;
 use App\Models\Engine;
 use App\Models\Forums\Forum;
 use App\Models\Game;
@@ -164,6 +167,21 @@ class ApiController extends Controller {
     public function getCompetitionGroups()
     {
         return $this->call(CompetitionRestrictionGroup::where('id', '>', 0), 'title', 'title');
+    }
+
+    public function getCompetitionStatuses()
+    {
+        return $this->call(CompetitionStatus::where('id', '>', 0), 'name', 'id');
+    }
+
+    public function getCompetitionTypes()
+    {
+        return $this->call(CompetitionType::where('id', '>', 0), 'name', 'id');
+    }
+
+    public function getCompetitionJudgeTypes()
+    {
+        return $this->call(CompetitionJudgeType::where('id', '>', 0), 'name', 'id');
     }
 
     // Non-standard

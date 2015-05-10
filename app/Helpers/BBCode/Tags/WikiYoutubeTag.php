@@ -49,7 +49,7 @@ class WikiYoutubeTag extends LinkTag {
                 if ($this->IsClass($l)) $classes[] = $l;
                 else $caption = trim($p);
             }
-            if ($caption) $caption = $parser->CleanString($caption);
+            if ($caption) $caption = $caption;
             $impl = implode(' ', $classes);
             $cap = $caption ? "<span class='caption'>" . $caption . '</span>' : '';
             return "<div class='{$impl}'>"

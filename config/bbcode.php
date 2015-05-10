@@ -12,6 +12,8 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
 
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'code',   'element' => 'code'                                     ],
+
         // Standard block
         [ 'class' => 'App\Helpers\BBCode\Tags\PreTag',   'scopes' => [ ] ],
 
@@ -35,12 +37,14 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ ] ],
     ],
     'elements' => [
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdCodeElement',    'scopes' => [] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\PreElement',       'scopes' => [] ],
         [ 'class' => 'App\Helpers\BBCode\Elements\MdHeadingElement', 'scopes' => [] ],
         [ 'class' => 'App\Helpers\BBCode\Elements\MdLineElement',    'scopes' => [] ],
         [ 'class' => 'App\Helpers\BBCode\Elements\MdQuoteElement',   'scopes' => [] ],
         [ 'class' => 'App\Helpers\BBCode\Elements\MdListElement',    'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdCodeElement',    'scopes' => [] ],
         [ 'class' => 'App\Helpers\BBCode\Elements\MdTableElement',   'scopes' => [] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdPanelElement',   'scopes' => [] ],
     ],
     'processors' => [
         [ 'class' => 'App\Helpers\BBCode\Processors\AutoLinkingProcessor', 'scopes' => [] ],

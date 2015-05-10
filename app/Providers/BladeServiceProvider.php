@@ -1,6 +1,8 @@
 <?php namespace App\Providers;
 
 use Blade;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
@@ -65,19 +67,20 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('text');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
                 $mapped_name = array_get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
+                $format = $parameters['format'];
 
                 $label = htmlspecialchars( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
 
-                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); ?>";
+                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name', '$format'); ?>";
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
@@ -143,7 +146,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('autocomplete');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['model_name', 'url'], ['clearable' => false, 'placeholder' => '', 'id' => 'id', 'text' => 'name'], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['model_name', 'url'], ['clearable' => false, 'multiple' => false, 'placeholder' => '', 'id' => 'id', 'text' => 'name'], 'label');
 
                 $expl_name = explode(':', $parameters['model_name']);
                 $name = $expl_name[0];
@@ -158,14 +161,16 @@ class BladeServiceProvider extends ServiceProvider {
                 $var = array_get($parameters, 'value', $var);
 
                 $collect = "<?php \$sel_value = \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); " .
-                "echo \$sel_value ? '<option value=\'' . \$sel_value . '\' selected>' . \$sel_value . '</option>' : ''; ?>";
+                'if (!is_array($sel_value)) $sel_value = [$sel_value]; ' .
+                'foreach ($sel_value as $sv) { if ($sv) echo "<option value=\'$sv\' selected=\'selected\'>$sv</option>"; } ?>';
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 $json_args = json_encode($parameters);
+                $multiple = $parameters['multiple'] ? 'multiple' : '';
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<div class='controls'><select class='autocomplete' id='$id' name='$mapped_name'>$collect</select></div>" .
+                "<div class='controls'><select class='autocomplete' id='$id' name='$mapped_name' $multiple>$collect</select></div>" .
                 "$error_message</div><script type='text/javascript'>$(function() {" .
                 "$('#$id').autocomplete($json_args);" .
                 "});</script>";
@@ -262,11 +267,21 @@ class BladeServiceProvider extends ServiceProvider {
         return $message ? 'has-error' : '';
     }
 
-    public static function CollectValue($value, $req_name, $model_name) {
+    public static function CollectValue($value, $req_name, $model_name, $format = null) {
         $val = null;
+        $req_name = str_replace('[]', '', $req_name);
+        $model_name = str_replace('[]', '', $model_name);
         if (Request::old($req_name)) $val = Request::old($req_name);
         else if ($value instanceof Model) $val = $value->{$model_name};
         else $val = $value;
+
+        if ($val instanceof Collection) {
+            $val = $val->map(function($x) { return $x->id; })->toArray();
+        }
+        if ($val instanceof Carbon && $format) {
+            $val = $val->format($format);
+        }
+
         return $val;
     }
 
