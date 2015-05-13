@@ -13,5 +13,4 @@ class CompetitionStatus extends Model {
 	protected $table = 'competition_statuses';
     protected $fillable = ['name'];
     public $timestamps = false;
-
 }

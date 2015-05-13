@@ -120,12 +120,13 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('textarea');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['class' => ''], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
                 $mapped_name = array_get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
+                $class = $parameters['class'];
 
                 $label = htmlspecialchars( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
@@ -137,7 +138,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<textarea class='form-control' id='$id' placeholder='$label' name='$mapped_name'>$collect</textarea>" .
+                "<textarea class='form-control $class' id='$id' placeholder='$label' name='$mapped_name'>$collect</textarea>" .
                 "$error_message</div>";
             }, $view);
         });

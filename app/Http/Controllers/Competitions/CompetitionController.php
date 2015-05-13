@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Competitions\Competition;
+use App\Models\Competitions\CompetitionEntry;
 use Request;
 use Input;
 use Auth;
@@ -30,9 +31,14 @@ class CompetitionController extends Controller {
             $d = str_ireplace('{username}', Auth::user() ? Auth::user()->name : '[your_username]', $d);
             $rule_groups[$t][] = $d;
         }
+        $user_entry = null;
+        if (Auth::user()) {
+            $user_entry = CompetitionEntry::with(['screenshots', 'user'])->whereUserId(Auth::user()->id)->whereCompetitionId($id)->first();
+        }
         return view('competitions/competition/brief', [
             'comp' => $comp,
-            'rule_groups' => $rule_groups
+            'rule_groups' => $rule_groups,
+            'user_entry' => $user_entry
         ]);
     }
 
@@ -43,8 +49,9 @@ class CompetitionController extends Controller {
     }
 
     public function getVote($id) {
+        $comp = Competition::with(['entries', 'entries.user'])->findOrFail($id);
         return view('competitions/competition/vote', [
-
+            'comp' => $comp
         ]);
     }
 }

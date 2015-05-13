@@ -73,7 +73,12 @@ class Image
         array('width' => 320, 'height' => 320, 'prefix' => 'small/', 'suffix' => ''),
         array('width' => 640, 'height' => 640, 'prefix' => 'medium/', 'suffix' => ''),
         array('width' => 1024, 'height' => 1024, 'prefix' => 'large/', 'suffix' => ''),
-        array('width' => 1920, 'height' => 1080, 'prefix' => 'full/', 'suffix' => '', 'force' => true),
+        array('width' => 1920, 'height' => 1920, 'prefix' => 'full/', 'suffix' => '', 'force' => true),
+    );
+
+    static $comp_image_sizes = array(
+        array('width' => 320, 'height' => 320, 'prefix' => 'thumb/', 'suffix' => ''),
+        array('width' => 1920, 'height' => 1920, 'prefix' => 'full/', 'suffix' => '', 'force' => true),
     );
 
     /**

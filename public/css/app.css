@@ -6479,6 +6479,9 @@ button.close {
     display: none !important;
   }
 }
+.bbcode {
+  margin-bottom: 10px;
+}
 .bbcode span.strikethrough {
   text-decoration: line-through;
 }
@@ -7147,6 +7150,24 @@ h3 .btn {
 }
 textarea.form-control {
   height: 350px;
+}
+textarea.form-control.gargantuan {
+  height: 1200px;
+}
+textarea.form-control.massive {
+  height: 800px;
+}
+textarea.form-control.huge {
+  height: 600px;
+}
+textarea.form-control.medium {
+  height: 250px;
+}
+textarea.form-control.small {
+  height: 150px;
+}
+textarea.form-control.tiny {
+  height: 80px;
 }
 .dl-horizontal.dl-wide dt {
   width: 240px;
