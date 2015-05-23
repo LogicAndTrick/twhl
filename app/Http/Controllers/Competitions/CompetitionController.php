@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionEntry;
+use App\Models\Competitions\CompetitionEntryVote;
 use Request;
 use Input;
 use Auth;
@@ -43,15 +44,57 @@ class CompetitionController extends Controller {
     }
 
     public function getResults($id) {
-        return view('competitions/competition/results', [
+        $comp = Competition::with(['judges', 'results', 'entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
+        if (!$comp->isClosed()) return abort(404);
 
+        return view('competitions/competition/results', [
+            'comp' => $comp
         ]);
     }
 
     public function getVote($id) {
-        $comp = Competition::with(['entries', 'entries.user'])->findOrFail($id);
+        $comp = Competition::with(['entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
+        $user_votes = CompetitionEntryVote::whereUserId(Auth::user() ? Auth::user()->id : 0)->whereCompetitionId($id)->get();
+        $voted_ids = $user_votes->map(function ($v) { return $v->entry_id; })->toBase();
         return view('competitions/competition/vote', [
-            'comp' => $comp
+            'comp' => $comp,
+            'votes' => $voted_ids
+        ]);
+    }
+
+    public function getEntryScreenshotGallery($id) {
+        $entry = CompetitionEntry::with(['screenshots'])->findOrFail($id);
+        return view('competitions/entry/_gallery', [
+            'entry' => $entry
+        ]);
+    }
+
+    public function getAddVote($id) {
+        $entry = CompetitionEntry::findOrFail($id);
+        $comp = Competition::findOrFail($entry->competition_id);
+        if (!$comp->canVote()) abort(422);
+
+        $user_votes = CompetitionEntryVote::whereUserId(Auth::user() ? Auth::user()->id : 0)->whereCompetitionId($id);
+        $voted_ids = $user_votes->get()->map(function ($v) { return $v->entry_id; })->toBase();
+
+        $result = '';
+        $is_voted_for = false;
+        if ($voted_ids->contains($entry->id)) {
+            $vote = $user_votes->whereEntryId($entry->id)->first();
+            $vote->delete();
+            $is_voted_for = false;
+            $result = 'Vote for this entry';
+        } else if ($voted_ids->count() >= 3) {
+            $is_voted_for = false;
+            $result = 'You can only vote for 3 entries';
+        } else {
+            $vote = CompetitionEntryVote::Create(['competition_id' => $comp->id, 'user_id' => Auth::user()->id, 'entry_id' => $entry->id]);
+            $is_voted_for = true;
+            $result = 'You voted for this entry!';
+        }
+        return response()->json([
+            'is_voted_for' => $is_voted_for,
+            'status' => $result
         ]);
     }
 }

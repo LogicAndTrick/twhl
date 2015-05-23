@@ -34,6 +34,7 @@ if (!function_exists('act'))
             'competition-entry' => 'Competitions\CompetitionEntryController',
             'competition-group' => 'Competitions\CompetitionGroupController',
             'competition-restriction' => 'Competitions\CompetitionRestrictionController',
+            'competition-judging' => 'Competitions\CompetitionJudgingController',
 
             'home' => 'HomeController',
 

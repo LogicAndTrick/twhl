@@ -6479,6 +6479,64 @@ button.close {
     display: none !important;
   }
 }
+.loading {
+  position: relative;
+}
+.loading::after {
+  background-color: rgba(0, 0, 0, 0.3);
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.btn-inverse {
+  color: #ffffff;
+  background-color: #333333;
+  border-color: #cccccc;
+}
+.btn-inverse:hover,
+.btn-inverse:focus,
+.btn-inverse.focus,
+.btn-inverse:active,
+.btn-inverse.active,
+.open > .dropdown-toggle.btn-inverse {
+  color: #ffffff;
+  background-color: #1a1a1a;
+  border-color: #adadad;
+}
+.btn-inverse:active,
+.btn-inverse.active,
+.open > .dropdown-toggle.btn-inverse {
+  background-image: none;
+}
+.btn-inverse.disabled,
+.btn-inverse[disabled],
+fieldset[disabled] .btn-inverse,
+.btn-inverse.disabled:hover,
+.btn-inverse[disabled]:hover,
+fieldset[disabled] .btn-inverse:hover,
+.btn-inverse.disabled:focus,
+.btn-inverse[disabled]:focus,
+fieldset[disabled] .btn-inverse:focus,
+.btn-inverse.disabled.focus,
+.btn-inverse[disabled].focus,
+fieldset[disabled] .btn-inverse.focus,
+.btn-inverse.disabled:active,
+.btn-inverse[disabled]:active,
+fieldset[disabled] .btn-inverse:active,
+.btn-inverse.disabled.active,
+.btn-inverse[disabled].active,
+fieldset[disabled] .btn-inverse.active {
+  background-color: #333333;
+  border-color: #cccccc;
+}
+.btn-inverse .badge {
+  color: #333333;
+  background-color: #ffffff;
+}
 .bbcode {
   margin-bottom: 10px;
 }
@@ -6691,19 +6749,6 @@ ul.wiki-categories .header {
   line-height: 40px;
   margin: 0 20px;
 }
-.screenshot-list.loading {
-  position: relative;
-}
-.screenshot-list.loading::after {
-  background-color: rgba(0, 0, 0, 0.3);
-  bottom: 0;
-  content: "";
-  display: block;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
 .screenshot-list li {
   border-radius: 4px;
   border: 1px solid #eeeeee;
@@ -6756,6 +6801,18 @@ ul.wiki-categories .header {
 }
 .countdown.is-countdown .countdown-row {
   display: inline-block;
+}
+.competition-vote-entry {
+  text-align: center;
+}
+.competition-vote-entry h3 {
+  margin-top: 0;
+}
+.competition-vote-entry button {
+  margin-top: 5px;
+}
+.competition-vote-entry.voted {
+  background-color: #e9ffe5;
 }
 .select2-pagination {
   text-align: center;
@@ -7143,6 +7200,20 @@ h2 .btn,
 h3 .btn {
   float: right;
   margin: 0 2px;
+}
+.alert > h1:first-child,
+.well > h1:first-child,
+.alert > h2:first-child,
+.well > h2:first-child,
+.alert > h3:first-child,
+.well > h3:first-child,
+.alert > h4:first-child,
+.well > h4:first-child,
+.alert > h5:first-child,
+.well > h5:first-child,
+.alert > h6:first-child,
+.well > h6:first-child {
+  margin-top: 10px;
 }
 .inactive {
   font-style: italic;

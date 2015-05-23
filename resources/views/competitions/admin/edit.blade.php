@@ -20,6 +20,8 @@
             <p>Current Attachment: {{ $comp->brief_attachment }}</p>
             @checkbox(delete_attachment) = Delete the attachment
         @endif
+        @textarea(results_intro_text $comp) = Results Intro Text (required to close)
+        @textarea(results_outro_text $comp) = Results Outro Text (optional)
         @submit = Edit Competition
     @endform
 @endsection

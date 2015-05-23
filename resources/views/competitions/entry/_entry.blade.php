@@ -1,9 +1,9 @@
 {? $shot = $entry->screenshots->first(); ?}
-<div class="media">
+<div class="media" data-id="{{ $entry->id }}">
     <div class="media-left">
-        <div class="img-thumbnail">
+        <a href="#" class="gallery-button img-thumbnail">
         <img class="media-object" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-160.png' ) }}" alt="Entry">
-        </div>
+        </a>
     </div>
     <div class="media-body">
         <h3 class="media-heading">

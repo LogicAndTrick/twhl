@@ -28,6 +28,7 @@ Route::controllers([
     'competition-entry' => 'Competitions\CompetitionEntryController',
     'competition-group' => 'Competitions\CompetitionGroupController',
     'competition-restriction' => 'Competitions\CompetitionRestrictionController',
+    'competition-judging' => 'Competitions\CompetitionJudgingController',
 
     'wiki' => 'Wiki\WikiController',
     'vault' => 'Vault\VaultController',

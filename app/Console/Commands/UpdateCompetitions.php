@@ -16,11 +16,11 @@ class UpdateCompetitions extends Command {
 	{
         // Competition statuses:
         // if (DRAFT && open_date <= now) ACTIVE
-        // if (ACTIVE && close_date <= now && voted) VOTING
-        // if (ACTIVE && close_date <= now && !voted) JUDGING
+        // if (ACTIVE && close_date <= now) isVoted ? VOTING : JUDGING
+        // if (VOTING && voting_close_date <= now) JUDGING
 
         $now = Carbon::now();
-        $comps = Competition::whereIn('status_id', [ CompetitionStatus::DRAFT, CompetitionStatus::ACTIVE ])->get();
+        $comps = Competition::whereIn('status_id', [ CompetitionStatus::DRAFT, CompetitionStatus::ACTIVE, CompetitionStatus::VOTING ])->get();
         foreach ($comps as $comp)
         {
             /** @var $comp Competition */
@@ -36,6 +36,13 @@ class UpdateCompetitions extends Command {
             {
                 $this->comment("{$comp->name} is ACTIVE and will change to " . ($comp->isVoted() ? 'VOTING' : 'JUDGING'));
                 $comp->status_id = $comp->isVoted() ? CompetitionStatus::VOTING : CompetitionStatus::JUDGING;
+                $changed = true;
+            }
+            // Same deal here
+            if ($comp->status_id == CompetitionStatus::VOTING && $comp->getVotingCloseTime() <= $now)
+            {
+                $this->comment("{$comp->name} is VOTING and will change to JUDGING");
+                $comp->status_id = CompetitionStatus::JUDGING;
                 $changed = true;
             }
             if ($changed) $comp->save();

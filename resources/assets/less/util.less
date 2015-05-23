@@ -1,0 +1,18 @@
+.loading {
+  position: relative;
+
+  &::after {
+    background-color: rgba(0,0,0,0.3);
+    bottom: 0;
+    content: "";
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+.btn-inverse {
+  .button-variant(@btn-default-bg; @btn-default-color; @btn-default-border);
+}

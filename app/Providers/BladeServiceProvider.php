@@ -90,6 +90,44 @@ class BladeServiceProvider extends ServiceProvider {
             }, $view);
         });
 
+        // @select(name:mapped_name $model items=$values) = Label
+        Blade::extend(function($view, $compiler) {
+            $pattern = $this->createBladeTemplatePattern('select');
+            return preg_replace_callback($pattern, function($matches) {
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name', 'items'], ['name_key' => null, 'value_key' => null], 'label');
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+
+                $items = $parameters['items'];
+                $name_key = $parameters['name_key'];
+                $value_key = $parameters['value_key'];
+
+                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $print =
+                "<?php
+                    \$selected_value = \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name');
+                    foreach ($items as \$k => \$v) {
+                        \$key = '$name_key' ? \$v['$name_key'] : \$k;
+                        \$val = '$value_key' ? \$v['$value_key'] : \$v;
+                        echo '<'.'option value=\"' . e(\$key) . '\" ' . (\$v == \$selected_value ? 'selected' : '') . '>' . e(\$val) . '</'.'option>';
+                    }
+                ?>";
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
+                "<select class='form-control' id='$id' name='$mapped_name'>$print</select>" .
+                "$error_message</div>";
+            }, $view);
+        });
+
         // @checkbox(name:mapped_name $model) = Label
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('checkbox');

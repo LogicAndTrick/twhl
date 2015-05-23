@@ -21,6 +21,11 @@ class CompetitionEntry extends Model {
         return $this->belongsTo('App\Models\Accounts\User');
     }
 
+    public function result()
+    {
+        return $this->hasOne('App\Models\Competitions\CompetitionResult', 'entry_id');
+    }
+
     public function screenshots()
     {
         return $this->hasMany('App\Models\Competitions\CompetitionEntryScreenshot', 'entry_id');

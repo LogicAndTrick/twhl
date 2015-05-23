@@ -17,6 +17,12 @@
                 <div id="countdown" class="countdown"></div>
             @elseif ($comp->isVotingOpen())
                 <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success btn-lg">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
+            @elseif ($comp->canJudge())
+                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-lg"><span class="glyphicon glyphicon-eye-open"></span> Go to Judging Panel</a>
+                <hr/>
+                <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Preview Results</a>
+            @elseif ($comp->isClosed())
+                <a href="{{ act('competition', 'results', $comp->id) }}" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-eye-open"></span> View Results</a>
             @endif
         </div>
         <div class="col-md-6">
@@ -38,6 +44,15 @@
     </div>
     <hr/>
     <div class="bbcode">{!! $comp->brief_text !!}</div>
+    @if ($comp->brief_attachment)
+        <div class="well well-sm">
+            Attached file:
+            <a href="{{ asset('uploads/competition/attachments/'.$comp->brief_attachment) }}" class="btn btn-success btn-xs">
+                <span class="glyphicon glyphicon-download-alt"></span>
+                Click to download
+            </a>
+        </div>
+    @endif
 
     @if (count($rule_groups) > 0)
         <hr />
@@ -59,10 +74,14 @@
         <hr>
         <h3>Your Entry</h3>
         @include('competitions.entry._entry', [ 'comp' => $comp, 'entry' => $user_entry ])
+        @include('competitions._gallery_javascript')
     @endif
     @if ($comp->isOpen() && permission('CompetitionEnter'))
         <hr>
-        @include('competitions.entry._entry-form', [ 'comp' => $comp, 'entry' => $user_entry ])
+        <h3>{{ $user_entry ? 'Update' : 'Submit' }} Entry</h3>
+        @form(competition-entry/submit upload=true)
+            @include('competitions.entry._entry-form-fields', [ 'comp' => $comp, 'entry' => $user_entry ])
+        @endform
     @endif
 @endsection
 

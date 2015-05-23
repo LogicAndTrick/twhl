@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionJudgeType;
 use App\Models\Competitions\CompetitionRestrictionGroup;
+use App\Models\Competitions\CompetitionStatus;
 use Carbon\Carbon;
 use Request;
 use Input;
@@ -82,7 +83,8 @@ class CompetitionAdminController extends Controller {
             'engines' => 'required|array',
             'judges' => 'array',
             'brief_text' => 'required|max:10000',
-            'outro_text' => 'max:10000',
+            'results_intro_text' => 'required_if:status_id,' . CompetitionStatus::CLOSED . '|max:10000',
+            'results_outro_text' => 'max:10000',
             'open_date' => 'required|date_format:d/m/Y',
             'close_date' => 'required|date_format:d/m/Y',
             'voting_close_date' => 'required_if:judge_type_id,' . CompetitionJudgeType::COMMUNITY_VOTE . '|date_format:d/m/Y',
@@ -91,7 +93,9 @@ class CompetitionAdminController extends Controller {
         $id = Request::input('id');
         $comp = Competition::findOrFail($id);
 
-        $out = Request::input('outro_text');
+        $in = Request::input('results_intro_text');
+        if (!$in) $in = '';
+        $out = Request::input('results_outro_text');
         if (!$out) $out = '';
 
         $brief_attachment = $comp->brief_attachment;
@@ -120,8 +124,10 @@ class CompetitionAdminController extends Controller {
             'open_date' => Carbon::createFromFormat('d/m/Y', Request::input('open_date')),
             'close_date' => Carbon::createFromFormat('d/m/Y', Request::input('close_date')),
             'voting_close_date' => Request::input('voting_close_date') ? Carbon::createFromFormat('d/m/Y', Request::input('voting_close_date')) : null,
-            'outro_text' => $out,
-            'outro_html' => app('bbcode')->Parse($out),
+            'results_intro_text' => $in,
+            'results_intro_html' => app('bbcode')->Parse($in),
+            'results_outro_text' => $out,
+            'results_outro_html' => app('bbcode')->Parse($out),
         ]);
 
         $engines = Request::input('engines');

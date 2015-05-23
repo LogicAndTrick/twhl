@@ -3,13 +3,19 @@
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Auth;
 
 class Competition extends Model {
 
     use SoftDeletes;
 
     public $table = 'competitions';
-    public $fillable = ['status_id', 'type_id', 'judge_type_id', 'name', 'brief_text', 'brief_html', 'brief_attachment', 'open_date', 'close_date', 'voting_close_date', 'outro_text', 'outro_html'];
+    public $fillable = [
+        'status_id', 'type_id', 'judge_type_id', 'name',
+        'brief_text', 'brief_html', 'brief_attachment',
+        'open_date', 'close_date', 'voting_close_date',
+        'results_intro_text', 'results_intro_html', 'results_outro_text', 'results_outro_html'
+    ];
 
     public function getDates()
     {
@@ -34,6 +40,11 @@ class Competition extends Model {
     public function entries()
     {
         return $this->hasMany('App\Models\Competitions\CompetitionEntry', 'competition_id');
+    }
+
+    public function results()
+    {
+        return $this->hasMany('App\Models\Competitions\CompetitionResult', 'competition_id');
     }
 
     public function status()
@@ -146,8 +157,22 @@ class Competition extends Model {
 
     public function canVote()
     {
-        return false;
-        throw new \Exception();
+        // User must be able to vote and voting must be open
+        if (!permission('CompetitionEnter') || !$this->isVotingOpen()) return false;
+
+        // Accounts created after competition start cannot vote
+        if (Auth::user()->created_at > $this->getOpenTime()) return false;
+
+        // Users who entered the competition cannot vote
+        $uid = Auth::user()->id;
+        foreach ($this->entries as $entry) {
+            if ($entry->user_id == $uid) return false;
+        }
+        return true;
+    }
+
+    public function canJudge() {
+        return $this->isJudging() && $this->judges->contains(Auth::user());
     }
 
     public function hasRestriction($id)
@@ -164,5 +189,16 @@ class Competition extends Model {
             if ($r->group_id == $id) return true;
         }
         return false;
+    }
+
+    public function getEntriesForResults() {
+        $entries = [0 => [], 1 => [], 2 => [], 3 => []];
+        foreach ($this->entries as $entry) {
+            $result = $this->results->where('entry_id', $entry->id)->first();
+            if ($result) {
+                $entries[$result->rank][] = $entry;
+            }
+        }
+        return array_merge($entries[1], $entries[2], $entries[3], $entries[0]);
     }
 }
