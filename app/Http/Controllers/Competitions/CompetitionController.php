@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionEntry;
 use App\Models\Competitions\CompetitionEntryVote;
+use App\Models\Competitions\CompetitionStatus;
 use Request;
 use Input;
 use Auth;
@@ -16,8 +17,9 @@ class CompetitionController extends Controller {
 	}
 
 	public function getIndex() {
+        $comps = Competition::with(['type', 'judge_type'])->where('status_id', '!=', CompetitionStatus::DRAFT)->get();
         return view('competitions/competition/index', [
-
+            'comps' => $comps
         ]);
 	}
 

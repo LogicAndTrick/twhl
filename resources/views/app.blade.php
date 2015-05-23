@@ -43,6 +43,7 @@
                     <li><a href="{{ url('/forum') }}">Forums</a></li>
                     <li><a href="{{ url('/wiki') }}">Wiki</a></li>
                     <li><a href="{{ url('/vault') }}">Vault</a></li>
+                    <li><a href="{{ url('/competition') }}">Competitions</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
