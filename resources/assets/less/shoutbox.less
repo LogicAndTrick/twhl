@@ -1,0 +1,118 @@
+.shoutbox {
+  position: fixed;
+  top: auto;
+  bottom: 0;
+  left: auto;
+  right: 20px;
+  border: 1px solid #aaa;
+  border-bottom: 0;
+  width: 150px;
+  max-height: 50%;
+  height: 24px;
+  background-color: white;
+
+  transition: all 0.3s ease;
+
+  &.open {
+    width: 260px;
+    height: 400px;
+    transition: all 0.3s ease;
+
+    h1 a .glyphicon-chevron-up::before {
+      content: "\e114";
+    }
+  }
+
+  h1 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    background-color: rgb(236, 172, 57);
+    padding: 4px;
+    color: white;
+    transition: background-color 0.5s ease;
+
+    a {
+      float: right;
+      padding: 0 3px;
+      color: white;
+
+      &:hover {
+        background-color: rgb(203, 93, 0);
+      }
+    }
+  }
+
+  &.flash h1 {
+    background-color: rgb(236, 94, 0);
+    transition: none;
+  }
+
+  &.new h1 {
+    background-color: rgb(236, 94, 0);
+  }
+
+  .refresh-icon {
+    display: none;
+    font-size: 12px;
+    padding: 4px;
+  }
+  &.refreshing .refresh-icon { display: inline; }
+
+  .shouts {
+    position: absolute;
+    top: 23px;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow-y: scroll;
+
+    .shout {
+      padding: 5px;
+      border-bottom: 1px solid #eee;
+
+      a, span {
+        display: block;
+      }
+
+      .time {
+        float: right;
+      }
+    }
+  }
+
+  form {
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    height: 0px;
+    transition: height 0.2s ease;
+
+    .input-group { display: none; }
+  }
+
+  &.open {
+    form {
+      height: 50px;
+      border-top: 1px solid #eee;
+      .input-group { display: table; }
+    }
+  }
+
+  .pin-button { display: none; }
+
+  &.open {
+    .pin-button { display: inline; }
+    .close-button { display: none; }
+  }
+
+  &.pinned {
+    .pin-button {
+      .glyphicon { transform: rotate(-45deg) scale(0.8); }
+      color: black;
+    }
+  }
+}

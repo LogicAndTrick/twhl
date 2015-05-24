@@ -36,6 +36,9 @@ if (!function_exists('act'))
             'competition-restriction' => 'Competitions\CompetitionRestrictionController',
             'competition-judging' => 'Competitions\CompetitionJudgingController',
 
+            'panel' => 'User\PanelController',
+            'message' => 'User\MessageController',
+
             'home' => 'HomeController',
 
             'wiki' => 'Wiki\WikiController',
@@ -43,6 +46,7 @@ if (!function_exists('act'))
             'comment' => 'Comments\CommentController',
             'news' => 'News\NewsController',
             'journal' => 'Journals\JournalController',
+            'shout' => 'Shout\ShoutController',
 
             'api' => 'Api\ApiController'
         );

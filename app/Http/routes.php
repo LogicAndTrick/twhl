@@ -30,11 +30,15 @@ Route::controllers([
     'competition-restriction' => 'Competitions\CompetitionRestrictionController',
     'competition-judging' => 'Competitions\CompetitionJudgingController',
 
+    'panel' => 'User\PanelController',
+    'message' => 'User\MessageController',
+
     'wiki' => 'Wiki\WikiController',
     'vault' => 'Vault\VaultController',
     'comment' => 'Comments\CommentController',
     'news' => 'News\NewsController',
     'journal' => 'Journals\JournalController',
+    'shout' => 'Shout\ShoutController',
 
     'api' => 'Api\ApiController',
 ]);

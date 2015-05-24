@@ -92,10 +92,12 @@
     @endif
 
 	<!-- Scripts -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ asset('/js/all.js') }}"></script>
+    <script type="text/javascript">$('body').shoutbox({url:'{{ url("shout/{action}") }}', userUrl:'{{ url("user/view/{id}") }}', active: '{{ Auth::user() != null ? "true" : "false" }}' });</script>
     @yield('scripts', '')
 </body>
 </html>

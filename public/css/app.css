@@ -6491,6 +6491,7 @@ button.close {
   position: absolute;
   right: 0;
   top: 0;
+  z-index: 99;
 }
 .btn-inverse {
   color: #ffffff;
@@ -7194,6 +7195,116 @@ fieldset[disabled] .select2-pagination-next.active {
 }
 .slider .arrow.right {
   right: 8px;
+}
+.shoutbox {
+  position: fixed;
+  top: auto;
+  bottom: 0;
+  left: auto;
+  right: 20px;
+  border: 1px solid #aaa;
+  border-bottom: 0;
+  width: 150px;
+  max-height: 50%;
+  height: 24px;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+.shoutbox.open {
+  width: 260px;
+  height: 400px;
+  transition: all 0.3s ease;
+}
+.shoutbox.open h1 a .glyphicon-chevron-up::before {
+  content: "\e114";
+}
+.shoutbox h1 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+  background-color: #ecac39;
+  padding: 4px;
+  color: white;
+  transition: background-color 0.5s ease;
+}
+.shoutbox h1 a {
+  float: right;
+  padding: 0 3px;
+  color: white;
+}
+.shoutbox h1 a:hover {
+  background-color: #cb5d00;
+}
+.shoutbox.flash h1 {
+  background-color: #ec5e00;
+  transition: none;
+}
+.shoutbox.new h1 {
+  background-color: #ec5e00;
+}
+.shoutbox .refresh-icon {
+  display: none;
+  font-size: 12px;
+  padding: 4px;
+}
+.shoutbox.refreshing .refresh-icon {
+  display: inline;
+}
+.shoutbox .shouts {
+  position: absolute;
+  top: 23px;
+  bottom: 50px;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  overflow-y: scroll;
+}
+.shoutbox .shouts .shout {
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+}
+.shoutbox .shouts .shout a,
+.shoutbox .shouts .shout span {
+  display: block;
+}
+.shoutbox .shouts .shout .time {
+  float: right;
+}
+.shoutbox form {
+  position: absolute;
+  bottom: 0;
+  padding: 10px;
+  height: 0px;
+  transition: height 0.2s ease;
+}
+.shoutbox form .input-group {
+  display: none;
+}
+.shoutbox.open form {
+  height: 50px;
+  border-top: 1px solid #eee;
+}
+.shoutbox.open form .input-group {
+  display: table;
+}
+.shoutbox .pin-button {
+  display: none;
+}
+.shoutbox.open .pin-button {
+  display: inline;
+}
+.shoutbox.open .close-button {
+  display: none;
+}
+.shoutbox.pinned .pin-button {
+  color: black;
+}
+.shoutbox.pinned .pin-button .glyphicon {
+  -webkit-transform: rotate(-45deg) scale(0.8);
+      -ms-transform: rotate(-45deg) scale(0.8);
+          transform: rotate(-45deg) scale(0.8);
 }
 h1 .btn,
 h2 .btn,
