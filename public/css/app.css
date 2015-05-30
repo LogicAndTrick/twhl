@@ -7306,6 +7306,13 @@ fieldset[disabled] .select2-pagination-next.active {
       -ms-transform: rotate(-45deg) scale(0.8);
           transform: rotate(-45deg) scale(0.8);
 }
+.avatar-preset-chooser .btn {
+  width: 120px;
+  height: 120px;
+  padding: 5px;
+  margin: 8px auto;
+  display: block;
+}
 h1 .btn,
 h2 .btn,
 h3 .btn {
@@ -7325,6 +7332,17 @@ h3 .btn {
 .alert > h6:first-child,
 .well > h6:first-child {
   margin-top: 10px;
+}
+.alert-default {
+  background-color: #f5f5f5;
+  border-color: #e3e3e3;
+  color: #333333;
+}
+.alert-default hr {
+  border-top-color: #d6d6d6;
+}
+.alert-default .alert-link {
+  color: #1a1a1a;
 }
 .inactive {
   font-style: italic;

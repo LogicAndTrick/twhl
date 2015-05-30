@@ -81,6 +81,12 @@ class Image
         array('width' => 1920, 'height' => 1920, 'prefix' => 'full/', 'suffix' => '', 'force' => true),
     );
 
+    static $avatar_image_sizes = array(
+        array('width' => 20, 'height' => 20, 'prefix' => 'inline/', 'suffix' => '', 'force' => true, 'force-size' => true),
+        array('width' => 45, 'height' => 45, 'prefix' => 'small/', 'suffix' => '', 'force' => true, 'force-size' => true),
+        array('width' => 100, 'height' => 100, 'prefix' => 'full/', 'suffix' => '', 'force' => true),
+    );
+
     /**
      * Takes the dimensions of an image and resizes them to a
      * maximum width and height, maintaining the aspect ratio

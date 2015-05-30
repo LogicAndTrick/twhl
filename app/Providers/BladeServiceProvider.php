@@ -90,6 +90,33 @@ class BladeServiceProvider extends ServiceProvider {
             }, $view);
         });
 
+        // @password(name:mapped_name $model) = Label
+        Blade::extend(function($view, $compiler) {
+            $pattern = $this->createBladeTemplatePattern('password');
+            return preg_replace_callback($pattern, function($matches) {
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null], 'label');
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+                $format = $parameters['format'];
+
+                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name', '$format'); ?>";
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
+                "<input type='password' class='form-control' id='$id' placeholder='$label' name='$mapped_name' value='$collect' />" .
+                "$error_message</div>";
+            }, $view);
+        });
+
         // @select(name:mapped_name $model items=$values) = Label
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('select');
@@ -116,7 +143,7 @@ class BladeServiceProvider extends ServiceProvider {
                     foreach ($items as \$k => \$v) {
                         \$key = '$name_key' ? \$v['$name_key'] : \$k;
                         \$val = '$value_key' ? \$v['$value_key'] : \$v;
-                        echo '<'.'option value=\"' . e(\$key) . '\" ' . (\$v == \$selected_value ? 'selected' : '') . '>' . e(\$val) . '</'.'option>';
+                        echo '<'.'option value=\"' . e(\$key) . '\" ' . (\$key == \$selected_value ? 'selected' : '') . '>' . e(\$val) . '</'.'option>';
                     }
                 ?>";
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";

@@ -32,6 +32,7 @@ Route::controllers([
 
     'panel' => 'User\PanelController',
     'message' => 'User\MessageController',
+    'user' => 'User\UserController',
 
     'wiki' => 'Wiki\WikiController',
     'vault' => 'Vault\VaultController',

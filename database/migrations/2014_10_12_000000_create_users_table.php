@@ -48,6 +48,8 @@ class CreateUsersTable extends Migration {
             $table->string('info_languages');
             $table->string('info_steam_profile');
             $table->integer('info_birthday');
+            $table->text('info_biography_text');
+            $table->text('info_biography_html');
 
             // Skills
             $table->boolean('skill_map');

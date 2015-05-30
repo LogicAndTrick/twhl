@@ -10,6 +10,7 @@
 @import "diffview.less";
 @import "slider.less";
 @import "shoutbox.less";
+@import "user.less";
 
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
@@ -31,6 +32,9 @@ h1,h2,h3 {
       margin-top: 10px;
     }
   }
+}
+.alert-default {
+  .alert-variant(@well-bg; @well-border; @text-color);
 }
 
 .inactive {

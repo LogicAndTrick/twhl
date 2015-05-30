@@ -38,6 +38,7 @@ if (!function_exists('act'))
 
             'panel' => 'User\PanelController',
             'message' => 'User\MessageController',
+            'user' => 'User\UserController',
 
             'home' => 'HomeController',
 
