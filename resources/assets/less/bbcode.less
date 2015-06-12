@@ -2,6 +2,12 @@
 
   margin-bottom: 10px;
 
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
   span.strikethrough {
     text-decoration: line-through;
   }
@@ -28,6 +34,7 @@
       padding: 5px;
       display: block;
       max-width: 100%;
+      margin: 0 auto;
     }
 
     .caption {

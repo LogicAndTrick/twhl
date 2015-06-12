@@ -52,10 +52,16 @@
                 allowClear: config.clearable,
                 templateResult: function(item) {
                     if (item.loading) return item.text
-                    return item[config.text] || item.name || item.text || item[config.id];
+                    var text = item[config.text] || item.name || item.text || item[config.id];
+                    var res = $('<span/>').text(' ' + text);
+                    if (item.avatar_inline) $('<img/>').attr({ src: item.avatar_inline, alt: 'Avatar'}).prependTo(res);
+                    return res;
                 },
                 templateSelection: function(item) {
-                    return item[config.text] || item.name || item.text || item[config.id];
+                    var text = item[config.text] || item.name || item.text || item[config.id];
+                    var res = $('<span/>').text(' ' + text);
+                    if (item.avatar_inline) $('<img/>').attr({ src: item.avatar_inline, alt: 'Avatar'}).prependTo(res);
+                    return res;
                 },
                 dataAdapter: dataApi,
                 resultsAdapter: config.paginated ? resultsAdapter : null

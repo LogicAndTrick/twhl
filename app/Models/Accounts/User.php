@@ -83,4 +83,26 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return $p->name == $name;
         })) > 0;
     }
+
+    public function hasSkills() {
+        return $this->skill_map
+            || $this->skill_model
+            || $this->skill_code
+            || $this->skill_music
+            || $this->skill_voice
+            || $this->skill_animate
+            || $this->skill_texture;
+    }
+
+    public function getSkills() {
+        $skills = [];
+        if ($this->skill_map) $skills[] = 'Mapping';
+        if ($this->skill_model) $skills[] = 'Modelling';
+        if ($this->skill_code) $skills[] = 'Programming';
+        if ($this->skill_music) $skills[] = 'Music/sound effects';
+        if ($this->skill_voice) $skills[] = 'Voice acting';
+        if ($this->skill_animate) $skills[] = 'Model animation';
+        if ($this->skill_texture) $skills[] = 'Texture creation';
+        return $skills;
+    }
 }

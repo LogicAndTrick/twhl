@@ -23,8 +23,7 @@ class BladeServiceProvider extends ServiceProvider {
 	{
         // {? code ?}
         Blade::extend(function($view, $compiler) {
-            $pattern = '/\{\?(.*?)\?\}/i';
-            return preg_replace('/\{\?(.*?)\?\}/i', '<?php $1 ?>', $view);
+            return preg_replace('/\{\?(.*?)\?\}/is', '<?php $1 ?>', $view);
         });
 
         // @form(url)
@@ -75,7 +74,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $name_array = "['$name', '$mapped_name']";
                 $format = $parameters['format'];
 
-                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
@@ -102,7 +101,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $name_array = "['$name', '$mapped_name']";
                 $format = $parameters['format'];
 
-                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
@@ -132,7 +131,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $name_key = $parameters['name_key'];
                 $value_key = $parameters['value_key'];
 
-                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
@@ -166,7 +165,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $mapped_name = array_get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
-                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
@@ -177,7 +176,33 @@ class BladeServiceProvider extends ServiceProvider {
 
                 return "{$matches[1]}<div class='checkbox $error_class'><label for='$id'>" .
                 "<input type='checkbox' id='$id' name='$mapped_name' $collect />" .
-                "$label</label>$error_message</div>";
+                " $label</label>$error_message</div>";
+            }, $view);
+        });
+
+        // @radio(name:mapped_name $model) = Label
+        Blade::extend(function($view, $compiler) {
+            $pattern = $this->createBladeTemplatePattern('radio');
+            return preg_replace_callback($pattern, function($matches) {
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+
+                $expl_name = explode(':', $parameters['name']);
+                $name = $expl_name[0];
+                $mapped_name = array_get($expl_name, 1, $name);
+                $name_array = "['$name', '$mapped_name']";
+
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $id = $this->generateHtmlId($name);
+                $var = array_get($parameters, '$', 'null');
+                $var = array_get($parameters, 'value', $var);
+
+                $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name') ? 'checked' : ''; ?>";
+                $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
+                $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
+
+                return "{$matches[1]}<div class='radio $error_class'><label for='$id'>" .
+                "<input type='radio' id='$id' name='$mapped_name' $collect />" .
+                " $label</label>$error_message</div>";
             }, $view);
         });
 
@@ -193,7 +218,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $name_array = "['$name', '$mapped_name']";
                 $class = $parameters['class'];
 
-                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
@@ -221,7 +246,7 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $parameters['url'] = url($parameters['url']);
                 if (!$parameters['placeholder']) $parameters['placeholder'] = array_get($parameters, 'label', $name);
-                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
@@ -254,7 +279,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $mapped_name = array_get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
-                $label = htmlspecialchars( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
@@ -274,7 +299,7 @@ class BladeServiceProvider extends ServiceProvider {
             return preg_replace_callback($pattern, function($matches) {
                 $parameters = $this->parseBladeTemplatePattern($matches, [], [], 'label');
 
-                $label = htmlspecialchars( array_get($parameters, 'label', 'Submit') );
+                $label = BladeServiceProvider::esc( array_get($parameters, 'label', 'Submit') );
 
                 return "{$matches[1]}<button type='submit' class='btn btn-default'>$label</button>";
             }, $view);
@@ -282,7 +307,7 @@ class BladeServiceProvider extends ServiceProvider {
 	}
 
     private function generateHtmlId($name) {
-        return htmlspecialchars( preg_replace('/[^a-z0-9]/i', '_', $name) ) . '_' . rand(10000, 99999);
+        return BladeServiceProvider::esc( preg_replace('/[^a-z0-9]/i', '_', $name) ) . '_' . rand(10000, 99999);
     }
 
     private function createBladeTemplatePattern($name) {
@@ -318,6 +343,7 @@ class BladeServiceProvider extends ServiceProvider {
     public static function FirstErrorMessage($errors, $names) {
         if (!is_array($names)) $names = [$names];
         foreach ($names as $n) {
+            $n = str_replace('[]', '', $n);
             if ($errors->has($n)) return $errors->first($n);
         }
         return null;
@@ -349,6 +375,10 @@ class BladeServiceProvider extends ServiceProvider {
         }
 
         return $val;
+    }
+
+    public static function esc($value) {
+        return str_replace("'", '&#39;', htmlspecialchars($value));
     }
 
 }

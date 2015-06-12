@@ -35,6 +35,12 @@ class CommentController extends Controller {
                 ]
             ]
         ],
+        Comment::POLL => [
+            'model' => '\App\Models\Polls\Poll',
+            'redirect' => 'poll/view/{id}',
+            'auth_create' => 'PollComment',
+            'auth_moderate' => 'PollAdmin'
+        ]
         //Comment::MOTM => array(
         //    'model' => '\App\Models\Motm\Motm',
         //    'redirect' => 'motm/view/{id}',

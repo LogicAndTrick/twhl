@@ -48,6 +48,7 @@ if (!function_exists('act'))
             'news' => 'News\NewsController',
             'journal' => 'Journals\JournalController',
             'shout' => 'Shout\ShoutController',
+            'poll' => 'Polls\PollController',
 
             'api' => 'Api\ApiController'
         );

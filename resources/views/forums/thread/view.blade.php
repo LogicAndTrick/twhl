@@ -59,7 +59,7 @@
                     Post preview
                     <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
                 </h4>
-                <div id="preview-panel" class="well"></div>
+                <div id="preview-panel" class="well bbcode"></div>
             </div>
             @submit
         @endform

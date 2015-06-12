@@ -36,7 +36,7 @@
             Comment preview
             <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
         </h4>
-        <div id="preview-panel" class="well">{{ app('bbcode')->Parse($text) }}</div>
+        <div id="preview-panel" class="well bbcode">{{ app('bbcode')->Parse($text) }}</div>
     </div>
     <script type="text/javascript">
         $('#update-preview').click(function() {

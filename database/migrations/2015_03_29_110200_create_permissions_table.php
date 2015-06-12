@@ -22,7 +22,8 @@ class CreatePermissionsTable extends Migration {
             'VaultAdmin' => 'Edit and delete all vault items',
             'NewsAdmin' => 'Create, edit, and delete news posts',
             'JournalAdmin' => 'Edit and delete all journals',
-            'CompetitionAdmin' => 'Create, edit, delete and perform administrative actions on competitions'
+            'CompetitionAdmin' => 'Create, edit, delete and perform administrative actions on competitions',
+            'PollAdmin' => 'Create, edit, and delete polls'
         ];
         $default = [
             'ForumCreate' => 'Create threads and posts in the forums',
@@ -33,7 +34,8 @@ class CreatePermissionsTable extends Migration {
 
             'NewsComment' => 'Comment on news posts',
             'VaultComment' => 'Comment on vault items',
-            'JournalComment' => 'Comment on journals'
+            'JournalComment' => 'Comment on journals',
+            'PollComment' => 'Comment on polls'
         ];
 
         foreach ($default as $name => $description) {

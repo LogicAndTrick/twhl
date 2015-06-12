@@ -40,6 +40,7 @@ Route::controllers([
     'news' => 'News\NewsController',
     'journal' => 'Journals\JournalController',
     'shout' => 'Shout\ShoutController',
+    'poll' => 'Polls\PollController',
 
     'api' => 'Api\ApiController',
 ]);

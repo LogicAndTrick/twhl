@@ -10,6 +10,7 @@ class Comment extends Model {
     const JOURNAL = 'j';
     const VAULT = 'v';
     const MOTM = 'm';
+    const POLL = 'p';
 
     use SoftDeletes;
 
@@ -66,6 +67,9 @@ class Comment extends Model {
             case Comment::MOTM;
                 $permission = 'Motm';
                 break;
+            case Comment::POLL:
+                $permission = 'Poll';
+                break;
             default:
                 throw new \Exception('Undefined comment type in isEditable: ' . $permission);
         }
@@ -77,7 +81,7 @@ class Comment extends Model {
         if ($user->id != $this->user_id || !permission($permission . 'Comment')) return false;
 
         // Comments less than an hour old are always editable
-        if (Date::DiffMinutes(Date::Now(), $this->created_at) <= 60) return true;
+        if ($this->created_at->diffInMinutes() <= 60) return true;
 
         if ($comments == null) {
             $comments = Comment::whereArticleType($this->article_type)->whereArticleId($this->article_id)->get();
@@ -109,6 +113,9 @@ class Comment extends Model {
                 break;
             case Comment::MOTM;
                 $permission = 'Motm';
+                break;
+            case Comment::POLL:
+                $permission = 'Poll';
                 break;
             default:
                 throw new \Exception('Undefined comment type in isDeletable: ' . $permission);
