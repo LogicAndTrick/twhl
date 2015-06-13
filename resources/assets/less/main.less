@@ -1,0 +1,47 @@
+body {
+  background: url('../images/body-background.png') #F4F4F4;
+
+  > .container {
+    background-color: white;
+    margin-bottom: 20px;
+  }
+}
+
+
+// Home page
+
+.home-page {
+  > .row > div {
+    padding: 0;
+  }
+  h1 {
+    color: @twhl-brand;
+    padding: 10px;
+    margin: 0 0 10px;
+    font-size: 20px;
+
+    border: 0 solid @twhl-brand;
+    border-left-width: 5px;
+
+    &.text-right {
+      border-left-width: 0;
+      border-right-width: 5px;
+    }
+  }
+  .vault-items {
+    > div {
+      padding-right: 0px;
+      padding-bottom: @grid-gutter-width / 2;
+    }
+  }
+  .vault-item {
+    position: relative;
+    background: @twhl-brand;
+
+    &::before{
+      content: '';
+      padding: 40% 0;
+      display: inline-block;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 <?php namespace App\Providers;
 
-use Illuminate\Support\Facades\App;
+use App\Helpers\TwhlUserProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider {
@@ -12,7 +12,11 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-        //
+        $this->app['auth']->extend('twhl', function()
+        {
+            $model = $this->app['config']['auth.model'];
+            return new TwhlUserProvider($this->app['hash'], $model);
+        });
 	}
 
 	/**

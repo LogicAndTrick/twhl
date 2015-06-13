@@ -25,8 +25,8 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 <body>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
+	<nav class="navbar navbar-default navbar-static-top">
+		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle Navigation</span>
@@ -34,12 +34,14 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Laravel</a>
+				<a class="navbar-brand" href="{{ url('/') }}">
+                    <img src="{{ asset('images/logo_icon.png') }}" alt="">
+                    The Whole Half-Life
+                </a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-                    <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ url('/forum') }}">Forums</a></li>
                     <li><a href="{{ url('/wiki') }}">Wiki</a></li>
                     <li><a href="{{ url('/vault') }}">Vault</a></li>
@@ -52,8 +54,13 @@
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+							<a href="{{ act('panel', 'index') }}" class="dropdown-toggle navbar-user-info" data-toggle="dropdown">
+                                <img src="{{ Auth::user()->getAvatarUrl('small') }}" alt="{{ Auth::user()->name }}"/>
+                                {{ Auth::user()->name }}
+                                <span class="caret"></span>
+                            </a>
 							<ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ act('panel', 'index') }}">Control Panel</a></li>
 								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 							</ul>
 						</li>
@@ -68,8 +75,7 @@
     </div>
 
     @if (app('config')->get('app.debug'))
-        <hr/>
-        <div class="container">
+        <div class="container" style="padding-top: 20px;">
             <table class="table table-bordered table-condensed">
                 <thead>
                     <tr>
