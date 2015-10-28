@@ -6,7 +6,7 @@ class Shout extends Model {
 
     protected $table = 'shouts';
     protected $fillable = ['user_id', 'content'];
-    protected $visible = ['id', 'user_id', 'content', 'created_at', 'user'];
+    protected $visible = ['id', 'user_id', 'content', 'created_at', 'updated_at', 'user'];
 
     public function user()
     {

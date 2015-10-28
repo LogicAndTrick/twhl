@@ -11,6 +11,7 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'green',  'element' => 'span', 'element_class' => 'green'         ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
 
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'code',   'element' => 'code'                                     ],
 

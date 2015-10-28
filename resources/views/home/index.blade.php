@@ -7,16 +7,42 @@
             <h1>New in the Vault</h1>
             <div class="row vault-items">
                 <div class="col-xs-6">
-                    <div class="vault-item">One</div>
+                    <div class="vault-item tagged">
+                        One
+                        <span class="tag"><span class="glyphicon glyphicon-star"></span> Map of the Month</span>
+                    </div>
                 </div>
                 <div class="col-xs-6">
-                    <div class="vault-item">Two</div>
+                    <div class="vault-item tagged">
+                        Two
+                        <span class="tag right">Latest Map <span class="glyphicon glyphicon-certificate"></span></span>
+                    </div>
                 </div>
 
-                <div class="col-xs-3"><div class="vault-item">One</div></div>
-                <div class="col-xs-3"><div class="vault-item">One</div></div>
-                <div class="col-xs-3"><div class="vault-item">One</div></div>
-                <div class="col-xs-3"><div class="vault-item">One</div></div>
+                <div class="col-xs-3 tagged">
+                    <div class="vault-item">
+                        One
+                        <span class="tag small">Top Map</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 tagged">
+                    <div class="vault-item">
+                        Two
+                        <span class="tag small">Top Map</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 tagged">
+                    <div class="vault-item">
+                        One
+                        <span class="tag right small">New Map</span>
+                    </div>
+                </div>
+                <div class="col-xs-3 tagged">
+                    <div class="vault-item">
+                        Two
+                        <span class="tag right small">New Map</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-sm-4">

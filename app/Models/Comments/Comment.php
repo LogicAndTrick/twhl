@@ -11,6 +11,7 @@ class Comment extends Model {
     const VAULT = 'v';
     const MOTM = 'm';
     const POLL = 'p';
+    const WIKI = 'w';
 
     use SoftDeletes;
 
@@ -70,6 +71,9 @@ class Comment extends Model {
             case Comment::POLL:
                 $permission = 'Poll';
                 break;
+            case Comment::WIKI:
+                $permission = 'Wiki';
+                break;
             default:
                 throw new \Exception('Undefined comment type in isEditable: ' . $permission);
         }
@@ -116,6 +120,9 @@ class Comment extends Model {
                 break;
             case Comment::POLL:
                 $permission = 'Poll';
+                break;
+            case Comment::WIKI:
+                $permission = 'Wiki';
                 break;
             default:
                 throw new \Exception('Undefined comment type in isDeletable: ' . $permission);

@@ -35,7 +35,8 @@ class CreatePermissionsTable extends Migration {
             'NewsComment' => 'Comment on news posts',
             'VaultComment' => 'Comment on vault items',
             'JournalComment' => 'Comment on journals',
-            'PollComment' => 'Comment on polls'
+            'PollComment' => 'Comment on polls',
+            'WikiComment' => 'Comment on wiki articles'
         ];
 
         foreach ($default as $name => $description) {

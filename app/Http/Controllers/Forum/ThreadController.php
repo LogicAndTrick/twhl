@@ -38,6 +38,12 @@ class ThreadController extends Controller {
         $count = $post_query->getQuery()->getCountForPagination();
         if (Input::get('page') == 'last') $page = ceil($count / 50);
         $posts = $post_query->skip(($page - 1) * 50)->take(50)->get();
+        foreach ($posts as $p) {
+            if ($p->content_html == '' && $p->content_text != '') {
+                $p->content_html = app('bbcode')->Parse($p->content_text);
+                $p->save();
+            }
+        }
         $pag = new LengthAwarePaginator($posts, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);
 
         return view('forums/thread/view', [

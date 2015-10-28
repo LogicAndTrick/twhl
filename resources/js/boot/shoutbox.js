@@ -7,6 +7,7 @@
         url: '',
         userUrl: '',
         active: 'false',
+        moderator: 'false',
         getAction: 'shouts/{id}',
         postAction: 'add',
         editAction: 'edit',
@@ -19,23 +20,34 @@
                     'Shoutbox <span class="refresh-icon glyphicon glyphicon-refresh"></span>' +
                     '<a href="#" class="pin-button"><span class="glyphicon glyphicon-pushpin"></span></a>' +
                     '<a href="#" class="close-button"><span class="glyphicon glyphicon-remove"></span></a>' +
-                    '<a href="#" class="minimise-button"><span class="glyphicon glyphicon-chevron-up"></span></a>' +
+                    '<a href="#" class="minimise-button"><span class="glyphicon glyphicon-triangle-top"></span></a>' +
                 '</h1>' +
                 '<ul class="shouts">' +
                     '<li class="shout inactive">Loading...</li>' +
                 '</ul>' +
+                '<div class="error"><span class="glyphicon glyphicon-remove"></span><span class="message"></span></div>' +
                 '<form method="get">' +
                     '<div class="input-group">' +
-                        '<input type="text" size="250" class="form-control input-sm" placeholder="Type here">' +
-                        '<span class="input-group-btn"><button class="btn btn-primary btn-sm" type="submit">Shout!</button></span>' +
+                        '<input type="text" maxlength="250" class="form-control input-sm" placeholder="Type here">' +
+                        '<span class="input-group-btn">' +
+                            '<button class="btn btn-info btn-sm edit-button" type="submit">Edit</button>' +
+                            '<button class="btn btn-danger btn-sm delete-button" type="submit">Delete</button>' +
+                            '<button class="btn btn-default btn-sm cancel-button" type="button"><span class="glyphicon glyphicon-remove"></span></button>' +
+                            '<button class="btn btn-primary btn-sm shout-button" type="submit">Shout!</button>' +
+                        '</span>' +
                     '</div>' +
                 '</form>' +
             '</div>';
     var shout_template =
             '<li class="shout">' +
-                '<span class="time" data-stamp="{time}" title="{date}"></span>' +
-                '<a href="{user.url}" class="user">{user.name}</a>' + // todo avatar
-                '<span class="text">{content}</span> ' +
+                '<span class="avatar"><a href="{user.url}"><img src="{user.avatar}" alt="{user.name}" /></a></span>' +
+                '<span class="message">' +
+                    '<span class="time" data-stamp="{time}" title="{date}"></span>' +
+                    '<button data-id="{id}" class="btn btn-default btn-xxs delete">D</button>' +
+                    '<button data-id="{id}" class="btn btn-default btn-xxs edit">E</button>' +
+                    '<span class="user"><a href="{user.url}">{user.name}</a></span>' +
+                    '<span class="text">{content}</span> ' +
+                '</span>' +
             '</li>';
 
     var readableTime = function(ts) {
@@ -59,7 +71,11 @@
         ) + ' ago';
     };
 
+    // Increment this to clear everyone's cached local storage
+    var TWHL_SHOUTBOX_DATA_FORMAT_VERSION = '1';
+
     var Shoutbox = function(parent, options) {
+
         this.options = $.extend(opts, options);
         this.options.get = template(this.options.url, { action: this.options.getAction });
         this.options.post = template(this.options.url, { action: this.options.postAction });
@@ -69,36 +85,52 @@
         this.el = $(parent);
         var self = this;
 
+        this.store = [];
+        this.lastUpdate = this.lastId = this.lastSeen = 0;
+
         try {
-            this.store = JSON.parse(localStorage.getItem('shoutbox.store')) || [];
-            this.lastUpdate = parseInt(localStorage.getItem('shoutbox.lastUpdate'), 10) || 0;
-            this.lastId = parseInt(localStorage.getItem('shoutbox.lastId'), 10) || 0;
-            this.lastSeen = parseInt(localStorage.getItem('shoutbox.lastSeen'), 10) || 0;
+            var version = localStorage.getItem('shoutbox.version') || '0';
+            if (version == TWHL_SHOUTBOX_DATA_FORMAT_VERSION) {
+                this.store = JSON.parse(localStorage.getItem('shoutbox.store')) || [];
+                this.lastUpdate = parseInt(localStorage.getItem('shoutbox.lastUpdate'), 10) || 0;
+                this.lastId = parseInt(localStorage.getItem('shoutbox.lastId'), 10) || 0;
+                this.lastSeen = parseInt(localStorage.getItem('shoutbox.lastSeen'), 10) || 0;
+            }
         } catch (ex) {
             this.store = [];
             this.lastUpdate = this.lastId = this.lastSeen = 0;
         }
 
-        this.updateStore = function(arr) {
-            var i, count = this.store.length;
-            this.lastUpdate = Date.now();
+        this.updateStore = function(arr, full) {
+            var obj, i;
+
+            if (full === true) this.store = [];
 
             // Avoid duplicates
             var ids = {};
             this.store = this.store.concat(arr);
             var newStore = [];
             for (i = 0; i < this.store.length; i++) {
-                if (ids[this.store[i].id]) continue;
-                newStore.push(this.store[i]);
-                ids[this.store[i].id] = true;
+                obj = this.store[i];
+                if (!obj.updated) obj.updated = Date.parse(obj.updated_at.replace(/ /ig, 'T') + 'Z');
+                if (ids[obj.id] !== undefined) {
+                    var orig = newStore[ids[obj.id]];
+                    if (orig.updated < obj.updated) newStore[ids[obj.id]] = obj;
+                } else {
+                    ids[obj.id] = newStore.length;
+                    newStore.push(obj);
+                }
             }
             this.store = newStore;
 
             if (this.store.length > 50) this.store.splice(0, 50 - this.store.length);
             for (i = 0; i < this.store.length; i++) {
-                this.lastId = Math.max(this.lastId, this.store[i].id);
+                obj = this.store[i];
+                this.lastId = Math.max(this.lastId, obj.id);
+                this.lastUpdate = Math.max(this.lastUpdate, obj.updated);
             }
 
+            localStorage.setItem('shoutbox.version', TWHL_SHOUTBOX_DATA_FORMAT_VERSION);
             localStorage.setItem('shoutbox.store', JSON.stringify(this.store));
             localStorage.setItem('shoutbox.lastUpdate', this.lastUpdate);
             localStorage.setItem('shoutbox.lastId', this.lastId);
@@ -111,6 +143,7 @@
                 var obj = this.store[i];
                 obj['user.name'] = obj.user.name;
                 obj['user.url'] = template(this.options.userUrl, { id: obj.user.id });
+                obj['user.avatar'] = obj.user.avatar_small;
                 obj['time'] = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
                 obj['date'] = obj.created_at + 'Z';
                 this.shoutsContainer.append(template(shout_template, obj));
@@ -132,12 +165,12 @@
             }
         };
 
-        this.refresh = function() {
-            var url = template(this.options.get, { id: this.lastId });
+        this.refresh = function(full) {
+            var url = template(this.options.get, { id: full === true ? 0 : Math.floor(this.lastUpdate / 1000) });
             this.container.addClass('refreshing');
             $.get(url, function(data) {
                 self.container.removeClass('refreshing');
-                self.updateStore(data);
+                self.updateStore(data, full);
                 self.render();
             });
         };
@@ -158,9 +191,47 @@
             this.container.find('form').addClass('loading');
             this.container.find('input,button').prop('disabled', true);
             this.container.addClass('refreshing');
-            $.post(this.options.post, { text: content }, function() {
-                self.refresh();
+
+            var url = this.editing ? this.options.edit
+                    : this.deleting ? this.options.delete
+                    : this.options.post;
+            var full = this.deleting;
+
+            $.post(url, { text: content, id: this.editing || this.deleting || null }).fail(function(req) {
+                self.container.find('form').removeClass('loading');
+                self.container.find('input,button').prop('disabled', false);
+                self.container.removeClass('refreshing');
+                self.container.find('.error').addClass('show').find('.message').text(req.responseJSON.text[0]);
+                console.log(arguments);
+                input.val(content).focus();
+            }).done(function() {
+                self.cancelEdit();
+                self.refresh(!!full);
             });
+        };
+
+        this.beginEdit = function(id, data) {
+            this.cancelEdit();
+            this.editing = id;
+            this.container.addClass('editing');
+            this.container.find('input').val(data.content).focus();
+
+            console.log(id, data);
+        };
+
+        this.beginDelete = function(id, data) {
+            this.cancelEdit();
+            this.deleting = id;
+            this.container.addClass('deleting');
+            this.container.find('input').val(data.content).focus();
+
+            console.log(id, data);
+        };
+
+        this.cancelEdit = function() {
+            this.editing = this.deleting = false;
+            this.container.removeClass('editing deleting');
+            this.container.find('input').val('');
         };
 
         this.togglePin = function() {
@@ -197,11 +268,39 @@
                 event.preventDefault();
                 self.post();
             });
+            this.container.find('.error .glyphicon').on('click', function(event) {
+                self.container.find('.error').removeClass('show');
+            });
+            this.container.on('click', '.shout .edit', function(event) {
+                var id = $(event.currentTarget).data('id');
+                for (var i = 0; i < self.store.length; i++) {
+                    var s = self.store[i];
+                    if (s.id == id) {
+                        self.beginEdit(id, s);
+                        break;
+                    }
+                }
+            });
+            this.container.on('click', '.shout .delete', function(event) {
+                var id = $(event.currentTarget).data('id');
+                for (var i = 0; i < self.store.length; i++) {
+                    var s = self.store[i];
+                    if (s.id == id) {
+                        self.beginDelete(id, s);
+                        break;
+                    }
+                }
+            });
+            this.container.find('.cancel-button').on('click', function(event) {
+                event.preventDefault();
+                self.cancelEdit();
+            });
         };
 
         this.container = $(window_template).toggleClass('open pinned', this.options.pinned).appendTo(this.el);
         this.shoutsContainer = this.container.find('.shouts');
         if (this.options.active != 'true') this.container.find('input, button').prop('disabled', true);
+        if (this.options.moderator == 'true') this.container.addClass('moderator');
 
         this.interval = setInterval(function() {
             self.refresh();
@@ -209,7 +308,7 @@
 
         this.bind();
         this.render();
-        this.refresh();
+        this.refresh(true);
     };
 
     $.fn.shoutbox = function(options) {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Shout;
+use Carbon\Carbon;
 use Request;
 use Input;
 use Auth;
@@ -15,7 +16,8 @@ class ShoutController extends Controller {
 	}
 
 	public function getShouts($last = 0) {
-        return Shout::with(['user'])->where('id', '>', $last)->orderBy('created_at', 'desc')->take(50)->get()->reverse();
+        $car = Carbon::createFromTimestamp($last - 10);
+        return Shout::with(['user'])->where('updated_at', '>=', $car)->orderBy('created_at', 'desc')->take(50)->get()->reverse();
 	}
 
     public function postAdd() {

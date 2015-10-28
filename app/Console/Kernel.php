@@ -12,7 +12,15 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'App\Console\Commands\Inspire',
-        'App\Console\Commands\UpdateCompetitions'
+        'App\Console\Commands\UpdateCompetitions',
+        'App\Console\Commands\ProcessWikiRevisions',
+        'App\Console\Commands\ProcessComments',
+        'App\Console\Commands\ProcessWikiUploads',
+        'App\Console\Commands\ProcessVaultScreenshots',
+        'App\Console\Commands\ProcessVault',
+        'App\Console\Commands\ProcessJournals',
+        'App\Console\Commands\ProcessNews',
+        'App\Console\Commands\ProcessVaultUploads'
 	];
 
 	/**

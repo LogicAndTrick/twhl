@@ -27,18 +27,41 @@ class MdListElement extends Element {
         return $this->IsSortedToken($char) || $this->IsUnsortedToken($char);
     }
 
+    function IsValidListItem($value, $current_level) {
+        $len = strlen($value);
+        if ($len == 0) return 0;
+
+        $tokens = 0;
+        $found_space = false;
+        for ($i = 0; $i < $len; $i++) {
+            $c = $value[$i];
+            if ($this->IsListToken($c)) {
+                $tokens++;
+                continue;
+            } else if ($c == ' ') {
+                $found_space = true;
+                break;
+            }
+            return 0;
+        }
+        if ($found_space && $tokens > 0 && $tokens <= ($current_level + 1)) return $tokens;
+        return 0;
+    }
+
     function Matches($lines)
     {
         $value = trim($lines->Value());
-        return strlen($value) > 0 && strpos($value, ' ') !== false && $this->IsListToken($value[0]);
+        return $this->IsValidListItem($value, 0) > 0;
     }
 
     function Consume($parser, $lines)
     {
         $arr = array();
+        $level = 0;
         do {
             $value = trim($lines->Value());
-            if (strlen($value) == 0 || strpos($value, ' ') === false || !$this->IsListToken($value[0])) {
+            $level = $this->IsValidListItem($value, $level);
+            if ($level == 0) {
                 $lines->Back();
                 break;
             }
@@ -67,7 +90,7 @@ class MdListElement extends Element {
                 $current_list = array('type' => $current_type, 'items' => array());
             }
             $text = $type == '_' ? $line : substr($line, 1);
-            $current_list['items'][] = trim($text);
+            $current_list['items'][] = $text;
         }
         if ($current_list != null && count($current_list) > 0) $tree[] = $current_list;
         foreach ($tree as $key => $leaf) {
@@ -87,7 +110,7 @@ class MdListElement extends Element {
             if ($type == '_') {
                 foreach ($leaf['items'] as $item) {
                     if ($open) $str .= '</li>';
-                    $str .= '<li>' . $this->parser->ParseBBCode($result, $item, $scope, 'inline');
+                    $str .= '<li>' . $this->parser->ParseBBCode($result, trim($item), $scope, 'inline');
                     $open = true;
                 }
             } else {

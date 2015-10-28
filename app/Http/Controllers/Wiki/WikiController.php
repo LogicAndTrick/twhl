@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Wiki;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comments\Comment;
 use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
@@ -82,6 +83,12 @@ class WikiController extends Controller {
 
     // Page types: 1; Article; 2: Category, 3: Upload
 
+    public function getView($id) {
+        $obj = WikiObject::findOrFail($id);
+        $rev = WikiRevision::where('is_active', '=', 1)->where('object_id', '=', $id)->firstOrFail();
+        return redirect('wiki/page/'.$rev->slug);
+    }
+
     public function getPage($page, $revision = 0) {
         $rev = null;
         if (!$revision) {
@@ -110,6 +117,11 @@ class WikiController extends Controller {
             $upload = $rev->getUpload();
         }
 
+        $comments = [];
+        if ($rev) {
+            $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::WIKI)->whereArticleId($rev->object_id)->get();
+        }
+
         return view('wiki/view/object', [
             'slug' => $page,
             'slug_title' => str_replace('_', ' ', $page),
@@ -117,7 +129,8 @@ class WikiController extends Controller {
             'revision' => $rev,
             'cat_name' => $cat_name,
             'cat_pages' => $cat_pages,
-            'upload' => $upload
+            'upload' => $upload,
+            'comments' => $comments
         ]);
     }
 
@@ -228,7 +241,7 @@ class WikiController extends Controller {
             return $rev == null;
         });
         Validator::extend('valid_categories', function($attribute, $value, $parameters) {
-            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9 -_\'\r\n\]][^\r\n\]]*\]/i', $value);
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('category_name_must_exist', function($attribute, $value, $parameters) {
             if (substr($value, 0, 9) != 'category:') return true;
@@ -278,7 +291,7 @@ class WikiController extends Controller {
                 || ($obj->type_id == WikiType::UPLOAD && Request::file('file'));
         });
         Validator::extend('valid_categories', function($attribute, $value, $parameters) {
-            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9 -_\'\r\n\]][^\r\n\]]*\]/i', $value);
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('invalid_title', function($attribute, $value, $parameters) use ($obj, $rev) {
             return ($obj->type_id != WikiType::PAGE) ||
@@ -375,7 +388,7 @@ class WikiController extends Controller {
             return $rev == null;
         });
         Validator::extend('valid_categories', function($attribute, $value, $parameters) {
-            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9 -_\'\r\n\]][^\r\n\]]*\]/i', $value);
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);

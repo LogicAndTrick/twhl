@@ -76,6 +76,12 @@ class VaultItem extends Model {
         else return asset('uploads/vault/items/'.$this->file_location);
     }
 
+    public function getServerFilePath()
+    {
+        if ($this->is_hosted_externally) return '';
+        else return public_path('uploads/vault/items/'.$this->file_location);
+    }
+
     /**
      * Returns true if this item is editable by the current user.
      * @return bool

@@ -17,3 +17,30 @@
 .btn-inverse {
   .button-variant(@btn-default-bg; @btn-default-color; @btn-default-border);
 }
+
+.tagged {
+  position: relative;
+
+  .tag {
+    position: absolute;
+    top: 10%;
+    left: 0;
+    background-color: #37acec;
+    color: #f2f2f2;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 3px 6px 2px;
+
+    // Positioning
+    &.right { left: auto; right: 0; }
+    &.middle { top: 45%; }
+    &.bottom { top: 75%; }
+
+    // Sizing
+    &.small { font-size: 10px; padding: 2px 4px 1px; }
+    &.large { font-size: 18px; padding: 4px 8px 3px; }
+    &.huge { font-size: 24px; padding: 6px 12px 5px; }
+    &.enormous { font-size: 30px; padding: 8px 16px 7px; }
+    &.colossal { font-size: 40px; padding: 10px 20px 9px; }
+  }
+}

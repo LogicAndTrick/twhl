@@ -39,7 +39,7 @@ class Tag
         $options = array();
         if (strlen($optionsString) > 0) {
             if ($optionsString[0] == '=') $optionsString = $this->main_option . $optionsString;
-            preg_match_all('/([^ ]+)=([^=]*)\b(?!=)/sim', $optionsString, $res, PREG_SET_ORDER);
+            preg_match_all('/(?=\s|^)\s*([^ ]+?)=([^\s]*)\b(?!=)/sim', $optionsString, $res, PREG_SET_ORDER);
             for ($i = 0; $i < count($res); $i++) {
                 $name = trim($res[$i][1]);
                 $value = trim($res[$i][2]);

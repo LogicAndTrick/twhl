@@ -11,6 +11,30 @@ class BBCodeTest extends TestCase {
     }
     */
 
+    public function testMultiStarBug()
+    {
+        $input = "* * * * *";
+        $expected = "<ul><li>* * * *</li></ul>";
+        $output = app('bbcode')->Parse($input);
+        $this->assertEquals($expected, $output);
+    }
+
+    public function testBlankListBug()
+    {
+        $input = "*";
+        $expected = "*";
+        $output = app('bbcode')->Parse($input);
+        $this->assertEquals($expected, $output);
+    }
+
+    public function testPoorlyFormattedListBug()
+    {
+        $input = "* 1\n------------------------------------------------------";
+        $expected = "<ul><li>1</li></ul>\n<hr />";
+        $output = app('bbcode')->Parse($input);
+        $this->assertEquals($expected, $output);
+    }
+
     public function testQuoteBug()
     {
         $input = '[b]#include "userdata.h"[/b]';

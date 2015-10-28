@@ -43,7 +43,7 @@
         </div>
     </div>
     <hr/>
-    <div class="bbcode">{!! $comp->brief_text !!}</div>
+    <div class="bbcode">{!! $comp->brief_html !!}</div>
     @if ($comp->brief_attachment)
         <div class="well well-sm">
             Attached file:

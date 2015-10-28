@@ -19,7 +19,6 @@
     @endform
 @endsection
 
-
 @section('scripts')
     <script type="text/javascript">
         $('#update-preview').click(function() {

@@ -40,6 +40,12 @@ class CommentController extends Controller {
             'redirect' => 'poll/view/{id}',
             'auth_create' => 'PollComment',
             'auth_moderate' => 'PollAdmin'
+        ],
+        Comment::WIKI => [
+            'model' => '\App\Models\Wiki\WikiObject',
+            'redirect' => 'wiki/view/{id}',
+            'auth_create' => 'WikiComment',
+            'auth_moderate' => 'WikiAdmin'
         ]
         //Comment::MOTM => array(
         //    'model' => '\App\Models\Motm\Motm',
