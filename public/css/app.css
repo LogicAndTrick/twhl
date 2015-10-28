@@ -6602,20 +6602,11 @@ body > .container {
   background-color: white;
   margin-bottom: 20px;
 }
-.home-page > .row > div {
-  padding: 0;
-}
 .home-page h1 {
   color: #fea320;
-  padding: 10px;
-  margin: 0 0 10px;
-  font-size: 20px;
-  border: 0 solid #fea320;
-  border-left-width: 5px;
 }
-.home-page h1.text-right {
-  border-left-width: 0;
-  border-right-width: 5px;
+.home-page .vault-items {
+  margin: 0 -30px;
 }
 .home-page .vault-items > div {
   padding-right: 0px;
@@ -6629,6 +6620,85 @@ body > .container {
   content: '';
   padding-top: 56.25%;
   display: inline-block;
+}
+.header-container {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 0 solid #fea320;
+  border-left-width: 5px;
+}
+.header-container.text-right {
+  border-left-width: 0;
+  border-right-width: 5px;
+}
+.header-container .btn {
+  float: right;
+  margin: 0 2px;
+}
+.header-container h1 {
+  font-size: 22px;
+  margin: 0 0 10px;
+}
+h2 {
+  font-size: 20px;
+  border-color: #666;
+}
+.container .header-container:first-child {
+  margin-top: 0 !important;
+}
+.row > div > .header-container,
+.container > .header-container {
+  margin-left: -15px;
+}
+.row > div > .header-container.text-right,
+.container > .header-container.text-right {
+  margin-left: 0;
+  margin-right: -15px;
+}
+.header-container .breadcrumb {
+  background-color: transparent;
+  padding: 0;
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 16px;
+}
+.header-container .pagination {
+  display: block;
+  padding: 0;
+  height: 25px;
+  margin-top: 10px;
+  margin-bottom: -10px;
+}
+.header-container .pagination li > span,
+.header-container .pagination li > a {
+  border-radius: 0 !important;
+  padding: 0 10px;
+  border: 0;
+  background-color: #fea320;
+  color: #fff;
+  font-size: 12px;
+  line-height: 25px;
+}
+.header-container .pagination li > span:hover,
+.header-container .pagination li > a:hover {
+  background-color: #ea8a01;
+  color: #fff;
+}
+.header-container .pagination li.disabled > span,
+.header-container .pagination li.disabled > a {
+  background-color: #dddddd;
+}
+.header-container .pagination li.disabled > span:hover,
+.header-container .pagination li.disabled > a:hover {
+  background-color: #dddddd;
+}
+.header-container .pagination li.active > span,
+.header-container .pagination li.active > a {
+  background-color: #337ab7;
+}
+.header-container .pagination li.active > span:hover,
+.header-container .pagination li.active > a:hover {
+  background-color: #337ab7;
 }
 .bbcode {
   margin-bottom: 10px;

@@ -1,0 +1,104 @@
+
+.header-container {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 0 solid @twhl-brand;
+  border-left-width: 5px;
+
+  &.text-right {
+    border-left-width: 0;
+    border-right-width: 5px;
+  }
+
+  .btn {
+    float: right;
+    margin: 0 2px;
+  }
+
+  h1{
+    font-size: 22px;
+    margin: 0 0 10px;
+  }
+}
+
+h2 {
+  font-size: 20px;
+  border-color: #666;
+}
+
+.container {
+  .header-container {
+    &:first-child {
+      margin-top: 0 !important;
+    }
+  }
+}
+
+.row > div, .container {
+  > .header-container {
+    margin-left: -15px;
+
+    &.text-right {
+      margin-left: 0;
+      margin-right: -15px;
+    }
+  }
+}
+
+.header-container {
+
+  .breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 16px;
+
+
+    li {
+
+    }
+    a {
+
+    }
+  }
+
+  .pagination {
+    display: block;
+    padding: 0;
+    height: 25px;
+    margin-top: 10px;
+    margin-bottom: -10px;
+
+    li > span, li > a {
+      border-radius: 0 !important;
+      padding: 0 10px;
+      border: 0;
+      background-color: @twhl-brand;
+      color: #fff;
+      font-size: 12px;
+      line-height: 25px;
+
+      &:hover {
+        background-color: darken(@twhl-brand, 10%);
+        color: #fff;
+      }
+    }
+
+    li.disabled > span, li.disabled > a {
+      background-color: #dddddd;
+
+      &:hover {
+        background-color: #dddddd;
+      }
+    }
+
+    li.active > span, li.active > a {
+      background-color: @brand-primary;
+
+      &:hover {
+        background-color: @brand-primary;
+      }
+    }
+  }
+}

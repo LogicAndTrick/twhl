@@ -9,21 +9,35 @@ use Illuminate\Support\ServiceProvider;
 
 class BladeServiceProvider extends ServiceProvider {
 
-	public function boot()
-	{
-        //
-	}
+    public function register()
+   	{
+           //
+   	}
 
     public function createSensibleOpenMatcher($function)
     {
         return '/(?<!\w)(\s*)@'.$function.'\s*\((.*)\)/';
     }
 
-	public function register()
+    /*
+     Blade::directive('datetime', function($expression) {
+         return "<?php echo with{$expression}->format('m/d/Y H:i'); ?>";
+     });
+    */
+
+	public function boot()
 	{
         // {? code ?}
         Blade::extend(function($view, $compiler) {
             return preg_replace('/\{\?(.*?)\?\}/is', '<?php $1 ?>', $view);
+        });
+
+        // <hc> and </hc>
+        Blade::extend(function($view, $compiler) {
+            $r = $view;
+            $r = preg_replace('/<hc>/is', '<div class="header-container">', $r);
+            $r = preg_replace('/<\/hc>/is', '</div>', $r);
+            return $r;
         });
 
         // @form(url)
@@ -40,7 +54,7 @@ class BladeServiceProvider extends ServiceProvider {
 
         // @endform
         Blade::extend(function($view, $compiler) {
-            $pattern = $compiler->createPlainMatcher('endform');
+            $pattern = '/(?<!\w)(\s*)@endform(\s*)/';
             return preg_replace($pattern, '$1</form>$2', $view);
         });
 

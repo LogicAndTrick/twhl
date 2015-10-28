@@ -1,8 +1,7 @@
 @extends('app')
 
 @section('content')
-    <h2>
-        {{ $thread->title }}
+    <hc>
         @if (permission('ForumAdmin'))
             @if ($thread->deleted_at)
                 <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-repeat"></span></a>
@@ -11,9 +10,17 @@
                 <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
             @endif
         @endif
-    </h2>
 
-    {!! $posts->render() !!}
+        <h1>{{ $thread->title }}</h1>
+
+        <ol class="breadcrumb">
+          <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+          <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+        </ol>
+
+        {!! $posts->render() !!}
+    </hc>
+
     @foreach ($posts as $post)
         <div class="row">
             <div class="col-md-10 bbcode">
