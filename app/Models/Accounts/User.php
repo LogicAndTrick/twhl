@@ -1,5 +1,6 @@
 <?php namespace App\Models\Accounts;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -22,7 +23,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     ];
 	protected $hidden = ['password', 'remember_token'];
     protected $visible = [ 'id', 'name', 'avatar_custom', 'avatar_file', 'title_custom', 'title_text', 'avatar_full', 'avatar_small', 'avatar_inline' ];
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'last_login_time', 'last_access_time'];
     protected $attributes = [ 'avatar_file' => 'user_noavatar.png' ];
 
     protected $appends = ['avatar_full', 'avatar_small', 'avatar_inline', 'info_birthday_formatted'];

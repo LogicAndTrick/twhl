@@ -20,55 +20,13 @@ if (!function_exists('tag'))
 if (!function_exists('act'))
 {
     function act($controller, $action) {
-
-        $mappings = array(
-            'auth' => 'Auth\AuthController',
-            'password' => 'Auth\PasswordController',
-
-            'forum' => 'Forum\ForumController',
-            'thread' => 'Forum\ThreadController',
-            'post' => 'Forum\PostController',
-
-            'competition' => 'Competitions\CompetitionController',
-            'competition-admin' => 'Competitions\CompetitionAdminController',
-            'competition-entry' => 'Competitions\CompetitionEntryController',
-            'competition-group' => 'Competitions\CompetitionGroupController',
-            'competition-restriction' => 'Competitions\CompetitionRestrictionController',
-            'competition-judging' => 'Competitions\CompetitionJudgingController',
-
-            'panel' => 'User\PanelController',
-            'message' => 'User\MessageController',
-            'user' => 'User\UserController',
-
-            'home' => 'HomeController',
-
-            'wiki' => 'Wiki\WikiController',
-            'vault' => 'Vault\VaultController',
-            'comment' => 'Comments\CommentController',
-            'news' => 'News\NewsController',
-            'journal' => 'Journals\JournalController',
-            'shout' => 'Shout\ShoutController',
-            'poll' => 'Polls\PollController',
-
-            'api' => 'Api\ApiController'
-        );
-
-        if (!array_key_exists($controller, $mappings)) throw new Exception('Undefined action mapping: ' . $controller);
-
-        $action = preg_replace_callback('/(^|-)([a-z])/i', function ($g) { return strtoupper($g[2]); }, $action);
-
-        $act = $action;
-        if (substr($action, 0, 3) != 'Get' && substr($action, 0, 4) != 'Post') {
-            $act = 'get'.strtoupper(substr($action, 0, 1)).substr($action, 1);
-        } else {
-            $act = strtolower($action[0]) . substr($action, 1);
-        }
         $arr = array();
         for ($i = 2; $i < func_num_args(); $i++) {
             $arg = func_get_arg($i);
             if (!is_array($arg)) $arr[] = $arg;
+            else foreach ($arg as $k => $v) $arr[$k] = $v;
         }
-        return action($mappings[$controller].'@'.$act, $arr);
+        return url($controller.'/'.$action, $arr);
     }
 }
 

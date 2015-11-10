@@ -26,12 +26,19 @@
                     <h3 class="panel-title">Actions</h3>
                 </div>
                 <div class="panel-body">
-                    <ul>
+                    <ul class="unstyled">
                         <li><a href="{{ act('panel', 'edit-profile', $user->id) }}"><span class="glyphicon glyphicon-pencil"></span> Edit Public Profile</a></li>
                         <li><a href="{{ act('panel', 'edit-avatar', $user->id) }}"><span class="glyphicon glyphicon-picture"></span> Change Avatar</a></li>
                         <li><a href="{{ act('panel', 'edit-password', $user->id) }}"><span class="glyphicon glyphicon-lock"></span> Update Password</a></li>
                         <li><a href="{{ act('panel', 'edit-settings', $user->id) }}"><span class="glyphicon glyphicon-cog"></span> Edit Site Settings</a></li>
                     </ul>
+                    @if (permission('Admin'))
+                        <hr title="Admin Actions"/>
+                        <ul class="unstyled">
+                            <li><a href="{{ act('panel', 'edit-name', $user->id) }}"><span class="glyphicon glyphicon-user"></span> Change User's Name</a></li>
+                            <li><a href="{{ act('panel', 'edit-bans', $user->id) }}"><span class="glyphicon glyphicon-ban-circle"></span> Ban/Unban/Obliterate User</a></li>
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>
@@ -41,7 +48,7 @@
             <h3 class="panel-title">Profile</h3>
         </div>
         <div class="panel-body">
-            @include('user._profile', [ 'user' => $user, 'private' => true ])
+            @include('user._profile', [ 'user' => $user ])
         </div>
     </div>
 @endsection

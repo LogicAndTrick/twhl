@@ -36,6 +36,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $r = $view;
             $r = preg_replace('/<hc>/is', '<div class="header-container">', $r);
+            $r = preg_replace('/<hc class=["\'](.*?)["\']>/is', '<div class="header-container $1">', $r);
             $r = preg_replace('/<\/hc>/is', '</div>', $r);
             return $r;
         });

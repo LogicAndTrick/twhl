@@ -3,6 +3,7 @@
 @import "bootstrap/bootstrap";
 @import "variables.less";
 @import "util.less";
+@import "theme.less";
 
 // layout
 @import "nav.less";
@@ -78,6 +79,12 @@ textarea.form-control {
   &.medium { height: 250px; }
   &.small { height: 150px; }
   &.tiny { height: 80px; }
+}
+
+.dl-horizontal.dl-small {
+  text-align: left;
+  dt { width: 110px; }
+  dd { margin-left: 130px; }
 }
 
 .dl-horizontal.dl-wide {

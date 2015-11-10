@@ -1,7 +1,7 @@
 <div>
     @if (isset($revision) && $revision)
         <a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->title }}</a> |
-        @if (permission('ForumEdit'))
+        @if (permission('WikiCreate'))
             <a href="{{ act('wiki', 'edit', $revision->slug) }}">Edit</a> |
         @endif
         <a href="{{ act('wiki', 'history', $revision->slug) }}">History</a> |

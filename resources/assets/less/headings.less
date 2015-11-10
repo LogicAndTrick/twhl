@@ -15,15 +15,21 @@
     margin: 0 2px;
   }
 
+  h1, h2, h3 {
+    margin: 0;
+  }
+
   h1{
     font-size: 22px;
-    margin: 0 0 10px;
   }
-}
 
-h2 {
-  font-size: 20px;
-  border-color: #666;
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
 }
 
 .container {
@@ -47,58 +53,33 @@ h2 {
 
 .header-container {
 
-  .breadcrumb {
-    background-color: transparent;
-    padding: 0;
-    margin-top: 8px;
-    margin-bottom: 0;
-    font-size: 16px;
-
-
-    li {
-
-    }
-    a {
-
-    }
+  h1, h2, h3 {
+    padding-bottom: 8px;
   }
 
+  padding-bottom: 0px;
+
   .pagination {
-    display: block;
-    padding: 0;
-    height: 25px;
-    margin-top: 10px;
-    margin-bottom: -10px;
+    margin: 0;
+    padding-bottom: 8px;
+  }
 
-    li > span, li > a {
-      border-radius: 0 !important;
-      padding: 0 10px;
-      border: 0;
-      background-color: @twhl-brand;
-      color: #fff;
-      font-size: 12px;
-      line-height: 25px;
+  & > .pagination:last-child,
+  & > .breadcrumbs:last-child {
+    padding-bottom: 0;
+  }
+}
 
-      &:hover {
-        background-color: darken(@twhl-brand, 10%);
-        color: #fff;
-      }
-    }
+/* HR headings (kinda hacky) */
+hr[title] {
+  position: relative;
+  text-align: center;
 
-    li.disabled > span, li.disabled > a {
-      background-color: #dddddd;
-
-      &:hover {
-        background-color: #dddddd;
-      }
-    }
-
-    li.active > span, li.active > a {
-      background-color: @brand-primary;
-
-      &:hover {
-        background-color: @brand-primary;
-      }
-    }
+  &::before {
+    content: attr(title);
+    position: relative;
+    top: -0.7em;
+    background: white;
+    padding: 0 15px;
   }
 }

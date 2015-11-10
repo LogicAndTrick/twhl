@@ -21,10 +21,10 @@
         </thead>
         <tbody>
             @foreach ($threads as $thread)
-                {? $unread = array_search($thread->id, $unread) !== false; ?}
-                <tr class="{{ $unread ? 'unread' : '' }}">
+                {? $is_unread = array_search($thread->id, $unread) !== false; ?}
+                <tr class="{{ $is_unread ? 'unread' : '' }}">
                     <td>
-                        @if ($unread)
+                        @if ($is_unread)
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
                         @endif
                         <a href="{{ act('message', 'view', $thread->id) }}">{{ $thread->subject }}</a>

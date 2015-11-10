@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
+use App\Models\Journal;
+use App\Models\Vault\VaultItem;
 use Request;
 use Input;
 use Auth;
@@ -19,8 +21,12 @@ class UserController extends Controller {
 
 	public function getView($id) {
         $user = User::findOrFail($id);
+        $journals = Journal::where('user_id', '=', $id)->orderBy('created_at', 'desc')->take(5)->get();
+        $vault_items = VaultItem::with(['vault_screenshots', 'user', 'game'])->where('user_id', '=', $id)->orderBy('created_at', 'desc')->take(5)->get();
         return view('user/user/index', [
-            'user' => $user
+            'user' => $user,
+            'journals' => $journals,
+            'vault_items' => $vault_items
         ]);
 	}
 
