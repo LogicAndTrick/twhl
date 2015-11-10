@@ -2,7 +2,14 @@
 
 @section('content')
     @include('wiki.nav')
-    <h2>Wiki Uploads</h2>
+    <hc>
+        <h1>Wiki Uploads</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+            <li class="active">Upload List</li>
+        </ol>
+        {!! $revisions->render() !!}
+    </hc>
 
     <ul>
     @foreach ($revisions as $r)
@@ -10,5 +17,4 @@
     @endforeach
     </ul>
 
-    {!! $revisions->render() !!}
 @endsection

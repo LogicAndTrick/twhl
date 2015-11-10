@@ -2,7 +2,14 @@
 
 @section('content')
     @include('wiki.nav')
-    <h2>Wiki Categories</h2>
+    <hc>
+        <h1>Wiki Categories</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+            <li class="active">Category List</li>
+        </ol>
+        {!! $categories->render() !!}
+    </hc>
 
     <ul>
     @foreach ($categories as $c)
@@ -10,5 +17,4 @@
     @endforeach
     </ul>
 
-    {!! $categories->render() !!}
 @endsection

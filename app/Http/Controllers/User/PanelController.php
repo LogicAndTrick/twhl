@@ -15,6 +15,7 @@ class PanelController extends Controller {
 
 	public function __construct() {
         $this->permission(['index'], true);
+        $this->permission(['editName', 'editBans'], 'Admin');
 	}
 
     private static function GetUser($id) {
@@ -190,6 +191,46 @@ class PanelController extends Controller {
                 }
             }
         }
+        return redirect('panel/index/'.$id);
+    }
+
+    public function getEditName($id = 0) {
+        $user = PanelController::GetUser($id);
+        return view('user/panel/edit-name', [
+            'user' => $user
+        ]);
+    }
+
+    public function postEditName() {
+        $id = Request::input('id');
+        $user = PanelController::GetUser($id);
+
+        $this->validate(Request::instance(), [
+            'new_name' => 'required|max:255|unique:users,name,'.$user->id
+        ]);
+
+        $user->update([ 'name' => Request::input('new_name') ]);
+        return redirect('panel/index/'.$id);
+    }
+
+    public function getEditBans($id = 0) {
+        $user = PanelController::GetUser($id);
+        // Get bans?
+        return view('user/panel/edit-bans', [
+            'user' => $user
+        ]);
+    }
+
+    public function postEditBans() {
+        $id = Request::input('id');
+        $user = PanelController::GetUser($id);
+
+        $this->validate(Request::instance(), [
+            // ???
+        ]);
+
+        // do bans
+
         return redirect('panel/index/'.$id);
     }
 

@@ -2,7 +2,14 @@
 
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
-    <h2>{{ $revision->title }}</h2>
+    <hc>
+        <h1>Edit: {{ $revision->title }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+            <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->title }}</a></li>
+            <li class="active">Edit Page</li>
+        </ol>
+    </hc>
     @form(wiki/edit upload=true)
         @hidden(id $revision)
         @if ($revision->wiki_object->type_id == \App\Models\Wiki\WikiType::PAGE)

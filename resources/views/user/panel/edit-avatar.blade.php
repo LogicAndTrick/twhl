@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Update Avatar: {{ $user->name }}</h2>
+    <hc>
+        <h1>Update Avatar: {{ $user->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+            <li class="active">Update Avatar</li>
+        </ol>
+    </hc>
+
     <div class="alert alert-info">You can choose to upload your own avatar or alternatively, you can use one of our presets.</div>
 
     <div class="text-center">

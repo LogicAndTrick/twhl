@@ -1,7 +1,13 @@
 @extends('app')
 
 @section('content')
-    <h2>Update Password: {{ $user->name }}</h2>
+    <hc>
+        <h1>Update Password: {{ $user->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+            <li class="active">Update Password</li>
+        </ol>
+    </hc>
     @form(panel/edit-password)
         @hidden(id $user)
         @if ($need_original)

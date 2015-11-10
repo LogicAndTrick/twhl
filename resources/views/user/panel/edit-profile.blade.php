@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Edit Profile: {{ $user->name }}</h2>
+    <hc>
+        <h1>Update Profile: {{ $user->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+            <li class="active">Update Profile</li>
+        </ol>
+    </hc>
+
     @form(panel/edit-profile)
         @hidden(id $user)
         <div class="row">

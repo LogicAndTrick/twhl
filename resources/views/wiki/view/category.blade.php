@@ -1,4 +1,10 @@
-<h2>Category: {{ $cat_name }}</h2>
+<hc>
+    <h1>Category: {{ $cat_name }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li class="active">View Category</li>
+    </ol>
+</hc>
 @if ($revision)
     @include('wiki.view.revision-content', ['revision' => $revision])
 @else

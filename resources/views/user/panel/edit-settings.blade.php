@@ -1,7 +1,13 @@
 @extends('app')
 
 @section('content')
-    <h2>Update Site Settings: {{ $user->name }}</h2>
+    <hc>
+        <h1>Update Site Settings: {{ $user->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+            <li class="active">Update Settings</li>
+        </ol>
+    </hc>
     @form(panel/edit-settings)
         @hidden(id $user)
         <div class="row">

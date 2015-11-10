@@ -2,7 +2,7 @@
  * TWHL Shoutbox - Because there's not enough useless JavaScript in the world yet
  */
 
-(function($, template) {
+;(function($, template) {
     var opts = {
         url: '',
         userUrl: '',

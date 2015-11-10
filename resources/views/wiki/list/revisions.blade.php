@@ -2,7 +2,15 @@
 
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
-    <h2>History: {{ $revision->title }}</h2>
+    <hc>
+        <h1>History: {{ $revision->title }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+            <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->title }}</a></li>
+            <li class="active">History</li>
+        </ol>
+        {!! $history->render() !!}
+    </hc>
 
     <table class="table table-bordered table-striped history">
         <thead>
@@ -32,8 +40,6 @@
             @endforeach
         </tbody>
     </table>
-
-    {!! $history->render() !!}
 
     <p>
         <button type="button" class="btn btn-info" id="compare-button">Compare selected revisions</button>

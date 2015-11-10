@@ -2,7 +2,13 @@
 
 @section('content')
     @include('wiki.nav')
-    <h2>Upload New File</h2>
+    <hc>
+        <h1>Upload New File</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+            <li class="active">Create File</li>
+        </ol>
+    </hc>
     <div class="alert alert-success">
         <h4>Please obey the rules when uploading files</h4>
         <ul>

@@ -37,6 +37,7 @@ class WikiController extends Controller {
             ->orderBy('title')
             ->paginate();
         return view('wiki/list/pages', [
+            'uploads' => false,
             'revisions' => $revisions
         ]);
     }
@@ -47,7 +48,8 @@ class WikiController extends Controller {
             ->where('o.type_id', '=', WikiType::UPLOAD)
             ->orderBy('title')
             ->paginate();
-        return view('wiki/list/pages', [
+        return view('wiki/list/uploads', [
+            'uploads' => true,
             'revisions' => $revisions
         ]);
     }

@@ -1,4 +1,10 @@
-<h2>{{ $revision->title }}</h2>
+<hc>
+    <h1>Upload: {{ $revision->title }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li class="active">View Upload</li>
+    </ol>
+</hc>
 @if (!$revision->is_active)
     <div class="alert alert-warning">
         You are viewing an older revision of this image. Only the current revision is embedded on other pages.

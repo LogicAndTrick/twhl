@@ -2,7 +2,13 @@
 
 @section('content')
     @include('wiki.nav')
-    <h2>Create New Page</h2>
+    <hc>
+        <h1>Create New Page</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+            <li class="active">Create Page</li>
+        </ol>
+    </hc>
     @form(wiki/create)
         @text(title $slug_title) = Page Title
         @textarea(content_text) = Page Content

@@ -1,4 +1,10 @@
-<h2>Page not found: {{ $slug }}</h2>
+<hc>
+    <h1>Page not found: {{ $slug }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li class="active">Nonexistent Page</li>
+    </ol>
+</hc>
 <p>
     This page doesn't exist on the Wiki.
 </p>
