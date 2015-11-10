@@ -1,7 +1,9 @@
 @extends('app')
 
 @section('content')
-    <h2>User Control Panel: {{ $user->name }}</h2>
+    <hc>
+        <h1>User Control Panel: {{ $user->name }}</h1>
+    </hc>
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">

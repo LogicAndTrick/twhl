@@ -6581,6 +6581,16 @@ fieldset[disabled] .btn-inverse.active {
   font-size: 40px;
   padding: 10px 20px 9px;
 }
+/* headings */
+h1 {
+  font-size: 22px;
+}
+h2 {
+  font-size: 20px;
+}
+h3 {
+  font-size: 18px;
+}
 /* breadcrumbs */
 .breadcrumb {
   margin: 0;
@@ -6651,15 +6661,6 @@ body > .container {
 .header-container h3 {
   margin: 0;
 }
-.header-container h1 {
-  font-size: 22px;
-}
-.header-container h2 {
-  font-size: 20px;
-}
-.header-container h3 {
-  font-size: 18px;
-}
 .container .header-container:first-child {
   margin-top: 0 !important;
 }
@@ -6685,7 +6686,7 @@ body > .container {
   padding-bottom: 8px;
 }
 .header-container > .pagination:last-child,
-.header-container > .breadcrumbs:last-child {
+.header-container > .breadcrumb:last-child {
   padding-bottom: 0;
 }
 /* HR headings (kinda hacky) */
@@ -7203,6 +7204,13 @@ fieldset[disabled] .select2-pagination-next.active {
   margin-left: 5px;
   padding: 3px 5px 1px;
 }
+.select2-container--default .select2-selection--multiple {
+  border-radius: 0;
+}
+.select2-container--open .select2-dropdown--below {
+  border-radius: 00;
+  box-shadow: 0 0 10px #ccc;
+}
 .diff-container {
   /*
   This is part of jsdifflib v1.0. <http://github.com/cemerick/jsdifflib>
@@ -7560,7 +7568,6 @@ tr.unread {
 }
 .message-thread .message {
   border: 1px solid #ccc;
-  border-radius: 4px;
   margin: 10px 0;
 }
 .message-thread .message .sender-info {
@@ -7593,7 +7600,6 @@ tr.unread {
 }
 .message-thread-participants {
   border: 1px solid #ccc;
-  border-radius: 4px;
   padding: 5px !important;
   margin-bottom: 8px !important;
 }
@@ -7609,7 +7615,6 @@ tr.unread {
   margin: 0 auto;
 }
 .avatar.border {
-  border-radius: 4px;
   border: 1px solid #eee;
   background-color: #fdfdfd;
 }
@@ -7651,6 +7656,9 @@ tr.unread {
 }
 .poll-results .chosen {
   font-weight: bold;
+}
+.container {
+  padding-bottom: 15px;
 }
 h1 .btn,
 h2 .btn,

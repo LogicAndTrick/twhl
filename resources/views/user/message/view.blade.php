@@ -1,9 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>
-        Message Thread: {{ $thread->subject }}
-    </h2>
+    <hc>
+        <h1>Message Thread: {{ $thread->subject }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('panel', 'index') }}">Control Panel</a></li>
+            <li><a href="{{ act('message', 'index') }}">Private Messages</a></li>
+            <li class="active">View Message</li>
+        </ol>
+    </hc>
     <div class="message-thread">
         @foreach ($thread->messages->sortBy('created_at') as $message)
             {? $expand = $message->id == $thread->last_message_id || array_search($message->id, $unread) !== false; ?}
@@ -22,7 +27,7 @@
             </script>
         @endforeach
     </div>
-    <h3>Post a Reply</h3>
+    <h2>Post a Reply</h2>
     <ul class="inline-bullet message-thread-participants">
         <li>Thread participants</li>
         @foreach ($thread->participants as $p)

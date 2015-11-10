@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Send Message</h2>
+    <hc>
+        <h1>Send Private Message</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('panel', 'index') }}">Control Panel</a></li>
+            <li><a href="{{ act('message', 'index') }}">Private Messages</a></li>
+            <li class="active">Send Message</li>
+        </ol>
+    </hc>
     @form(message/send)
         @autocomplete(users[] api/users $recipients multiple=true) = Message recipients
         @text(subject) = Subject

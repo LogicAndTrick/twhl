@@ -9,6 +9,10 @@
             </a>
         @endif
         <h1>User: {{ $user->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('user', 'index') }}">Users</a></li>
+            <li class="active">View Profile</li>
+        </ol>
     </hc>
     <div class="panel panel-default">
         <div class="panel-body">

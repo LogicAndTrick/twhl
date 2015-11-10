@@ -1,16 +1,22 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        @if (Auth::user()->id == $user->id)
+            <a href="{{ act('message', 'send') }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-envelope"></span> Send New Message</a>
+        @endif
+        <h1>Messages: {{ $user->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+            <li class="active">Private Messages</li>
+        </ol>
+        {!! $threads->render() !!}
+    </hc>
     <div class="alert alert-info">
         Messages allow you to have private conversations with other TWHL members.
         You can even invite multiple people to join your conversation.
         It's basically the same as email, except less convenient! Enjoy!
     </div>
-    <h2>
-        Messages: {{ $user->name }}
-        @if (Auth::user()->id == $user->id)
-            <a href="{{ act('message', 'send') }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-envelope"></span> Send New Message</a>
-        @endif
     </h2>
     <table class="table table-striped table-bordered">
         <thead>
@@ -37,7 +43,5 @@
             @endforeach
         </tbody>
     </table>
-
-    {!! $threads->render() !!}
 
 @endsection
