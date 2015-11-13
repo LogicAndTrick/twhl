@@ -24,6 +24,32 @@ class UserTableSeeder extends \Illuminate\Database\Seeder
             'name' => 'user',
             'email' => 'user@twhl.info',
             'password' => bcrypt('user'),
+            'avatar_file' => 'classic_027.jpg'
         ]);
+
+        $avs = [
+            'hl_blueshift.jpg',
+            'hl_opforce.jpg',
+            'hl_tentacle.jpg',
+            'hl_vortigaunt.jpg',
+            'hl2_alyx.jpg',
+            'hl2_combine1.jpg',
+            'hl2_combine2.jpg',
+            'hl2_freeman.jpg',
+            'hl2_gman.jpg',
+            'hl2_headcrab.jpg',
+            'hl2_hunters.jpg',
+            'hl2_metrocop.jpg',
+        ];
+
+        // Create a bunch more users
+        for ($i = 1; $i < 10; $i++) {
+            User::create([
+                'name' => 'user'.$i,
+                'email' => 'user'.$i.'@twhl.info',
+                'password' => bcrypt('user'.$i),
+                'avatar_file' => $avs[$i % count($avs)]
+            ]);
+        }
     }
 }
