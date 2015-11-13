@@ -45,6 +45,18 @@
                     <li><a href="{{ url('/wiki') }}">Wiki</a></li>
                     <li><a href="{{ url('/vault') }}">Vault</a></li>
                     <li><a href="{{ url('/competition') }}">Competitions</a></li>
+                    <li class="dropdown">
+                        <a href="{{ url('/') }}" class="dropdown-toggle" data-toggle="dropdown">
+                            More...
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url('/journal') }}">Journals</a></li>
+                            <li><a href="{{ url('/news') }}">News</a></li>
+                            <li><a href="{{ url('/poll') }}">Polls</a></li>
+                            <li><a href="{{ url('/user') }}">Members</a></li>
+                        </ul>
+                    </li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">

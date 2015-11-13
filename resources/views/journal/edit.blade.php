@@ -1,8 +1,15 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        <h1>Edit Journal Post #{{ $journal->id }} by @include('user._avatar', [ 'class' => 'inline', 'user' => $journal->user ])</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
+            <li><a href="{{ act('journal', 'view', $journal->id) }}">Journal #{{ $journal->id }}</a></li>
+            <li class="active">Edit Journal</li>
+        </ol>
+    </hc>
     @form(journal/edit)
-        <h3>Edit Journal</h3>
         @hidden(id $journal)
         @textarea(content_text:text $journal) = Journal Content
         <div class="form-group">
@@ -12,7 +19,7 @@
             </h4>
             <div id="preview-panel" class="well bbcode"></div>
         </div>
-        @submit
+        @submit = Edit Journal
     @endform
 @endsection
 

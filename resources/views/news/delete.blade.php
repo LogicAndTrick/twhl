@@ -1,10 +1,17 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        <h1>Delete News Post: {{ $news->title }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('news', 'index') }}">News</a></li>
+            <li><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></li>
+            <li class="active">Delete</li>
+        </ol>
+    </hc>
     @form(news/delete)
-        <h3>Delete News Post: {{ $news->title }}</h3>
         <p>Are you sure you want to delete this news post?</p>
         @hidden(id $news)
-        @submit
+        @submit = Delete News Post
     @endform
 @endsection

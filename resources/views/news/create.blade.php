@@ -1,8 +1,14 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        <h1>Create News Post</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('news', 'index') }}">News</a></li>
+            <li class="active">Create News</li>
+        </ol>
+    </hc>
     @form(news/create)
-        <h3>Create News Post</h3>
         @text(title) = News Post Title
         @textarea(text) = News Post Content
         <div class="form-group">
@@ -12,7 +18,7 @@
             </h4>
             <div id="preview-panel" class="well bbcode"></div>
         </div>
-        @submit
+        @submit = Create News Post
     @endform
 @endsection
 

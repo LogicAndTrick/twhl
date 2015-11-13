@@ -4,22 +4,23 @@
         <a href="{{ '#' }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-envelope"></span> Send Message</a>
         <hr title="Stats"/>
         <dl class="dl-horizontal dl-small">
+            {? $age = $user->created_at->diffInDays(); if ($age == 0) $age = 1; ?}
             <dt>Logins (per day)</dt>
-            <dd>{{ $user->stat_logins }} ({{ round($user->stat_logins / $user->created_at->diffInDays(), 2) }})</dd>
+            <dd>{{ $user->stat_logins }} ({{ round($user->stat_logins / $age, 2) }})</dd>
             <dt>Profile Hits</dt>
-            <dd>{{ $user->stat_profile_hits }} ({{ round($user->stat_profile_hits / $user->created_at->diffInDays(), 2) }})</dd>
+            <dd>{{ $user->stat_profile_hits }} ({{ round($user->stat_profile_hits/ $age, 2) }})</dd>
             <dt>Forum Posts</dt>
-            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_forum_posts }} ({{ round($user->stat_forum_posts / $user->created_at->diffInDays(), 2) }})</a></dd>
+            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_forum_posts }} ({{ round($user->stat_forum_posts/ $age, 2) }})</a></dd>
             <dt>Vault Items</dt>
-            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_maps }} ({{ round($user->stat_maps / $user->created_at->diffInDays(), 2) }})</a></dd>
+            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_maps }} ({{ round($user->stat_maps/ $age, 2) }})</a></dd>
             <dt>Journals</dt>
-            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_journals }} ({{ round($user->stat_journals / $user->created_at->diffInDays(), 2) }})</a></dd>
+            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_journals }} ({{ round($user->stat_journals/ $age, 2) }})</a></dd>
             <dt>Wiki Edits</dt>
-            <dd>{{ $user->stat_wiki_edits }} ({{ round($user->stat_wiki_edits / $user->created_at->diffInDays(), 2) }})</dd>
+            <dd>{{ $user->stat_wiki_edits }} ({{ round($user->stat_wiki_edits/ $age, 2) }})</dd>
             <dt>Comments</dt>
-            <dd>{{ $user->stat_comments }} ({{ round($user->stat_comments / $user->created_at->diffInDays(), 2) }})</dd>
+            <dd>{{ $user->stat_comments }} ({{ round($user->stat_comments/ $age, 2) }})</dd>
             <dt>Shouts</dt>
-            <dd>{{ $user->stat_shouts }} ({{ round($user->stat_shouts / $user->created_at->diffInDays(), 2) }})</dd>
+            <dd>{{ $user->stat_shouts }} ({{ round($user->stat_shouts/ $age, 2) }})</dd>
         </dl>
     </div>
     <div class="col-md-8">

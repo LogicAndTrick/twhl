@@ -1,8 +1,14 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        <h1>Create Journal Post</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
+            <li class="active">Create Journal</li>
+        </ol>
+    </hc>
     @form(journal/create)
-        <h3>Create Journal</h3>
         @textarea(text) = Journal Content
         <div class="form-group">
             <h4>
