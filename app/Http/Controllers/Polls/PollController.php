@@ -24,12 +24,14 @@ class PollController extends Controller {
         $user_votes = [];
         if (Auth::user()) {
             $pids = $polls->map(function($x) { return $x->id; })->toArray();
-            $user_votes = PollItemVote::whereIn('poll_id', $pids)->whereUserId(Auth::user()->id)
-                ->get()->map(function($x) { return $x->item_id; })->toArray();
+            $uvotes = PollItemVote::whereIn('poll_id', $pids)->whereUserId(Auth::user()->id)->get();
+            $user_votes = $uvotes->map(function($x) { return $x->item_id; })->toArray();
+            $user_polls = $uvotes->map(function($x) { return $x->poll_id; })->toArray();
         }
         return view('polls/index', [
             'polls' => $polls,
-            'user_votes' => $user_votes
+            'user_votes' => $user_votes,
+            'user_polls' => $user_polls
         ]);
 	}
 

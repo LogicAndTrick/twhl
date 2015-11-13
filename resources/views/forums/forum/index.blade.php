@@ -1,6 +1,17 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        @if (permission('ForumAdmin'))
+            @if ($show_deleted)
+                <a class="btn btn-info btn-xs" href="{{ act('forum', 'index') }}"><span class="glyphicon glyphicon-eye-close"></span> Hide deleted forums</a>
+            @else
+                <a class="btn btn-warning btn-xs" href="{{ act('forum', 'index') }}?deleted"><span class="glyphicon glyphicon-eye-open"></span> Show deleted forums</a>
+            @endif
+            <a class="btn btn-primary btn-xs" href="{{ act('forum', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new forum</a>
+        @endif
+        <h1>Forum Listings</h1>
+    </hc>
     @foreach ($forums as $forum)
         <div class="row {{ $forum->deleted_at ? 'inactive' : '' }}">
             <div class="col-md-8">
@@ -33,11 +44,4 @@
             </div>
         </div>
     @endforeach
-    @if (permission('ForumAdmin'))
-        <hr/>
-        <p>
-            <a href="{{ act('forum', 'index') }}?deleted">Show deleted forums</a> |
-            <a href="{{ act('forum', 'create') }}">Create new forum</a>
-        </p>
-    @endif
 @endsection

@@ -1,8 +1,16 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        <h1>Edit Post by @include('user._avatar', [ 'class' => 'inline', 'user' => $post->user ])</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+            <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+            <li><a href="{{ act('thread', 'view', $thread->id) }}">{{ $thread->title }}</a></li>
+            <li class="active">Edit Post</li>
+        </ol>
+    </hc>
     @form(post/edit)
-        <h3>Edit Post in {{ $forum->name }} / {{ $thread->title }}</h3>
         @hidden(id $post)
         @if (permission('ForumAdmin'))
             @autocomplete(user_id api/users $post) = Post Owner
@@ -15,7 +23,7 @@
             </h4>
             <div id="preview-panel" class="well bbcode"></div>
         </div>
-        @submit
+        @submit = Edit Post
     @endform
 @endsection
 

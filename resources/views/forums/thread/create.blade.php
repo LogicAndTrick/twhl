@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Create Thread: {{ $forum->name }}</h2>
+    <hc>
+        <h1>Create Thread: {{ $forum->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+            <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+            <li class="active">Create Thread</li>
+        </ol>
+    </hc>
     @form(thread/create)
         <input type="hidden" name="forum_id" value="{{ $forum->id }}" />
         @text(title) = Thread Title
@@ -13,7 +20,7 @@
             </h4>
             <div id="preview-panel" class="well bbcode"></div>
         </div>
-        @submit
+        @submit = Create Thread
     @endform
 @endsection
 

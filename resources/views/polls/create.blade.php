@@ -1,7 +1,13 @@
 @extends('app')
 
 @section('content')
-    <h2>Create Poll</h2>
+    <hc>
+        <h1>Create Poll</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('poll', 'index') }}">Polls</a></li>
+            <li class="active">Create Poll</li>
+        </ol>
+    </hc>
     @form(poll/create)
         @text(title) = Poll Title
         @text(close_date) = Close Date (dd/mm/yyyy)

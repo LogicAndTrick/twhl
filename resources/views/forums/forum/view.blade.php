@@ -2,9 +2,18 @@
 
 @section('content')
 
-    <h2>Forum: {{ $forum->name }}</h2>
+    <hc>
+        @if (permission('ForumCreate'))
+            <a class="btn btn-primary btn-xs" href="{{ act('thread', 'create', $forum->id) }}"><span class="glyphicon glyphicon-plus"></span> Create new thread</a>
+        @endif
+        <h1>Forum: {{ $forum->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+            <li class="active">Thread Listing</li>
+        </ol>
+        {!! $threads->render() !!}
+    </hc>
 
-    {!! $threads->render() !!}
     <table class="table table-striped thread-listing">
         <thead>
             <tr>
@@ -34,13 +43,5 @@
             @endforeach
         </tbody>
     </table>
-    {!! $threads->render() !!}
-
-    @if (permission('ForumCreate'))
-        <hr/>
-        <p>
-            <a href="{{ act('thread', 'create', $forum->id) }}">Create new thread</a>
-        </p>
-    @endif
 
 @endsection

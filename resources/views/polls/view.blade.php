@@ -1,13 +1,17 @@
 @extends('app')
 
 @section('content')
-    <h2>
-        {{ $poll->title }}
+    <hc>
         @if (permission('PollAdmin'))
             <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
             <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
         @endif
-    </h2>
+        <h1>{{ $poll->title }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('poll', 'index') }}">Polls</a></li>
+            <li class="active">View Poll</li>
+        </ol>
+    </hc>
     <div class="row">
         <div class="col-md-4 col-lg-6">
             <div class="bbcode">{!! $poll->content_html !!}</div>

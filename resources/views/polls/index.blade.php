@@ -1,12 +1,13 @@
 @extends('app')
 
 @section('content')
-    <h2>
-        Polls
+    <hc>
         @if (permission('PollAdmin'))
             <a class="btn btn-primary btn-xs" href="{{ act('poll', 'create') }}">Create new poll</a>
         @endif
-    </h2>
+        <h1>Polls</h1>
+        {!! $polls->render() !!}
+    </hc>
     @foreach ($polls as $poll)
         <h2>
             <a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a>
@@ -20,7 +21,7 @@
             </div>
             <div class="col-md-8 col-lg-6">
                 <div class="well well-sm">
-                    @if ($poll->isOpen())
+                    @if ($poll->isOpen() && Auth::user() && array_search($poll->id, $user_polls) === false)
                         @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
                     @else
                         @include('polls/_results', [ 'poll' => $poll, 'user_votes' => $user_votes ])
@@ -29,5 +30,8 @@
             </div>
         </div>
     @endforeach
-    {!! $polls->render() !!}
+@endsection
+
+@section('scripts')
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 @endsection

@@ -35,7 +35,7 @@ class PostController extends Controller {
 	}
 
     public function getEdit($id) {
-        $post = ForumPost::findOrFail($id);
+        $post = ForumPost::with(['user'])->findOrFail($id);
         $thread = ForumThread::findOrFail($post->thread_id);
         $forum = Forum::findOrFail($thread->forum_id);
         if (!$post->isEditable($thread)) abort(404);
@@ -69,7 +69,7 @@ class PostController extends Controller {
     // Administrative Tasks
 
     public function getDelete($id) {
-        $post = ForumPost::findOrFail($id);
+        $post = ForumPost::with(['user'])->findOrFail($id);
         $thread = ForumThread::findOrFail($post->thread_id);
         $forum = Forum::findOrFail($thread->forum_id);
         return view('forums/post/delete', [
@@ -89,7 +89,7 @@ class PostController extends Controller {
     }
 
     public function getRestore($id) {
-        $post = ForumPost::onlyTrashed()->findOrFail($id);
+        $post = ForumPost::with(['user'])->onlyTrashed()->findOrFail($id);
         $thread = ForumThread::findOrFail($post->thread_id);
         $forum = Forum::findOrFail($thread->forum_id);
         return view('forums/post/restore', [

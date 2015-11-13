@@ -1,10 +1,16 @@
 @extends('app')
 
 @section('content')
+    <hc>
+        <h1>Delete Forum {{ $forum->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+            <li class="active">Delete</li>
+        </ol>
+    </hc>
     @form(forum/delete)
-        <h3>Delete Forum: {{ $forum->name }}</h3>
         @hidden(id $forum)
         <p>Deleting a forum is probably not a great idea. Are you sure?</p>
-        @submit
+        @submit = Delete Forum
     @endform
 @endsection

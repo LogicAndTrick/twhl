@@ -14,8 +14,9 @@
         <h1>{{ $thread->title }}</h1>
 
         <ol class="breadcrumb">
-          <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
-          <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+            <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+            <li class="active">View Thread</li>
         </ol>
 
         {!! $posts->render() !!}
@@ -40,7 +41,6 @@
         </div>
         <hr/>
     @endforeach
-    {!! $posts->render() !!}
 
     @if (!$thread->isPostable())
         <div class="well">

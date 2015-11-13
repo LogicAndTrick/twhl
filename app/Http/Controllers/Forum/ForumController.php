@@ -18,9 +18,11 @@ class ForumController extends Controller {
 	public function getIndex()
 	{
         $forums = Forum::with(['last_post', 'last_post.thread', 'last_post.user'])->orderBy('order_index');
-        if (Input::get('deleted') !== null && permission('ForumAdmin')) $forums = $forums->withTrashed();
+        $show_deleted = Input::get('deleted') !== null && permission('ForumAdmin');
+        if ($show_deleted) $forums = $forums->withTrashed();
 		return view('forums/forum/index', [
-            'forums' => $forums->get()
+            'forums' => $forums->get(),
+            'show_deleted' => $show_deleted
         ]);
 	}
 
