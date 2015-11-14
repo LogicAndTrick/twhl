@@ -91,6 +91,7 @@ class Competition extends Model {
      */
     public function getVotingCloseTime()
     {
+        if (!$this->voting_close_date) return null;
         return $this->voting_close_date->copy()->setTime(23,59,59);
     }
 
