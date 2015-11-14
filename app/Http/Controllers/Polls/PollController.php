@@ -22,6 +22,7 @@ class PollController extends Controller {
 	public function getIndex() {
         $polls = Poll::with(['items'])->orderBy('close_date', 'desc')->paginate(5);
         $user_votes = [];
+        $user_polls = [];
         if (Auth::user()) {
             $pids = $polls->map(function($x) { return $x->id; })->toArray();
             $uvotes = PollItemVote::whereIn('poll_id', $pids)->whereUserId(Auth::user()->id)->get();
