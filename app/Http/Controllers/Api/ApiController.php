@@ -192,5 +192,3 @@ class ApiController extends Controller {
         return app('bbcode')->Parse($text);
     }
 }
-
-?> 
