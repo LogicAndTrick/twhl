@@ -27,7 +27,7 @@ return [
         // Embedded
         [ 'class' => 'App\Helpers\BBCode\Tags\ImageTag',     'scopes' => [ ], 'token' => 'img' ],
         [ 'class' => 'App\Helpers\BBCode\Tags\ImageTag',     'scopes' => [ ], 'token' => 'simg' ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\WIkiImageTag', 'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WikiImageTag', 'scopes' => [ ] ],
 
         [ 'class' => 'App\Helpers\BBCode\Tags\YoutubeTag',     'scopes' => [ ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\WikiYoutubeTag', 'scopes' => [ ] ],
