@@ -14,6 +14,7 @@
         <p>Are you sure you want to delete this competition entry?</p>
         <div class="well">
             @include('competitions.entry._entry', [ 'comp' => $comp, 'entry' => $entry, 'deleting' => true ])
+            @include('competitions._gallery_javascript')
         </div>
         @submit = Delete Entry
     @endform

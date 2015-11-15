@@ -25,9 +25,9 @@
                     {? $shot = $entry->screenshots->first(); ?}
                     <a href="#" class="gallery-button img-thumbnail">
                     @if ($shot)
-                        <img src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
+                        <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
                     @else
-                        <img src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                        <img class="media-object" src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
                     @endif
                     </a>
                     @if ($entry->screenshots->count() > 1)

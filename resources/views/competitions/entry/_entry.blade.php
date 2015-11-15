@@ -2,8 +2,14 @@
 <div class="media" data-id="{{ $entry->id }}">
     <div class="media-left">
         <a href="#" class="gallery-button img-thumbnail">
-        <img class="media-object" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-160.png' ) }}" alt="Entry">
+            <img class="media-object" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-160.png' ) }}" alt="Entry">
         </a>
+        @if ($entry->screenshots->count() > 1)
+            <button class="btn btn-info btn-block gallery-button" type="button">
+                <span class="glyphicon glyphicon-picture"></span>
+                + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
+            </button>
+        @endif
     </div>
     <div class="media-body">
         <h3 class="media-heading">

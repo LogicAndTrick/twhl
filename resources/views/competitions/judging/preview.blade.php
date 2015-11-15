@@ -52,9 +52,9 @@
                     {? $shot = $entry->screenshots->first(); ?}
                     <a href="#" class="gallery-button img-thumbnail tagged">
                         @if ($shot)
-                            <img src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
+                            <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
                         @else
-                            <img src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                            <img class="media-object" src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
                         @endif
                         @if ($result->rank == 1)
                             <span class="tag"><span class="glyphicon glyphicon-star"></span> 1st Place</span>

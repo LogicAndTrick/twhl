@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,31 +19,20 @@ class AuthController extends Controller {
 	}
 
     /**
-   	 * Handle a login request to the application.
-   	 *
-   	 * @param  \Illuminate\Http\Request  $request
-   	 * @return \Illuminate\Http\Response
-   	 */
-   	public function postLogin(Request $request)
-   	{
-   		$this->validate($request, [
-   			'email' => 'required',    // We also allow usernames here, so don't use the 'email' validator
-            'password' => 'required',
-   		]);
-
-   		$credentials = $request->only('email', 'password');
-
-   		if (Auth::attempt($credentials, $request->has('remember')))
-   		{
-   			return redirect()->intended($this->redirectPath());
-   		}
-
-   		return redirect($this->loginPath())
-   					->withInput($request->only('email', 'remember'))
-   					->withErrors([
-   						'email' => $this->getFailedLoginMessage(),
-   					]);
-   	}
+     * Called after a user has successfully logged in
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function authenticated(Request $request, User $user)
+    {
+        $user->last_login_time = Carbon::create();
+        $user->last_access_time = Carbon::create();
+        $user->last_access_page = $request->getPathInfo();
+        $user->last_access_ip = $request->ip();
+        $user->save();
+        return redirect()->intended($this->redirectPath());
+    }
 
     /**
    	 * Get a validator for an incoming registration request.
