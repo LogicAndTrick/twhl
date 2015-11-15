@@ -1,28 +1,44 @@
 @extends('app')
 
 @section('content')
-    <h2>
-        Competition Brief: {{ $comp->name }}
+    <hc>
         @if (permission('CompetitionAdmin'))
             <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
             <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-list-alt"></span> Edit Rules</a>
             <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
         @endif
-    </h2>
+        <h1>Competition Brief: {{ $comp->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li class="active">View Brief</li>
+        </ol>
+    </hc>
     <div class="row">
         <div class="col-md-6 text-center">
             <span class="comp-status-message">Competition Status:</span>
             <span class="comp-status">{{ $comp->getStatusText() }}</span>
             @if ($comp->isOpen())
                 <div id="countdown" class="countdown"></div>
+                @if ($comp->canJudge())
+                    <hr />
+                    <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-xs"><span class="glyphicon glyphicon-eye-open"></span> View Entries</a>
+                @endif
             @elseif ($comp->isVotingOpen())
                 <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success btn-lg">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
-            @elseif ($comp->canJudge())
+                @if ($comp->canJudge())
+                    <hr />
+                    <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Edit Entries / Results</a>
+                @endif
+            @elseif ($comp->isJudging() && $comp->canJudge())
                 <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-lg"><span class="glyphicon glyphicon-eye-open"></span> Go to Judging Panel</a>
                 <hr/>
                 <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Preview Results</a>
             @elseif ($comp->isClosed())
                 <a href="{{ act('competition', 'results', $comp->id) }}" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-eye-open"></span> View Results</a>
+                @if ($comp->canJudge())
+                    <hr />
+                    <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Edit Entries / Results</a>
+                @endif
             @endif
         </div>
         <div class="col-md-6">
@@ -37,7 +53,14 @@
                 <dt>Judging Type</dt><dd>{{ $comp->judge_type->name }}</dd>
                 <dt>Allowed Engines</dt><dd>{{ implode(', ', $comp->engines->map(function($x) { return $x->name; })->toArray() ) }}</dd>
                 @if (count($comp->judges) > 0)
-                <dt>Judges</dt><dd>{!! implode('<br>', $comp->judges->map(function($x) { return e($x->name); })->toArray() ) !!}</dd>
+                <dt>Judges</dt>
+                <dd>
+                    {? $i = 0 ?}
+                    @foreach ($comp->judges as $judge)
+                        {!! $i++ != 0 ? '&bull;' : '' !!}
+                        @avatar($judge inline)
+                    @endforeach
+                </dd>
                 @endif
             </dl>
         </div>

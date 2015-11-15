@@ -1,7 +1,13 @@
 @extends('app')
 
 @section('content')
-    <h2>Create New Competition</h2>
+    <hc>
+        <h1>Create New Competition</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li class="active">Create Competition</li>
+        </ol>
+    </hc>
 
     @form(competition-admin/create upload=true)
         @text(name:competition_name) = Competition Name

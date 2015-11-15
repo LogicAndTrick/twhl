@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Edit Competition Rules: {{ $comp->name }}</h2>
+    <hc>
+        <h1>Edit Competition Rules: {{ $comp->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
+            <li class="active">Edit Rules</li>
+        </ol>
+    </hc>
 
     @form(competition-admin/edit-rules)
         @hidden(id $comp)
@@ -28,6 +35,6 @@
             </ul>
         @endforeach
 
-        @submit = Submit
+        @submit = Edit Rules
     @endform
 @endsection

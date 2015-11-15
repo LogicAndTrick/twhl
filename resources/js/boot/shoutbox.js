@@ -50,6 +50,11 @@
                 '</span>' +
             '</li>';
 
+    // If n = 1, return 'unit', else return 'units'
+    var pl = function(num, unit) {
+        num = Math.floor(num); return num + ' ' + unit + (num == 1 ? '' : 's');
+    };
+    // Print a readable time (e.g. '20 seconds ago', '2 days ago')
     var readableTime = function(ts) {
         var z = Date.now() - ts,
             s = z / 1000,
@@ -59,7 +64,7 @@
             w = d / 7,
             m = d / 30,
             y = d / 365;
-        var pl = function(num, unit) { num = Math.floor(num); return num + ' ' + unit + (num == 1 ? '' : 's'); };
+        if (s < 10) return 'just now';
         return (
                 y >= 1 ? pl(y, 'year')
               : m >= 1 ? pl(m, 'month')
@@ -67,7 +72,7 @@
               : d >= 1 ? pl(d, 'day')
               : h >= 1 ? pl(h, 'hour')
               : i >= 1 ? pl(i, 'minute')
-              :         pl(s, 'second')
+              :          pl(s, 'second')
         ) + ' ago';
     };
 
@@ -145,7 +150,7 @@
                 obj['user.url'] = template(this.options.userUrl, { id: obj.user.id });
                 obj['user.avatar'] = obj.user.avatar_small;
                 obj['time'] = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
-                obj['date'] = obj.created_at + 'Z';
+                obj['date'] = new Date(obj['time']).toLocaleString();
                 this.shoutsContainer.append(template(shout_template, obj));
             }
             var sc = this.shoutsContainer[0];

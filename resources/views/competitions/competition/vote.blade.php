@@ -1,9 +1,17 @@
 @extends('app')
 
 @section('content')
-    <h2>
-        Competition Voting: {{ $comp->name }}
-    </h2>
+    <hc>
+        @if ($comp->canJudge())
+            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> View/Edit Results</a>
+        @endif
+        <h1>Competition Voting: {{ $comp->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
+            <li class="active">Voting</li>
+        </ol>
+    </hc>
     <div class="alert alert-info">
         @if ($comp->isVotingOpen())
             <h3>Voting ends {{ $comp->getVotingCloseTime()->format('jS F, Y') }} at {{ $comp->getVotingCloseTime()->format('H:i') }} GMT ({{ $comp->getVotingCloseTime()->diffForHumans() }})</h3>
@@ -19,11 +27,17 @@
             <p>Voting has ended for this competition</p>
         @endif
     </div>
+    @if (!$comp->canVote())
+        <div class="alert alert-warning">
+            <h3>Sorry, you are not eligable to vote for this competition.</h3>
+            <p>Reason: {{ $comp->cantVoteReason() }}</p>
+        </div>
+    @endif
     <div class="row">
         @foreach ($comp->entries->shuffle() as $entry)
             <div data-id="{{ $entry->id }}" class="col-md-4 thumbnail competition-vote-entry {{ $votes->contains($entry->id) ? 'voted' : '' }}">
                 <h3>{{ $entry->title }}</h3>
-                <h4>By {{ $entry->user->name }}</h4>
+                <h4>By @avatar($entry->user inline)</h4>
                 {? $shot = $entry->screenshots->first(); ?}
                 <a href="#" class="gallery-button">
                 @if ($shot)

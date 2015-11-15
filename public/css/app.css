@@ -6942,6 +6942,10 @@ hr[title]::before {
   background: white;
   padding: 0 15px;
 }
+span.bbcode {
+  display: inline-block;
+  margin-bottom: 5px;
+}
 .bbcode {
   margin-bottom: 10px;
 }

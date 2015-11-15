@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Competition Restriction Group: {{ $group->title }}</h2>
+    <hc>
+        <h1>Edit Competition Restriction Group: {{ $group->title }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li><a href="{{ act('competition-restriction', 'index') }}">Restrictions</a></li>
+            <li class="active">Edit Group</li>
+        </ol>
+    </hc>
     @form(competition-group/edit)
         @hidden(id $group)
         @text(title $group) = Group Title

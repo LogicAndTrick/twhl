@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Edit Competition Restriction</h2>
+    <hc>
+        <h1>Edit Competition Restrictions</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li><a href="{{ act('competition-restriction', 'index') }}">Restrictions</a></li>
+            <li class="active">Edit Restriction</li>
+        </ol>
+    </hc>
     @form(competition-restriction/edit)
         @hidden(id $restriction)
         @autocomplete(group_id api/competition-groups $restriction text=title) = Restriction Group

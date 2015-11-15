@@ -1,13 +1,20 @@
 @extends('app')
 
 @section('content')
-    <h2>Remove Competition Entry </h2>
+    <hc>
+        <h1>Delete Competition Entry: {{ $entry->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
+            <li class="active">Delete Entry</li>
+        </ol>
+    </hc>
     @form(competition-entry/delete)
         @hidden(id $entry)
-        <p>Are you sure you want to remove this competition entry?</p>
+        <p>Are you sure you want to delete this competition entry?</p>
         <div class="well">
             @include('competitions.entry._entry', [ 'comp' => $comp, 'entry' => $entry, 'deleting' => true ])
         </div>
-        @submit = Remove Entry
+        @submit = Delete Entry
     @endform
 @endsection

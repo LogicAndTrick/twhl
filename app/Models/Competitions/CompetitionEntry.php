@@ -31,6 +31,11 @@ class CompetitionEntry extends Model {
         return $this->hasMany('App\Models\Competitions\CompetitionEntryScreenshot', 'entry_id');
     }
 
+    public function votes()
+    {
+        return $this->hasMany('App\Models\Competitions\CompetitionEntryVote', 'entry_id');
+    }
+
     public function getLinkUrl()
     {
         return $this->is_hosted_externally ? $this->file_location : asset('uploads/competition/entries/'.$this->file_location);

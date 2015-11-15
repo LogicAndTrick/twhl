@@ -47,6 +47,11 @@ class Competition extends Model {
         return $this->hasMany('App\Models\Competitions\CompetitionResult', 'competition_id');
     }
 
+    public function votes()
+    {
+        return $this->hasMany('App\Models\Competitions\CompetitionEntryVote', 'competition_id');
+    }
+
     public function status()
     {
         return $this->belongsTo('App\Models\Competitions\CompetitionStatus', 'status_id');
@@ -172,7 +177,20 @@ class Competition extends Model {
         return true;
     }
 
+    public function cantVoteReason() {
+        if (!Auth::user()) return 'You are not logged in.';
+        if (!permission('CompetitionEnter')) return 'You do not have permission to interact with competitions.';
+        if (!$this->isVotingOpen()) return 'Voting has closed for this competition';
+        if (Auth::user()->created_at > $this->getOpenTime()) return 'Your account was created after the competition started.';
+        $uid = Auth::user()->id;
+        foreach ($this->entries as $entry) {
+            if ($entry->user_id == $uid) return 'You have entered this competition.';
+        }
+        return 'Unknown';
+    }
+
     public function canJudge() {
+        if (permission('CompetitionAdmin')) return true;
         return $this->isJudging() && $this->judges->contains(Auth::user());
     }
 
@@ -201,5 +219,24 @@ class Competition extends Model {
             }
         }
         return array_merge($entries[1], $entries[2], $entries[3], $entries[0]);
+    }
+
+    public function getEntriesForJudging() {
+        $votes = $this->votes;
+        return array_sort($this->entries, function($e) use ($votes) {
+            $count = 0;
+            foreach ($votes as $v) {
+                if ($v->entry_id == $e->id) $count++;
+            }
+            return -$count;
+        });
+    }
+
+    public function countVotesFor($id) {
+        $count = 0;
+        foreach ($this->votes as $v) {
+            if ($v->entry_id == $id) $count++;
+        }
+        return $count;
     }
 }

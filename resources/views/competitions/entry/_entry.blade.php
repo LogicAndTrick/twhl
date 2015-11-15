@@ -7,10 +7,10 @@
     </div>
     <div class="media-body">
         <h3 class="media-heading">
-            {{ $entry->title }} <small>By: {{ $entry->user->name }}</small>
+            {{ $entry->title }} &mdash; By @avatar($entry->user inline)</small>
             @if (!isset($deleting) || !$deleting)
                 @if (permission('CompetitionAdmin') || ( permission('CompetitionEnter') && Auth::user()->id == $entry->user_id && $comp->canEnter() ))
-                    <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Remove Entry</a>
+                    <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete Entry</a>
                     <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-picture"></span> Edit Screenshots</a>
                 @endif
             @endif

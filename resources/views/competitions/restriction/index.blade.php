@@ -1,7 +1,13 @@
 @extends('app')
 
 @section('content')
-    <h2>Competition Restrictions</h2>
+    <hc>
+        <h1>Competition Restrictions</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li class="active">Restrictions</li>
+        </ol>
+    </hc>
     @foreach ($groups as $group)
         <h3>
             {{ $group->title }}

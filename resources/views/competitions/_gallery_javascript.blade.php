@@ -24,7 +24,15 @@
                     this.find('.slider').remove();
                 }
             });
-            gallery_query = $.get(template(gallery_url_template, obj)).done(function(result) {
+
+            // Adding a short delay here forces the slider to process after the modal has dropped in
+            //  This makes sure that the width of the slider is correctly set
+            var delay = $.Deferred();
+            setTimeout(delay.resolve, 200);
+
+            gallery_query = $.get(template(gallery_url_template, obj));
+            $.when(gallery_query, delay.promise()).done(function(args) {
+                var result = args[0];
                 var con = bb.find('.bootbox-body').html(result).find('.slider')[0];
                 var slider = new $JssorSlider$(con, {
                     $AutoPlay: true,

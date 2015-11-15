@@ -1,12 +1,13 @@
 @extends('app')
 
 @section('content')
-    @if (permission('CompetitionAdmin'))
-        <a href="{{ act('competition-admin', 'create') }}">Create new Competition</a> |
-        <a href="{{ act('competition-restriction', 'index') }}">Modify Competition Restrictions</a>
-    @endif
-
-    <h2>Competitions</h2>
+    <hc>
+        @if (permission('CompetitionAdmin'))
+            <a class="btn btn-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="glyphicon glyphicon-pencil"></span> Modify Competition Restrictions</a>
+            <a class="btn btn-primary btn-xs" href="{{ act('competition-admin', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new Competition</a>
+        @endif
+        <h1>Competitions</h1>
+    </hc>
     <ul>
         @foreach ($comps->sortByDesc('close_date') as $comp)
         <li>

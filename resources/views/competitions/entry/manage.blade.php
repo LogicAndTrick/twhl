@@ -1,7 +1,14 @@
 @extends('app')
 
 @section('content')
-    <h2>Manage Competition Entry Screenshots</h2>
+    <hc>
+        <h1>Edit Entry Screenshots: {{ $entry->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
+            <li class="active">Edit Screenshots</li>
+        </ol>
+    </hc>
     @if (count($entry->screenshots) > 0)
         <ul class="media-list screenshot-list">
             @foreach ($entry->screenshots as $shot)

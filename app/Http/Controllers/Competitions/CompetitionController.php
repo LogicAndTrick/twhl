@@ -76,7 +76,7 @@ class CompetitionController extends Controller {
         $comp = Competition::findOrFail($entry->competition_id);
         if (!$comp->canVote()) abort(422);
 
-        $user_votes = CompetitionEntryVote::whereUserId(Auth::user() ? Auth::user()->id : 0)->whereCompetitionId($id);
+        $user_votes = CompetitionEntryVote::whereUserId(Auth::user()->id)->whereCompetitionId($comp->id);
         $voted_ids = $user_votes->get()->map(function ($v) { return $v->entry_id; })->toBase();
 
         $result = '';
@@ -96,7 +96,8 @@ class CompetitionController extends Controller {
         }
         return response()->json([
             'is_voted_for' => $is_voted_for,
-            'status' => $result
+            'status' => $result,
+            'voted_ids' => $user_votes->get()
         ]);
     }
 }

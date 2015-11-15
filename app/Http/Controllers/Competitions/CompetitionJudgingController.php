@@ -6,6 +6,7 @@ use App\Models\Competitions\CompetitionEntry;
 use App\Models\Competitions\CompetitionJudgeType;
 use App\Models\Competitions\CompetitionRestrictionGroup;
 use App\Models\Competitions\CompetitionResult;
+use App\Models\Competitions\CompetitionStatus;
 use Carbon\Carbon;
 use Request;
 use Input;
@@ -16,11 +17,11 @@ use Validator;
 class CompetitionJudgingController extends Controller {
 
 	public function __construct() {
-
+        $this->permission(['publish'], 'CompetitionAdmin');
 	}
 
 	public function getView($id) {
-        $comp = Competition::with(['judges', 'results', 'entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
+        $comp = Competition::with(['judges', 'results', 'entries', 'entries.user', 'entries.screenshots', 'votes'])->findOrFail($id);
         if (!$comp->canJudge()) abort(404);
         return view('competitions/judging/view', [
             'comp' => $comp
@@ -103,5 +104,23 @@ class CompetitionJudgingController extends Controller {
 
        $entry = CompetitionEntryController::CreateOrUpdateEntry($this, $comp, true);
        return redirect('competition-judging/view/'.$id);
+   	}
+
+    public function getPublish($id) {
+        $comp = Competition::findOrFail($id);
+        if (!$comp->isJudging()) return abort(404);
+
+        return view('competitions/judging/publish', [
+            'comp' => $comp
+        ]);
+    }
+
+    public function postPublish() {
+        $id = Request::input('id');
+        $comp = Competition::findOrFail($id);
+        $comp->update([
+            'status_id' => CompetitionStatus::CLOSED
+        ]);
+        return redirect('competition/results/'.$id);
    	}
 }
