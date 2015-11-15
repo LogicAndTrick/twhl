@@ -3,7 +3,7 @@
 @section('content')
     <hc>
         @if (permission('JournalCreate'))
-            <a href="{{ act('journal', 'create') }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-remove"></span> Create new journal</a>
+            <a href="{{ act('journal', 'create') }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Create new journal</a>
         @endif
         <h1>Journals</h1>
         {!! $journals->render() !!}

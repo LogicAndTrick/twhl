@@ -23,7 +23,7 @@
     </hc>
 
     @foreach ($posts as $post)
-        <div class="row">
+        <div class="row" id="post-{{ $post->id }}">
             <div class="col-md-10 bbcode">
                 {!! $post->content_html !!}
             </div>

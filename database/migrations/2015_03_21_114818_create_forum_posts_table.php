@@ -48,11 +48,21 @@ class CreateForumPostsTable extends Migration {
                 WHERE id = fid;
             END;");
 
+        DB:unprepared("
+            CREATE PROCEDURE update_user_forum_statistics(uid INT)
+            BEGIN
+                UPDATE users
+                SET stat_forum_posts = (SELECT COUNT(*) FROM forum_posts WHERE user_id = uid AND deleted_at IS NULL)
+                WHERE id = uid;
+            END;
+        ");
+
         DB::unprepared("
             CREATE TRIGGER forum_posts_update_statistics_on_insert AFTER INSERT ON forum_posts
             FOR EACH ROW BEGIN
                 CALL update_thread_statistics(NEW.thread_id);
                 CALL update_forum_statistics(NEW.forum_id);
+                CALL update_user_forum_statistics(NEW.user_id);
             END;");
 
         DB::unprepared("
@@ -60,13 +70,18 @@ class CreateForumPostsTable extends Migration {
             FOR EACH ROW BEGIN
                 CALL update_thread_statistics(NEW.thread_id);
                 CALL update_forum_statistics(NEW.forum_id);
+                CALL update_user_forum_statistics(NEW.user_id);
 
                 IF NEW.thread_id != OLD.thread_id THEN
                     CALL update_thread_statistics(OLD.thread_id);
                 END IF;
 
                 IF NEW.forum_id != OLD.forum_id THEN
-                    CALL update_forum_statistics(NEW.forum_id);
+                    CALL update_forum_statistics(OLD.forum_id);
+                END IF;
+
+                IF NEW.user_id != OLD.user_id THEN
+                    CALL update_user_forum_statistics(OLD.user_id);
                 END IF;
             END;");
 	}
@@ -75,6 +90,7 @@ class CreateForumPostsTable extends Migration {
 	{
         DB::unprepared("DROP TRIGGER IF EXISTS forum_posts_update_statistics_on_update");
         DB::unprepared("DROP TRIGGER IF EXISTS forum_posts_update_statistics_on_insert");
+        DB::unprepared("DROP PROCEDURE IF EXISTS update_user_forum_statistics");
         DB::unprepared("DROP PROCEDURE IF EXISTS update_thread_statistics");
         DB::unprepared("DROP PROCEDURE IF EXISTS update_forum_statistics");
 		Schema::drop('forum_posts');

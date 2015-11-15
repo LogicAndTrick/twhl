@@ -65,7 +65,7 @@ class CreateUsersTable extends Migration {
             $table->integer('stat_profile_hits');
             $table->integer('stat_forum_posts');
             $table->integer('stat_shouts');
-            $table->integer('stat_maps');
+            $table->integer('stat_vault_items');
             $table->integer('stat_journals');
             $table->integer('stat_wiki_edits');
             $table->integer('stat_comments');

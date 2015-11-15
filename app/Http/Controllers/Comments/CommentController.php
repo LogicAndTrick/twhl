@@ -172,6 +172,7 @@ class CommentController extends Controller {
         if (!permission($config['auth_moderate'])) abort(404);
 
         $comment->delete();
+        DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
 
         return redirect(str_ireplace('{id}', $id, $config['redirect']));
     }
@@ -198,6 +199,7 @@ class CommentController extends Controller {
         if (!permission($config['auth_moderate'])) abort(404);
 
         $comment->restore();
+        DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
 
         return redirect(str_ireplace('{id}', $id, $config['redirect']));
     }

@@ -30,6 +30,7 @@ class AuthController extends Controller {
         $user->last_access_time = Carbon::create();
         $user->last_access_page = $request->getPathInfo();
         $user->last_access_ip = $request->ip();
+        $user->stat_logins++;
         $user->save();
         return redirect()->intended($this->redirectPath());
     }

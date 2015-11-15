@@ -1,6 +1,7 @@
 <?php namespace App\Models\Wiki;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WikiRevision extends Model {
 
@@ -8,6 +9,8 @@ class WikiRevision extends Model {
     protected $table = 'wiki_revisions';
     protected $fillable = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'content_html', 'message'];
     protected $visible = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'message'];
+
+    use SoftDeletes;
 
     public function wiki_object()
     {

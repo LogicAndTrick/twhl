@@ -1,5 +1,7 @@
 <?php namespace App\Models\Accounts;
 
+use App\Models\Comments\Comment;
+use App\Models\Wiki\WikiRevision;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -7,10 +9,13 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
 	use Authenticatable, CanResetPassword, SoftDeletes;
+
+    const DEFINITELY_OBLITERATE_THIS_USER = '79aaca79215e23a4e0c99cdaf96aeb9aa111becadb88b23b00e2b96f32c9ed90';
 
 	protected $table = 'users';
 	protected $fillable = [
@@ -105,5 +110,70 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if ($this->skill_animate) $skills[] = 'Model animation';
         if ($this->skill_texture) $skills[] = 'Texture creation';
         return $skills;
+    }
+
+    /**
+     * Obliterate this user, which will delete ALL content they have ever posted.
+     * It will also PERMANENTLY ban them by IP address.
+     * @param $confirmation string If this value doesn't equal User::DEFINITELY_OBLITERATE_THIS_USER, the user will not be obliterated
+     * @return bool True if the user is obliterated, false otherwise
+     */
+    public function obliterate($confirmation)
+    {
+        if ($confirmation != User::DEFINITELY_OBLITERATE_THIS_USER) return false;
+
+        $deleted = Carbon::create();
+        $id = $this->id;
+
+        $soft_delete_tables = [
+            'comments',
+            'competition_entries',
+            'forum_posts',
+            'forum_threads',
+            'journals',
+            'news',
+            'vault_items',
+            'wiki_revisions',
+        ];
+        $tables = [
+            'competition_entry_votes',
+            'competition_judges',
+            'message_users',
+            'message_thread_users',
+            'messages',
+            'message_threads',
+            'poll_item_votes',
+            'shouts',
+            'user_permissions',
+        ];
+
+        foreach ($soft_delete_tables as $t) {
+            DB::statement("UPDATE $t SET deleted_at = ? WHERE user_id = ?", [$deleted, $id]);
+        }
+        foreach ($tables as $t) {
+            DB::statement("DELETE FROM $t WHERE user_id = ?", [$id]);
+        }
+        DB::statement('UPDATE users SET deleted_at = ? WHERE id = ?', [$deleted, $id]);
+
+        Ban::create([
+            'user_id' => $id,
+            'ip' => $this->last_access_ip ? $this->last_access_ip : null,
+            'ends_at' => null,
+            'reason' => 'You have been banned for spamming.'
+        ]);
+
+        // Fix any statistics that were messed up by deleting the comments
+        $comments = Comment::onlyTrashed()->whereUserId($id)->get();
+        foreach ($comments as $comment) {
+            DB::statement('CALL update_comment_statistics(?, ?, ?);', [$comment->article_type, $comment->article_id, $comment->user_id]);
+        }
+
+        // Repair any wiki articles that the user edited
+        $revisions = WikiRevision::onlyTrashed()->whereUserId($id)->get();
+        foreach ($revisions as $revision) {
+            DB::statement('CALL update_wiki_object(?);', [$revision->object_id]);
+        }
+
+        return true;
     }
 }

@@ -18,6 +18,7 @@ Route::get('/home', 'HomeController@index');
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
+    'ban' => 'Auth\BanController',
 
     'forum' => 'Forum\ForumController',
     'thread' => 'Forum\ThreadController',

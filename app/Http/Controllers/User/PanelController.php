@@ -2,6 +2,7 @@
 
 use App\Helpers\Image;
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\Ban;
 use App\Models\Accounts\User;
 use Carbon\Carbon;
 use Request;
@@ -15,7 +16,7 @@ class PanelController extends Controller {
 
 	public function __construct() {
         $this->permission(['index'], true);
-        $this->permission(['editName', 'editBans'], 'Admin');
+        $this->permission(['editName', 'editBans', 'addBan', 'deleteBan'], 'Admin');
 	}
 
     private static function GetUser($id) {
@@ -215,23 +216,62 @@ class PanelController extends Controller {
 
     public function getEditBans($id = 0) {
         $user = PanelController::GetUser($id);
-        // Get bans?
+        $bans = Ban::whereUserId($id)->get();
         return view('user/panel/edit-bans', [
-            'user' => $user
+            'user' => $user,
+            'bans' => $bans
         ]);
     }
 
-    public function postEditBans() {
+    public function postAddBan() {
         $id = Request::input('id');
         $user = PanelController::GetUser($id);
 
         $this->validate(Request::instance(), [
-            // ???
+            'reason' => 'required|max:255',
+            'duration' => 'required|integer',
+            'unit' => 'required|integer'
         ]);
 
-        // do bans
+        $hours = intval(Request::input('duration')) * intval(Request::input('unit'));
+        $ban = Ban::create([
+            'user_id' => $user->id,
+            'ip' => (Request::input('ip_ban') && $user->last_access_ip ? $user->last_access_ip : null),
+            'ends_at' => $hours < 0 ? null : Carbon::create()->addHours($hours),
+            'reason' => Request::input('reason')
+        ]);
 
-        return redirect('panel/index/'.$id);
+        return redirect('panel/edit-bans/'.$id);
+    }
+
+    public function postDeleteBan() {
+        $id = Request::input('id');
+        $ban = Ban::findOrFail($id);
+        $ban->delete();
+        return redirect('panel/edit-bans/'.$id);
+    }
+
+    public function getObliterate($id) {
+        $user = PanelController::GetUser($id);
+        return view('user/panel/obliterate', [
+            'user' => $user
+        ]);
+    }
+
+    public function postObliterate() {
+        $id = Request::input('id');
+        $user = PanelController::GetUser($id);
+
+        $this->validate(Request::instance(), [
+            'sure' => 'required|confirmed'
+        ], [
+            'required' => 'You must check both boxes if you want to obliterate this user.',
+            'confirmed' => 'You must check both boxes if you want to obliterate this user.'
+        ]);
+
+        $user->obliterate(User::DEFINITELY_OBLITERATE_THIS_USER);
+
+        return redirect('/');
     }
 
     private static $preset_avatars = [
