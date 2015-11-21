@@ -1,5 +1,9 @@
 <hc>
-    <h1>Upload: {{ $revision->title }}</h1>
+
+    <span class="pull-right">
+        Last edited {{ $revision->created_at->diffForHumans() }} by @avatar($revision->user inline)
+    </span>
+    <h1>{{ $revision->getNiceTitle() }}</h1>
     <ol class="breadcrumb">
         <li><a href="{{ url('/wiki') }}">Wiki</a></li>
         <li class="active">View Upload</li>
@@ -12,7 +16,7 @@
     </div>
 @endif
 <div class="wiki-image">
-    <img src="{{ $upload->getResourceFileName() }}" alt="{{ $revision->title }}">
+    <img src="{{ $upload->getResourceFileName() }}" alt="{{ $revision->getNiceTitle() }}">
 </div>
 
 <h4>Upload Details</h4>

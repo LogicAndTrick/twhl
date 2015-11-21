@@ -64,7 +64,6 @@ class Parser
     }
 
     public function ParseResult($text, $scope = '') {
-        $text = $this->CleanString($text);
         $result = new ParseResult();
         $result->text = $this->ParseBlock($result, $text, $scope);
         return $result;

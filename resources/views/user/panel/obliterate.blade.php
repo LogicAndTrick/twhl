@@ -17,6 +17,9 @@
             and will permanently ban the user's IP address.
             This is an extreme option and should not be taken lightly.
         </p>
+        <p>
+            This is an administration action.
+        </p>
     </div>
 
     <h2>Please confirm the obliteration of @avatar($user inline)</h2>

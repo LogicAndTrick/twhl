@@ -61,9 +61,11 @@ class BBCodeTest extends TestCase {
     {
         $input = [
             '[img:test.png]',
+            '[img:test.png|caption]',
         ];
         $expected = [
-            '<img src="/wiki/embed/test.png" />',
+            '<span class="embedded image"><span class="caption-panel"><img class="caption-body" src="http://localhost:82/wiki/embed/test.png" alt="User posted image" /></span></span>',
+            '<span class="embedded image"><span class="caption-panel"><img class="caption-body" src="http://localhost:82/wiki/embed/test.png" alt="caption" /><span class="caption">caption</span></span></span>',
         ];
         for ($i = 0; $i < count($input); $i++) {
             $output = app('bbcode')->Parse($input[$i]);
@@ -80,10 +82,10 @@ class BBCodeTest extends TestCase {
             '[[example#bookmark|this is an example]]',
         ];
         $expected = [
-            '<a href="/wiki/example">example</a>',
-            '<a href="/wiki/example">this is an example</a>',
-            '<a href="/wiki/example#bookmark">example</a>',
-            '<a href="/wiki/example#bookmark">this is an example</a>',
+            '<a href="' . url('/wiki/page/example') . '">example</a>',
+            '<a href="' . url('/wiki/page/example') . '">this is an example</a>',
+            '<a href="' . url('/wiki/page/example') . '#bookmark">example</a>',
+            '<a href="' . url('/wiki/page/example') . '#bookmark">this is an example</a>',
         ];
         for ($i = 0; $i < count($input); $i++) {
             $output = app('bbcode')->Parse($input[$i]);
@@ -159,7 +161,7 @@ class BBCodeTest extends TestCase {
 
         $input = "1\n> 2\n3\n\n4";
         $output = app('bbcode')->Parse($input);
-        $this->assertEquals("1\n<blockquote>2<br>\n3</blockquote>\n4", $output);
+        $this->assertEquals("1\n<blockquote>2</blockquote>\n3<br>\n<br>\n4", $output);
     }
 
     public function testSimple()
@@ -216,8 +218,6 @@ class BBCodeTest extends TestCase {
             '[url=http://example.com]1[/url]',
             '[url]example.com[/url]',
             '[url]http://example.com[/url]',
-            '[url]this is not valid[/url]',
-            '[url=this is not valid]1[/url]',
             '[email=test@example.com]1[/email]',
             '[email]test@example.com[/email]'
         ];
@@ -226,8 +226,6 @@ class BBCodeTest extends TestCase {
             '<a href="http://example.com">1</a>',
             '<a href="http://example.com">example.com</a>',
             '<a href="http://example.com">http://example.com</a>',
-            '[url]this is not valid[/url]',
-            '[url=this is not valid]1[/url]',
             '<a href="mailto:test@example.com">1</a>',
             '<a href="mailto:test@example.com">test@example.com</a>'
         ];
@@ -308,19 +306,19 @@ class BBCodeTest extends TestCase {
     {
         $input = " 1";
         $output = app('bbcode')->Parse($input);
-        $this->assertEquals("<pre>1</pre>", $output);
+        $this->assertEquals("<pre><code>1</code></pre>", $output);
 
         $input = " 1\n  2";
         $output = app('bbcode')->Parse($input);
-        $this->assertEquals("<pre>1\n 2</pre>", $output);
+        $this->assertEquals("<pre><code>1\n 2</code></pre>", $output);
 
         $input = " 1\n2\n 3";
         $output = app('bbcode')->Parse($input);
-        $this->assertEquals("<pre>1</pre>\n2\n<pre>3</pre>", $output);
+        $this->assertEquals("<pre><code>1</code></pre>\n2\n<pre><code>3</code></pre>", $output);
 
         $input = " [b]1[/b]";
         $output = app('bbcode')->Parse($input);
-        $this->assertEquals("<pre>[b]1[/b]</pre>", $output);
+        $this->assertEquals("<pre><code>[b]1[/b]</code></pre>", $output);
     }
 
     public function testLine()

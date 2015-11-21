@@ -110,7 +110,8 @@ class MdListElement extends Element {
             if ($type == '_') {
                 foreach ($leaf['items'] as $item) {
                     if ($open) $str .= '</li>';
-                    $str .= '<li>' . $this->parser->ParseBBCode($result, trim($item), $scope, 'inline');
+                    $text = $this->parser->CleanString(trim($item));
+                    $str .= '<li>' . $this->parser->ParseBBCode($result, $text, $scope, 'inline');
                     $open = true;
                 }
             } else {

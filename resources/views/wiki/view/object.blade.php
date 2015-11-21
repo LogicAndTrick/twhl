@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-    @include('wiki.nav', ['revision' => $revision])
+    @include('wiki.nav', ['revision' => $revision, 'cat_name' => $cat_name])
     @if ($cat_name !== null)
         @include('wiki.view.category', ['object' => $object, 'revision' => $revision, 'cat_name' => $cat_name, 'cat_pages' => $cat_pages])
     @elseif ($object == null)

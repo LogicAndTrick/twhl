@@ -39,7 +39,9 @@
                         <ul class="unstyled">
                             <li><a href="{{ act('panel', 'edit-name', $user->id) }}"><span class="glyphicon glyphicon-user"></span> Change User's Name</a></li>
                             <li><a href="{{ act('panel', 'edit-bans', $user->id) }}"><span class="glyphicon glyphicon-ban-circle"></span> Manage User's Bans</a></li>
-                            <li><a class="text-danger" href="{{ act('panel', 'obliterate', $user->id) }}"><span class="glyphicon glyphicon-trash"></span> Obliterate User</a></li>
+                            @if (permission('ObliterateAdmin') && $user->id != Auth::user()->id)
+                                <li><a class="text-danger" href="{{ act('panel', 'obliterate', $user->id) }}"><span class="glyphicon glyphicon-trash"></span> Obliterate User</a></li>
+                            @endif
                         </ul>
                     @endif
                 </div>

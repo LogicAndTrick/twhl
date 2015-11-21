@@ -34,6 +34,7 @@ class MdHeadingElement extends Element {
 
     function Parse($result, $scope)
     {
-        return '<h' . $this->level . '>' . $this->parser->ParseBBCode($result, $this->text, $scope, 'inline') . '</h' . $this->level . '>';
+        $text = $this->parser->CleanString($this->text);
+        return '<h' . $this->level . '>' . $this->parser->ParseBBCode($result, $text, $scope, 'inline') . '</h' . $this->level . '>';
     }
 }

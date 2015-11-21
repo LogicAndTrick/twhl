@@ -4,6 +4,7 @@ use App\Helpers\Image;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\Ban;
 use App\Models\Accounts\User;
+use App\Models\Accounts\UserNameHistory;
 use Carbon\Carbon;
 use Request;
 use Input;
@@ -15,8 +16,9 @@ use Hash;
 class PanelController extends Controller {
 
 	public function __construct() {
-        $this->permission(['index'], true);
+        $this->permission(['index', 'editAvatar', 'editProfile', 'editSettings', 'editPassword'], true);
         $this->permission(['editName', 'editBans', 'addBan', 'deleteBan'], 'Admin');
+        $this->permission(['obliterate'], 'ObliterateAdmin');
 	}
 
     private static function GetUser($id) {
@@ -210,7 +212,12 @@ class PanelController extends Controller {
             'new_name' => 'required|max:255|unique:users,name,'.$user->id
         ]);
 
+        $orig_name = $user->name;
         $user->update([ 'name' => Request::input('new_name') ]);
+        UserNameHistory::create([
+            'user_id' => $user->id,
+            'name' => $orig_name
+        ]);
         return redirect('panel/index/'.$id);
     }
 

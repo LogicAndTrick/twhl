@@ -55,6 +55,7 @@ class DeleteEverythingSeeder extends \Illuminate\Database\Seeder
 
             'password_resets',
             'user_permissions',
+            'user_name_history',
             'users',
         ]);
     }

@@ -23,7 +23,8 @@ class CreatePermissionsTable extends Migration {
             'NewsAdmin' => 'Create, edit, and delete news posts',
             'JournalAdmin' => 'Edit and delete all journals',
             'CompetitionAdmin' => 'Create, edit, delete and perform administrative actions on competitions',
-            'PollAdmin' => 'Create, edit, and delete polls'
+            'PollAdmin' => 'Create, edit, and delete polls',
+            'ObliterateAdmin' => 'Obliterate user accounts'
         ];
         $default = [
             'ForumCreate' => 'Create threads and posts in the forums',

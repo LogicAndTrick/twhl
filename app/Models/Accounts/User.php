@@ -38,6 +38,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Forums\ForumPost');
     }
 
+    public function name_histories()
+    {
+        return $this->hasMany('App\Models\Accounts\UserNameHistory');
+    }
+
+    public function getPreviousAliases()
+    {
+        $ret = [];
+        foreach ($this->name_histories->sortByDesc(function($x) { return $x->created_at; }) as $nh) {
+            if ($this->name != $nh->name && array_search($nh->name, $ret) === false) $ret[] = $nh->name;
+        }
+        return $ret;
+    }
+
     public function deleteAvatar() {
         if ($this->avatar_custom) {
             if (is_file(public_path('uploads/avatars/full/'.$this->avatar_file)))

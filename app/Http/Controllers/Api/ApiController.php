@@ -18,6 +18,7 @@ use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultScreenshot;
 use App\Models\Vault\VaultType;
 use App\Models\Wiki\WikiRevision;
+use App\Models\Wiki\WikiRevisionMeta;
 use Input;
 
 class ApiController extends Controller {
@@ -138,6 +139,11 @@ class ApiController extends Controller {
         $q = WikiRevision::where('id', '>', 0);
         if (Input::get('active') !== null) $q = $q->where('is_active', '=', 1);
         return $this->call($q, 'title');
+    }
+
+    public function getWikiRevisionMetas($id)
+    {
+        return $this->call(WikiRevisionMeta::where('revision_id', '=', $id), 'id', 'key');
     }
 
     // Vault

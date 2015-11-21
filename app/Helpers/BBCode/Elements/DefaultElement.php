@@ -15,7 +15,8 @@ class DefaultElement extends Element
 
     function Parse($result, $scope)
     {
-        return $this->parser->ParseBBCode($result, $this->text, $scope, 'block');
+        $text = $this->parser->CleanString($this->text);
+        return $this->parser->ParseBBCode($result, $text, $scope, 'block');
     }
 
     function Matches($lines)

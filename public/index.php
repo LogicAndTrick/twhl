@@ -6,6 +6,10 @@
  * @author   Taylor Otwell <taylorotwell@gmail.com>
  */
 
+ini_set('upload_max_filesize', '16M');
+ini_set('post_max_size', '16M');
+
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

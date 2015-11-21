@@ -8,7 +8,7 @@ class WikiRevision extends Model {
 	//
     protected $table = 'wiki_revisions';
     protected $fillable = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'content_html', 'message'];
-    protected $visible = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'message'];
+    protected $visible = ['id', 'object_id', 'user_id', 'slug', 'title', 'content_text', 'message'];
 
     use SoftDeletes;
 
@@ -68,10 +68,16 @@ class WikiRevision extends Model {
         return $r;
     }
 
+    public function getNiceTitle() {
+        $type_id = $this->wiki_object->type_id;
+        if ($type_id == 2) return 'Upload: '.$this->title;
+        if ($type_id == 3) return 'Category: '.explode(':',$this->title)[1];
+        return $this->title;
+    }
+
     public static function CreateSlug($text) {
         $text = str_ireplace(' ', '_', $text);
         $text = preg_replace('%[^a-z0-9-_()\'\\.:]%si', '', $text);
         return $text;
     }
-
 }

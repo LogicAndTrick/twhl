@@ -138,7 +138,16 @@ class WikiController extends Controller {
 
     public function getEmbed($id)
     {
-        $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:'.$id)->first();
+        $rev = null;
+        if (substr($id, 0, 4) == 'rev:') {
+            $rev = WikiRevision::with(['wiki_revision_metas'])->where('id', '=', substr($id, 4))->first();
+        } else if (substr($id, 0, 3) == 'id:') {
+            $up = WikiUpload::where('id', '=', substr($id, 3))->first();
+            if ($up) return redirect($up->getResourceFileName());
+        }
+        if (!$rev) {
+            $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:'.$id)->first();
+        }
         if ($rev) {
             $upload = $rev->getUpload();
             if ($upload) return redirect($upload->getResourceFileName());

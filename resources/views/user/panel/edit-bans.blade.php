@@ -39,6 +39,13 @@
         @endforeach
     </table>
 
+    <div class="alert alert-danger">
+        <strong>Careful!</strong>
+        This is an administration action.
+        Banning people shouldn't be done without good reason. Make sure the reason
+        clearly explains why the user was banned.
+    </div>
+
     <h2>Ban This User</h2>
     @form(panel/add-ban)
         @hidden(id $user)

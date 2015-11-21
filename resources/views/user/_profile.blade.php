@@ -69,6 +69,10 @@
             @if ($user->hasSkills())
                 <dt>Skills</dt><dd>{{ implode(', ', $user->getSkills()) }}</dd>
             @endif
+            {? $history = $user->getPreviousAliases(); ?}
+            @if (count($history) > 0)
+                <dt>Previous Names</dt><dd>{{ implode(', ', $history) }}</dd>
+            @endif
         </dl>
         @if (permission('Admin'))
             <hr title="Admin" />

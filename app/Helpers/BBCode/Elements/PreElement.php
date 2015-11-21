@@ -53,6 +53,7 @@ class PreElement extends Element {
 
     function Parse($result, $scope)
     {
-        return '<pre><code>' . $this->text . '</code></pre>';
+        $text = $this->parser->CleanString($this->text);
+        return '<pre><code>' . $text . '</code></pre>';
     }
 }

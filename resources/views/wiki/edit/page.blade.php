@@ -3,10 +3,10 @@
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
     <hc>
-        <h1>Edit: {{ $revision->title }}</h1>
+        <h1>Edit: {{ $revision->getNiceTitle() }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-            <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->title }}</a></li>
+            <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
             <li class="active">Edit Page</li>
         </ol>
     </hc>

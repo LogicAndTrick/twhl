@@ -1,4 +1,9 @@
 <hc>
+    @if ($revision)
+        <span class="pull-right">
+            Last edited {{ $revision->created_at->diffForHumans() }} by @avatar($revision->user inline)
+        </span>
+    @endif
     <h1>Category: {{ $cat_name }}</h1>
     <ol class="breadcrumb">
         <li><a href="{{ url('/wiki') }}">Wiki</a></li>
