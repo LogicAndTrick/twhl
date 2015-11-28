@@ -17,10 +17,16 @@ class VaultItem extends Model {
         'flag_notify', 'flag_ratings',
         'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating'
     ];
+    protected $dates = ['created_at', 'updated_at'];
 
     public function user()
     {
         return $this->belongsTo('App\Models\Accounts\User');
+    }
+
+    public function engine()
+    {
+        return $this->belongsTo('App\Models\Engine');
     }
 
     public function game()
@@ -68,6 +74,14 @@ class VaultItem extends Model {
         return array_first($this->vault_screenshots, function($i, $x) {
             return $x->is_primary > 0;
         });
+    }
+
+    public function getThumbnailAsset()
+    {
+        $ps = $this->getPrimaryScreenshot();
+        return $ps == null
+            ? 'images/no-screenshot-320.png'
+            : 'uploads/vault/' . $this->getPrimaryScreenshot()->image_small;
     }
 
     public function getDownloadUrl()

@@ -1,24 +1,32 @@
 @extends('app')
 
 @section('content')
-    <h2>
-        Screenshots: <a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a>
-        <span class="screenshots-dnd-explanation">
-            Drag and drop to re-order the screenshots
-            <span class="glyphicon glyphicon-arrow-down"></span>
-        </span>
-    </h2>
-    <div class="alert alert-info">
+    <hc>
+        <h1>Vault Item Screenshots: {{ $item->name }}</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
+            <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
+            <li class="active">Manage Item Screenshots</li>
+        </ol>
+    </hc>
+
+    <div class="alert alert-info" style="margin-bottom: 0px;">
         <h4>The first screenshot is the primary screenshot</h4>
         <p>The primary screenshot is used as the display image for the vault item.</p>
     </div>
+
+    <div class="screenshots-dnd-explanation">
+        Drag and drop to re-order the screenshots
+        <span class="glyphicon glyphicon-arrow-down"></span>
+    </div>
+
     <ul class="media-list screenshot-list">
         <li>
             <img src="{{ asset('images/loading.gif') }}" alt="Loading" /> Please wait...
         </li>
     </ul>
     <h3>Upload Screenshots <small>Maximum size: 2mb</small></h3>
-    <form id="screenshot-upload" action="{{ act('vault', 'post-create-screenshot') }}" class="dropzone" enctype="multipart/form-data">
+    <form id="screenshot-upload" action="{{ act('vault', 'create-screenshot') }}" class="dropzone" enctype="multipart/form-data">
         <input type='hidden' name='_token' value='{{ csrf_token() }}'/>
         <input type="hidden" name="id" value="{{ $item->id }}"/>
         <div class="fallback">

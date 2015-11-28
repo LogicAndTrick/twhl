@@ -1,3 +1,23 @@
+.vault-filter-container {
+  @media (max-width: 1199px) {
+    .btn-group > .btn {
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+    .filter-info {
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 991px) {
+    .btn-group > .btn {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+    .filter-info {
+      display: none;
+    }
+  }
+}
 .vault-filter {
   li {
     white-space: nowrap;
@@ -44,12 +64,83 @@
   }
 }
 
+.vault-list {
+  list-style-type: none;
+  padding: 15px;
+
+  > * {
+    padding: 0;
+
+    @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+      &:nth-child(2n+1) {
+        clear: both;
+      }
+    }
+
+    @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+      &:nth-child(3n+1) {
+        clear: both;
+      }
+    }
+
+    @media (min-width: @screen-lg-min) {
+      &:nth-child(4n+1) {
+        clear: both;
+      }
+    }
+
+  }
+}
+
+.vault-item {
+  margin: 2px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+
+  .game-icon {
+    float: left;
+    position: relative;
+    top: -6px;
+    left: -6px;
+  }
+
+  a {
+
+  }
+
+  .screenshot {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+    clear: both;
+  }
+}
+
 .screenshots-dnd-explanation {
-  display: inline-block;
-  float: right;
   font-size: 12px;
   line-height: 40px;
-  margin: 0 20px
+  margin: 0 20px;
+  text-align: right;
+}
+
+#vault-slider {
+  .slider, &.slider { height: 460px; }
+  .slides { height: 370px; }
+
+  @media (min-width: @screen-sm-min) {
+    .slider, &.slider { height: 560px; }
+    .slides { height: 470px; }
+  }
+
+  @media (min-width: @screen-md-min) {
+    .slider, &.slider { height: 660px; }
+    .slides { height: 570px; }
+  }
+}
+
+.vault-key-info {
+  border-left: 1px solid #dedede;
 }
 
 .screenshot-list {

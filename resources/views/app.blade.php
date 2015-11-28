@@ -81,7 +81,7 @@
 		</div>
 	</nav>
 
-    <div class="container">
+    <div class="container{{ isset($fluid) && $fluid === true ? '-fluid' : '' }}">
 	    @yield('content')
     </div>
 

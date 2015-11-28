@@ -29,8 +29,13 @@ body, label, .checkbox label {
 	// font-weight: 300;
 }
 
-body > .container {
+body > .container, body > .container-fluid {
   padding-bottom: 15px;
+}
+
+body > .container-fluid {
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
 h1,h2,h3 {
@@ -40,7 +45,7 @@ h1,h2,h3 {
   }
 }
 
-.container, .alert, .well, .panel-body {
+.container, .container-fluid, .alert, .well, .panel-body {
   & > h1, & > h2, & > h3, & > h4, & > h5, & > h6 {
     &:first-child {
       margin-top: 10px;
@@ -85,15 +90,31 @@ textarea.form-control {
   &.tiny { height: 80px; }
 }
 
-.dl-horizontal.dl-small {
-  text-align: left;
-  dt { width: 110px; }
-  dd { margin-left: 130px; }
+@media (max-width: @grid-float-breakpoint-max) {
+  .dl-horizontal {
+    dd {
+      margin-left: 20px;
+    }
+  }
 }
 
-.dl-horizontal.dl-wide {
-  dt { width: 240px; }
-  dd { margin-left: 260px; }
+@media (min-width: @grid-float-breakpoint) {
+  .dl-horizontal.dl-tiny {
+    text-align: left;
+    dt { width: 70px; }
+    dd { margin-left: 90px; }
+  }
+
+  .dl-horizontal.dl-small {
+    text-align: left;
+    dt { width: 110px; }
+    dd { margin-left: 130px; }
+  }
+
+  .dl-horizontal.dl-wide {
+    dt { width: 240px; }
+    dd { margin-left: 260px; }
+  }
 }
 
 .option-panel {

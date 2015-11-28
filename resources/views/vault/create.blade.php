@@ -1,7 +1,13 @@
 @extends('app')
 
 @section('content')
-    <h2>Upload to the Vault</h2>
+    <hc>
+        <h1>Upload to the Vault</h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
+            <li class="active">Add New Vault Item</li>
+        </ol>
+    </hc>
     <p>Here you can upload a map, mod, texture pack, model, or other modding resources to the TWHL vault!</p>
     @form(vault/create upload=true)
         @autocomplete(engine_id api/engines) = Game Engine

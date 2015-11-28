@@ -32,6 +32,9 @@ class VaultController extends Controller {
         $cats = array_filter(explode('-', Request::get('cats')), function($x) { return is_numeric($x); });
         if (count($cats) > 0) $item_query = $item_query->whereIn('category_id', $cats);
 
+        $types = array_filter(explode('-', Request::get('types')), function($x) { return is_numeric($x); });
+        if (count($types) > 0) $item_query = $item_query->whereIn('type_id', $types);
+
         $incs = array_filter(explode('-', Request::get('incs')), function($x) { return is_numeric($x); });
         if (count($incs) > 0) {
             $qs = implode(', ', array_map(function() { return '?'; }, $incs));
@@ -52,14 +55,17 @@ class VaultController extends Controller {
         if (!$search_sort) $search_sort = 0;
         $item_query = $item_query->orderBy($mapped_sort[$search_sort], Request::get('asc') == 'true' ? 'asc' : 'desc');
 
-        $items = $item_query->paginate(32);
+        $items = $item_query->paginate(24);
         return view('vault/list', [
-            'items' => $items->appends(Request::except('page'))
+            'items' => $items->appends(Request::except('page')),
+            'filtering' => strlen($search) > 0 || count($games) > 0 || count($cats) > 0 || count($types) > 0 || count($incs) > 0 || is_numeric($rating) || count($users) > 0 || $search_sort > 0,
+            'fluid' => true
         ]);
 	}
 
     public function getView($id) {
-        $item = VaultItem::with(['user', 'game', 'license', 'vault_screenshots', 'vault_includes', 'vault_category', 'vault_type'])->findOrFail($id);
+        $item = VaultItem::with(['user', 'game', 'engine', 'license', 'vault_screenshots', 'vault_includes', 'vault_category', 'vault_type'])->findOrFail($id);
+        $item->timestamps = false;
         $item->stat_views++;
         $item->save();
 
@@ -72,6 +78,7 @@ class VaultController extends Controller {
 
     public function getDownload($id) {
         $item = VaultItem::findOrFail($id);
+        $item->timestamps = false;
         $item->stat_downloads++;
         $item->save();
         return redirect($item->getDownloadUrl());
@@ -106,7 +113,7 @@ class VaultController extends Controller {
         $screen->move($temp_dir, $temp_name);
         $thumbs = Image::MakeThumbnails(
             $temp_dir . '/' . $temp_name, Image::$vault_image_sizes,
-            public_path('uploads/vault/'), $shot->id . '.' . strtolower($screen->getClientOriginalExtension())
+            public_path('uploads/vault/'), $shot->id . '.' . strtolower($screen->getClientOriginalExtension()), true
         );
         unlink($temp_dir . '/' . $temp_name);
 

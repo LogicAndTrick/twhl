@@ -63,15 +63,32 @@
   }
 
   .arrow {
-    display: block;
     position: absolute;
-    width: 40px;
-    height: 40px;
     cursor: pointer;
-    overflow: hidden;
-    background-color: #dedede;
+    font-size: 50px;
+    text-shadow: #000 0px 0px 10px;
+    color: #eee;
+    font-family: 'Glyphicons Halflings';
+    margin-top: -80px;
 
-    &.left { left: 8px; }
-    &.right { right: 8px; }
+    &:hover {
+      color: #fff;
+      text-shadow: #666 0px 0px 10px;
+    }
+
+    &.left {
+      left: 8px;
+
+      &::after {
+        content: "\e079";
+      }
+    }
+    &.right {
+      right: 8px;
+
+      &::after {
+        content: "\e080";
+      }
+    }
   }
 }
