@@ -17,7 +17,7 @@ class CreateShoutsTable extends Migration {
             $table->foreign('user_id')->references('id')->on('users');
 		});
 
-        DB:unprepared("
+        DB::unprepared("
             CREATE PROCEDURE update_user_shout_statistics(uid INT)
             BEGIN
                 UPDATE users

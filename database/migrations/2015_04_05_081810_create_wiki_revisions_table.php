@@ -42,7 +42,7 @@ class CreateWikiRevisionsTable extends Migration {
                 UPDATE wiki_revisions SET is_active = 1 WHERE id = rid;
             END;");
 
-        DB:unprepared("
+        DB::unprepared("
             CREATE PROCEDURE update_user_wiki_statistics(uid INT)
             BEGIN
                 UPDATE users

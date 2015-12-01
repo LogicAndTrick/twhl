@@ -21,7 +21,7 @@ class CreateJournalsTable extends Migration {
             $table->foreign('user_id')->references('id')->on('users');
 		});
 
-        DB:unprepared("
+        DB::unprepared("
             CREATE PROCEDURE update_user_journal_statistics(uid INT)
             BEGIN
                 UPDATE users

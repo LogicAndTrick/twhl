@@ -40,7 +40,7 @@ class CreateVaultItemsTable extends Migration {
             $table->foreign('license_id')->references('id')->on('licenses');
 		});
 
-        DB:unprepared("
+        DB::unprepared("
             CREATE PROCEDURE update_user_vault_statistics(uid INT)
             BEGIN
                 UPDATE users
