@@ -48,7 +48,7 @@ class CreateForumPostsTable extends Migration {
                 WHERE id = fid;
             END;");
 
-        DB:unprepared("
+        DB::unprepared("
             CREATE PROCEDURE update_user_forum_statistics(uid INT)
             BEGIN
                 UPDATE users
