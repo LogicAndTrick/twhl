@@ -97,6 +97,7 @@
   border: 1px solid #ccc;
   padding: 5px;
   text-align: center;
+  line-height: 1.6em;
 
   .game-icon {
     float: left;
@@ -110,10 +111,13 @@
   }
 
   .screenshot {
-    max-width: 100%;
     display: block;
-    margin: 0 auto;
+    margin: 0 auto 5px;
     clear: both;
+
+    img {
+      max-width: 100%;
+    }
   }
 }
 
@@ -141,6 +145,12 @@
 
 .vault-key-info {
   border-left: 1px solid #dedede;
+
+  .stars {
+    display: block;
+    text-align: center;
+    margin: 10px;
+  }
 }
 
 .screenshot-list {

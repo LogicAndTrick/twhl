@@ -36,6 +36,24 @@ class Comment extends Model {
         return intval($this->getMeta(CommentMeta::RATING));
     }
 
+    public function getRatingStars()
+    {
+        $score = $this->getRating();
+        $rounded = ceil($score * 2) / 2; // Round up to closest 0.5
+
+        $full = floor($rounded);
+        $half = $rounded - $full > 0;
+        $empty = 5 - ceil($rounded);
+
+        $stars = [];
+
+        for ($i = 0; $i < $full; $i++) $stars[] = 'full';
+        if ($half) $stars[] = 'half';
+        for ($i = 0; $i < $empty; $i++) $stars[] = 'empty';
+
+        return $stars;
+    }
+
     private function getMeta($type) {
         foreach ($this->comment_metas as $meta) {
             if ($meta->key == $type) return $meta->value;

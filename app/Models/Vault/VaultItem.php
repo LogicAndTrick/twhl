@@ -96,6 +96,24 @@ class VaultItem extends Model {
         else return public_path('uploads/vault/items/'.$this->file_location);
     }
 
+    public function getRatingStars()
+    {
+        $score = $this->stat_average_rating;
+        $rounded = ceil($score * 2) / 2; // Round up to closest 0.5
+
+        $full = floor($rounded);
+        $half = $rounded - $full > 0;
+        $empty = 5 - ceil($rounded);
+
+        $stars = [];
+
+        for ($i = 0; $i < $full; $i++) $stars[] = 'full';
+        if ($half) $stars[] = 'half';
+        for ($i = 0; $i < $empty; $i++) $stars[] = 'empty';
+
+        return $stars;
+    }
+
     /**
      * Returns true if this item is editable by the current user.
      * @return bool

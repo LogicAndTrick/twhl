@@ -89,9 +89,21 @@
                 <div class="vault-item">
                     <img class="game-icon" src="{{ asset('images/games/' . $item->game->abbreviation . '_32.png') }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
                     <a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a>
-                    <a href="{{ act('vault', 'view', $item->id) }}">
-                        <img class="screenshot" src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" />
+                    <a class="screenshot" href="{{ act('vault', 'view', $item->id) }}">
+                        <img src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" />
                     </a>
+                    @if ($item->flag_ratings && $item->stat_ratings > 0)
+                        <span class="stars">
+                            @foreach ($item->getRatingStars() as $star)
+                                <img src="{{ asset('images/stars/gold_'.$star.'_16.png') }}" alt="{{ $star }} star" />
+                            @endforeach
+                            ({{$item->stat_ratings}})
+                        </span>
+                    @elseif ($item->flag_ratings)
+                        No Ratings Yet
+                    @else
+                        Ratings Disabled
+                    @endif
                     <br/>
                     By @avatar($item->user inline)<br/>
                     {{ $item->created_at->diffForHumans() }}
@@ -150,10 +162,15 @@
             });
 
             $('.filter-games').parent().on('show.bs.dropdown', function() {
-                var s = $('[name=search]');
-                var w = s.outerWidth() + s.siblings('.input-group-addon').outerWidth();
-                $('.filter-games').css({
-                    left: -w
+                var s = $('[name=search]'),
+                    fg = $('.filter-games'),
+                    bt = fg.siblings('[data-toggle="dropdown"]'),
+                    w = s.outerWidth() + s.siblings('.input-group-addon').outerWidth(),
+                    cw = fg.outerWidth(),
+                    bw = bt.outerWidth(),
+                    max = cw - bw;
+                fg.css({
+                    left: -Math.min(max, w)
                 })
             });
 

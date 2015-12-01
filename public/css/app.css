@@ -6946,6 +6946,50 @@ hr[title]::before {
   background: white;
   padding: 0 15px;
 }
+.comment-container {
+  border-bottom: 1px solid #eeeeee;
+}
+.comment-container:before,
+.comment-container:after {
+  content: " ";
+  display: table;
+}
+.comment-container:after {
+  clear: both;
+}
+.comment-container:before,
+.comment-container:after {
+  content: " ";
+  display: table;
+}
+.comment-container:after {
+  clear: both;
+}
+.comment-container:first-child {
+  border-top: 1px solid #eeeeee;
+}
+.comment-container .comment-info {
+  float: left;
+  width: 80px;
+  margin-right: 10px;
+}
+.comment-container .comment-info .avatar {
+  margin-bottom: 0px;
+}
+.comment-container .comment-body {
+  padding: 10px;
+  margin-left: 80px;
+}
+.comment-container .comment-body > .btn {
+  float: right;
+  margin: 0 2px;
+}
+.comment-container .comment-body .stars {
+  display: block;
+}
+.comment-container .comment-body .bbcode {
+  margin-bottom: 0px;
+}
 span.bbcode {
   display: inline-block;
   margin-bottom: 5px;
@@ -7225,6 +7269,7 @@ ul.wiki-categories .header {
   border: 1px solid #ccc;
   padding: 5px;
   text-align: center;
+  line-height: 1.6em;
 }
 .vault-item .game-icon {
   float: left;
@@ -7233,10 +7278,12 @@ ul.wiki-categories .header {
   left: -6px;
 }
 .vault-item .screenshot {
-  max-width: 100%;
   display: block;
-  margin: 0 auto;
+  margin: 0 auto 5px;
   clear: both;
+}
+.vault-item .screenshot img {
+  max-width: 100%;
 }
 .screenshots-dnd-explanation {
   font-size: 12px;
@@ -7271,6 +7318,11 @@ ul.wiki-categories .header {
 }
 .vault-key-info {
   border-left: 1px solid #dedede;
+}
+.vault-key-info .stars {
+  display: block;
+  text-align: center;
+  margin: 10px;
 }
 .screenshot-list li {
   border-radius: 4px;
@@ -8659,10 +8711,10 @@ textarea.form-control.tiny {
     text-align: left;
   }
   .dl-horizontal.dl-tiny dt {
-    width: 70px;
+    width: 80px;
   }
   .dl-horizontal.dl-tiny dd {
-    margin-left: 90px;
+    margin-left: 100px;
   }
   .dl-horizontal.dl-small {
     text-align: left;

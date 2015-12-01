@@ -12,19 +12,19 @@ class CommentController extends Controller {
     private $comment_config = [
         Comment::NEWS => array(
             'model' => '\App\Models\News',
-            'redirect' => 'news/view/{id}',
+            'redirect' => 'news/view/{id}#comments',
             'auth_create' => 'NewsComment',
             'auth_moderate' => 'NewsAdmin'
         ),
         Comment::JOURNAL => array(
             'model' => '\App\Models\Journal',
-            'redirect' => 'journal/view/{id}',
+            'redirect' => 'journal/view/{id}#comments',
             'auth_create' => 'JournalComment',
             'auth_moderate' => 'JournalAdmin'
         ),
         Comment::VAULT => [
             'model' => '\App\Models\Vault\VaultItem',
-            'redirect' => 'vault/view/{id}',
+            'redirect' => 'vault/view/{id}#comments',
             'auth_create' => 'VaultComment',
             'auth_moderate' => 'VaultAdmin',
             'meta' => [
@@ -37,19 +37,19 @@ class CommentController extends Controller {
         ],
         Comment::POLL => [
             'model' => '\App\Models\Polls\Poll',
-            'redirect' => 'poll/view/{id}',
+            'redirect' => 'poll/view/{id}#comments',
             'auth_create' => 'PollComment',
             'auth_moderate' => 'PollAdmin'
         ],
         Comment::WIKI => [
             'model' => '\App\Models\Wiki\WikiObject',
-            'redirect' => 'wiki/view/{id}',
+            'redirect' => 'wiki/view/{id}#comments',
             'auth_create' => 'WikiComment',
             'auth_moderate' => 'WikiAdmin'
         ]
         //Comment::MOTM => array(
         //    'model' => '\App\Models\Motm\Motm',
-        //    'redirect' => 'motm/view/{id}',
+        //    'redirect' => 'motm/view/{id}#comments',
         //    'auth_create' => 'MotmComment',
         //    'auth_moderate' => 'MotmAdmin'
         //)

@@ -60,6 +60,13 @@
             <hc class="text-right">
                 <h2>Key Information</h2>
             </hc>
+            @if ($item->flag_ratings && $item->stat_ratings > 0)
+                <span class="stars">
+                    @foreach ($item->getRatingStars() as $star)
+                        <img src="{{ asset('images/stars/gold_'.$star.'_32.png') }}" alt="{{ $star }} star" />
+                    @endforeach
+                </span>
+            @endif
             <dl class="dl-horizontal dl-tiny">
                 <dt>Name</dt><dd>{{ $item->name }}</dd>
                 <dt>By</dt><dd>@avatar($item->user inline)</dd>
@@ -75,7 +82,7 @@
                 <dt>Views</dt><dd>{{ $item->stat_views }}</dd>
                 <dt>Downloads</dt><dd>{{ $item->stat_downloads }}</dd>
                 <dt>Comments</dt><dd>{{ $item->stat_comments }}</dd>
-                @if ($item->stat_ratings > 0)
+                @if ($item->flag_ratings && $item->stat_ratings > 0)
                     <dt>Rating</dt><dd>{{ $item->stat_average_rating }} ({{ $item->stat_ratings }})</dd>
                 @endif
             </dl>
