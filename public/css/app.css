@@ -6878,11 +6878,12 @@ body > .container-fluid {
 }
 .home-page .vault-item {
   position: relative;
-  background: #fea320;
+  background: #fbfbfb;
   background-size: cover;
   background-position: center center;
   display: block;
   border: 0;
+  margin: 0;
 }
 .home-page .vault-item::before {
   content: '';
