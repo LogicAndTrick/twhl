@@ -84,6 +84,14 @@ class VaultItem extends Model {
             : 'uploads/vault/' . $this->getPrimaryScreenshot()->image_small;
     }
 
+    public function getMediumAsset()
+    {
+        $ps = $this->getPrimaryScreenshot();
+        return $ps == null
+            ? 'images/no-screenshot-320.png'
+            : 'uploads/vault/' . $this->getPrimaryScreenshot()->image_medium;
+    }
+
     public function getDownloadUrl()
     {
         if ($this->is_hosted_externally) return $this->file_location;

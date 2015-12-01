@@ -6791,6 +6791,7 @@ fieldset[disabled] .btn-inverse.active {
   text-transform: uppercase;
   font-size: 12px;
   padding: 3px 6px 2px;
+  line-height: 1.4em;
 }
 .tagged .tag.right {
   left: auto;
@@ -6878,11 +6879,41 @@ body > .container-fluid {
 .home-page .vault-item {
   position: relative;
   background: #fea320;
+  background-size: cover;
+  background-position: center center;
+  display: block;
+  border: 0;
 }
 .home-page .vault-item::before {
   content: '';
-  padding-top: 56.25%;
+  padding-top: 61.875%;
   display: inline-block;
+}
+.home-page .vault-item hr {
+  margin: 5px;
+}
+.home-page .vault-item .vault-item-details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: all 0.4s ease;
+  background-color: white;
+  color: black;
+  padding: 10px;
+}
+.home-page .vault-item:hover .vault-item-details {
+  opacity: 0.9;
+}
+.home-page .vault-item .large-title {
+  font-size: 1.4em;
+  line-height: 1.4em;
+}
+.home-page .vault-item .avatar.small {
+  padding: 0;
+  margin-bottom: 0;
 }
 .header-container {
   margin-bottom: 10px;

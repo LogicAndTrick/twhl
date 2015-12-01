@@ -27,11 +27,46 @@ body {
   .vault-item {
     position: relative;
     background: @twhl-brand;
+    background-size: cover;
+    background-position: center center;
+    display: block;
+    border: 0;
 
     &::before{
       content: '';
-      padding-top: 100%*9/16;
+      padding-top: 110%*9/16;
       display: inline-block;
+    }
+
+    hr {
+      margin: 5px;
+    }
+
+    .vault-item-details {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      transition: all 0.4s ease;
+      background-color: white;
+      color: black;
+      padding: 10px;
+    }
+
+    &:hover .vault-item-details {
+      opacity: 0.9;
+    }
+
+    .large-title {
+      font-size: 1.4em;
+      line-height: 1.4em;
+    }
+
+    .avatar.small {
+      padding: 0;
+      margin-bottom: 0;
     }
   }
 }
