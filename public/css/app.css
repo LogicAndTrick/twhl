@@ -6870,7 +6870,7 @@ body > .container-fluid {
   color: #fea320;
 }
 .home-page .vault-items {
-  margin: 0 -30px;
+  margin: 0 -15px 0 -30px;
 }
 .home-page .vault-items > div {
   padding-right: 0px;
@@ -6890,9 +6890,6 @@ body > .container-fluid {
   padding-top: 61.875%;
   display: inline-block;
 }
-.home-page .vault-item hr {
-  margin: 5px;
-}
 .home-page .vault-item .vault-item-details {
   position: absolute;
   top: 0;
@@ -6904,17 +6901,48 @@ body > .container-fluid {
   background-color: white;
   color: black;
   padding: 10px;
+  overflow: hidden;
+}
+.home-page .vault-item .vault-item-details hr {
+  margin: 5px;
+}
+.home-page .vault-item .vault-item-details .large-title {
+  font-size: 1.4em;
+  line-height: 1.4em;
+}
+.home-page .vault-item .vault-item-details .avatar.small {
+  padding: 0;
+  margin-bottom: 0;
+}
+.home-page .vault-item .vault-item-details.small {
+  font-size: 0.8em;
+  padding: 5px;
+}
+.home-page .vault-item .vault-item-details.small hr {
+  margin: 4px;
 }
 .home-page .vault-item:hover .vault-item-details {
   opacity: 0.9;
 }
-.home-page .vault-item .large-title {
-  font-size: 1.4em;
-  line-height: 1.4em;
+.home-page .wiki-edits {
+  list-style-type: none;
+  padding-left: 0;
 }
-.home-page .vault-item .avatar.small {
-  padding: 0;
-  margin-bottom: 0;
+.home-page .wiki-edits li {
+  border-bottom: 1px solid #eeeeee;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+.home-page .wiki-edits .title {
+  font-weight: bold;
+}
+.home-page .wiki-edits .info {
+  font-size: 0.9em;
+}
+@media (min-width: 768px) {
+  .home-page .wiki-edits .info {
+    display: block;
+  }
 }
 .header-container {
   margin-bottom: 10px;
@@ -7180,12 +7208,20 @@ span.bbcode {
   background: #D5ECFF;
   margin: 0 -15px;
   padding: 5px;
+  padding-bottom: 0;
 }
 .wiki-navigation .btn {
   padding: 2px 8px;
 }
-.wiki-navigation .btn-group:first-child {
-  margin-left: 0;
+.wiki-navigation .btn-group {
+  margin-left: 0px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.wiki-navigation .title-button {
+  max-width: 200px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 ul.wiki-categories {
   border: 1px solid #eeeeee;
@@ -8736,6 +8772,20 @@ textarea.form-control.tiny {
 @media (max-width: 767px) {
   .dl-horizontal dd {
     margin-left: 20px;
+  }
+}
+@media (max-width: 767px) {
+  .dl-tiny.dl-unresponsive dt {
+    width: 80px;
+    float: left;
+    clear: left;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dl-tiny.dl-unresponsive dd {
+    margin-left: 100px;
   }
 }
 @media (min-width: 768px) {

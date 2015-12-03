@@ -1,7 +1,7 @@
 <div class="btn-toolbar wiki-navigation">
     @if (isset($revision) && $revision)
         <div class="btn-group" role="group">
-            <a class="btn btn-default" href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a>
+            <a class="btn btn-default title-button" href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a>
             @if (permission('WikiCreate'))
                 <a class="btn btn-default" href="{{ act('wiki', 'edit', $revision->slug) }}">Edit</a>
             @endif

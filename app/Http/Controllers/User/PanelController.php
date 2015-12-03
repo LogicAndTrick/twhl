@@ -282,8 +282,11 @@ class PanelController extends Controller {
     }
 
     private static $preset_avatars = [
-        'No Avatar' => [
-            'user_noavatar.png',
+        'Lambda Logo' => [
+            'user_noavatar1.png',
+            'user_noavatar2.png',
+            'user_noavatar_alt1.png',
+            'user_noavatar_alt2.png',
         ],
         'Half-Life' => [
             'hl_blueshift.jpg',
@@ -300,7 +303,7 @@ class PanelController extends Controller {
             'hl2_metrocop.jpg',
         ],
         'Counter-Strike' => [
-            'counterstrike.jpg',
+            'counterstrike1.jpg',
             'counterstrike_go.jpg',
             'counterstrike_s.jpg',
         ],

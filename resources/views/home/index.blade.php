@@ -27,7 +27,7 @@
                     </div>
                 @endforeach
 
-                @foreach ($top_maps as $item)
+                @foreach ($top_maps->slice(0, 2) as $item)
                 <div class="col-xs-3 tagged">
                     <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
                         <span class="tag small">Top Map</span>
@@ -39,11 +39,35 @@
                 </div>
                 @endforeach
 
-                @foreach ($new_maps->take(-2) as $item)
+                @foreach ($new_maps->slice(1, 2) as $item)
                 <div class="col-xs-3 tagged">
                     <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
-                        <span class="tag small">Top Map</span>
+                        <span class="tag right small">New Map</span>
                         <span class="vault-item-details">
+                            @avatar($item->user inline link=false)<hr />
+                            {{ $item->name }}
+                        </span>
+                    </a>
+                </div>
+                @endforeach
+
+                @foreach ($top_maps->slice(2, 3) as $item)
+                <div class="col-xs-2 tagged">
+                    <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
+                        <span class="tag small">Top</span>
+                        <span class="vault-item-details small">
+                            @avatar($item->user inline link=false)<hr />
+                            {{ $item->name }}
+                        </span>
+                    </a>
+                </div>
+                @endforeach
+
+                @foreach ($new_maps->slice(3, 3) as $item)
+                <div class="col-xs-2 tagged">
+                    <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
+                        <span class="tag right small">New</span>
+                        <span class="vault-item-details small">
                             @avatar($item->user inline link=false)<hr />
                             {{ $item->name }}
                         </span>
@@ -59,6 +83,18 @@
             <hc class="visible-xs-block">
                 <h1>New in the Wiki</h1>
             </hc>
+            <ul class="wiki-edits">
+                @foreach ($wiki_edits as $obj)
+                    <li>
+                        <a class="title" href="{{ act('wiki', 'page', $obj->current_revision->slug) }}">
+                            {{ $obj->current_revision->getNiceTitle() }}
+                        </a>
+                        <span class="info">
+                            {{ $obj->current_revision->created_at->diffForHumans() }} by @avatar($obj->current_revision->user inline)
+                        </span>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
     <div class="row">

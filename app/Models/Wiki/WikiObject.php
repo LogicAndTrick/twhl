@@ -8,4 +8,9 @@ class WikiObject extends Model {
     protected $table = 'wiki_objects';
     protected $fillable = ['type_id', 'permission_id'];
 
+    public function current_revision()
+    {
+        return $this->belongsTo('App\Models\Wiki\WikiRevision', 'current_revision_id');
+    }
+
 }

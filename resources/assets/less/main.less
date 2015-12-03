@@ -17,7 +17,7 @@ body {
   }
 
   .vault-items {
-    margin: 0 -30px;
+    margin: 0 -15px 0 -30px;
 
     > div {
       padding-right: 0px;
@@ -39,10 +39,6 @@ body {
       display: inline-block;
     }
 
-    hr {
-      margin: 5px;
-    }
-
     .vault-item-details {
       position: absolute;
       top: 0;
@@ -54,20 +50,55 @@ body {
       background-color: white;
       color: black;
       padding: 10px;
+      overflow: hidden;
+
+      hr {
+        margin: 5px;
+      }
+
+      .large-title {
+        font-size: 1.4em;
+        line-height: 1.4em;
+      }
+
+      .avatar.small {
+        padding: 0;
+        margin-bottom: 0;
+      }
+
+      &.small {
+        font-size: 0.8em;
+        padding: 5px;
+
+        hr {
+          margin: 4px;
+        }
+      }
     }
 
     &:hover .vault-item-details {
       opacity: 0.9;
     }
+  }
 
-    .large-title {
-      font-size: 1.4em;
-      line-height: 1.4em;
+  .wiki-edits {
+    list-style-type: none;
+    padding-left: 0;
+
+    li {
+      border-bottom: 1px solid @gray-lighter;
+      padding-bottom: 4px;
+      margin-bottom: 4px;
     }
 
-    .avatar.small {
-      padding: 0;
-      margin-bottom: 0;
+    .title {
+      font-weight: bold;
+    }
+    .info {
+      @media (min-width: @grid-float-breakpoint) {
+        display: block;
+      }
+      font-size: 0.9em;
     }
   }
 }

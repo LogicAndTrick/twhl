@@ -50,14 +50,17 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-sm-8">
             <hc>
                 <h2>Item Description</h2>
             </hc>
             <div class="bbcode">{!! $item->content_html !!}</div>
         </div>
-        <div class="col-xs-4 vault-key-info">
-            <hc class="text-right">
+        <div class="col-sm-4 vault-key-info">
+            <hc class="text-right hidden-xs">
+                <h2>Key Information</h2>
+            </hc>
+            <hc class="visible-xs-block">
                 <h2>Key Information</h2>
             </hc>
             @if ($item->flag_ratings && $item->stat_ratings > 0)
@@ -67,7 +70,7 @@
                     @endforeach
                 </span>
             @endif
-            <dl class="dl-horizontal dl-tiny">
+            <dl class="dl-horizontal dl-tiny dl-unresponsive">
                 <dt>Name</dt><dd>{{ $item->name }}</dd>
                 <dt>By</dt><dd>@avatar($item->user inline)</dd>
                 <dt>Type</dt><dd>{{ $item->vault_type->name }}</dd>
