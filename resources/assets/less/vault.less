@@ -147,9 +147,15 @@
   border-left: 1px solid #dedede;
 
   .stars {
-    display: block;
+    //display: block;
     text-align: center;
     margin: 10px;
+  }
+
+  .review-info {
+    text-align: center;
+    line-height: 2.4em;
+    padding-top: 8px;
   }
 }
 
@@ -194,4 +200,28 @@
     border-color: @brand-primary;
     background-color: @gray-lighter;
   }
+}
+
+.review-scores-label {
+  line-height: 2em;
+  text-align: center;
+}
+
+.vault-item-review-score {
+  font-size: 5em;
+  font-weight: bold;
+
+  small {
+    font-size: 0.4em;
+    color: #888;
+    font-weight: normal;
+    text-shadow: none;
+  }
+
+  &.rating-1 { color: #ff0000; }
+  &.rating-2 { color: #ffa500; }
+  &.rating-3 { color: #ffff00; text-shadow: rgba(0,0,0,0.5) 0px 0px 1px; }
+  &.rating-4 { color: #00c5fa; }
+  &.rating-5 { color: #00ca00; }
+
 }

@@ -1,6 +1,5 @@
 <?php namespace App\Models\Vault;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -64,6 +63,11 @@ class VaultItem extends Model {
         return $this->hasMany('App\Models\Vault\VaultScreenshot', 'item_id');
     }
 
+    public function vault_item_reviews()
+    {
+        return $this->hasMany('App\Models\Vault\VaultItemReview', 'item_id');
+    }
+
     public function hasPrimaryScreenshot()
     {
         return $this->getPrimaryScreenshot() != null;
@@ -122,6 +126,19 @@ class VaultItem extends Model {
         return $stars;
     }
 
+    public function reviewsAllowed()
+    {
+        if (!$this->flag_ratings) return false; // Can't review if you can't rate
+        if ($this->category_id != 2) return false; // Only completed stuff can be reviewed
+        if ($this->type_id != 1) return false; // Only maps can be reviewed
+        return true;
+    }
+
+    public function hasReviews()
+    {
+        return $this->vault_item_reviews->count();
+    }
+
     /**
      * Returns true if this item is editable by the current user.
      * @return bool
@@ -132,4 +149,14 @@ class VaultItem extends Model {
         return $user && ($user->id == $this->user_id || permission('VaultAdmin'));
     }
 
+    /**
+     * Returns true if this item can be reviewed
+     * @return bool
+     */
+    public function canReview()
+    {
+        if (!$this->reviewsAllowed()) return false;
+        $user = Auth::user();
+        return $user && ($user->id != $this->user_id && permission('VaultCreate'));
+    }
 }

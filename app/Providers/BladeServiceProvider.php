@@ -62,6 +62,19 @@ class BladeServiceProvider extends ServiceProvider {
             }, $view);
         });
 
+        // @date(date)
+        Blade::extend(function($view, $compiler) {
+            $pattern = $this->createBladeTemplatePattern('date');
+            return preg_replace_callback($pattern, function($matches) {
+                $parameters = $this->parseBladeTemplatePattern($matches, ['date'], ['format' => 'nice']);
+                $date = $parameters['date'];
+                $format = $parameters['format'];
+                $func = $format == 'nice' ? 'diffForHumans()' : "format('$format')";
+                $raw = "format('Y-m-d H:i:s T')";
+                return "{$matches[1]}<span class='nice-date' title='<?php echo {$date}->{$raw} ?>'><span class='formatted'><?php echo {$date}->{$func}; ?></span><span class='raw'><?php echo {$date}->{$raw} ?></span></span>";
+            }, $view);
+        });
+
         // @form(url)
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('form');

@@ -1,5 +1,6 @@
 <?php namespace App\Models\Comments;
 
+use App\Models\Vault\VaultItemReview;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -9,7 +10,7 @@ class Comment extends Model {
     const NEWS = 'n';
     const JOURNAL = 'j';
     const VAULT = 'v';
-    const MOTM = 'm';
+    const REVIEW = 'r';
     const POLL = 'p';
     const WIKI = 'w';
 
@@ -34,6 +35,27 @@ class Comment extends Model {
 
     public function getRating() {
         return intval($this->getMeta(CommentMeta::RATING));
+    }
+
+    public function hasTemplate() {
+        return $this->getMeta(CommentMeta::TEMPLATE) != null;
+    }
+
+    public function getTemplate() {
+        return $this->getMeta(CommentMeta::TEMPLATE);
+    }
+
+    public function getTemplateArticleObject() {
+        $d = $this->getMeta(CommentMeta::TEMPLATE_ARTICLE_ID);
+        $t = $this->getMeta(CommentMeta::TEMPLATE_ARTICLE_TYPE);
+        if ($d == null || $t == null) return null;
+
+        $d = intval($d);
+        switch ($t) {
+            case 'VaultItemReview':
+                return VaultItemReview::with(['user'])->find($d);
+        }
+        return null;
     }
 
     public function getRatingStars()
@@ -68,6 +90,9 @@ class Comment extends Model {
      */
     public function isEditable($comments = null) {
 
+        // Templated comments can't be changed by anybody else
+        if ($this->hasTemplate()) return false;
+
         // User must be logged in
         $user = Auth::user();
         if (!$user) return false;
@@ -81,10 +106,8 @@ class Comment extends Model {
                 $permission = 'Journal';
                 break;
             case Comment::VAULT;
+            case Comment::REVIEW;
                 $permission = 'Vault';
-                break;
-            case Comment::MOTM;
-                $permission = 'Motm';
                 break;
             case Comment::POLL:
                 $permission = 'Poll';
@@ -118,6 +141,9 @@ class Comment extends Model {
 
     public function isDeletable() {
 
+        // Templated comments can't be changed by anybody else
+        if ($this->hasTemplate()) return false;
+
         // User must be logged in
         $user = Auth::user();
         if (!$user) return false;
@@ -131,10 +157,8 @@ class Comment extends Model {
                 $permission = 'Journal';
                 break;
             case Comment::VAULT;
+            case Comment::REVIEW;
                 $permission = 'Vault';
-                break;
-            case Comment::MOTM;
-                $permission = 'Motm';
                 break;
             case Comment::POLL:
                 $permission = 'Poll';

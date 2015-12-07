@@ -35,8 +35,10 @@ Route::controllers([
     'message' => 'User\MessageController',
     'user' => 'User\UserController',
 
-    'wiki' => 'Wiki\WikiController',
     'vault' => 'Vault\VaultController',
+    'vault-review' => 'Vault\VaultReviewController',
+
+    'wiki' => 'Wiki\WikiController',
     'comment' => 'Comments\CommentController',
     'news' => 'News\NewsController',
     'journal' => 'Journals\JournalController',

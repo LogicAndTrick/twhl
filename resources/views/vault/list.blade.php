@@ -106,7 +106,7 @@
                     @endif
                     <br/>
                     By @avatar($item->user inline)<br/>
-                    {{ $item->created_at->diffForHumans() }}
+                    @date($item->created_at)
                 </div>
             </li>
         @endforeach

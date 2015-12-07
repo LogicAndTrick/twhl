@@ -18066,6 +18066,9 @@ $(function() {
     $(document).on('click', '.stop-close', function (e) {
         e.stopPropagation();
     });
+    $(document).on('click', '.nice-date', function (e) {
+        $(e.currentTarget).toggleClass('on');
+    });
 });
 $(document).on('click', '.video-content .uninitialised', function(event) {
     var $t = $(this),

@@ -6927,6 +6927,9 @@ body > .container-fluid {
 .home-page .wiki-edits {
   list-style-type: none;
   padding-left: 0;
+  overflow: hidden;
+  position: relative;
+  max-height: 180px;
 }
 .home-page .wiki-edits li {
   border-bottom: 1px solid #eeeeee;
@@ -6942,6 +6945,32 @@ body > .container-fluid {
 @media (min-width: 768px) {
   .home-page .wiki-edits .info {
     display: block;
+  }
+}
+.home-page .wiki-edits::after {
+  content: ' ';
+  position: absolute;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  height: 20%;
+  pointer-events: none;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .home-page .wiki-edits {
+    max-height: 340px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .home-page .wiki-edits {
+    max-height: 460px;
+  }
+}
+@media (min-width: 1200px) {
+  .home-page .wiki-edits {
+    max-height: 540px;
   }
 }
 .header-container {
@@ -7040,12 +7069,16 @@ hr[title]::before {
   padding: 10px;
   margin-left: 80px;
 }
-.comment-container .comment-body > .btn {
+.comment-container .comment-body .comment-meta {
+  line-height: 1.6em;
+  margin-bottom: 5px;
+  min-height: 28px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #fafafa;
+}
+.comment-container .comment-body .comment-meta .btn {
   float: right;
   margin: 0 2px;
-}
-.comment-container .comment-body .stars {
-  display: block;
 }
 .comment-container .comment-body .bbcode {
   margin-bottom: 0px;
@@ -7388,9 +7421,13 @@ ul.wiki-categories .header {
   border-left: 1px solid #dedede;
 }
 .vault-key-info .stars {
-  display: block;
   text-align: center;
   margin: 10px;
+}
+.vault-key-info .review-info {
+  text-align: center;
+  line-height: 2.4em;
+  padding-top: 8px;
 }
 .screenshot-list li {
   border-radius: 4px;
@@ -7423,6 +7460,36 @@ ul.wiki-categories .header {
 .dropzone.dz-drag-hover {
   border-color: #337ab7;
   background-color: #eeeeee;
+}
+.review-scores-label {
+  line-height: 2em;
+  text-align: center;
+}
+.vault-item-review-score {
+  font-size: 5em;
+  font-weight: bold;
+}
+.vault-item-review-score small {
+  font-size: 0.4em;
+  color: #888;
+  font-weight: normal;
+  text-shadow: none;
+}
+.vault-item-review-score.rating-1 {
+  color: #ff0000;
+}
+.vault-item-review-score.rating-2 {
+  color: #ffa500;
+}
+.vault-item-review-score.rating-3 {
+  color: #ffff00;
+  text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 1px;
+}
+.vault-item-review-score.rating-4 {
+  color: #00c5fa;
+}
+.vault-item-review-score.rating-5 {
+  color: #00ca00;
 }
 .comp-status-message {
   font-size: 110%;
@@ -8875,6 +8942,30 @@ fieldset[disabled] .btn-minimal {
   font-size: 10px;
   line-height: 1;
   border-radius: 10px;
+}
+.panel-title > a.btn {
+  color: white;
+}
+.nice-date {
+  padding: 0 3px;
+  border-radius: 4px;
+  cursor: default;
+  transition: background 0.2s ease;
+}
+.nice-date .raw {
+  display: none;
+}
+.nice-date:hover {
+  background: rgba(242, 242, 242, 0.5);
+}
+.nice-date.on {
+  background: #e6e6e6;
+}
+.nice-date.on .raw {
+  display: inline;
+}
+.nice-date.on .formatted {
+  display: none;
 }
 
 /*# sourceMappingURL=app.css.map */

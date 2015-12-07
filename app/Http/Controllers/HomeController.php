@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiObject;
 
@@ -32,7 +33,7 @@ class HomeController extends Controller {
 
         $wiki_edits = WikiObject::with(['current_revision', 'current_revision.user'])
             ->orderBy('updated_at', 'desc')
-            ->limit(8)
+            ->limit(12)
             ->get();
 
 		return view('home/index', [

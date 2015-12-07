@@ -80,13 +80,16 @@
                 @if (count($item->vault_includes) > 0)
                     <dt>Included</dt><dd>{{ implode(', ', array_map(function($x) { return $x['name']; }, $item->vault_includes->toArray())) }}</dd>
                 @endif
-                <dt>Created</dt><dd>{{ $item->created_at->diffForHumans() }}</dd>
-                <dt>Updated</dt><dd>{{ $item->updated_at->diffForHumans() }}</dd>
+                <dt>Created</dt><dd>@date($item->created_at)</dd>
+                <dt>Updated</dt><dd>@date($item->updated_at)</dd>
                 <dt>Views</dt><dd>{{ $item->stat_views }}</dd>
                 <dt>Downloads</dt><dd>{{ $item->stat_downloads }}</dd>
                 <dt>Comments</dt><dd>{{ $item->stat_comments }}</dd>
                 @if ($item->flag_ratings && $item->stat_ratings > 0)
                     <dt>Rating</dt><dd>{{ $item->stat_average_rating }} ({{ $item->stat_ratings }})</dd>
+                @endif
+                @if ($item->reviewsAllowed())
+                    <dt>Reviews</dt><dd>{{ $item->vault_item_reviews->count() }}</dd>
                 @endif
             </dl>
             @if ($item->license_id == 1)
@@ -111,6 +114,20 @@
                     (Hosted Externally)
                 @endif
             </a>
+            @if ($item->reviewsAllowed())
+                <div class="text-center review-info">
+                    @if ($item->hasReviews())
+                        Reviews: {{ $item->vault_item_reviews->count() }}
+                    @else
+                        No Reviews yet
+                    @endif
+                    <br/>
+                    <a class="btn btn-primary" href="{{ act('vault-review', 'create', $item->id) }}">
+                        <span class="glyphicon glyphicon-star"></span>
+                        Post a review
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 

@@ -46,12 +46,13 @@ class CommentController extends Controller {
             'redirect' => 'wiki/view/{id}#comments',
             'auth_create' => 'WikiComment',
             'auth_moderate' => 'WikiAdmin'
-        ]
-        //Comment::MOTM => array(
-        //    'model' => '\App\Models\Motm\Motm',
-        //    'redirect' => 'motm/view/{id}#comments',
-        //    'auth_create' => 'MotmComment',
-        //    'auth_moderate' => 'MotmAdmin'
+        ],
+        // Leaving this out for now. Not sure comments on reviews are useful enough.
+        //Comment::REVIEW => array(
+        //    'model' => '\App\Models\Vault\VaultItemReview',
+        //    'redirect' => 'vault-review/view/{id}#comments',
+        //    'auth_create' => 'VaultComment',
+        //    'auth_moderate' => 'VaultAdmin'
         //)
     ];
 	public function __construct()
@@ -100,7 +101,7 @@ class CommentController extends Controller {
 	}
 
     public function getEdit($id) {
-        $comment = Comment::with(['comment_metas'])->findOrFail($id);
+        $comment = Comment::with(['comment_metas', 'user'])->findOrFail($id);
         if (!$comment->isEditable()) abort(404);
         return view('comments/edit', [
             'comment' => $comment
