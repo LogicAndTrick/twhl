@@ -122,16 +122,23 @@
                         No Reviews yet
                     @endif
                     <br/>
+                    @if ($user_review)
+                        <a class="btn btn-primary" href="#comment-{{ $user_review->comment_id }}">
+                            <span class="glyphicon glyphicon-star"></span>
+                            Your review score: <strong class="rating-{{ $user_review->getStarRating() }}">{{ number_format(round($user_review->getRating() * 10) / 10, 1) }}</strong>
+                        </a>
+                    @else
                     <a class="btn btn-primary" href="{{ act('vault-review', 'create', $item->id) }}">
                         <span class="glyphicon glyphicon-star"></span>
                         Post a review
                     </a>
+                    @endif
                 </div>
             @endif
         </div>
     </div>
 
-    @include('comments.list', [ 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::VAULT, 'article_id' => $item->id ])
+    @include('comments.list', [ 'article' => $item, 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::VAULT, 'article_id' => $item->id, 'inject_add' => ['vault.review-info' => ['item' => $item, 'user_review' => $user_review]] ])
 @endsection
 
 @section('scripts')

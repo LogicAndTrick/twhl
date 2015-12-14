@@ -15,5 +15,5 @@
     <div class="bbcode">
         {!! $news->content_html !!}
     </div>
-    @include('comments.list', [ 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::NEWS, 'article_id' => $news->id ])
+    @include('comments.list', [ 'article' => $news, 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::NEWS, 'article_id' => $news->id ])
 @endsection

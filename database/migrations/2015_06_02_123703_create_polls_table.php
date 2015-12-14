@@ -14,6 +14,8 @@ class CreatePollsTable extends Migration {
             $table->string('content_text');
             $table->string('content_html');
             $table->date('close_date');
+            $table->integer('stat_comments');
+            $table->boolean('flag_locked');
 			$table->timestamps();
             $table->softDeletes();
 		});

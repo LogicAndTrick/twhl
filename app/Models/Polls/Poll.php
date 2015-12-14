@@ -32,4 +32,12 @@ class Poll extends Model {
     public function isClosed() {
         return $this->close_date->diffInSeconds() < 0;
     }
+
+    public function commentsIsLocked() {
+        return $this->flag_locked;
+    }
+
+    public function commentsCanAddMeta($meta) {
+        return true;
+    }
 }

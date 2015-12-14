@@ -13,6 +13,8 @@ class CreateWikiObjectsTable extends Migration {
             $table->unsignedInteger('type_id');
             $table->string('current_revision_id');
             $table->unsignedInteger('permission_id')->nullable();
+            $table->integer('stat_comments');
+            $table->boolean('flag_locked');
 			$table->timestamps();
             $table->softDeletes();
 

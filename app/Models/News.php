@@ -15,4 +15,12 @@ class News extends Model {
         return $this->belongsTo('App\Models\Accounts\User');
     }
 
+    public function commentsIsLocked() {
+        return $this->flag_locked;
+    }
+
+    public function commentsCanAddMeta($meta) {
+        return true;
+    }
+
 }

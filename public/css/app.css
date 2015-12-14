@@ -7083,6 +7083,13 @@ hr[title]::before {
 .comment-container .comment-body .bbcode {
   margin-bottom: 0px;
 }
+.comment-meta-rating .stars img {
+  margin: 0 2px;
+  cursor: pointer;
+}
+.comment-meta-rating .stars .btn {
+  margin-left: 10px;
+}
 span.bbcode {
   display: inline-block;
   margin-bottom: 5px;
@@ -7297,6 +7304,9 @@ ul.wiki-categories .header {
   .vault-filter-container .filter-info {
     font-size: 12px;
   }
+  .vault-filter-container .filter-info img {
+    max-height: 18px;
+  }
 }
 @media (max-width: 991px) {
   .vault-filter-container .btn-group > .btn {
@@ -7320,11 +7330,60 @@ ul.wiki-categories .header {
   background-color: #337ab7;
   color: white;
 }
+.vault-filter li.loading {
+  font-style: italic;
+  background-color: #e9e9e9;
+  text-align: center;
+}
+.vault-filter li.loading::after {
+  display: none;
+}
 .vault-filter li.loading:hover {
   background-color: transparent;
 }
 .vault-filter li.clear-filter {
   text-align: center;
+}
+.vault-filter .user-item,
+.vault-filter .user-item.active {
+  background-color: transparent;
+  color: #000;
+  cursor: default;
+}
+.vault-filter .user-item .glyphicon {
+  float: right;
+  border-radius: 4px;
+  padding: 5px;
+  cursor: pointer;
+}
+.vault-filter .user-item .glyphicon:hover {
+  background-color: #dedede;
+}
+.vault-filter .search-form {
+  cursor: default;
+}
+.vault-filter .search-form:hover {
+  background: transparent;
+}
+.vault-filter .search-form input {
+  display: block;
+  float: none;
+}
+.vault-filter .search-form ul.search-results {
+  margin-top: 5px;
+  padding: 0;
+  list-style-type: none;
+}
+.vault-filter .search-form ul.search-results li {
+  padding: 3px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.vault-filter .search-form ul.search-results li:hover {
+  background: #dedede;
+}
+.vault-filter .search-form ul.search-results li .glyphicon {
+  display: none;
 }
 .filter-games {
   width: 624px;
@@ -7421,6 +7480,7 @@ ul.wiki-categories .header {
   border-left: 1px solid #dedede;
 }
 .vault-key-info .stars {
+  display: block;
   text-align: center;
   margin: 10px;
 }
@@ -7475,20 +7535,20 @@ ul.wiki-categories .header {
   font-weight: normal;
   text-shadow: none;
 }
-.vault-item-review-score.rating-1 {
+.rating-1 {
   color: #ff0000;
 }
-.vault-item-review-score.rating-2 {
+.rating-2 {
   color: #ffa500;
 }
-.vault-item-review-score.rating-3 {
+.rating-3 {
   color: #ffff00;
   text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 1px;
 }
-.vault-item-review-score.rating-4 {
+.rating-4 {
   color: #00c5fa;
 }
-.vault-item-review-score.rating-5 {
+.rating-5 {
   color: #00ca00;
 }
 .comp-status-message {

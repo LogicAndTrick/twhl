@@ -70,8 +70,9 @@ class BladeServiceProvider extends ServiceProvider {
                 $date = $parameters['date'];
                 $format = $parameters['format'];
                 $func = $format == 'nice' ? 'diffForHumans()' : "format('$format')";
-                $raw = "format('Y-m-d H:i:s T')";
-                return "{$matches[1]}<span class='nice-date' title='<?php echo {$date}->{$raw} ?>'><span class='formatted'><?php echo {$date}->{$func}; ?></span><span class='raw'><?php echo {$date}->{$raw} ?></span></span>";
+                $func = "(!{$date} ? 'Never' : {$date}->{$func})";
+                $raw = "(!{$date} ? 'Never' : {$date}->format('Y-m-d H:i:s T'))";
+                return "{$matches[1]}<span class='nice-date' title='<?php echo {$raw}; ?>'><span class='formatted'><?php echo {$func}; ?></span><span class='raw'><?php echo {$raw}; ?></span></span>";
             }, $view);
         });
 

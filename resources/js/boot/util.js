@@ -13,6 +13,7 @@ $(function() {
         e.stopPropagation();
     });
     $(document).on('click', '.nice-date', function (e) {
+        e.stopPropagation();
         $(e.currentTarget).toggleClass('on');
     });
 });

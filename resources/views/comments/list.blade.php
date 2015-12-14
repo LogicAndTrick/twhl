@@ -4,7 +4,7 @@
 
 <div>
     @foreach ($comments as $comment)
-        <div class="comment-container">
+        <div class="comment-container" id="comment-{{ $comment->id }}">
             <div class="comment-info">
                 @if ($comment->user)
                     @avatar($comment->user small show_border=true)
@@ -37,5 +37,18 @@
     @endforeach
 </div>
 
-<h3>Add New Comment</h3>
-@include('comments.create', [ 'article_type' => $article_type, 'article_id' => $article_id, 'text' => '', 'comment' => null ])
+@if ($article->commentsIsLocked())
+    <div class="alert alert-info text-center">
+        <h4>Comments are locked</h4>
+    </div>
+@else
+    <h3>Add New Comment</h3>
+
+    @if (isset($inject_add))
+        @foreach ($inject_add as $v => $d)
+            @include($v, $d)
+        @endforeach
+    @endif
+
+    @include('comments.create', [ 'article' => $article, 'article_type' => $article_type, 'article_id' => $article_id, 'text' => '', 'comment' => null ])
+@endif

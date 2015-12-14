@@ -12,19 +12,19 @@ class CommentController extends Controller {
     private $comment_config = [
         Comment::NEWS => array(
             'model' => '\App\Models\News',
-            'redirect' => 'news/view/{id}#comments',
+            'redirect' => 'news/view/{id}{bookmark}',
             'auth_create' => 'NewsComment',
             'auth_moderate' => 'NewsAdmin'
         ),
         Comment::JOURNAL => array(
             'model' => '\App\Models\Journal',
-            'redirect' => 'journal/view/{id}#comments',
+            'redirect' => 'journal/view/{id}{bookmark}',
             'auth_create' => 'JournalComment',
             'auth_moderate' => 'JournalAdmin'
         ),
         Comment::VAULT => [
             'model' => '\App\Models\Vault\VaultItem',
-            'redirect' => 'vault/view/{id}#comments',
+            'redirect' => 'vault/view/{id}{bookmark}',
             'auth_create' => 'VaultComment',
             'auth_moderate' => 'VaultAdmin',
             'meta' => [
@@ -37,29 +37,42 @@ class CommentController extends Controller {
         ],
         Comment::POLL => [
             'model' => '\App\Models\Polls\Poll',
-            'redirect' => 'poll/view/{id}#comments',
+            'redirect' => 'poll/view/{id}{bookmark}',
             'auth_create' => 'PollComment',
             'auth_moderate' => 'PollAdmin'
         ],
         Comment::WIKI => [
             'model' => '\App\Models\Wiki\WikiObject',
-            'redirect' => 'wiki/view/{id}#comments',
+            'redirect' => 'wiki/view/{id}{bookmark}',
             'auth_create' => 'WikiComment',
             'auth_moderate' => 'WikiAdmin'
         ],
         // Leaving this out for now. Not sure comments on reviews are useful enough.
         //Comment::REVIEW => array(
         //    'model' => '\App\Models\Vault\VaultItemReview',
-        //    'redirect' => 'vault-review/view/{id}#comments',
+        //    'redirect' => 'vault-review/view/{id}{bookmark}',
         //    'auth_create' => 'VaultComment',
         //    'auth_moderate' => 'VaultAdmin'
         //)
     ];
+    
 	public function __construct()
 	{
         // Just assert for a logged-in user, do the permission checks dynamically
         $this->permission(['create', 'edit', 'delete'], true);
 	}
+    
+    private function replaceUrlVars($url, $comment)
+    {
+        $bookmark = '#comment';
+        if ($comment->deleted_at) $bookmark .= 's';
+        else $bookmark .= '-'.$comment->id;
+
+        $str = $url;
+        $str = str_ireplace('{id}', $comment->article_id, $str);
+        $str = str_ireplace('{bookmark}', $bookmark, $str);
+        return $str;
+    }
 
 	public function postCreate()
 	{
@@ -76,6 +89,8 @@ class CommentController extends Controller {
         ]);
 
         $article = call_user_func($config['model'] . '::findOrFail', $id);
+        if (!permission('Admin') && $article->commentsIsLocked()) abort(404);
+
         $comment = Comment::Create([
             'article_type' => $type,
             'article_id' => $id,
@@ -86,18 +101,23 @@ class CommentController extends Controller {
         if (array_key_exists('meta', $config) && is_array($config['meta'])) {
             $metas = [];
             foreach ($config['meta'] as $key => $meta) {
+                if (!$article->commentsCanAddMeta($key)) continue;
                 $val = strval(Request::input($meta['key']));
                 if ($val && preg_match('/^(1|2|3|4|5)$/i', $val)) {
                     $metas[] = new CommentMeta([ 'key' => $key, 'value' => $val]);
                     if (isset($meta['one_per_user']) && $meta['one_per_user']) {
-                        DB::statement('DELETE m FROM comment_metas AS m LEFT JOIN comments AS c ON c.id = m.comment_id WHERE article_type = ? AND article_id = ? AND user_id = ?', [$type, $id, $comment->user_id]);
+                        DB::statement(
+                            'DELETE m FROM comment_metas AS m
+                            LEFT JOIN comments AS c ON c.id = m.comment_id
+                            WHERE c.article_type = ? AND c.article_id = ? AND c.user_id = ? AND m.key = ?',
+                            [$type, $id, $comment->user_id, $key]);
                     }
                 }
             }
             $comment->comment_metas()->saveMany($metas);
         }
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
-        return redirect(str_ireplace('{id}', $id, $config['redirect']));
+        return redirect($this->replaceUrlVars($config['redirect'], $comment) );
 	}
 
     public function getEdit($id) {
@@ -135,18 +155,23 @@ class CommentController extends Controller {
         if (array_key_exists('meta', $config) && is_array($config['meta'])) {
             $metas = [];
             foreach ($config['meta'] as $key => $meta) {
+                if (!$article->commentsCanAddMeta($key)) continue;
                 $val = strval(Request::input($meta['key']));
                 if ($val && preg_match('/^(1|2|3|4|5)$/i', $val)) {
                     $metas[] = new CommentMeta([ 'key' => $key, 'value' => $val]);
                     if (isset($meta['one_per_user']) && $meta['one_per_user']) {
-                        DB::statement('DELETE m FROM comment_metas AS m LEFT JOIN comments AS c ON c.id = m.comment_id WHERE article_type = ? AND article_id = ? AND user_id = ?', [$type, $id, $comment->user_id]);
+                        DB::statement(
+                            'DELETE m FROM comment_metas AS m
+                            LEFT JOIN comments AS c ON c.id = m.comment_id
+                            WHERE c.article_type = ? AND c.article_id = ? AND c.user_id = ? AND m.key = ?',
+                            [$type, $id, $comment->user_id, $key]);
                     }
                 }
             }
             $comment->comment_metas()->saveMany($metas);
         }
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
-        return redirect(str_ireplace('{id}', $id, $config['redirect']));
+        return redirect($this->replaceUrlVars($config['redirect'], $comment) );
     }
 
     // Administrative Tasks
@@ -175,7 +200,7 @@ class CommentController extends Controller {
         $comment->delete();
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
 
-        return redirect(str_ireplace('{id}', $id, $config['redirect']));
+        return redirect($this->replaceUrlVars($config['redirect'], $comment) );
     }
 
     public function getRestore($id) {
@@ -202,6 +227,6 @@ class CommentController extends Controller {
         $comment->restore();
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
 
-        return redirect(str_ireplace('{id}', $id, $config['redirect']));
+        return redirect($this->replaceUrlVars($config['redirect'], $comment) );
     }
 }

@@ -1,5 +1,6 @@
 <?php namespace App\Models\Vault;
 
+use App\Models\Comments\CommentMeta;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -158,5 +159,17 @@ class VaultItem extends Model {
         if (!$this->reviewsAllowed()) return false;
         $user = Auth::user();
         return $user && ($user->id != $this->user_id && permission('VaultCreate'));
+    }
+
+    public function commentsIsLocked() {
+        return false;
+    }
+
+    public function commentsCanAddMeta($meta) {
+        switch ($meta) {
+            case CommentMeta::RATING:
+                return $this->flag_ratings;
+        }
+        return true;
     }
 }

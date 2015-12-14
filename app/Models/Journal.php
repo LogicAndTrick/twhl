@@ -20,4 +20,12 @@ class Journal extends Model {
         return Auth::user() != null && (Auth::user()->id == $this->user_id || permission('JournalAdmin'));
     }
 
+    public function commentsIsLocked() {
+        return $this->flag_locked;
+    }
+
+    public function commentsCanAddMeta($meta) {
+        return true;
+    }
+
 }

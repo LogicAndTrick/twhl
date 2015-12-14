@@ -28,13 +28,15 @@ class CreateCommentMetasTable extends Migration {
 
                 CASE atype
                     WHEN 'n' THEN
-                        BEGIN
-                            -- Todo: news
-                        END;
+                        UPDATE news SET
+                            stat_comments = (SELECT COUNT(*) FROM comments WHERE article_type = atype AND article_id = aid AND deleted_at IS NULL)
+                        WHERE
+                            id = aid AND deleted_at IS NULL;
                     WHEN 'j' THEN
-                        BEGIN
-                            -- Todo: journals
-                        END;
+                        UPDATE journals SET
+                            stat_comments = (SELECT COUNT(*) FROM comments WHERE article_type = atype AND article_id = aid AND deleted_at IS NULL)
+                        WHERE
+                            id = aid AND deleted_at IS NULL;
                     WHEN 'v' THEN
                         UPDATE vault_items SET
                             stat_ratings = (SELECT COUNT(*) FROM comment_metas as m LEFT JOIN comments as c ON m.comment_id = c.id
@@ -44,10 +46,16 @@ class CreateCommentMetasTable extends Migration {
                                                    WHERE article_type = atype AND article_id = aid AND deleted_at IS NULL AND m.key = 'r')
                         WHERE
                             id = aid AND deleted_at IS NULL;
-                    WHEN 'm' THEN
-                        BEGIN
-                            -- Todo: motm
-                        END;
+                    WHEN 'p' THEN
+                        UPDATE polls SET
+                            stat_comments = (SELECT COUNT(*) FROM comments WHERE article_type = atype AND article_id = aid AND deleted_at IS NULL)
+                        WHERE
+                            id = aid AND deleted_at IS NULL;
+                    WHEN 'w' THEN
+                        UPDATE wiki_objects SET
+                            stat_comments = (SELECT COUNT(*) FROM comments WHERE article_type = atype AND article_id = aid AND deleted_at IS NULL)
+                        WHERE
+                            id = aid AND deleted_at IS NULL;
                     ELSE
                         BEGIN
                             -- Do nothing...

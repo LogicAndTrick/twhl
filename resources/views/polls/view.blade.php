@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    @include('comments.list', [ 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::POLL, 'article_id' => $poll->id ])
+    @include('comments.list', [ 'article' => $poll, 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::POLL, 'article_id' => $poll->id ])
 @endsection
 
 @section('scripts')
