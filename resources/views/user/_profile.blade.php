@@ -12,7 +12,7 @@
             <dt>Forum Posts</dt>
             <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_forum_posts }} ({{ round($user->stat_forum_posts / $age, 2) }})</a></dd>
             <dt>Vault Items</dt>
-            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_vault_items }} ({{ round($user->stat_vault_items / $age, 2) }})</a></dd>
+            <dd><a href="{{ act('vault', 'index').'?users='.$user->id }}">{{ $user->stat_vault_items }} ({{ round($user->stat_vault_items / $age, 2) }})</a></dd>
             <dt>Journals</dt>
             <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_journals }} ({{ round($user->stat_journals / $age, 2) }})</a></dd>
             <dt>Wiki Edits</dt>
@@ -28,8 +28,8 @@
             @if ($user->info_name)
                 <dt>Name</dt><dd>{{ $user->info_name }}</dd>
             @endif
-            <dt>Joined</dt><dd>{{ $user->created_at->format('jS F Y') }} ({{ $user->created_at->diffForHumans() }})</dd>
-            <dt>Last Visited</dt><dd>{{ $user->last_access_time ? $user->last_access_time->diffForHumans() : 'Never' }}</dd>
+            <dt>Joined</dt><dd>{{ $user->created_at->format('jS F Y') }} (@date($user->created_at))</dd>
+            <dt>Last Visited</dt><dd>@date($user->last_access_time)</dd>
             @if ($user->show_email || permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
                 <dt>Email</dt>
                 <dd>

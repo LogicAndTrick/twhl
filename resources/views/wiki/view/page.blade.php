@@ -1,6 +1,6 @@
 <hc>
     <span class="pull-right">
-        Last edited {{ $revision->created_at->diffForHumans() }} by @avatar($revision->user inline)
+        Last edited @date($revision->created_at) by @avatar($revision->user inline)
     </span>
     <h1>{{ $revision->getNiceTitle() }}</h1>
     <ol class="breadcrumb">

@@ -19,6 +19,7 @@
         <input type="hidden" data-filter="filter-games" name="games" value="{{ Request::get('games') }}"/>
         <input type="hidden" data-filter="filter-categories" name="cats" value="{{ Request::get('cats') }}"/>
         <input type="hidden" data-filter="filter-types" name="types" value="{{ Request::get('types') }}"/>
+        <input type="hidden" data-filter="filter-users" name="users" value="{{ Request::get('users') }}"/>
         <input type="hidden" data-filter="filter-includes" name="incs" value="{{ Request::get('incs') }}"/>
         <input type="hidden" data-filter="filter-rating" name="rate" value="{{ Request::get('rate') }}"/>
         <input type="hidden" data-filter="filter-sort" name="sort" value="{{ Request::get('sort') }}"/>
@@ -45,6 +46,12 @@
                     </ul>
                 </div>
                 <div class="btn-group">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="glyphicon glyphicon-refresh"></span> Users</span> <span class="caret"></span></button>
+                    <ul class="dropdown-menu vault-filter remove-item filter-users">
+                        <li class="loading">Loading...</li>
+                    </ul>
+                </div>
+                <div class="btn-group">
                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="glyphicon glyphicon-refresh"></span> Includes</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-includes">
                         <li class="loading">Loading...</li>
@@ -53,27 +60,28 @@
                 <div class="btn-group">
                     <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-one filter-rating">
-                        <li data-filter-value="5">5</li>
-                        <li data-filter-value="4.5">4.5</li>
-                        <li data-filter-value="4">4</li>
-                        <li data-filter-value="3.5">3.5</li>
-                        <li data-filter-value="3">3</li>
-                        <li data-filter-value="2.5">2.5</li>
-                        <li data-filter-value="2">2</li>
-                        <li data-filter-value="1.5">1.5</li>
-                        <li data-filter-value="1">1</li>
-                        <li data-filter-value="0.5">0.5</li>
-                        <li data-filter-value="0">0</li>
+                        <li class="filter-action" data-filter-value="5">5</li>
+                        <li class="filter-action" data-filter-value="4.5">4.5</li>
+                        <li class="filter-action" data-filter-value="4">4</li>
+                        <li class="filter-action" data-filter-value="3.5">3.5</li>
+                        <li class="filter-action" data-filter-value="3">3</li>
+                        <li class="filter-action" data-filter-value="2.5">2.5</li>
+                        <li class="filter-action" data-filter-value="2">2</li>
+                        <li class="filter-action" data-filter-value="1.5">1.5</li>
+                        <li class="filter-action" data-filter-value="1">1</li>
+                        <li class="filter-action" data-filter-value="0.5">0.5</li>
+                        <li class="filter-action" data-filter-value="0">0</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Sort: Date</span> <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Sort: Created</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-one filter-sort">
-                        <li data-filter-value="date">Date</li>
-                        <li data-filter-value="rating">Rating</li>
-                        <li data-filter-value="num_ratings" data-text="Ratings">Number of Ratings</li>
-                        <li data-filter-value="num_views" data-text="Views">Number of Views</li>
-                        <li data-filter-value="num_downloads" data-text="Downloads">Number of Downloads</li>
+                        <li class="filter-action" data-filter-value="date" data-text="Created">Date Created</li>
+                        <li class="filter-action" data-filter-value="update" data-text="Updated">Date Updated</li>
+                        <li class="filter-action" data-filter-value="rating">Rating</li>
+                        <li class="filter-action" data-filter-value="num_ratings" data-text="Ratings">Number of Ratings</li>
+                        <li class="filter-action" data-filter-value="num_views" data-text="Views">Number of Views</li>
+                        <li class="filter-action" data-filter-value="num_downloads" data-text="Downloads">Number of Downloads</li>
                     </ul>
                 </div>
                 <button type="submit" class="btn btn-info">
@@ -116,7 +124,7 @@
 @section('scripts')
     <script type="text/javascript">
 
-        function populate_filter(cls, items, templ, obj) {
+        function populate_filter(cls, items, templ, obj, append) {
             var el = $('.' + cls).empty();
             obj = obj || {};
             for (var i = 0; i < items.length; i++) {
@@ -124,7 +132,8 @@
                 var html = template(templ, data);
                 el.append(html);
             }
-            el.append('<li class="clear-filter"><span class="glyphicon glyphicon-remove"></span> Clear Filter</li>');
+            el.append('<li class="clear-filter static-control filter-action"><span class="glyphicon glyphicon-remove"></span> Clear Filter</li>');
+            if (append) el.append(append);
             var selected = ($('[data-filter=' + cls + ']').val() || '').split('-');
             for (var j = 0; j < selected.length; j++) {
                 if (!selected[j].length) continue;
@@ -134,31 +143,51 @@
         }
 
         function update_filters(cls) {
-            var classes = ['filter-games', 'filter-categories', 'filter-types', 'filter-includes', 'filter-rating', 'filter-sort'];
-            var zero = ['All Games', 'All Categories', 'All Types', 'Any Includes', 'Min. Rating: Any', 'Sort: Date'];
-            var one = ['{text}', '{text}', '{text}', '{text}', 'Min. Rating: {text}', 'Sort: {text}'];
-            var many = ['{count} Games', '{count} Categories', '{count} Types', '{count} Includes', 'Min. Rating: {text}', 'Sort: {text}'];
+            var classes = ['filter-games', 'filter-categories', 'filter-types', 'filter-users', 'filter-includes', 'filter-rating', 'filter-sort'];
+            var zero = ['All Games', 'All Categories', 'All Types', 'All Users', 'Any Includes', 'Min. Rating: Any', 'Sort: Date'];
+            var one = ['{text}', '{text}', '{text}', '<img src="{avatar}" alt="avatar" /> {text}', '{text}', 'Min. Rating: {text}', 'Sort: {text}'];
+            var many = ['{count} Games', '{count} Categories', '{count} Types', '{count} Users', '{count} Includes', 'Min. Rating: {text}', 'Sort: {text}'];
 
             for (var i = 0; i < classes.length; i++) {
                 if (cls && cls != classes[i]) continue;
                 var active = $('.' + classes[i] + ' .active');
                 var count = active.length, text = (active.text() || '').trim();
                 var templ = count == 0 ? zero[i] : count == 1 ? one[i] : many[i];
-                $('.' + classes[i]).siblings('button').find('.filter-info').text(template(templ, $.extend({ text: text, count: count }, active.data())));
+                $('.' + classes[i]).siblings('button').find('.filter-info').html(template(templ, $.extend({ text: text, count: count }, active.data())));
                 $('[data-filter=' + classes[i] + ']').val(active.map(function () { return $(this).data('filter-value'); }).toArray().join('-'));
             }
         }
 
         $(function() {
 
-            $('.vault-filter').on('click', 'li:not(.loading)', function() {
+            var timeout = null;
+
+            $('.vault-filter').on('click', '.filter-action', function() {
                 var clr = $(this).is('.clear-filter');
                 var par = $(this).closest('.vault-filter');
                 if (par.is('.filter-one') || clr) {
                     par.find('.active').removeClass('active');
                 }
-                if (!clr) $(this).toggleClass('active');
+                if (par.is('.remove-item') && clr) par.find('li:not(.static-control)').remove();
+                else if (par.is('.remove-item')) $(this).closest('li').remove();
+                else if (!clr) $(this).toggleClass('active');
                 update_filters();
+            }).on('keyup', '.user-search input', function() {
+                var $t = $(this);
+                $t.siblings('.search-results').html('<li class="loading">Searching...</li>');
+                if (timeout) clearTimeout(timeout);
+                timeout = setTimeout(function() {
+                    clearTimeout(timeout);
+                    $.get('{{ url("api/users") }}', { filter: $t.val(), plain: true }, function(data) {
+                        $t.siblings('.search-results').empty().append(data.map(function(u) {
+                            return template('<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="glyphicon glyphicon-remove filter-action"></span></li>', u);
+                        }));
+                    });
+                }, 500);
+            }).on('click', '.user-search .user-item', function() {
+                if ($('.filter-users > [data-filter-value="' + $(this).data('filter-value') + '"]').length) return;
+                $(this).clone().addClass('active').insertBefore('.filter-users .clear-filter');
+                update_filters('filter-users');
             });
 
             $('.filter-games').parent().on('show.bs.dropdown', function() {
@@ -177,18 +206,33 @@
             // Load dynamic content
 
             $.get('{{ url("api/games") }}', { all: true }, function(data) {
-                var templ = '<li class="stop-close" data-filter-value="{id}" data-text="{abbreviation}"><img src="{{ asset("images/games/{abbreviation}_{size}.png") }}" alt="{name}" /> {name}</li>';
+                var templ = '<li class="stop-close filter-action" data-filter-value="{id}" data-text="{abbreviation}"><img src="{{ asset("images/games/{abbreviation}_{size}.png") }}" alt="{name}" /> {name}</li>';
                 populate_filter('filter-games', data, templ, { size: 32 });
             });
             $.get('{{ url("api/vault-categories") }}', { all: true }, function(data) {
-                populate_filter('filter-categories', data, '<li class="stop-close" data-filter-value="{id}">{name}</li>');
+                populate_filter('filter-categories', data, '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>');
             });
             $.get('{{ url("api/vault-types") }}', { all: true }, function(data) {
-                populate_filter('filter-types', data, '<li class="stop-close" data-filter-value="{id}">{name}</li>');
+                populate_filter('filter-types', data, '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>');
             });
             $.get('{{ url("api/vault-includes") }}', { all: true }, function(data) {
-                populate_filter('filter-includes', data, '<li class="stop-close" data-filter-value="{id}">{name}</li>');
+                populate_filter('filter-includes', data, '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>');
             });
+
+            var user_search_template = '<li class="static-control search-form user-search stop-close"><input class="form-control" type="text" placeholder="Search users..." /><ul class="search-results"></ul></li>';
+            var users = ($('[name=users]').val() || '').split('-').join(',');
+            if (users) {
+                $.get('{{ url("api/users") }}', { id: users, all: true }, function(data) {
+                    populate_filter(
+                        'filter-users', data,
+                        '<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="glyphicon glyphicon-remove filter-action"></span></li>',
+                        null,
+                        user_search_template
+                    );
+                });
+            } else {
+                populate_filter('filter-users', [], '', null, user_search_template);
+            }
 
             // Update static content
 

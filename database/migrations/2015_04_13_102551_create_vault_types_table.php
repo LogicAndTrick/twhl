@@ -33,6 +33,16 @@ class CreateVaultTypesTable extends Migration {
             'name' => 'Texture',
             'orderindex' => 3
         ]);
+
+        \App\Models\Vault\VaultType::Create([
+            'name' => 'Mod',
+            'orderindex' => 4
+        ]);
+
+        \App\Models\Vault\VaultType::Create([
+            'name' => 'Application',
+            'orderindex' => 5
+        ]);
 	}
 
 	/**

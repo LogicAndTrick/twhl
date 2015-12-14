@@ -76,9 +76,12 @@ class VaultItem extends Model {
 
     public function getPrimaryScreenshot()
     {
-        return array_first($this->vault_screenshots, function($i, $x) {
+        $pri = array_first($this->vault_screenshots, function($i, $x) {
             return $x->is_primary > 0;
         });
+        if (!$pri && $this->vault_screenshots->count() > 0) $pri = $this->vault_screenshots[0];
+        return $pri;
+
     }
 
     public function getThumbnailAsset()
@@ -93,7 +96,7 @@ class VaultItem extends Model {
     {
         $ps = $this->getPrimaryScreenshot();
         return $ps == null
-            ? 'images/no-screenshot-320.png'
+            ? 'images/no-screenshot-640.png'
             : 'uploads/vault/' . $this->getPrimaryScreenshot()->image_medium;
     }
 

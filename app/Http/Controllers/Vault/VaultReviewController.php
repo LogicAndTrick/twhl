@@ -22,18 +22,13 @@ class VaultReviewController extends Controller {
         $this->permission(['restore'], 'VaultAdmin');
 	}
 
-    public function getView($id) {
-        $item = VaultItemReview::with(['user', 'vault_item', 'vault_item.vault_screenshots'])->findOrFail($id);
-        $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::REVIEW)->whereArticleId($id)->get();
-        return view('vault-review/view', [
-            'item' => $item,
-            'comments' => $comments
-        ]);
-    }
-
     // Create / edit
 
     public function getCreate($id) {
+
+        $existing_review = VaultItemReview::whereUserId(Auth::user()->id)->whereItemId($id)->first();
+        if ($existing_review) return redirect('vault-review/edit/'.$existing_review->id);
+
         $item = VaultItem::with(['user', 'vault_screenshots'])->findOrFail($id);
         return view('vault/review/create', [
             'item' => $item
@@ -41,6 +36,9 @@ class VaultReviewController extends Controller {
     }
 
     public function postCreate() {
+
+        $existing_review = VaultItemReview::whereUserId(Auth::user()->id)->whereItemId(Request::input('item_id'))->first();
+        if ($existing_review) return redirect('vault-review/edit/'.$existing_review->id);
 
         $this->validate(Request::instance(), [
             'item_id' => 'required',
@@ -99,7 +97,7 @@ class VaultReviewController extends Controller {
             'comment_id' => $comment->id
         ]);
 
-        return redirect('vault/view/'.$review->item_id);
+        return redirect('vault/view/'.$review->item_id.'#comment-'.$review->comment_id);
     }
 
     public function getEdit($id) {
@@ -152,7 +150,7 @@ class VaultReviewController extends Controller {
             DB::statement('CALL update_comment_statistics(?, ?, ?);', [Comment::VAULT, $review->item_id, $review->comment->user_id]);
         }
 
-        return redirect('vault/view/'.$review->item_id);
+        return redirect('vault/view/'.$review->item_id.'#comment-'.$review->comment_id);
     }
 
     public function getDelete($id) {

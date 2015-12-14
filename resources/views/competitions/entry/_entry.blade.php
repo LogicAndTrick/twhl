@@ -2,7 +2,7 @@
 <div class="media" data-id="{{ $entry->id }}">
     <div class="media-left">
         <a href="#" class="gallery-button img-thumbnail">
-            <img class="media-object" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-160.png' ) }}" alt="Entry">
+            <img class="media-object" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
         </a>
         @if ($entry->screenshots->count() > 1)
             <button class="btn btn-info btn-block gallery-button" type="button">

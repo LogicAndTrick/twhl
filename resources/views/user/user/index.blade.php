@@ -24,7 +24,7 @@
             <hc>
                 <h2>Recent Vault Items</h2>
                 <ol class="breadcrumb">
-                    <li><a href="{{ act('vault', 'user', $user->id) }}">See All</a></li>
+                    <li><a href="{{ act('vault', 'index').'?users='.$user->id }}">See All</a></li>
                 </ol>
             </hc>
             <ul class="row vault-list">

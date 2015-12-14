@@ -68,8 +68,9 @@ class WikiRevision extends Model {
         return $r;
     }
 
-    public function getNiceTitle() {
-        $type_id = $this->wiki_object->type_id;
+    public function getNiceTitle($object = null) {
+        if (!$object) $object = $this->wiki_object;
+        $type_id = $object->type_id;
         if ($type_id == 2) return 'Upload: '.$this->title;
         if ($type_id == 3) return 'Category: '.explode(':',$this->title)[1];
         return $this->title;

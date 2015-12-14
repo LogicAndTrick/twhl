@@ -36,7 +36,7 @@
                         <a href="{{ act('message', 'view', $thread->id) }}">{{ $thread->subject }}</a>
                     </td>
                     <td>
-                        {{ $thread->last_message->created_at->diffForHumans() }} by
+                        @date($thread->last_message->created_at) by
                         @include('user._avatar', [ 'user' => $thread->last_message->user, 'class' => 'inline' ])
                     </td>
                 </tr>

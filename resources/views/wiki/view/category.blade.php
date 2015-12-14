@@ -1,7 +1,7 @@
 <hc>
     @if ($revision)
         <span class="pull-right">
-            Last edited {{ $revision->created_at->diffForHumans() }} by @avatar($revision->user inline)
+            Last edited @date($revision->created_at) by @avatar($revision->user inline)
         </span>
     @endif
     <h1>Category: {{ $cat_name }}</h1>

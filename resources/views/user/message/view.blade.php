@@ -15,7 +15,7 @@
             <div class="message">
                 <div class="sender-info {{ $expand ? '' : 'collapsed' }}" data-toggle="collapse" data-target="#message-{{ $message->id }}">
                     @include('user._avatar', [ 'user' => $message->user, 'class' => 'inline' ]),
-                    {{ $message->created_at->diffForHumans() }}
+                    @date($message->created_at)
                     <span class="collapsed-only"></span>
                 </div>
                 <div class="message-content collapse {{ $expand ? 'in' : '' }}" id="message-{{ $message->id }}">

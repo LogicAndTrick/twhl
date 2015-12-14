@@ -6,6 +6,7 @@ use App\Models\Comments\Comment;
 use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemInclude;
+use App\Models\Vault\VaultItemReview;
 use App\Models\Vault\VaultScreenshot;
 use Illuminate\Support\Facades\Validator;
 use Request;
@@ -49,8 +50,8 @@ class VaultController extends Controller {
         if (count($users) > 0) $item_query = $item_query->whereIn('user_id', $users);
 
         $sort = Request::get('sort');
-        $allowed_sort = ['date', 'rating', 'num_ratings', 'num_views', 'num_downloads'];
-        $mapped_sort = ['created_at', 'stat_average_rating', 'stat_ratings', 'stat_views', 'stat_downloads'];
+        $allowed_sort = ['date', 'update', 'rating', 'num_ratings', 'num_views', 'num_downloads'];
+        $mapped_sort = ['created_at', 'updated_at', 'stat_average_rating', 'stat_ratings', 'stat_views', 'stat_downloads'];
         $search_sort = array_search($sort, $allowed_sort);
         if (!$search_sort) $search_sort = 0;
         $item_query = $item_query->orderBy($mapped_sort[$search_sort], Request::get('asc') == 'true' ? 'asc' : 'desc');
@@ -69,10 +70,14 @@ class VaultController extends Controller {
         $item->stat_views++;
         $item->save();
 
+        $review = null;
+        if (Auth::user()) $review = $item->vault_item_reviews->where('user_id', Auth::user()->id)->first();
+
         $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::VAULT)->whereArticleId($id)->get();
         return view('vault/view', [
             'item' => $item,
-            'comments' => $comments
+            'comments' => $comments,
+            'user_review' => $review
         ]);
     }
 
@@ -366,6 +371,15 @@ class VaultController extends Controller {
         if (!$item->isEditable()) abort(422);
 
         $shot->delete();
+        if ($shot->is_primary) {
+            $screenshots = VaultScreenshot::where('item_id', '=', $shot->item_id)->get();
+            $idx = 0;
+            foreach ($screenshots as $shot) {
+                $shot->order_index = $idx++;
+                $shot->is_primary = $shot->order_index == 0;
+                $shot->save();
+            }
+        }
         return response()->json(['success' => true]);
     }
 

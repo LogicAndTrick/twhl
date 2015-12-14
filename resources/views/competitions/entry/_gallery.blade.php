@@ -13,8 +13,8 @@
             @endforeach
         @else
             <div>
-                <img data-u="image" data-src2="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
-                <img data-u="thumb" data-src2="{{ asset('images/no-screenshot-160.png') }}" alt="Thumbnail" />
+                <img data-u="image" data-src2="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
+                <img data-u="thumb" data-src2="{{ asset('images/no-screenshot-320.png') }}" alt="Thumbnail" />
             </div>
         @endif
     </div>
