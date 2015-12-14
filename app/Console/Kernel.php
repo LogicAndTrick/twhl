@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel {
 	protected $commands = [
 		'App\Console\Commands\Inspire',
         'App\Console\Commands\UpdateCompetitions',
+        'App\Console\Commands\UpdateMotmWinners',
         'App\Console\Commands\ProcessWikiRevisions',
         'App\Console\Commands\ProcessComments',
         'App\Console\Commands\ProcessWikiUploads',
@@ -32,6 +33,7 @@ class Kernel extends ConsoleKernel {
 	protected function schedule(Schedule $schedule)
 	{
 		$schedule->command('update:competitions')->hourly();
+        $schedule->command('update:motm')->daily();
 	}
 
 }

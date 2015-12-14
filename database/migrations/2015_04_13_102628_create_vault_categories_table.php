@@ -16,26 +16,33 @@ class CreateVaultCategoriesTable extends Migration {
 		});
 
         \App\Models\Vault\VaultCategory::Create([
-            'name' => 'Unfinished Stuff',
-            'description' => 'Submit maps that you\'re working on to get ideas and criticism that you can take into account as you work. You can update the map as you go along, then move it to Completed Maps when it is finished.',
+            'name' => 'Unfinished',
+            'description' => 'Submit stuff that you\'re working on to get ideas and criticism that you can '.
+            'take into account as you work. You can update the listing as you go along, then move it to the '.
+            'Completed section when it is finished. Unfinished items cannot be reviewed, and they and cannot win MOTM.',
             'orderindex' => 1
         ]);
 
         \App\Models\Vault\VaultCategory::Create([
-            'name' => 'Completed Maps',
-            'description' => 'Submit finished maps here so that people can comment or review them in their entirety. Of course, you could always turn the \'completed\' map back into work-in-progress as you see the comments. ',
+            'name' => 'Completed',
+            'description' => 'Submit finished stuff here so that people can comment or review them in their entirety. '.
+            'Items in this category can be reviewed and can win the MOTM award.',
             'orderindex' => 2
         ]);
 
         \App\Models\Vault\VaultCategory::Create([
-            'name' => 'Problem Maps',
-            'description' => 'Submit maps that have specific problems here. e.g. You can\'t get a particular entity set-up to work. Submit the .RMF, and others will be able to help. But remember to make a forum or shoutbox post and link to your map, or chances are nobody will bother downloading it!',
+            'name' => 'Problems',
+            'description' => 'Submit things that have specific problems here. For example: You can\'t get a particular entity '
+            .'set-up to work in map. Submit the source files, and others will be able to help. But remember to make a forum or '.
+            'shoutbox post and link to your map, or chances are nobody will bother downloading it! These items can\'t be '.
+            'reviewed and they can\'t win MOTM',
             'orderindex' => 3
         ]);
 
         \App\Models\Vault\VaultCategory::Create([
-            'name' => 'Example Maps',
-            'description' => 'A place to put maps that demonstrate something or act as answers to or complement forum posts, etc.',
+            'name' => 'Examples',
+            'description' => 'A place to put items that demonstrate something or act as answers to or complement '.
+            'forum posts, wiki articles and so on. Items in this category can\'t be reviewed or win MOTM.',
             'orderindex' => 4
         ]);
 	}
