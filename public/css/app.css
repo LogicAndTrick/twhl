@@ -8584,6 +8584,7 @@ fieldset[disabled] .select2-pagination-next.active {
   margin: 0;
   list-style: none;
   overflow-y: scroll;
+  word-wrap: break-word;
 }
 .shoutbox .shouts .shout {
   padding: 5px 0;

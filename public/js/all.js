@@ -17729,6 +17729,3193 @@ m.push(f=document.createElement("tbody"));for(j in h)f.appendChild(h[j]);f=c("ta
 
 (function(h,g,b,i,c,d,j){/*! Jssor */
 new(function(){});var e=h.$JssorEasing$={$EaseSwing:function(a){return-b.cos(a*b.PI)/2+.5},$EaseLinear:function(a){return a},$EaseInQuad:function(a){return a*a},$EaseOutQuad:function(a){return-a*(a-2)},$EaseInOutQuad:function(a){return(a*=2)<1?1/2*a*a:-1/2*(--a*(a-2)-1)},$EaseInCubic:function(a){return a*a*a},$EaseOutCubic:function(a){return(a-=1)*a*a+1},$EaseInOutCubic:function(a){return(a*=2)<1?1/2*a*a*a:1/2*((a-=2)*a*a+2)},$EaseInQuart:function(a){return a*a*a*a},$EaseOutQuart:function(a){return-((a-=1)*a*a*a-1)},$EaseInOutQuart:function(a){return(a*=2)<1?1/2*a*a*a*a:-1/2*((a-=2)*a*a*a-2)},$EaseInQuint:function(a){return a*a*a*a*a},$EaseOutQuint:function(a){return(a-=1)*a*a*a*a+1},$EaseInOutQuint:function(a){return(a*=2)<1?1/2*a*a*a*a*a:1/2*((a-=2)*a*a*a*a+2)},$EaseInSine:function(a){return 1-b.cos(a*b.PI/2)},$EaseOutSine:function(a){return b.sin(a*b.PI/2)},$EaseInOutSine:function(a){return-1/2*(b.cos(b.PI*a)-1)},$EaseInExpo:function(a){return a==0?0:b.pow(2,10*(a-1))},$EaseOutExpo:function(a){return a==1?1:-b.pow(2,-10*a)+1},$EaseInOutExpo:function(a){return a==0||a==1?a:(a*=2)<1?1/2*b.pow(2,10*(a-1)):1/2*(-b.pow(2,-10*--a)+2)},$EaseInCirc:function(a){return-(b.sqrt(1-a*a)-1)},$EaseOutCirc:function(a){return b.sqrt(1-(a-=1)*a)},$EaseInOutCirc:function(a){return(a*=2)<1?-1/2*(b.sqrt(1-a*a)-1):1/2*(b.sqrt(1-(a-=2)*a)+1)},$EaseInElastic:function(a){if(!a||a==1)return a;var c=.3,d=.075;return-(b.pow(2,10*(a-=1))*b.sin((a-d)*2*b.PI/c))},$EaseOutElastic:function(a){if(!a||a==1)return a;var c=.3,d=.075;return b.pow(2,-10*a)*b.sin((a-d)*2*b.PI/c)+1},$EaseInOutElastic:function(a){if(!a||a==1)return a;var c=.45,d=.1125;return(a*=2)<1?-.5*b.pow(2,10*(a-=1))*b.sin((a-d)*2*b.PI/c):b.pow(2,-10*(a-=1))*b.sin((a-d)*2*b.PI/c)*.5+1},$EaseInBack:function(a){var b=1.70158;return a*a*((b+1)*a-b)},$EaseOutBack:function(a){var b=1.70158;return(a-=1)*a*((b+1)*a+b)+1},$EaseInOutBack:function(a){var b=1.70158;return(a*=2)<1?1/2*a*a*(((b*=1.525)+1)*a-b):1/2*((a-=2)*a*(((b*=1.525)+1)*a+b)+2)},$EaseInBounce:function(a){return 1-e.$EaseOutBounce(1-a)},$EaseOutBounce:function(a){return a<1/2.75?7.5625*a*a:a<2/2.75?7.5625*(a-=1.5/2.75)*a+.75:a<2.5/2.75?7.5625*(a-=2.25/2.75)*a+.9375:7.5625*(a-=2.625/2.75)*a+.984375},$EaseInOutBounce:function(a){return a<1/2?e.$EaseInBounce(a*2)*.5:e.$EaseOutBounce(a*2-1)*.5+.5},$EaseGoBack:function(a){return 1-b.abs(2-1)},$EaseInWave:function(a){return 1-b.cos(a*b.PI*2)},$EaseOutWave:function(a){return b.sin(a*b.PI*2)},$EaseOutJump:function(a){return 1-((a*=2)<1?(a=1-a)*a*a:(a-=1)*a*a)},$EaseInJump:function(a){return(a*=2)<1?a*a*a:(a=2-a)*a*a}};var a=new function(){var f=this,wb=/\S+/g,T=1,eb=2,jb=3,ib=4,nb=5,E,s=0,l=0,p=0,ab=0,C=0,D=navigator,sb=D.appName,k=D.userAgent,B;function t(){if(!E){E={Yb:"mousedown",pc:"mousemove",yb:"mouseup"};var a;if((D.pointerEnabled||(a=D.msPointerEnabled))&&k.match(/iemobile/i))E={Yb:a?"MSPointerDown":"pointerdown",pc:a?"MSPointerMove":"pointermove",yb:a?"MSPointerUp":"pointerup",hb:a?"MSPointerCancel":"pointercancel",sd:a?"msTouchAction":"touchAction",od:c};else if("ontouchstart"in h||"createTouch"in g)E={Yb:"touchstart",pc:"touchmove",yb:"touchend",hb:"touchcancel",od:c,je:c}}return E}function w(i){if(!s){s=-1;if(sb=="Microsoft Internet Explorer"&&!!h.attachEvent&&!!h.ActiveXObject){var e=k.indexOf("MSIE");s=T;p=n(k.substring(e+5,k.indexOf(";",e)));/*@cc_on ab=@_jscript_version@*/;l=g.documentMode||p}else if(sb=="Netscape"&&!!h.addEventListener){var d=k.indexOf("Firefox"),b=k.indexOf("Safari"),f=k.indexOf("Chrome"),c=k.indexOf("AppleWebKit");if(d>=0){s=eb;l=n(k.substring(d+8))}else if(b>=0){var j=k.substring(0,b).lastIndexOf("/");s=f>=0?ib:jb;l=n(k.substring(j+1,b))}else{var a=/Trident\/.*rv:([0-9]{1,}[\.0-9]{0,})/i.exec(k);if(a){s=T;l=p=n(a[1])}}if(c>=0)C=n(k.substring(c+12))}else{var a=/(opera)(?:.*version|)[ \/]([\w.]+)/i.exec(k);if(a){s=nb;l=n(a[2])}}}return i==s}function q(){return w(T)}function O(){return q()&&(l<6||g.compatMode=="BackCompat")}function xb(){return w(eb)}function hb(){return w(jb)}function gb(){return w(ib)}function mb(){return w(nb)}function bb(){return hb()&&C>534&&C<535}function M(){return q()&&l<9}function u(a){if(!B){m(["transform","WebkitTransform","msTransform","MozTransform","OTransform"],function(b){if(a.style[b]!=j){B=b;return c}});B=B||"transform"}return B}function qb(a){return Object.prototype.toString.call(a)}var K;function m(a,d){if(qb(a)=="[object Array]"){for(var b=0;b<a.length;b++)if(d(a[b],b,a))return c}else for(var e in a)if(d(a[e],e,a))return c}function Bb(){if(!K){K={};m(["Boolean","Number","String","Function","Array","Date","RegExp","Object"],function(a){K["[object "+a+"]"]=a.toLowerCase()})}return K}function A(a){return a==i?String(a):Bb()[qb(a)]||"object"}function z(a,b){return{x:a,y:b}}function ub(b,a){setTimeout(b,a||0)}function I(b,d,c){var a=!b||b=="inherit"?"":b;m(d,function(c){var b=c.exec(a);if(b){var d=a.substr(0,b.index),e=a.substr(b.lastIndex+1,a.length-(b.lastIndex+1));a=d+e}});a=c+(a.indexOf(" ")!=0?" ":"")+a;return a}function db(b,a){if(l<9)b.style.filter=a}function yb(b,a,c){if(ab<9){var e=b.style.filter,h=new RegExp(/[\s]*progid:DXImageTransform\.Microsoft\.Matrix\([^\)]*\)/g),g=a?"progid:DXImageTransform.Microsoft.Matrix(M11="+a[0][0]+", M12="+a[0][1]+", M21="+a[1][0]+", M22="+a[1][1]+", SizingMethod='auto expand')":"",d=I(e,[h],g);db(b,d);f.ld(b,c.y);f.rd(b,c.x)}}f.ie=t;f.qd=q;f.ke=xb;f.fe=hb;f.ee=gb;f.Dc=mb;f.P=M;f.Ac=function(){return l};f.yc=function(){w();return C};f.$Delay=ub;function W(a){a.constructor===W.caller&&a.vd&&a.vd.apply(a,W.caller.arguments)}f.vd=W;f.eb=function(a){if(f.wd(a))a=g.getElementById(a);return a};function r(a){return a||h.event}f.Zb=function(a){a=r(a);return a.target||a.srcElement||g};f.yd=function(a){a=r(a);return{x:a.pageX||a.clientX||0,y:a.pageY||a.clientY||0}};function F(c,d,a){if(a!=j)c.style[d]=a;else{var b=c.currentStyle||c.style;a=b[d];if(a==""&&h.getComputedStyle){b=c.ownerDocument.defaultView.getComputedStyle(c,i);b&&(a=b.getPropertyValue(d)||b[d])}return a}}function X(b,c,a,d){if(a!=j){d&&(a+="px");F(b,c,a)}else return n(F(b,c))}function o(d,a){var b=a&2,c=a?X:F;return function(e,a){return c(e,d,a,b)}}function zb(b){if(q()&&p<9){var a=/opacity=([^)]*)/.exec(b.style.filter||"");return a?n(a[1])/100:1}else return n(b.style.opacity||"1")}function Ab(c,a,f){if(q()&&p<9){var h=c.style.filter||"",i=new RegExp(/[\s]*alpha\([^\)]*\)/g),e=b.round(100*a),d="";if(e<100||f)d="alpha(opacity="+e+") ";var g=I(h,[i],d);db(c,g)}else c.style.opacity=a==1?"":b.round(a*100)/100}function Z(e,a){var d=a.$Rotate||0,c=a.$Scale==j?1:a.$Scale;if(M()){var l=f.te(d/180*b.PI,c,c);yb(e,!d&&c==1?i:l,f.oe(l,a.$OriginalWidth,a.$OriginalHeight))}else{var g=u(e);if(g){var k="rotate("+d%360+"deg) scale("+c+")";if(gb()&&C>535&&"ontouchstart"in h)k+=" perspective(2000px)";e.style[g]=k}}}f.ne=function(b,a){if(bb())ub(f.J(i,Z,b,a));else Z(b,a)};f.qe=function(b,c){var a=u(b);if(a)b.style[a+"Origin"]=c};f.pe=function(a,c){if(q()&&p<9||p<10&&O())a.style.zoom=c==1?"":c;else{var b=u(a);if(b){var f="scale("+c+")",e=a.style[b],g=new RegExp(/[\s]*scale\(.*?\)/g),d=I(e,[g],f);a.style[b]=d}}};f.Ne=function(a){if(!a.style[u(a)]||a.style[u(a)]=="none")a.style[u(a)]="perspective(2000px)"};f.lf=function(a){a.style[u(a)]="none"};f.Mb=function(b,a){return function(c){c=r(c);var e=c.type,d=c.relatedTarget||(e=="mouseout"?c.toElement:c.fromElement);(!d||d!==a&&!f.kf(a,d))&&b(c)}};f.e=function(a,c,d,b){a=f.eb(a);if(a.addEventListener){c=="mousewheel"&&a.addEventListener("DOMMouseScroll",d,b);a.addEventListener(c,d,b)}else if(a.attachEvent){a.attachEvent("on"+c,d);b&&a.setCapture&&a.setCapture()}};f.V=function(a,c,d,b){a=f.eb(a);if(a.removeEventListener){c=="mousewheel"&&a.removeEventListener("DOMMouseScroll",d,b);a.removeEventListener(c,d,b)}else if(a.detachEvent){a.detachEvent("on"+c,d);b&&a.releaseCapture&&a.releaseCapture()}};f.tb=function(a){a=r(a);a.preventDefault&&a.preventDefault();a.cancel=c;a.returnValue=d};f.mf=function(a){a=r(a);a.stopPropagation&&a.stopPropagation();a.cancelBubble=c};f.J=function(d,c){var a=[].slice.call(arguments,2),b=function(){var b=a.concat([].slice.call(arguments,0));return c.apply(d,b)};return b};f.jf=function(a,b){if(b==j)return a.textContent||a.innerText;var c=g.createTextNode(b);f.cc(a);a.appendChild(c)};f.K=function(d,c){for(var b=[],a=d.firstChild;a;a=a.nextSibling)(c||a.nodeType==1)&&b.push(a);return b};function pb(a,c,e,b){b=b||"u";for(a=a?a.firstChild:i;a;a=a.nextSibling)if(a.nodeType==1){if(S(a,b)==c)return a;if(!e){var d=pb(a,c,e,b);if(d)return d}}}f.v=pb;function Q(a,d,f,b){b=b||"u";var c=[];for(a=a?a.firstChild:i;a;a=a.nextSibling)if(a.nodeType==1){S(a,b)==d&&c.push(a);if(!f){var e=Q(a,d,f,b);if(e.length)c=c.concat(e)}}return c}function kb(a,c,d){for(a=a?a.firstChild:i;a;a=a.nextSibling)if(a.nodeType==1){if(a.tagName==c)return a;if(!d){var b=kb(a,c,d);if(b)return b}}}f.of=kb;function cb(a,c,e){var b=[];for(a=a?a.firstChild:i;a;a=a.nextSibling)if(a.nodeType==1){(!c||a.tagName==c)&&b.push(a);if(!e){var d=cb(a,c,e);if(d.length)b=b.concat(d)}}return b}f.qf=cb;f.pf=function(b,a){return b.getElementsByTagName(a)};function L(c){for(var b=1;b<arguments.length;b++){var a=arguments[b];if(a)for(var d in a)c[d]=a[d]}return c}f.k=L;function rb(b,d){var c={};for(var a in b)if(b[a]!==d[a])c[a]=b[a];return c}f.Mc=function(a){return A(a)=="function"};f.dc=function(a){return A(a)=="array"};f.wd=function(a){return A(a)=="string"};f.Pc=function(a){return!isNaN(n(a))&&isFinite(a)};f.c=m;function P(a){return g.createElement(a)}f.ab=function(){return P("DIV",g)};f.Ve=function(){return P("SPAN",g)};f.ic=function(){};function U(b,c,a){if(a==j)return b.getAttribute(c);b.setAttribute(c,a)}function S(a,b){return U(a,b)||U(a,"data-"+b)}f.Jc=U;f.u=S;function x(b,a){if(a==j)return b.className;b.className=a}f.Hc=x;function tb(b){var a={};m(b,function(b){a[b]=b});return a}function vb(b,a){return b.match(a||wb)}function N(b,a){return tb(vb(b||"",a))}f.Pe=vb;function Y(b,c){var a="";m(c,function(c){a&&(a+=b);a+=c});return a}function H(a,c,b){x(a,Y(" ",L(rb(N(x(a)),N(c)),N(b))))}f.Ze=function(a){return a.parentNode};f.M=function(a){f.T(a,"none")};f.z=function(a,b){f.T(a,b?"none":"")};f.Wc=function(b,a){b.removeAttribute(a)};f.cf=function(){return q()&&l<10};f.df=function(d,c){if(c)d.style.clip="rect("+b.round(c.$Top)+"px "+b.round(c.$Right)+"px "+b.round(c.$Bottom)+"px "+b.round(c.$Left)+"px)";else{var g=d.style.cssText,f=[new RegExp(/[\s]*clip: rect\(.*?\)[;]?/i),new RegExp(/[\s]*cliptop: .*?[;]?/i),new RegExp(/[\s]*clipright: .*?[;]?/i),new RegExp(/[\s]*clipbottom: .*?[;]?/i),new RegExp(/[\s]*clipleft: .*?[;]?/i)],e=I(g,f,"");a.Sb(d,e)}};f.L=function(){return+new Date};f.D=function(b,a){b.appendChild(a)};f.Nb=function(b,a,c){(c||a.parentNode).insertBefore(b,a)};f.Cb=function(a,b){(b||a.parentNode).removeChild(a)};f.Re=function(a,b){m(a,function(a){f.Cb(a,b)})};f.cc=function(a){f.Re(f.K(a,c),a)};f.Oe=function(b,a){return parseInt(b,a||10)};var n=parseFloat;f.hc=n;f.kf=function(b,a){var c=g.body;while(a&&b!==a&&c!==a)try{a=a.parentNode}catch(e){return d}return b===a};function V(d,c,b){var a=d.cloneNode(!c);!b&&f.Wc(a,"id");return a}f.S=V;f.ub=function(e,g){var a=new Image;function b(e,c){f.V(a,"load",b);f.V(a,"abort",d);f.V(a,"error",d);g&&g(a,c)}function d(a){b(a,c)}if(mb()&&l<11.6||!e)b(!e);else{f.e(a,"load",b);f.e(a,"abort",d);f.e(a,"error",d);a.src=e}};f.hf=function(d,a,e){var c=d.length+1;function b(b){c--;if(a&&b&&b.src==a.src)a=b;!c&&e&&e(a)}m(d,function(a){f.ub(a.src,b)});b()};f.Gc=function(b,g,i,h){if(h)b=V(b);var c=Q(b,g);if(!c.length)c=a.pf(b,g);for(var f=c.length-1;f>-1;f--){var d=c[f],e=V(i);x(e,x(d));a.Sb(e,d.style.cssText);a.Nb(e,d);a.Cb(d)}return b};function Db(b){var p=this,n="",r=["av","pv","ds","dn"],d=[],o,k=0,h=0,e=0;function i(){H(b,o,d[e||k||h&2||h])}function c(){k=0;i();f.V(g,t().yb,c);t().hb&&f.V(g,t().hb,c)}function q(a){if(e)f.tb(a);else{k=4;i();f.e(g,t().yb,c);t().hb&&f.e(g,t().hb,c)}}p.Oc=function(a){if(a!=j){h=a&2||a&1;i()}else return h};p.$Enable=function(a){if(a==j)return!e;e=a?0:3;i()};b=f.eb(b);var l=a.Pe(x(b));if(l)n=l.shift();m(r,function(a){d.push(n+a)});o=Y(" ",d);d.unshift("");a.e(b,t().Yb,q)}f.Lb=function(a){return new Db(a)};f.xb=F;f.Z=o("overflow");f.B=o("top",2);f.A=o("left",2);f.l=o("width",2);f.m=o("height",2);f.rd=o("marginLeft",2);f.ld=o("marginTop",2);f.C=o("position");f.T=o("display");f.F=o("zIndex",1);f.zb=function(b,a,c){if(a!=j)Ab(b,a,c);else return zb(b)};f.Sb=function(a,b){if(b!=j)a.style.cssText=b;else return a.style.cssText};var R={$Opacity:f.zb,$Top:f.B,$Left:f.A,mb:f.l,ob:f.m,Db:f.C,Fg:f.T,$ZIndex:f.F},v;function J(){if(!v)v=L({Dg:f.ld,Eg:f.rd,$Clip:f.df,fc:f.ne},R);return v}function ob(){J();v.fc=v.fc;return v}f.Sd=J;f.Rd=ob;f.Ud=function(c,b){J();var a={};m(b,function(d,b){if(R[b])a[b]=R[b](c)});return a};f.H=function(c,b){var a=J();m(b,function(d,b){a[b]&&a[b](c,d)})};f.Ad=function(b,a){ob();f.H(b,a)};var G=new function(){var a=this;function b(d,g){for(var j=d[0].length,i=d.length,h=g[0].length,f=[],c=0;c<i;c++)for(var k=f[c]=[],b=0;b<h;b++){for(var e=0,a=0;a<j;a++)e+=d[c][a]*g[a][b];k[b]=e}return f}a.Vb=function(d,c){var a=b(d,[[c.x],[c.y]]);return z(a[0][0],a[1][0])}};f.te=function(d,a,c){var e=b.cos(d),f=b.sin(d);return[[e*a,-f*c],[f*a,e*c]]};f.oe=function(d,c,a){var e=G.Vb(d,z(-c/2,-a/2)),f=G.Vb(d,z(c/2,-a/2)),g=G.Vb(d,z(c/2,a/2)),h=G.Vb(d,z(-c/2,a/2));return z(b.min(e.x,f.x,g.x,h.x)+c/2,b.min(e.y,f.y,g.y,h.y)+a/2)};f.gd=function(l,g,t,r,u,w,j){var c=g;if(l){c={};for(var f in g){var x=w[f]||1,s=u[f]||[0,1],d=(t-s[0])/s[1];d=b.min(b.max(d,0),1);d=d*x;var p=b.floor(d);if(d!=p)d-=p;var v=r[f]||r.rb||e.$EaseSwing,q=v(d),h,y=l[f];g[f];var m=g[f];if(a.Pc(m))h=y+m*q;else{h=a.k({qb:{}},l[f]);a.c(m.qb,function(c,b){var a=c*q;h.qb[b]=a;h[b]+=a})}c[f]=h}if(g.$Zoom||g.$Rotate)c.fc={$Rotate:c.$Rotate||0,$Scale:c.$Zoom,$OriginalWidth:j.$OriginalWidth,$OriginalHeight:j.$OriginalHeight}}if(g.$Clip&&j.$Move){var k=c.$Clip.qb,o=(k.$Top||0)+(k.$Bottom||0),n=(k.$Left||0)+(k.$Right||0);c.$Left=(c.$Left||0)+n;c.$Top=(c.$Top||0)+o;c.$Clip.$Left-=n;c.$Clip.$Right-=n;c.$Clip.$Top-=o;c.$Clip.$Bottom-=o}if(c.$Clip&&a.cf()&&!c.$Clip.$Top&&!c.$Clip.$Left&&c.$Clip.$Right==j.$OriginalWidth&&c.$Clip.$Bottom==j.$OriginalHeight)c.$Clip=i;return c}};function l(){var b=this,d=[];function i(a,b){d.push({bc:a,ac:b})}function g(b,c){a.c(d,function(a,e){a.bc==b&&a.ac===c&&d.splice(e,1)})}b.$On=b.addEventListener=i;b.$Off=b.removeEventListener=g;b.j=function(b){var c=[].slice.call(arguments,1);a.c(d,function(a){a.bc==b&&a.ac.apply(h,c)})}}function k(n,z,j,R,P,K){n=n||0;var f=this,r,o,p,x,A=0,I,J,H,C,E=0,l=0,u=0,D,m=n,k,g,q,y=[],B;function M(a){k+=a;g+=a;m+=a;l+=a;u+=a;E=a}function Q(a,b){var c=a-k+n*b;M(c);return g}function w(h,n){var d=h;if(q&&(d>=g||d<=k))d=((d-k)%q+q)%q+k;if(!D||x||n||l!=d){var e=b.min(d,g);e=b.max(e,k);if(!D||x||n||e!=u){if(K){var i=(e-m)/(z||1);if(j.$Reverse)i=1-i;var o=a.gd(P,K,i,I,H,J,j);a.c(o,function(b,a){B[a]&&B[a](R,b)})}f.zc(u-m,e-m)}u=e;a.c(y,function(b,c){var a=h<l?y[y.length-c-1]:b;a.I(h-E,n)});var r=l,p=h;l=d;D=c;f.Qb(r,p)}}function F(a,c,d){c&&a.Pb(g,1);!d&&(g=b.max(g,a.db()+E));y.push(a)}var s=h.requestAnimationFrame||h.webkitRequestAnimationFrame||h.mozRequestAnimationFrame||h.msRequestAnimationFrame;if(a.fe()&&a.Ac()<7)s=i;s=s||function(b){a.$Delay(b,j.$Interval)};function L(){if(r){var d=a.L(),e=b.min(d-A,j.md),c=l+e*p;A=d;if(c*p>=o*p)c=o;w(c);if(!x&&c*p>=o*p)N(C);else s(L)}}function v(d,e,h){if(!r){r=c;x=h;C=e;d=b.max(d,k);d=b.min(d,g);o=d;p=o<l?-1:1;f.pd();A=a.L();s(L)}}function N(a){if(r){x=r=C=d;f.kd();a&&a()}}f.$Play=function(a,b,c){v(a?l+a:g,b,c)};f.jd=v;f.X=N;f.Pd=function(a){v(a)};f.Q=function(){return l};f.zd=function(){return o};f.Bb=function(){return u};f.I=w;f.rc=function(){w(k,c)};f.$Move=function(a){w(l+a)};f.$IsPlaying=function(){return r};f.ce=function(a){q=a};f.Pb=Q;f.$Shift=M;f.Y=function(a){F(a,0)};f.sc=function(a){F(a,1)};f.db=function(){return g};f.Qb=f.pd=f.kd=f.zc=a.ic;f.tc=a.L();j=a.k({$Interval:16,md:50},j);q=j.Ic;B=a.k({},a.Sd(),j.wc);k=m=n;g=n+z;J=j.$Round||{};H=j.$During||{};I=a.k({rb:a.Mc(j.$Easing)&&j.$Easing||e.$EaseSwing},j.$Easing)}var n=h.$JssorSlideshowFormations$=new function(){var h=this,d=0,a=1,f=2,e=3,s=1,r=2,t=4,q=8,w=256,x=512,v=1024,u=2048,j=u+s,i=u+r,o=x+s,m=x+r,n=w+t,k=w+q,l=v+t,p=v+q;function y(a){return(a&r)==r}function z(a){return(a&t)==t}function g(b,a,c){c.push(a);b[a]=b[a]||[];b[a].push(c)}h.$FormationStraight=function(f){for(var d=f.$Cols,e=f.$Rows,s=f.$Assembly,t=f.Ib,r=[],a=0,b=0,p=d-1,q=e-1,h=t-1,c,b=0;b<e;b++)for(a=0;a<d;a++){switch(s){case j:c=h-(a*e+(q-b));break;case l:c=h-(b*d+(p-a));break;case o:c=h-(a*e+b);case n:c=h-(b*d+a);break;case i:c=a*e+b;break;case k:c=b*d+(p-a);break;case m:c=a*e+(q-b);break;default:c=b*d+a}g(r,c,[b,a])}return r};h.$FormationSwirl=function(q){var x=q.$Cols,y=q.$Rows,B=q.$Assembly,w=q.Ib,A=[],z=[],u=0,b=0,h=0,r=x-1,s=y-1,t,p,v=0;switch(B){case j:b=r;h=0;p=[f,a,e,d];break;case l:b=0;h=s;p=[d,e,a,f];break;case o:b=r;h=s;p=[e,a,f,d];break;case n:b=r;h=s;p=[a,e,d,f];break;case i:b=0;h=0;p=[f,d,e,a];break;case k:b=r;h=0;p=[a,f,d,e];break;case m:b=0;h=s;p=[e,d,f,a];break;default:b=0;h=0;p=[d,f,a,e]}u=0;while(u<w){t=h+","+b;if(b>=0&&b<x&&h>=0&&h<y&&!z[t]){z[t]=c;g(A,u++,[h,b])}else switch(p[v++%p.length]){case d:b--;break;case f:h--;break;case a:b++;break;case e:h++}switch(p[v%p.length]){case d:b++;break;case f:h++;break;case a:b--;break;case e:h--}}return A};h.$FormationZigZag=function(p){var w=p.$Cols,x=p.$Rows,z=p.$Assembly,v=p.Ib,t=[],u=0,b=0,c=0,q=w-1,r=x-1,y,h,s=0;switch(z){case j:b=q;c=0;h=[f,a,e,a];break;case l:b=0;c=r;h=[d,e,a,e];break;case o:b=q;c=r;h=[e,a,f,a];break;case n:b=q;c=r;h=[a,e,d,e];break;case i:b=0;c=0;h=[f,d,e,d];break;case k:b=q;c=0;h=[a,f,d,f];break;case m:b=0;c=r;h=[e,d,f,d];break;default:b=0;c=0;h=[d,f,a,f]}u=0;while(u<v){y=c+","+b;if(b>=0&&b<w&&c>=0&&c<x&&typeof t[y]=="undefined"){g(t,u++,[c,b]);switch(h[s%h.length]){case d:b++;break;case f:c++;break;case a:b--;break;case e:c--}}else{switch(h[s++%h.length]){case d:b--;break;case f:c--;break;case a:b++;break;case e:c++}switch(h[s++%h.length]){case d:b++;break;case f:c++;break;case a:b--;break;case e:c--}}}return t};h.$FormationStraightStairs=function(q){var u=q.$Cols,v=q.$Rows,e=q.$Assembly,t=q.Ib,r=[],s=0,c=0,d=0,f=u-1,h=v-1,x=t-1;switch(e){case j:case m:case o:case i:var a=0,b=0;break;case k:case l:case n:case p:var a=f,b=0;break;default:e=p;var a=f,b=0}c=a;d=b;while(s<t){if(z(e)||y(e))g(r,x-s++,[d,c]);else g(r,s++,[d,c]);switch(e){case j:case m:c--;d++;break;case o:case i:c++;d--;break;case k:case l:c--;d--;break;case p:case n:default:c++;d++}if(c<0||d<0||c>f||d>h){switch(e){case j:case m:a++;break;case k:case l:case o:case i:b++;break;case p:case n:default:a--}if(a<0||b<0||a>f||b>h){switch(e){case j:case m:a=f;b++;break;case o:case i:b=h;a++;break;case k:case l:b=h;a--;break;case p:case n:default:a=0;b++}if(b>h)b=h;else if(b<0)b=0;else if(a>f)a=f;else if(a<0)a=0}d=b;c=a}}return r};h.$FormationSquare=function(i){var a=i.$Cols||1,c=i.$Rows||1,j=[],d,e,f,h,k;f=a<c?(c-a)/2:0;h=a>c?(a-c)/2:0;k=b.round(b.max(a/2,c/2))+1;for(d=0;d<a;d++)for(e=0;e<c;e++)g(j,k-b.min(d+1+f,e+1+h,a-d+f,c-e+h),[e,d]);return j};h.$FormationRectangle=function(f){var d=f.$Cols||1,e=f.$Rows||1,h=[],a,c,i;i=b.round(b.min(d/2,e/2))+1;for(a=0;a<d;a++)for(c=0;c<e;c++)g(h,i-b.min(a+1,c+1,d-a,e-c),[c,a]);return h};h.$FormationRandom=function(d){for(var e=[],a,c=0;c<d.$Rows;c++)for(a=0;a<d.$Cols;a++)g(e,b.ceil(1e5*b.random())%13,[c,a]);return e};h.$FormationCircle=function(d){for(var e=d.$Cols||1,f=d.$Rows||1,h=[],a,i=e/2-.5,j=f/2-.5,c=0;c<e;c++)for(a=0;a<f;a++)g(h,b.round(b.sqrt(b.pow(c-i,2)+b.pow(a-j,2))),[a,c]);return h};h.$FormationCross=function(d){for(var e=d.$Cols||1,f=d.$Rows||1,h=[],a,i=e/2-.5,j=f/2-.5,c=0;c<e;c++)for(a=0;a<f;a++)g(h,b.round(b.min(b.abs(c-i),b.abs(a-j))),[a,c]);return h};h.$FormationRectangleCross=function(f){for(var h=f.$Cols||1,i=f.$Rows||1,j=[],a,d=h/2-.5,e=i/2-.5,k=b.max(d,e)+1,c=0;c<h;c++)for(a=0;a<i;a++)g(j,b.round(k-b.max(d-b.abs(c-d),e-b.abs(a-e)))-1,[a,c]);return j}};h.$JssorSlideshowRunner$=function(o,s,q,t,y){var g=this,u,h,f,x=0,w=t.$TransitionsOrder,r,j=8;function m(h,g){var f={$Interval:g,$Duration:1,$Delay:0,$Cols:1,$Rows:1,$Opacity:0,$Zoom:0,$Clip:0,$Move:d,$SlideOut:d,$Reverse:d,$Formation:n.$FormationRandom,$Assembly:1032,$ChessMode:{$Column:0,$Row:0},$Easing:e.$EaseSwing,$Round:{},Rb:[],$During:{}};a.k(f,h);f.Ib=f.$Cols*f.$Rows;if(a.Mc(f.$Easing))f.$Easing={rb:f.$Easing};f.Jd=b.ceil(f.$Duration/f.$Interval);f.Bd=function(b,a){b/=f.$Cols;a/=f.$Rows;var e=b+"x"+a;if(!f.Rb[e]){f.Rb[e]={mb:b,ob:a};for(var c=0;c<f.$Cols;c++)for(var d=0;d<f.$Rows;d++)f.Rb[e][d+","+c]={$Top:d*a,$Right:c*b+b,$Bottom:d*a+a,$Left:c*b}}return f.Rb[e]};if(f.$Brother){f.$Brother=m(f.$Brother,g);f.$SlideOut=c}return f}function p(B,i,e,w,n,l){var z=this,t,u={},j={},m=[],g,f,r,p=e.$ChessMode.$Column||0,q=e.$ChessMode.$Row||0,h=e.Bd(n,l),o=C(e),D=o.length-1,s=e.$Duration+e.$Delay*D,x=w+s,k=e.$SlideOut,y;x+=50;function C(a){var b=a.$Formation(a);return a.$Reverse?b.reverse():b}z.Uc=x;z.Xb=function(c){c-=w;var d=c<s;if(d||y){y=d;if(!k)c=s-c;var f=b.ceil(c/e.$Interval);a.c(j,function(c,e){var d=b.max(f,c.Xd);d=b.min(d,c.length-1);if(c.Vc!=d){if(!c.Vc&&!k)a.z(m[e]);else d==c.Yd&&k&&a.M(m[e]);c.Vc=d;a.Ad(m[e],c[d])}})}};function v(b){a.lf(b);var c=a.K(b);a.c(c,function(a){v(a)})}i=a.S(i);v(i);if(a.P()){var E=!i["no-image"],A=a.qf(i);a.c(A,function(b){(E||b["jssor-slider"])&&a.zb(b,a.zb(b),c)})}a.c(o,function(i,m){a.c(i,function(G){var K=G[0],J=G[1],v=K+","+J,o=d,s=d,x=d;if(p&&J%2){if(p&3)o=!o;if(p&12)s=!s;if(p&16)x=!x}if(q&&K%2){if(q&3)o=!o;if(q&12)s=!s;if(q&16)x=!x}e.$Top=e.$Top||e.$Clip&4;e.$Bottom=e.$Bottom||e.$Clip&8;e.$Left=e.$Left||e.$Clip&1;e.$Right=e.$Right||e.$Clip&2;var C=s?e.$Bottom:e.$Top,z=s?e.$Top:e.$Bottom,B=o?e.$Right:e.$Left,A=o?e.$Left:e.$Right;e.$Clip=C||z||B||A;r={};f={$Top:0,$Left:0,$Opacity:1,mb:n,ob:l};g=a.k({},f);t=a.k({},h[v]);if(e.$Opacity)f.$Opacity=2-e.$Opacity;if(e.$ZIndex){f.$ZIndex=e.$ZIndex;g.$ZIndex=0}var I=e.$Cols*e.$Rows>1||e.$Clip;if(e.$Zoom||e.$Rotate){var H=c;if(a.P())if(e.$Cols*e.$Rows>1)H=d;else I=d;if(H){f.$Zoom=e.$Zoom?e.$Zoom-1:1;g.$Zoom=1;if(a.P()||a.Dc())f.$Zoom=b.min(f.$Zoom,2);var N=e.$Rotate;f.$Rotate=N*360*(x?-1:1);g.$Rotate=0}}if(I){if(e.$Clip){var w=e.$ScaleClip||1,i=t.qb={};if(C&&z){i.$Top=h.ob/2*w;i.$Bottom=-i.$Top}else if(C)i.$Bottom=-h.ob*w;else if(z)i.$Top=h.ob*w;if(B&&A){i.$Left=h.mb/2*w;i.$Right=-i.$Left}else if(B)i.$Right=-h.mb*w;else if(A)i.$Left=h.mb*w}r.$Clip=t;g.$Clip=h[v]}var L=o?1:-1,M=s?1:-1;if(e.x)f.$Left+=n*e.x*L;if(e.y)f.$Top+=l*e.y*M;a.c(f,function(b,c){if(a.Pc(b))if(b!=g[c])r[c]=b-g[c]});u[v]=k?g:f;var D=e.Jd,y=b.round(m*e.$Delay/e.$Interval);j[v]=new Array(y);j[v].Xd=y;j[v].Yd=y+D-1;for(var F=0;F<=D;F++){var E=a.gd(g,r,F/D,e.$Easing,e.$During,e.$Round,{$Move:e.$Move,$OriginalWidth:n,$OriginalHeight:l});E.$ZIndex=E.$ZIndex||1;j[v].push(E)}})});o.reverse();a.c(o,function(b){a.c(b,function(c){var f=c[0],e=c[1],d=f+","+e,b=i;if(e||f)b=a.S(i);a.H(b,u[d]);a.Z(b,"hidden");a.C(b,"absolute");B.Zd(b);m[d]=b;a.z(b,!k)})})}function v(){var a=this,b=0;k.call(a,0,u);a.Qb=function(c,a){if(a-b>j){b=a;f&&f.Xb(a);h&&h.Xb(a)}};a.U=r}g.Md=function(){var a=0,c=t.$Transitions,d=c.length;if(w)a=x++%d;else a=b.floor(b.random()*d);c[a]&&(c[a].bb=a);return c[a]};g.Td=function(w,x,i,k,a){r=a;a=m(a,j);var e=k.ud,d=i.ud;e["no-image"]=!k.Tb;d["no-image"]=!i.Tb;var l=e,n=d,v=a,c=a.$Brother||m({},j);if(!a.$SlideOut){l=d;n=e}var t=c.$Shift||0;h=new p(o,n,c,b.max(t-c.$Interval,0),s,q);f=new p(o,l,v,b.max(c.$Interval-t,0),s,q);h.Xb(0);f.Xb(0);u=b.max(h.Uc,f.Uc);g.bb=w};g.pb=function(){o.pb();h=i;f=i};g.Od=function(){var a=i;if(f)a=new v;return a};if(a.P()||a.Dc()||y&&a.yc()<537)j=16;l.call(g);k.call(g,-1e7,1e7)};var f=h.$JssorSlider$=function(q,ic){var n=this;function Hc(){var a=this;k.call(a,-1e8,2e8);a.Hd=function(){var c=a.Bb(),d=b.floor(c),f=t(d),e=c-b.floor(c);return{bb:f,Dd:d,Db:e}};a.Qb=function(d,a){var e=b.floor(a);if(e!=a&&a>d)e++;Ub(e,c);n.j(f.$EVT_POSITION_CHANGE,t(a),t(d),a,d)}}function Gc(){var b=this;k.call(b,0,0,{Ic:s});a.c(C,function(a){D&1&&a.ce(s);b.sc(a);a.$Shift(kb/cc)})}function Fc(){var a=this,b=Tb.$Elmt;k.call(a,-1,2,{$Easing:e.$EaseLinear,wc:{Db:ac},Ic:s},b,{Db:1},{Db:-2});a.Jb=b}function sc(m,l){var a=this,e,g,h,j,b;k.call(a,-1e8,2e8,{md:100});a.pd=function(){T=c;X=i;n.j(f.$EVT_SWIPE_START,t(y.Q()),y.Q())};a.kd=function(){T=d;j=d;var a=y.Hd();n.j(f.$EVT_SWIPE_END,t(y.Q()),y.Q());!a.Db&&Kc(a.Dd,r)};a.Qb=function(f,d){var a;if(j)a=b;else{a=g;if(h){var c=d/h;a=p.$SlideEasing(c)*(g-e)+e}}y.I(a)};a.Ub=function(b,d,c,f){e=b;g=d;h=c;y.I(b);a.I(0);a.jd(c,f)};a.Cd=function(d){j=c;b=d;a.$Play(d,i,c)};a.Nd=function(a){b=a};y=new Hc;y.Y(m);y.Y(l)}function tc(){var c=this,b=Zb();a.F(b,0);a.xb(b,"pointerEvents","none");c.$Elmt=b;c.Zd=function(c){a.D(b,c);a.z(b)};c.pb=function(){a.M(b);a.cc(b)}}function Ec(o,h){var e=this,q,x,I,y,j,B=[],G,v,S,H,N,F,g,w,m;k.call(e,-u,u+1,{});function E(a){x&&x.Ob();q&&q.Ob();R(o,a);F=c;q=new O.$Class(o,O,1);x=new O.$Class(o,O);x.rc();q.rc()}function W(){q.tc<O.tc&&E()}function J(o,r,m){if(!H){H=c;if(j&&m){var g=m.width,b=m.height,l=g,k=b;if(g&&b&&p.$FillMode){if(p.$FillMode&3&&(!(p.$FillMode&4)||g>L||b>K)){var i=d,q=L/K*b/g;if(p.$FillMode&1)i=q>1;else if(p.$FillMode&2)i=q<1;l=i?g*K/b:L;k=i?K:b*L/g}a.l(j,l);a.m(j,k);a.B(j,(K-k)/2);a.A(j,(L-l)/2)}a.C(j,"absolute");n.j(f.$EVT_LOAD_END,h)}}a.M(r);o&&o(e)}function T(b,c,d,f){if(f==X&&r==h&&U)if(!Jc){var a=t(b);A.Td(a,h,c,e,d);c.af();db.Pb(a,1);db.I(a);z.Ub(b,b,0)}}function Z(b){if(b==X&&r==h){if(!g){var a=i;if(A)if(A.bb==h)a=A.Od();else A.pb();W();g=new Bc(o,h,a,e.Xe(),e.We());g.Rc(m)}!g.$IsPlaying()&&g.gc()}}function Q(d,c,f){if(d==h){if(d!=c)C[c]&&C[c].Ye();else!f&&g&&g.bf();m&&m.$Enable();var j=X=a.L();e.ub(a.J(i,Z,j))}else{var l=b.abs(h-d),k=u+p.$LazyLoading-1;(!N||l<=k)&&e.ub()}}function bb(){if(r==h&&g){g.X();m&&m.$Quit();m&&m.$Disable();g.Nc()}}function cb(){r==h&&g&&g.X()}function Y(a){!P&&n.j(f.$EVT_CLICK,h,a)}function M(){m=w.pInstance;g&&g.Rc(m)}e.ub=function(d,b){b=b||y;if(B.length&&!H){a.z(b);if(!S){S=c;n.j(f.$EVT_LOAD_START,h);a.c(B,function(b){if(!b.src){b.src=a.u(b,"src2");a.T(b,b["display-origin"])}})}a.hf(B,j,a.J(i,J,d,b))}else J(d,b)};e.sf=function(){if(A){var b=A.Md(s);if(b){var e=X=a.L(),c=h+Yb,d=C[t(c)];return d.ub(a.J(i,T,c,d,b,e),y)}}eb(r+p.$AutoPlaySteps*Yb)};e.ec=function(){Q(h,h,c)};e.Ye=function(){m&&m.$Quit();m&&m.$Disable();e.td();g&&g.ef();g=i;E()};e.af=function(){a.M(o)};e.td=function(){a.z(o)};e.ff=function(){m&&m.$Enable()};function R(b,f,e){if(a.Jc(b,"jssor-slider"))return;e=e||0;if(!F){if(b.tagName=="IMG"){B.push(b);if(!b.src){N=c;b["display-origin"]=a.T(b);a.M(b)}}a.P()&&a.F(b,(a.F(b)||0)+1);if(p.$HWA&&a.yc())(!ab||a.yc()<534||!hb&&!a.ee())&&a.Ne(b)}var g=a.K(b);a.c(g,function(g){var i=g.tagName,k=a.u(g,"u");if(k=="player"&&!w){w=g;if(w.pInstance)M();else a.e(w,"dataavailable",M)}if(k=="caption"){if(!a.qd()&&!f){var h=a.S(g,d,c);a.Nb(h,g,b);a.Cb(g,b);g=h;f=c}}else if(!F&&!e&&!j){if(i=="A"){if(a.u(g,"u")=="image")j=a.of(g,"IMG");else j=a.v(g,"image",c);if(j){G=g;a.H(G,V);v=a.S(G,c);a.T(v,"block");a.H(v,V);a.zb(v,0);a.xb(v,"backgroundColor","#000")}}else if(i=="IMG"&&a.u(g,"u")=="image")j=g;if(j){j.border=0;a.H(j,V)}}R(g,f,e+1)})}e.zc=function(c,b){var a=u-b;ac(I,a)};e.Xe=function(){return q};e.We=function(){return x};e.bb=h;l.call(e);var D=a.v(o,"thumb",c);if(D){e.nf=a.S(D);a.Wc(D,"id");a.M(D)}a.z(o);y=a.S(gb);a.F(y,1e3);a.e(o,"click",Y);E(c);e.Tb=j;e.fd=v;e.ud=o;e.Jb=I=o;a.D(I,y);n.$On(203,Q);n.$On(28,cb);n.$On(24,bb)}function Bc(F,i,q,v,u){var b=this,l=0,x=0,m,h,e,g,j,s,w,t,o=C[i];k.call(b,0,0);function y(){a.cc(Q);gc&&j&&o.fd&&a.D(Q,o.fd);a.z(Q,!j&&o.Tb)}function z(){if(s){s=d;n.j(f.$EVT_ROLLBACK_END,i,e,l,h,e,g);b.I(h)}b.gc()}function D(a){t=a;b.X();b.gc()}b.gc=function(){var a=b.Bb();if(!B&&!T&&!t&&r==i){if(!a){if(m&&!j){j=c;b.Nc(c);n.j(f.$EVT_SLIDESHOW_START,i,l,x,m,g)}y()}var d,p=f.$EVT_STATE_CHANGE;if(a!=g)if(a==e)d=g;else if(a==h)d=e;else if(!a)d=h;else if(a>e){s=c;d=e;p=f.$EVT_ROLLBACK_START}else d=b.zd();n.j(p,i,a,l,h,e,g);var k=U&&(!J||H);if(a==g)(e!=g&&!(J&12)||k)&&o.sf();else(k||a!=e)&&b.jd(d,z)}};b.bf=function(){e==g&&e==b.Bb()&&b.I(h)};b.ef=function(){A&&A.bb==i&&A.pb();var a=b.Bb();a<g&&n.j(f.$EVT_STATE_CHANGE,i,-a-1,l,h,e,g)};b.Nc=function(b){q&&a.Z(mb,b&&q.U.$Outside?"":"hidden")};b.zc=function(b,a){if(j&&a>=m){j=d;y();o.td();A.pb();n.j(f.$EVT_SLIDESHOW_END,i,l,x,m,g)}n.j(f.$EVT_PROGRESS_CHANGE,i,a,l,h,e,g)};b.Rc=function(a){if(a&&!w){w=a;a.$On($JssorPlayer$.Vd,D)}};q&&b.sc(q);m=b.db();b.db();b.sc(v);h=v.db();e=h+(a.hc(a.u(F,"idle"))||p.$AutoPlayInterval);u.$Shift(e);b.Y(u);g=b.db()}function ac(g,f){var e=w>0?w:lb,c=Bb*f*(e&1),d=Cb*f*(e>>1&1);c=b.round(c);d=b.round(d);a.A(g,c);a.B(g,d)}function yc(b){var c=a.Zb(b);!N&&!a.u(c,"nodrag")&&wc()&&xc(b)}function Ob(){rb=T;Jb=z.zd();F=y.Q()}function jc(){Ob();if(B||!H&&J&12){z.X();n.j(f.le)}}function hc(e){e&&Ob();if(!B&&(H||!(J&12))&&!z.$IsPlaying()){var c=y.Q(),a=b.ceil(F);if(e&&b.abs(G)>=p.$MinDragOffsetToSlide){a=b.ceil(c);a+=jb}if(!(D&1))a=b.min(s-u,b.max(a,0));var d=b.abs(a-c);d=1-b.pow(1-d,5);if(!P&&rb)z.Pd(Jb);else if(c==a){ub.ff();ub.ec()}else z.Ub(c,a,d*Vb)}}function Pb(b){!a.u(a.Zb(b),"nodrag")&&a.tb(b)}function xc(b){B=c;Ab=d;X=i;a.e(g,fc,dc);a.L();P=0;jc();if(!rb)w=0;if(Kb){var h=b.touches[0];vb=h.clientX;wb=h.clientY}else{var e=a.yd(b);vb=e.x;wb=e.y;a.ke()&&a.Ac()<4&&a.tb(b)}G=0;fb=0;jb=0;n.j(f.$EVT_DRAG_START,t(F),F,b)}function dc(l){if(B){var e;if(Kb){var k=l.touches;if(k&&k.length>0)e={x:k[0].clientX,y:k[0].clientY}}else e=a.yd(l);if(e){var i=e.x-vb,j=e.y-wb;if(b.floor(F)!=F)w=w||lb&N;if((i||j)&&!w){if(N==3)if(b.abs(j)>b.abs(i))w=2;else w=1;else w=N;if(ab&&w==1&&b.abs(j)-b.abs(i)>3)Ab=c}if(w){var d=j,h=Cb;if(w==1){d=i;h=Bb}if(!(D&1)){if(d>0){var f=h*r,g=d-f;if(g>0)d=f+b.sqrt(g)*5}if(d<0){var f=h*(s-u-r),g=-d-f;if(g>0)d=-f-b.sqrt(g)*5}}if(G-fb<-2)jb=0;else if(G-fb>2)jb=-1;fb=G;G=d;tb=F-G/h/(cb||1);if(G&&w&&!Ab){a.tb(l);if(!T)z.Cd(tb);else z.Nd(tb)}}}}}function Eb(){uc();if(B){B=d;a.L();a.V(g,fc,dc);P=G;z.X();var b=y.Q();n.j(f.$EVT_DRAG_END,t(b),b,t(F),F);hc(c)}}function nc(c){if(P){a.mf(c);var b=a.Zb(c);while(b&&v!==b){b.tagName=="A"&&a.tb(c);try{b=b.parentNode}catch(d){break}}}}function rc(a){C[r];r=t(a);ub=C[r];Ub(a);return r}function Kc(a,b){w=0;rc(a);n.j(f.$EVT_PARK,t(a),b)}function Ub(b,c){yb=b;a.c(S,function(a){a.kc(t(b),b,c)})}function wc(){var b=f.dd||0,a=R;if(ab)a&1&&(a&=1);f.dd|=a;return N=a&~b}function uc(){if(N){f.dd&=~R;N=0}}function Zb(){var b=a.ab();a.H(b,V);a.C(b,"absolute");return b}function t(a){return(a%s+s)%s}function oc(a,c){if(c)if(!D){a=b.min(b.max(a+yb,0),s-u);c=d}else if(D&2){a=t(a+yb);c=d}eb(a,p.$SlideDuration,c)}function zb(){a.c(S,function(a){a.uc(a.Wb.$ChanceToShow<=H)})}function lc(){if(!H){H=1;zb();if(!B){J&12&&hc();J&3&&C[r].ec()}}}function kc(){if(H){H=0;zb();B||!(J&12)||jc()}}function mc(){V={mb:L,ob:K,$Top:0,$Left:0};a.c(Y,function(b){a.H(b,V);a.C(b,"absolute");a.Z(b,"hidden");a.M(b)});a.H(gb,V)}function pb(b,a){eb(b,a,c)}function eb(g,f,k){if(Rb&&(!B||p.$NaviQuitDrag)){T=c;B=d;z.X();if(f==j)f=Vb;var e=Fb.Bb(),a=g;if(k){a=e+g;if(g>0)a=b.ceil(a);else a=b.floor(a)}if(D&2)a=t(a);if(!(D&1))a=b.max(0,b.min(a,s-u));var i=(a-e)%s;a=e+i;var h=e==a?0:f*b.abs(i);h=b.min(h,f*u*1.5);z.Ub(e,a,h||1)}}n.$PlayTo=eb;n.$GoTo=function(a){eb(a,1)};n.$Next=function(){pb(1)};n.$Prev=function(){pb(-1)};n.$Pause=function(){U=d};n.$Play=function(){if(!U){U=c;C[r]&&C[r].ec()}};n.$SetSlideshowTransitions=function(a){p.$SlideshowOptions.$Transitions=a};n.$SetCaptionTransitions=function(b){O.$CaptionTransitions=b;O.tc=a.L()};n.$SlidesCount=function(){return Y.length};n.$CurrentIndex=function(){return r};n.$IsAutoPlaying=function(){return U};n.$IsDragging=function(){return B};n.$IsSliding=function(){return T};n.$IsMouseOver=function(){return!H};n.$LastDragSucceded=function(){return P};function bb(){return a.l(x||q)}function nb(){return a.m(x||q)}n.$OriginalWidth=n.$GetOriginalWidth=bb;n.$OriginalHeight=n.$GetOriginalHeight=nb;function Gb(c,e){if(c==j)return a.l(q);if(!x){var b=a.ab(g);a.Hc(b,a.Hc(q));a.Sb(b,a.Sb(q));a.T(b,"block");a.C(b,"relative");a.B(b,0);a.A(b,0);a.Z(b,"visible");x=a.ab(g);a.C(x,"absolute");a.B(x,0);a.A(x,0);a.l(x,a.l(q));a.m(x,a.m(q));a.qe(x,"0 0");a.D(x,b);var k=a.K(q);a.D(q,x);a.xb(q,"backgroundImage","");var i={navigator:Z&&Z.$Scale==d,arrowleft:E&&E.$Scale==d,arrowright:E&&E.$Scale==d,thumbnavigator:I&&I.$Scale==d,thumbwrapper:I&&I.$Scale==d};a.c(k,function(c){a.D(i[a.u(c,"u")]?q:b,c)})}cb=c/(e?a.m:a.l)(x);a.pe(x,cb);var h=e?cb*bb():c,f=e?c:cb*nb();a.l(q,h);a.m(q,f);a.c(S,function(a){a.qc(h,f)})}n.$ScaleHeight=n.$GetScaleHeight=function(b){if(b==j)return a.m(q);Gb(b,c)};n.$ScaleWidth=n.$SetScaleWidth=n.$GetScaleWidth=Gb;n.Yc=function(a){var d=b.ceil(t(kb/cc)),c=t(a-r+d);if(c>u){if(a-r>s/2)a-=s;else if(a-r<=-s/2)a+=s}else a=r+c-d;return a};l.call(n);n.$Elmt=q=a.eb(q);var p=a.k({$FillMode:0,$LazyLoading:1,$StartIndex:0,$AutoPlay:d,$Loop:1,$HWA:c,$NaviQuitDrag:c,$AutoPlaySteps:1,$AutoPlayInterval:3e3,$PauseOnHover:1,$SlideDuration:500,$SlideEasing:e.$EaseOutQuad,$MinDragOffsetToSlide:20,$SlideSpacing:0,$DisplayPieces:1,$ParkingPosition:0,$UISearchMode:1,$PlayOrientation:1,$DragOrientation:1},ic),lb=p.$PlayOrientation&3,Yb=(p.$PlayOrientation&4)/-4||1,ib=p.$SlideshowOptions,O=a.k({$Class:o,$PlayInMode:1,$PlayOutMode:1},p.$CaptionSliderOptions),Z=p.$BulletNavigatorOptions,E=p.$ArrowNavigatorOptions,I=p.$ThumbnailNavigatorOptions,W=!p.$UISearchMode,x,v=a.v(q,"slides",W),gb=a.v(q,"loading",W)||a.ab(g),Ib=a.v(q,"navigator",W),ec=a.v(q,"arrowleft",W),bc=a.v(q,"arrowright",W),Hb=a.v(q,"thumbnavigator",W),qc=a.l(v),pc=a.m(v),V,Y=[],zc=a.K(v);a.c(zc,function(b){if(b.tagName=="DIV"&&!a.u(b,"u"))Y.push(b);else a.P()&&a.F(b,(a.F(b)||0)+1)});var r=-1,yb,ub,s=Y.length,L=p.$SlideWidth||qc,K=p.$SlideHeight||pc,Wb=p.$SlideSpacing,Bb=L+Wb,Cb=K+Wb,cc=lb&1?Bb:Cb,u=b.min(p.$DisplayPieces,s),mb,w,N,Ab,S=[],Qb,Sb,Nb,gc,Jc,U,J=p.$PauseOnHover,Vb=p.$SlideDuration,sb,hb,kb,Rb=u<s,D=Rb?p.$Loop:0,R,P,H=1,T,B,X,vb=0,wb=0,G,fb,jb,Fb,y,db,z,Tb=new tc,cb;U=p.$AutoPlay;n.Wb=ic;mc();a.Jc(q,"jssor-slider",c);a.F(v,a.F(v)||0);a.C(v,"absolute");mb=a.S(v,c);a.Nb(mb,v);if(ib){gc=ib.$ShowLink;sb=ib.$Class;hb=u==1&&s>1&&sb&&(!a.qd()||a.Ac()>=8)}kb=hb||u>=s||!(D&1)?0:p.$ParkingPosition;R=(u>1||kb?lb:-1)&p.$DragOrientation;var xb=v,C=[],A,Q,M=a.ie(),Ac=M.Yb,fc=M.pc,Ic=M.yb,Xb=M.hb,Kb=M.je,ab=M.od,F,rb,Jb,tb;if(M.sd)if(R){var Db="auto";if(R==2)Db="pan-x";else if(R)Db="pan-y";a.xb(xb,M.sd,Db)}db=new Fc;if(hb)A=new sb(Tb,L,K,ib,ab);a.D(mb,db.Jb);a.Z(v,"hidden");Q=Zb();a.xb(Q,"backgroundColor","#000");a.zb(Q,0);a.Nb(Q,xb.firstChild,xb);for(var qb=0;qb<Y.length;qb++){var Cc=Y[qb],Dc=new Ec(Cc,qb);C.push(Dc)}a.M(gb);Fb=new Gc;z=new sc(Fb,db);if(R){a.e(v,Ac,yc);a.e(v,"dragstart",Pb);a.e(v,"selectstart",Pb);a.e(g,Ic,Eb);a.e(h,"blur",Eb);Xb&&a.e(g,Xb,Eb)}J&=ab?10:5;if(Ib&&Z){Qb=new Z.$Class(Ib,Z,bb(),nb());S.push(Qb)}if(E&&ec&&bc){E.$Loop=D;E.$DisplayPieces=u;Sb=new E.$Class(ec,bc,E,bb(),nb());S.push(Sb)}if(Hb&&I){I.$StartIndex=p.$StartIndex;Nb=new I.$Class(Hb,I);S.push(Nb)}a.c(S,function(a){a.oc(s,C,gb);a.$On(m.Hb,oc)});Gb(bb());a.e(v,"click",nc);a.e(q,"mouseout",a.Mb(lc,q));a.e(q,"mouseover",a.Mb(kc,q));zb();p.$ArrowKeyNavigation&&a.e(g,"keydown",function(a){if(a.keyCode==37)pb(-1);else a.keyCode==39&&pb(1)});var ob=p.$StartIndex;if(!(D&1))ob=b.max(0,b.min(ob,s-u));z.Ub(ob,ob,0)};h.$JssorSlideo$=f;f.$EVT_CLICK=21;f.$EVT_DRAG_START=22;f.$EVT_DRAG_END=23;f.$EVT_SWIPE_START=24;f.$EVT_SWIPE_END=25;f.$EVT_LOAD_START=26;f.$EVT_LOAD_END=27;f.le=28;f.$EVT_POSITION_CHANGE=202;f.$EVT_PARK=203;f.$EVT_SLIDESHOW_START=206;f.$EVT_SLIDESHOW_END=207;f.$EVT_PROGRESS_CHANGE=208;f.$EVT_STATE_CHANGE=209;f.$EVT_ROLLBACK_START=210;f.$EVT_ROLLBACK_END=211;var m={Hb:1};h.$JssorBulletNavigator$=function(f,D){var g=this;l.call(g);f=a.eb(f);var t,u,s,r,n=0,e,o,k,y,z,j,h,q,p,C=[],A=[];function x(a){a!=-1&&A[a].Oc(a==n)}function v(a){g.j(m.Hb,a*o)}g.$Elmt=f;g.kc=function(a){if(a!=r){var d=n,c=b.floor(a/o);n=c;r=a;x(d);x(c)}};g.uc=function(b){a.z(f,b)};var B;g.qc=function(g,b){if(!B||e.$Scale==d){e.$AutoCenter&1&&a.A(f,(g-u)/2);e.$AutoCenter&2&&a.B(f,(b-s)/2);B=c}};var w;g.oc=function(D){if(!w){t=b.ceil(D/o);n=0;var m=q+y,r=p+z,l=b.ceil(t/k)-1;u=q+m*(!j?l:k-1);s=p+r*(j?l:k-1);a.l(f,u);a.m(f,s);for(var d=0;d<t;d++){var B=a.Ve();a.jf(B,d+1);var g=a.Gc(h,"numbertemplate",B,c);a.C(g,"absolute");var x=d%(l+1);a.A(g,!j?m*x:d%k*m);a.B(g,j?r*x:b.floor(d/(l+1))*r);a.D(f,g);C[d]=g;e.$ActionMode&1&&a.e(g,"click",a.J(i,v,d));e.$ActionMode&2&&a.e(g,"mouseover",a.Mb(a.J(i,v,d),g));A[d]=a.Lb(g)}w=c}};g.Wb=e=a.k({$SpacingX:0,$SpacingY:0,$Orientation:1,$ActionMode:1},D);h=a.v(f,"prototype");q=a.l(h);p=a.m(h);a.Cb(h,f);o=e.$Steps||1;k=e.$Lanes||1;y=e.$SpacingX;z=e.$SpacingY;j=e.$Orientation-1};h.$JssorArrowNavigator$=function(e,g,j,o){var b=this;l.call(b);var v,u,f,h,k,r=a.l(e),p=a.m(e);function n(a){b.j(m.Hb,a,c)}function s(b){a.z(e,b||!j.$Loop&&f==0);a.z(g,b||!j.$Loop&&f>=u-j.$DisplayPieces);v=b}b.kc=function(b,a,c){if(c)f=a;else{f=b;s(v)}};b.uc=s;var t;b.qc=function(f,b){if(!t||h.$Scale==d){if(h.$AutoCenter&1){a.A(e,(o-r)/2);a.A(g,(o-r)/2)}if(h.$AutoCenter&2){a.B(e,(b-p)/2);a.B(g,(b-p)/2)}t=c}};var q;b.oc=function(b){u=b;f=0;if(!q){a.e(e,"click",a.J(i,n,-k));a.e(g,"click",a.J(i,n,k));a.Lb(e);a.Lb(g);q=c}};b.Wb=h=a.k({$Steps:1},j);k=h.$Steps};h.$JssorThumbnailNavigator$=function(j,A){var i=this,x,o,e,u=[],y,w,g,p,q,t,s,n,r,h,k;l.call(i);j=a.eb(j);function z(n,d){var f=this,b,l,j;function p(){l.Oc(o==d)}function h(){if(!r.$LastDragSucceded()){var a=g-d%g,b=r.Yc((d+a)/g-1),c=b*g+g-a;i.j(m.Hb,c)}}f.bb=d;f.ad=p;j=n.nf||n.Tb||a.ab();f.Jb=b=a.Gc(k,"thumbnailtemplate",j,c);l=a.Lb(b);e.$ActionMode&1&&a.e(b,"click",h);e.$ActionMode&2&&a.e(b,"mouseover",a.Mb(h,b))}i.kc=function(c,d,e){var a=o;o=c;a!=-1&&u[a].ad();u[c].ad();!e&&r.$PlayTo(r.Yc(b.floor(d/g)))};i.uc=function(b){a.z(j,b)};i.qc=a.ic;var v;i.oc=function(F,D){if(!v){x=F;b.ceil(x/g);o=-1;n=b.min(n,D.length);var i=e.$Orientation&1,m=t+(t+p)*(g-1)*(1-i),l=s+(s+q)*(g-1)*i,C=m+(m+p)*(n-1)*i,A=l+(l+q)*(n-1)*(1-i);a.C(h,"absolute");a.Z(h,"hidden");e.$AutoCenter&1&&a.A(h,(y-C)/2);e.$AutoCenter&2&&a.B(h,(w-A)/2);a.l(h,C);a.m(h,A);var k=[];a.c(D,function(l,e){var f=new z(l,e),d=f.Jb,c=b.floor(e/g),j=e%g;a.A(d,(t+p)*j*(1-i));a.B(d,(s+q)*j*i);if(!k[c]){k[c]=a.ab();a.D(h,k[c])}a.D(k[c],d);u.push(f)});var E=a.k({$HWA:d,$AutoPlay:d,$NaviQuitDrag:d,$SlideWidth:m,$SlideHeight:l,$SlideSpacing:p*i+q*(1-i),$MinDragOffsetToSlide:12,$SlideDuration:200,$PauseOnHover:1,$PlayOrientation:e.$Orientation,$DragOrientation:e.$DisableDrag?0:e.$Orientation},e);r=new f(j,E);v=c}};i.Wb=e=a.k({$SpacingX:3,$SpacingY:3,$DisplayPieces:1,$Orientation:1,$AutoCenter:3,$ActionMode:1},A);y=a.l(j);w=a.m(j);h=a.v(j,"slides",c);k=a.v(h,"prototype");t=a.l(k);s=a.m(k);a.Cb(k,h);g=e.$Lanes||1;p=e.$SpacingX;q=e.$SpacingY;n=e.$DisplayPieces};function o(){k.call(this,0,0);this.Ob=a.ic}h.$JssorCaptionSlider$=function(p,h,f){var c=this,g,n=f?h.$PlayInMode:h.$PlayOutMode,e=h.$CaptionTransitions,o={U:"t",$Delay:"d",$Duration:"du",x:"x",y:"y",$Rotate:"r",$Zoom:"z",$Opacity:"f",cb:"b"},d={rb:function(b,a){if(!isNaN(a.fb))b=a.fb;else b*=a.Be;return b},$Opacity:function(b,a){return this.rb(b-1,a)}};d.$Zoom=d.$Opacity;k.call(c,0,0);function l(r,m){var k=[],i,j=[],c=[];function h(c,d){var b={};a.c(o,function(g,h){var e=a.u(c,g+(d||""));if(e){var f={};if(g=="t")f.fb=e;else if(e.indexOf("%")+1)f.Be=a.hc(e)/100;else f.fb=a.hc(e);b[h]=f}});return b}function p(){return e[b.floor(b.random()*e.length)]}function g(f){var h;if(f=="*")h=p();else if(f){var d=e[a.Oe(f)]||e[f];if(a.dc(d)){if(f!=i){i=f;c[f]=0;j[f]=d[b.floor(b.random()*d.length)]}else c[f]++;d=j[f];if(a.dc(d)){d=d.length&&d[c[f]%d.length];if(a.dc(d))d=d[b.floor(b.random()*d.length)]}}h=d;if(a.wd(h))h=g(h)}return h}var q=a.K(r);a.c(q,function(b){var c=[];c.$Elmt=b;var e=a.u(b,"u")=="caption";a.c(f?[0,3]:[2],function(k,o){if(e){var j,f;if(k!=2||!a.u(b,"t3")){f=h(b,k);if(k==2&&!f.U){f.$Delay=f.$Delay||{fb:0};f=a.k(h(b,0),f)}}if(f&&f.U){j=g(f.U.fb);if(j){var i=a.k({$Delay:0},j);a.c(f,function(c,a){var b=(d[a]||d.rb).apply(d,[i[a],f[a]]);if(!isNaN(b))i[a]=b});if(!o)if(f.cb)i.cb=f.cb.fb||0;else if(n&2)i.cb=0}}c.push(i)}if(m%2&&!o)c.K=l(b,m+1)});k.push(c)});return k}function m(w,c,z){var g={$Easing:c.$Easing,$Round:c.$Round,$During:c.$During,$Reverse:f&&!z},m=w,r=a.Ze(w),l=a.l(m),j=a.m(m),y=a.l(r),x=a.m(r),h={},e={},i=c.$ScaleClip||1;if(c.$Opacity)e.$Opacity=1-c.$Opacity;g.$OriginalWidth=l;g.$OriginalHeight=j;if(c.$Zoom||c.$Rotate){e.$Zoom=(c.$Zoom||2)-2;if(a.P()||a.Dc())e.$Zoom=b.min(e.$Zoom,1);h.$Zoom=1;var B=c.$Rotate||0;e.$Rotate=B*360;h.$Rotate=0}else if(c.$Clip){var s={$Top:0,$Right:l,$Bottom:j,$Left:0},v=a.k({},s),d=v.qb={},u=c.$Clip&4,p=c.$Clip&8,t=c.$Clip&1,q=c.$Clip&2;if(u&&p){d.$Top=j/2*i;d.$Bottom=-d.$Top}else if(u)d.$Bottom=-j*i;else if(p)d.$Top=j*i;if(t&&q){d.$Left=l/2*i;d.$Right=-d.$Left}else if(t)d.$Right=-l*i;else if(q)d.$Left=l*i;g.$Move=c.$Move;e.$Clip=v;h.$Clip=s}var n=0,o=0;if(c.x)n-=y*c.x;if(c.y)o-=x*c.y;if(n||o||g.$Move){e.$Left=n;e.$Top=o}var A=c.$Duration;h=a.k(h,a.Ud(m,e));g.wc=a.Rd();return new k(c.$Delay,A,g,m,h,e)}function i(b,d){a.c(d,function(a){var e,h=a.$Elmt,d=a[0],k=a[1];if(d){e=m(h,d);b=e.Pb(d.cb==j?b:d.cb,1)}b=i(b,a.K);if(k){var f=m(h,k,1);f.Pb(b,1);c.Y(f);g.Y(f)}e&&c.Y(e)});return b}c.Ob=function(){c.I(c.db()*(f||0));g.rc()};g=new k(0,0);i(0,n?l(p,1):[])};})(window,document,Math,null,true,false)
+;(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module unless amdModuleId is set
+    define([], function () {
+      return (root['Autolinker'] = factory());
+    });
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    root['Autolinker'] = factory();
+  }
+}(this, function () {
+
+/*!
+ * Autolinker.js
+ * 0.22.0
+ *
+ * Copyright(c) 2015 Gregory Jacobs <greg@greg-jacobs.com>
+ * MIT
+ *
+ * https://github.com/gregjacobs/Autolinker.js
+ */
+/**
+ * @class Autolinker
+ * @extends Object
+ *
+ * Utility class used to process a given string of text, and wrap the matches in
+ * the appropriate anchor (&lt;a&gt;) tags to turn them into links.
+ *
+ * Any of the configuration options may be provided in an Object (map) provided
+ * to the Autolinker constructor, which will configure how the {@link #link link()}
+ * method will process the links.
+ *
+ * For example:
+ *
+ *     var autolinker = new Autolinker( {
+ *         newWindow : false,
+ *         truncate  : 30
+ *     } );
+ *
+ *     var html = autolinker.link( "Joe went to www.yahoo.com" );
+ *     // produces: 'Joe went to <a href="http://www.yahoo.com">yahoo.com</a>'
+ *
+ *
+ * The {@link #static-link static link()} method may also be used to inline options into a single call, which may
+ * be more convenient for one-off uses. For example:
+ *
+ *     var html = Autolinker.link( "Joe went to www.yahoo.com", {
+ *         newWindow : false,
+ *         truncate  : 30
+ *     } );
+ *     // produces: 'Joe went to <a href="http://www.yahoo.com">yahoo.com</a>'
+ *
+ *
+ * ## Custom Replacements of Links
+ *
+ * If the configuration options do not provide enough flexibility, a {@link #replaceFn}
+ * may be provided to fully customize the output of Autolinker. This function is
+ * called once for each URL/Email/Phone#/Twitter Handle/Hashtag match that is
+ * encountered.
+ *
+ * For example:
+ *
+ *     var input = "...";  // string with URLs, Email Addresses, Phone #s, Twitter Handles, and Hashtags
+ *
+ *     var linkedText = Autolinker.link( input, {
+ *         replaceFn : function( autolinker, match ) {
+ *             console.log( "href = ", match.getAnchorHref() );
+ *             console.log( "text = ", match.getAnchorText() );
+ *
+ *             switch( match.getType() ) {
+ *                 case 'url' :
+ *                     console.log( "url: ", match.getUrl() );
+ *
+ *                     if( match.getUrl().indexOf( 'mysite.com' ) === -1 ) {
+ *                         var tag = autolinker.getTagBuilder().build( match );  // returns an `Autolinker.HtmlTag` instance, which provides mutator methods for easy changes
+ *                         tag.setAttr( 'rel', 'nofollow' );
+ *                         tag.addClass( 'external-link' );
+ *
+ *                         return tag;
+ *
+ *                     } else {
+ *                         return true;  // let Autolinker perform its normal anchor tag replacement
+ *                     }
+ *
+ *                 case 'email' :
+ *                     var email = match.getEmail();
+ *                     console.log( "email: ", email );
+ *
+ *                     if( email === "my@own.address" ) {
+ *                         return false;  // don't auto-link this particular email address; leave as-is
+ *                     } else {
+ *                         return;  // no return value will have Autolinker perform its normal anchor tag replacement (same as returning `true`)
+ *                     }
+ *
+ *                 case 'phone' :
+ *                     var phoneNumber = match.getPhoneNumber();
+ *                     console.log( phoneNumber );
+ *
+ *                     return '<a href="http://newplace.to.link.phone.numbers.to/">' + phoneNumber + '</a>';
+ *
+ *                 case 'twitter' :
+ *                     var twitterHandle = match.getTwitterHandle();
+ *                     console.log( twitterHandle );
+ *
+ *                     return '<a href="http://newplace.to.link.twitter.handles.to/">' + twitterHandle + '</a>';
+ *
+ *                 case 'hashtag' :
+ *                     var hashtag = match.getHashtag();
+ *                     console.log( hashtag );
+ *
+ *                     return '<a href="http://newplace.to.link.hashtag.handles.to/">' + hashtag + '</a>';
+ *             }
+ *         }
+ *     } );
+ *
+ *
+ * The function may return the following values:
+ *
+ * - `true` (Boolean): Allow Autolinker to replace the match as it normally would.
+ * - `false` (Boolean): Do not replace the current match at all - leave as-is.
+ * - Any String: If a string is returned from the function, the string will be used directly as the replacement HTML for
+ *   the match.
+ * - An {@link Autolinker.HtmlTag} instance, which can be used to build/modify an HTML tag before writing out its HTML text.
+ *
+ * @constructor
+ * @param {Object} [cfg] The configuration options for the Autolinker instance, specified in an Object (map).
+ */
+var Autolinker = function( cfg ) {
+	Autolinker.Util.assign( this, cfg );  // assign the properties of `cfg` onto the Autolinker instance. Prototype properties will be used for missing configs.
+
+	// Validate the value of the `hashtag` cfg.
+	var hashtag = this.hashtag;
+	if( hashtag !== false && hashtag !== 'twitter' && hashtag !== 'facebook' && hashtag !== 'instagram' ) {
+		throw new Error( "invalid `hashtag` cfg - see docs" );
+	}
+
+	// Normalize the configs
+	this.urls     = this.normalizeUrlsCfg( this.urls );
+	this.truncate = this.normalizeTruncateCfg( this.truncate );
+};
+
+Autolinker.prototype = {
+	constructor : Autolinker,  // fix constructor property
+
+	/**
+	 * @cfg {Boolean/Object} urls
+	 *
+	 * `true` if URLs should be automatically linked, `false` if they should not
+	 * be.
+	 *
+	 * This option also accepts an Object form with 3 properties, to allow for
+	 * more customization of what exactly gets linked. All default to `true`:
+	 *
+	 * @param {Boolean} schemeMatches `true` to match URLs found prefixed with a
+	 *   scheme, i.e. `http://google.com`, or `other+scheme://google.com`,
+	 *   `false` to prevent these types of matches.
+	 * @param {Boolean} wwwMatches `true` to match urls found prefixed with
+	 *   `'www.'`, i.e. `www.google.com`. `false` to prevent these types of
+	 *   matches. Note that if the URL had a prefixed scheme, and
+	 *   `schemeMatches` is true, it will still be linked.
+	 * @param {Boolean} tldMatches `true` to match URLs with known top level
+	 *   domains (.com, .net, etc.) that are not prefixed with a scheme or
+	 *   `'www.'`. This option attempts to match anything that looks like a URL
+	 *   in the given text. Ex: `google.com`, `asdf.org/?page=1`, etc. `false`
+	 *   to prevent these types of matches.
+	 */
+	urls : true,
+
+	/**
+	 * @cfg {Boolean} email
+	 *
+	 * `true` if email addresses should be automatically linked, `false` if they
+	 * should not be.
+	 */
+	email : true,
+
+	/**
+	 * @cfg {Boolean} twitter
+	 *
+	 * `true` if Twitter handles ("@example") should be automatically linked,
+	 * `false` if they should not be.
+	 */
+	twitter : true,
+
+	/**
+	 * @cfg {Boolean} phone
+	 *
+	 * `true` if Phone numbers ("(555)555-5555") should be automatically linked,
+	 * `false` if they should not be.
+	 */
+	phone: true,
+
+	/**
+	 * @cfg {Boolean/String} hashtag
+	 *
+	 * A string for the service name to have hashtags (ex: "#myHashtag")
+	 * auto-linked to. The currently-supported values are:
+	 *
+	 * - 'twitter'
+	 * - 'facebook'
+	 * - 'instagram'
+	 *
+	 * Pass `false` to skip auto-linking of hashtags.
+	 */
+	hashtag : false,
+
+	/**
+	 * @cfg {Boolean} newWindow
+	 *
+	 * `true` if the links should open in a new window, `false` otherwise.
+	 */
+	newWindow : true,
+
+	/**
+	 * @cfg {Boolean} stripPrefix
+	 *
+	 * `true` if 'http://' or 'https://' and/or the 'www.' should be stripped
+	 * from the beginning of URL links' text, `false` otherwise.
+	 */
+	stripPrefix : true,
+
+	/**
+	 * @cfg {Number/Object} truncate
+	 *
+	 * ## Number Form
+	 *
+	 * A number for how many characters matched text should be truncated to
+	 * inside the text of a link. If the matched text is over this number of
+	 * characters, it will be truncated to this length by adding a two period
+	 * ellipsis ('..') to the end of the string.
+	 *
+	 * For example: A url like 'http://www.yahoo.com/some/long/path/to/a/file'
+	 * truncated to 25 characters might look something like this:
+	 * 'yahoo.com/some/long/pat..'
+	 *
+	 * Example Usage:
+	 *
+	 *     truncate: 25
+	 *
+	 *
+	 * ## Object Form
+	 *
+	 * An Object may also be provided with two properties: `length` (Number) and
+	 * `location` (String). `location` may be one of the following: 'end'
+	 * (default), 'middle', or 'smart'.
+	 *
+	 * Example Usage:
+	 *
+	 *     truncate: { length: 25, location: 'middle' }
+	 *
+	 * @cfg {Number} truncate.length How many characters to allow before
+	 *   truncation will occur.
+	 * @cfg {"end"/"middle"/"smart"} [truncate.location="end"]
+	 *
+	 * - 'end' (default): will truncate up to the number of characters, and then
+	 *   add an ellipsis at the end. Ex: 'yahoo.com/some/long/pat..'
+	 * - 'middle': will truncate and add the ellipsis in the middle. Ex:
+	 *   'yahoo.com/s..th/to/a/file'
+	 * - 'smart': for URLs where the algorithm attempts to strip out unnecessary
+	 *   parts first (such as the 'www.', then URL scheme, hash, etc.),
+	 *   attempting to make the URL human-readable before looking for a good
+	 *   point to insert the ellipsis if it is still too long. Ex:
+	 *   'yahoo.com/some..to/a/file'. For more details, see
+	 *   {@link Autolinker.truncate.TruncateSmart}.
+	 */
+	truncate : undefined,
+
+	/**
+	 * @cfg {String} className
+	 *
+	 * A CSS class name to add to the generated links. This class will be added to all links, as well as this class
+	 * plus match suffixes for styling url/email/phone/twitter/hashtag links differently.
+	 *
+	 * For example, if this config is provided as "myLink", then:
+	 *
+	 * - URL links will have the CSS classes: "myLink myLink-url"
+	 * - Email links will have the CSS classes: "myLink myLink-email", and
+	 * - Twitter links will have the CSS classes: "myLink myLink-twitter"
+	 * - Phone links will have the CSS classes: "myLink myLink-phone"
+	 * - Hashtag links will have the CSS classes: "myLink myLink-hashtag"
+	 */
+	className : "",
+
+	/**
+	 * @cfg {Function} replaceFn
+	 *
+	 * A function to individually process each match found in the input string.
+	 *
+	 * See the class's description for usage.
+	 *
+	 * This function is called with the following parameters:
+	 *
+	 * @cfg {Autolinker} replaceFn.autolinker The Autolinker instance, which may be used to retrieve child objects from (such
+	 *   as the instance's {@link #getTagBuilder tag builder}).
+	 * @cfg {Autolinker.match.Match} replaceFn.match The Match instance which can be used to retrieve information about the
+	 *   match that the `replaceFn` is currently processing. See {@link Autolinker.match.Match} subclasses for details.
+	 */
+
+
+	/**
+	 * @private
+	 * @property {Autolinker.htmlParser.HtmlParser} htmlParser
+	 *
+	 * The HtmlParser instance used to skip over HTML tags, while finding text nodes to process. This is lazily instantiated
+	 * in the {@link #getHtmlParser} method.
+	 */
+	htmlParser : undefined,
+
+	/**
+	 * @private
+	 * @property {Autolinker.matchParser.MatchParser} matchParser
+	 *
+	 * The MatchParser instance used to find matches in the text nodes of an input string passed to
+	 * {@link #link}. This is lazily instantiated in the {@link #getMatchParser} method.
+	 */
+	matchParser : undefined,
+
+	/**
+	 * @private
+	 * @property {Autolinker.AnchorTagBuilder} tagBuilder
+	 *
+	 * The AnchorTagBuilder instance used to build match replacement anchor tags. Note: this is lazily instantiated
+	 * in the {@link #getTagBuilder} method.
+	 */
+	tagBuilder : undefined,
+
+
+	/**
+	 * Normalizes the {@link #urls} config into an Object with 3 properties:
+	 * `schemeMatches`, `wwwMatches`, and `tldMatches`, all Booleans.
+	 *
+	 * See {@link #urls} config for details.
+	 *
+	 * @private
+	 * @param {Boolean/Object} urls
+	 * @return {Object}
+	 */
+	normalizeUrlsCfg : function( urls ) {
+		if( typeof urls === 'boolean' ) {
+			return { schemeMatches: urls, wwwMatches: urls, tldMatches: urls };
+		} else {
+			return Autolinker.Util.defaults( urls || {}, { schemeMatches: true, wwwMatches: true, tldMatches: true } );
+		}
+	},
+
+
+	/**
+	 * Normalizes the {@link #truncate} config into an Object with 2 properties:
+	 * `length` (Number), and `location` (String).
+	 *
+	 * See {@link #truncate} config for details.
+	 *
+	 * @private
+	 * @param {Number/Object} truncate
+	 * @return {Object}
+	 */
+	normalizeTruncateCfg : function( truncate ) {
+		if( typeof truncate === 'number' ) {
+			return { length: truncate, location: 'end' };
+
+		} else {  // object, or undefined/null
+			return Autolinker.Util.defaults( truncate || {}, {
+				length   : Number.POSITIVE_INFINITY,
+				location : 'end'
+			} );
+		}
+	},
+
+
+	/**
+	 * Automatically links URLs, Email addresses, Phone numbers, Twitter
+	 * handles, and Hashtags found in the given chunk of HTML. Does not link
+	 * URLs found within HTML tags.
+	 *
+	 * For instance, if given the text: `You should go to http://www.yahoo.com`,
+	 * then the result will be `You should go to
+	 * &lt;a href="http://www.yahoo.com"&gt;http://www.yahoo.com&lt;/a&gt;`
+	 *
+	 * This method finds the text around any HTML elements in the input
+	 * `textOrHtml`, which will be the text that is processed. Any original HTML
+	 * elements will be left as-is, as well as the text that is already wrapped
+	 * in anchor (&lt;a&gt;) tags.
+	 *
+	 * @param {String} textOrHtml The HTML or text to autolink matches within
+	 *   (depending on if the {@link #urls}, {@link #email}, {@link #phone},
+	 *   {@link #twitter}, and {@link #hashtag} options are enabled).
+	 * @return {String} The HTML, with matches automatically linked.
+	 */
+	link : function( textOrHtml ) {
+		if( !textOrHtml ) { return ""; }  // handle `null` and `undefined`
+
+		var htmlParser = this.getHtmlParser(),
+		    htmlNodes = htmlParser.parse( textOrHtml ),
+		    anchorTagStackCount = 0,  // used to only process text around anchor tags, and any inner text/html they may have
+		    resultHtml = [];
+
+		for( var i = 0, len = htmlNodes.length; i < len; i++ ) {
+			var node = htmlNodes[ i ],
+			    nodeType = node.getType(),
+			    nodeText = node.getText();
+
+			if( nodeType === 'element' ) {
+				// Process HTML nodes in the input `textOrHtml`
+				if( node.getTagName() === 'a' ) {
+					if( !node.isClosing() ) {  // it's the start <a> tag
+						anchorTagStackCount++;
+					} else {   // it's the end </a> tag
+						anchorTagStackCount = Math.max( anchorTagStackCount - 1, 0 );  // attempt to handle extraneous </a> tags by making sure the stack count never goes below 0
+					}
+				}
+				resultHtml.push( nodeText );  // now add the text of the tag itself verbatim
+
+			} else if( nodeType === 'entity' || nodeType === 'comment' ) {
+				resultHtml.push( nodeText );  // append HTML entity nodes (such as '&nbsp;') or HTML comments (such as '<!-- Comment -->') verbatim
+
+			} else {
+				// Process text nodes in the input `textOrHtml`
+				if( anchorTagStackCount === 0 ) {
+					// If we're not within an <a> tag, process the text node to linkify
+					var linkifiedStr = this.linkifyStr( nodeText );
+					resultHtml.push( linkifiedStr );
+
+				} else {
+					// `text` is within an <a> tag, simply append the text - we do not want to autolink anything
+					// already within an <a>...</a> tag
+					resultHtml.push( nodeText );
+				}
+			}
+		}
+
+		return resultHtml.join( "" );
+	},
+
+	/**
+	 * Process the text that lies in between HTML tags, performing the anchor
+	 * tag replacements for the matches, and returns the string with the
+	 * replacements made.
+	 *
+	 * This method does the actual wrapping of matches with anchor tags.
+	 *
+	 * @private
+	 * @param {String} str The string of text to auto-link.
+	 * @return {String} The text with anchor tags auto-filled.
+	 */
+	linkifyStr : function( str ) {
+		return this.getMatchParser().replace( str, this.createMatchReturnVal, this );
+	},
+
+
+	/**
+	 * Creates the return string value for a given match in the input string,
+	 * for the {@link #linkifyStr} method.
+	 *
+	 * This method handles the {@link #replaceFn}, if one was provided.
+	 *
+	 * @private
+	 * @param {Autolinker.match.Match} match The Match object that represents the match.
+	 * @return {String} The string that the `match` should be replaced with. This is usually the anchor tag string, but
+	 *   may be the `matchStr` itself if the match is not to be replaced.
+	 */
+	createMatchReturnVal : function( match ) {
+		// Handle a custom `replaceFn` being provided
+		var replaceFnResult;
+		if( this.replaceFn ) {
+			replaceFnResult = this.replaceFn.call( this, this, match );  // Autolinker instance is the context, and the first arg
+		}
+
+		if( typeof replaceFnResult === 'string' ) {
+			return replaceFnResult;  // `replaceFn` returned a string, use that
+
+		} else if( replaceFnResult === false ) {
+			return match.getMatchedText();  // no replacement for the match
+
+		} else if( replaceFnResult instanceof Autolinker.HtmlTag ) {
+			return replaceFnResult.toAnchorString();
+
+		} else {  // replaceFnResult === true, or no/unknown return value from function
+			// Perform Autolinker's default anchor tag generation
+			var tagBuilder = this.getTagBuilder(),
+			    anchorTag = tagBuilder.build( match );  // returns an Autolinker.HtmlTag instance
+
+			return anchorTag.toAnchorString();
+		}
+	},
+
+
+	/**
+	 * Lazily instantiates and returns the {@link #htmlParser} instance for this Autolinker instance.
+	 *
+	 * @protected
+	 * @return {Autolinker.htmlParser.HtmlParser}
+	 */
+	getHtmlParser : function() {
+		var htmlParser = this.htmlParser;
+
+		if( !htmlParser ) {
+			htmlParser = this.htmlParser = new Autolinker.htmlParser.HtmlParser();
+		}
+
+		return htmlParser;
+	},
+
+
+	/**
+	 * Lazily instantiates and returns the {@link #matchParser} instance for this Autolinker instance.
+	 *
+	 * @protected
+	 * @return {Autolinker.matchParser.MatchParser}
+	 */
+	getMatchParser : function() {
+		var matchParser = this.matchParser;
+
+		if( !matchParser ) {
+			matchParser = this.matchParser = new Autolinker.matchParser.MatchParser( {
+				urls        : this.urls,
+				email       : this.email,
+				twitter     : this.twitter,
+				phone       : this.phone,
+				hashtag     : this.hashtag,
+				stripPrefix : this.stripPrefix
+			} );
+		}
+
+		return matchParser;
+	},
+
+
+	/**
+	 * Returns the {@link #tagBuilder} instance for this Autolinker instance, lazily instantiating it
+	 * if it does not yet exist.
+	 *
+	 * This method may be used in a {@link #replaceFn} to generate the {@link Autolinker.HtmlTag HtmlTag} instance that
+	 * Autolinker would normally generate, and then allow for modifications before returning it. For example:
+	 *
+	 *     var html = Autolinker.link( "Test google.com", {
+	 *         replaceFn : function( autolinker, match ) {
+	 *             var tag = autolinker.getTagBuilder().build( match );  // returns an {@link Autolinker.HtmlTag} instance
+	 *             tag.setAttr( 'rel', 'nofollow' );
+	 *
+	 *             return tag;
+	 *         }
+	 *     } );
+	 *
+	 *     // generated html:
+	 *     //   Test <a href="http://google.com" target="_blank" rel="nofollow">google.com</a>
+	 *
+	 * @return {Autolinker.AnchorTagBuilder}
+	 */
+	getTagBuilder : function() {
+		var tagBuilder = this.tagBuilder;
+
+		if( !tagBuilder ) {
+			tagBuilder = this.tagBuilder = new Autolinker.AnchorTagBuilder( {
+				newWindow   : this.newWindow,
+				truncate    : this.truncate,
+				className   : this.className
+			} );
+		}
+
+		return tagBuilder;
+	}
+
+};
+
+
+/**
+ * Automatically links URLs, Email addresses, Phone Numbers, Twitter handles,
+ * and Hashtags found in the given chunk of HTML. Does not link URLs found
+ * within HTML tags.
+ *
+ * For instance, if given the text: `You should go to http://www.yahoo.com`,
+ * then the result will be `You should go to &lt;a href="http://www.yahoo.com"&gt;http://www.yahoo.com&lt;/a&gt;`
+ *
+ * Example:
+ *
+ *     var linkedText = Autolinker.link( "Go to google.com", { newWindow: false } );
+ *     // Produces: "Go to <a href="http://google.com">google.com</a>"
+ *
+ * @static
+ * @param {String} textOrHtml The HTML or text to find matches within (depending
+ *   on if the {@link #urls}, {@link #email}, {@link #phone}, {@link #twitter},
+ *   and {@link #hashtag} options are enabled).
+ * @param {Object} [options] Any of the configuration options for the Autolinker
+ *   class, specified in an Object (map). See the class description for an
+ *   example call.
+ * @return {String} The HTML text, with matches automatically linked.
+ */
+Autolinker.link = function( textOrHtml, options ) {
+	var autolinker = new Autolinker( options );
+	return autolinker.link( textOrHtml );
+};
+
+
+// Autolinker Namespaces
+Autolinker.match = {};
+Autolinker.htmlParser = {};
+Autolinker.matchParser = {};
+Autolinker.truncate = {};
+
+/*global Autolinker */
+/*jshint eqnull:true, boss:true */
+/**
+ * @class Autolinker.Util
+ * @singleton
+ *
+ * A few utility methods for Autolinker.
+ */
+Autolinker.Util = {
+
+	/**
+	 * @property {Function} abstractMethod
+	 *
+	 * A function object which represents an abstract method.
+	 */
+	abstractMethod : function() { throw "abstract"; },
+
+
+	/**
+	 * @private
+	 * @property {RegExp} trimRegex
+	 *
+	 * The regular expression used to trim the leading and trailing whitespace
+	 * from a string.
+	 */
+	trimRegex : /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
+
+
+	/**
+	 * Assigns (shallow copies) the properties of `src` onto `dest`.
+	 *
+	 * @param {Object} dest The destination object.
+	 * @param {Object} src The source object.
+	 * @return {Object} The destination object (`dest`)
+	 */
+	assign : function( dest, src ) {
+		for( var prop in src ) {
+			if( src.hasOwnProperty( prop ) ) {
+				dest[ prop ] = src[ prop ];
+			}
+		}
+
+		return dest;
+	},
+
+
+	/**
+	 * Assigns (shallow copies) the properties of `src` onto `dest`, if the
+	 * corresponding property on `dest` === `undefined`.
+	 *
+	 * @param {Object} dest The destination object.
+	 * @param {Object} src The source object.
+	 * @return {Object} The destination object (`dest`)
+	 */
+	defaults : function( dest, src ) {
+		for( var prop in src ) {
+			if( src.hasOwnProperty( prop ) && dest[ prop ] === undefined ) {
+				dest[ prop ] = src[ prop ];
+			}
+		}
+
+		return dest;
+	},
+
+
+	/**
+	 * Extends `superclass` to create a new subclass, adding the `protoProps` to the new subclass's prototype.
+	 *
+	 * @param {Function} superclass The constructor function for the superclass.
+	 * @param {Object} protoProps The methods/properties to add to the subclass's prototype. This may contain the
+	 *   special property `constructor`, which will be used as the new subclass's constructor function.
+	 * @return {Function} The new subclass function.
+	 */
+	extend : function( superclass, protoProps ) {
+		var superclassProto = superclass.prototype;
+
+		var F = function() {};
+		F.prototype = superclassProto;
+
+		var subclass;
+		if( protoProps.hasOwnProperty( 'constructor' ) ) {
+			subclass = protoProps.constructor;
+		} else {
+			subclass = function() { superclassProto.constructor.apply( this, arguments ); };
+		}
+
+		var subclassProto = subclass.prototype = new F();  // set up prototype chain
+		subclassProto.constructor = subclass;  // fix constructor property
+		subclassProto.superclass = superclassProto;
+
+		delete protoProps.constructor;  // don't re-assign constructor property to the prototype, since a new function may have been created (`subclass`), which is now already there
+		Autolinker.Util.assign( subclassProto, protoProps );
+
+		return subclass;
+	},
+
+
+	/**
+	 * Truncates the `str` at `len - ellipsisChars.length`, and adds the `ellipsisChars` to the
+	 * end of the string (by default, two periods: '..'). If the `str` length does not exceed
+	 * `len`, the string will be returned unchanged.
+	 *
+	 * @param {String} str The string to truncate and add an ellipsis to.
+	 * @param {Number} truncateLen The length to truncate the string at.
+	 * @param {String} [ellipsisChars=..] The ellipsis character(s) to add to the end of `str`
+	 *   when truncated. Defaults to '..'
+	 */
+	ellipsis : function( str, truncateLen, ellipsisChars ) {
+		if( str.length > truncateLen ) {
+			ellipsisChars = ( ellipsisChars == null ) ? '..' : ellipsisChars;
+			str = str.substring( 0, truncateLen - ellipsisChars.length ) + ellipsisChars;
+		}
+		return str;
+	},
+
+
+	/**
+	 * Supports `Array.prototype.indexOf()` functionality for old IE (IE8 and below).
+	 *
+	 * @param {Array} arr The array to find an element of.
+	 * @param {*} element The element to find in the array, and return the index of.
+	 * @return {Number} The index of the `element`, or -1 if it was not found.
+	 */
+	indexOf : function( arr, element ) {
+		if( Array.prototype.indexOf ) {
+			return arr.indexOf( element );
+
+		} else {
+			for( var i = 0, len = arr.length; i < len; i++ ) {
+				if( arr[ i ] === element ) return i;
+			}
+			return -1;
+		}
+	},
+
+
+
+	/**
+	 * Performs the functionality of what modern browsers do when `String.prototype.split()` is called
+	 * with a regular expression that contains capturing parenthesis.
+	 *
+	 * For example:
+	 *
+	 *     // Modern browsers:
+	 *     "a,b,c".split( /(,)/ );  // --> [ 'a', ',', 'b', ',', 'c' ]
+	 *
+	 *     // Old IE (including IE8):
+	 *     "a,b,c".split( /(,)/ );  // --> [ 'a', 'b', 'c' ]
+	 *
+	 * This method emulates the functionality of modern browsers for the old IE case.
+	 *
+	 * @param {String} str The string to split.
+	 * @param {RegExp} splitRegex The regular expression to split the input `str` on. The splitting
+	 *   character(s) will be spliced into the array, as in the "modern browsers" example in the
+	 *   description of this method.
+	 *   Note #1: the supplied regular expression **must** have the 'g' flag specified.
+	 *   Note #2: for simplicity's sake, the regular expression does not need
+	 *   to contain capturing parenthesis - it will be assumed that any match has them.
+	 * @return {String[]} The split array of strings, with the splitting character(s) included.
+	 */
+	splitAndCapture : function( str, splitRegex ) {
+		if( !splitRegex.global ) throw new Error( "`splitRegex` must have the 'g' flag set" );
+
+		var result = [],
+		    lastIdx = 0,
+		    match;
+
+		while( match = splitRegex.exec( str ) ) {
+			result.push( str.substring( lastIdx, match.index ) );
+			result.push( match[ 0 ] );  // push the splitting char(s)
+
+			lastIdx = match.index + match[ 0 ].length;
+		}
+		result.push( str.substring( lastIdx ) );
+
+		return result;
+	},
+
+
+	/**
+	 * Trims the leading and trailing whitespace from a string.
+	 *
+	 * @param {String} str The string to trim.
+	 * @return {String}
+	 */
+	trim : function( str ) {
+		return str.replace( this.trimRegex, '' );
+	}
+
+};
+/*global Autolinker */
+/*jshint boss:true */
+/**
+ * @class Autolinker.HtmlTag
+ * @extends Object
+ *
+ * Represents an HTML tag, which can be used to easily build/modify HTML tags programmatically.
+ *
+ * Autolinker uses this abstraction to create HTML tags, and then write them out as strings. You may also use
+ * this class in your code, especially within a {@link Autolinker#replaceFn replaceFn}.
+ *
+ * ## Examples
+ *
+ * Example instantiation:
+ *
+ *     var tag = new Autolinker.HtmlTag( {
+ *         tagName : 'a',
+ *         attrs   : { 'href': 'http://google.com', 'class': 'external-link' },
+ *         innerHtml : 'Google'
+ *     } );
+ *
+ *     tag.toAnchorString();  // <a href="http://google.com" class="external-link">Google</a>
+ *
+ *     // Individual accessor methods
+ *     tag.getTagName();                 // 'a'
+ *     tag.getAttr( 'href' );            // 'http://google.com'
+ *     tag.hasClass( 'external-link' );  // true
+ *
+ *
+ * Using mutator methods (which may be used in combination with instantiation config properties):
+ *
+ *     var tag = new Autolinker.HtmlTag();
+ *     tag.setTagName( 'a' );
+ *     tag.setAttr( 'href', 'http://google.com' );
+ *     tag.addClass( 'external-link' );
+ *     tag.setInnerHtml( 'Google' );
+ *
+ *     tag.getTagName();                 // 'a'
+ *     tag.getAttr( 'href' );            // 'http://google.com'
+ *     tag.hasClass( 'external-link' );  // true
+ *
+ *     tag.toAnchorString();  // <a href="http://google.com" class="external-link">Google</a>
+ *
+ *
+ * ## Example use within a {@link Autolinker#replaceFn replaceFn}
+ *
+ *     var html = Autolinker.link( "Test google.com", {
+ *         replaceFn : function( autolinker, match ) {
+ *             var tag = autolinker.getTagBuilder().build( match );  // returns an {@link Autolinker.HtmlTag} instance, configured with the Match's href and anchor text
+ *             tag.setAttr( 'rel', 'nofollow' );
+ *
+ *             return tag;
+ *         }
+ *     } );
+ *
+ *     // generated html:
+ *     //   Test <a href="http://google.com" target="_blank" rel="nofollow">google.com</a>
+ *
+ *
+ * ## Example use with a new tag for the replacement
+ *
+ *     var html = Autolinker.link( "Test google.com", {
+ *         replaceFn : function( autolinker, match ) {
+ *             var tag = new Autolinker.HtmlTag( {
+ *                 tagName : 'button',
+ *                 attrs   : { 'title': 'Load URL: ' + match.getAnchorHref() },
+ *                 innerHtml : 'Load URL: ' + match.getAnchorText()
+ *             } );
+ *
+ *             return tag;
+ *         }
+ *     } );
+ *
+ *     // generated html:
+ *     //   Test <button title="Load URL: http://google.com">Load URL: google.com</button>
+ */
+Autolinker.HtmlTag = Autolinker.Util.extend( Object, {
+
+	/**
+	 * @cfg {String} tagName
+	 *
+	 * The tag name. Ex: 'a', 'button', etc.
+	 *
+	 * Not required at instantiation time, but should be set using {@link #setTagName} before {@link #toAnchorString}
+	 * is executed.
+	 */
+
+	/**
+	 * @cfg {Object.<String, String>} attrs
+	 *
+	 * An key/value Object (map) of attributes to create the tag with. The keys are the attribute names, and the
+	 * values are the attribute values.
+	 */
+
+	/**
+	 * @cfg {String} innerHtml
+	 *
+	 * The inner HTML for the tag.
+	 *
+	 * Note the camel case name on `innerHtml`. Acronyms are camelCased in this utility (such as not to run into the acronym
+	 * naming inconsistency that the DOM developers created with `XMLHttpRequest`). You may alternatively use {@link #innerHTML}
+	 * if you prefer, but this one is recommended.
+	 */
+
+	/**
+	 * @cfg {String} innerHTML
+	 *
+	 * Alias of {@link #innerHtml}, accepted for consistency with the browser DOM api, but prefer the camelCased version
+	 * for acronym names.
+	 */
+
+
+	/**
+	 * @protected
+	 * @property {RegExp} whitespaceRegex
+	 *
+	 * Regular expression used to match whitespace in a string of CSS classes.
+	 */
+	whitespaceRegex : /\s+/,
+
+
+	/**
+	 * @constructor
+	 * @param {Object} [cfg] The configuration properties for this class, in an Object (map)
+	 */
+	constructor : function( cfg ) {
+		Autolinker.Util.assign( this, cfg );
+
+		this.innerHtml = this.innerHtml || this.innerHTML;  // accept either the camelCased form or the fully capitalized acronym
+	},
+
+
+	/**
+	 * Sets the tag name that will be used to generate the tag with.
+	 *
+	 * @param {String} tagName
+	 * @return {Autolinker.HtmlTag} This HtmlTag instance, so that method calls may be chained.
+	 */
+	setTagName : function( tagName ) {
+		this.tagName = tagName;
+		return this;
+	},
+
+
+	/**
+	 * Retrieves the tag name.
+	 *
+	 * @return {String}
+	 */
+	getTagName : function() {
+		return this.tagName || "";
+	},
+
+
+	/**
+	 * Sets an attribute on the HtmlTag.
+	 *
+	 * @param {String} attrName The attribute name to set.
+	 * @param {String} attrValue The attribute value to set.
+	 * @return {Autolinker.HtmlTag} This HtmlTag instance, so that method calls may be chained.
+	 */
+	setAttr : function( attrName, attrValue ) {
+		var tagAttrs = this.getAttrs();
+		tagAttrs[ attrName ] = attrValue;
+
+		return this;
+	},
+
+
+	/**
+	 * Retrieves an attribute from the HtmlTag. If the attribute does not exist, returns `undefined`.
+	 *
+	 * @param {String} attrName The attribute name to retrieve.
+	 * @return {String} The attribute's value, or `undefined` if it does not exist on the HtmlTag.
+	 */
+	getAttr : function( attrName ) {
+		return this.getAttrs()[ attrName ];
+	},
+
+
+	/**
+	 * Sets one or more attributes on the HtmlTag.
+	 *
+	 * @param {Object.<String, String>} attrs A key/value Object (map) of the attributes to set.
+	 * @return {Autolinker.HtmlTag} This HtmlTag instance, so that method calls may be chained.
+	 */
+	setAttrs : function( attrs ) {
+		var tagAttrs = this.getAttrs();
+		Autolinker.Util.assign( tagAttrs, attrs );
+
+		return this;
+	},
+
+
+	/**
+	 * Retrieves the attributes Object (map) for the HtmlTag.
+	 *
+	 * @return {Object.<String, String>} A key/value object of the attributes for the HtmlTag.
+	 */
+	getAttrs : function() {
+		return this.attrs || ( this.attrs = {} );
+	},
+
+
+	/**
+	 * Sets the provided `cssClass`, overwriting any current CSS classes on the HtmlTag.
+	 *
+	 * @param {String} cssClass One or more space-separated CSS classes to set (overwrite).
+	 * @return {Autolinker.HtmlTag} This HtmlTag instance, so that method calls may be chained.
+	 */
+	setClass : function( cssClass ) {
+		return this.setAttr( 'class', cssClass );
+	},
+
+
+	/**
+	 * Convenience method to add one or more CSS classes to the HtmlTag. Will not add duplicate CSS classes.
+	 *
+	 * @param {String} cssClass One or more space-separated CSS classes to add.
+	 * @return {Autolinker.HtmlTag} This HtmlTag instance, so that method calls may be chained.
+	 */
+	addClass : function( cssClass ) {
+		var classAttr = this.getClass(),
+		    whitespaceRegex = this.whitespaceRegex,
+		    indexOf = Autolinker.Util.indexOf,  // to support IE8 and below
+		    classes = ( !classAttr ) ? [] : classAttr.split( whitespaceRegex ),
+		    newClasses = cssClass.split( whitespaceRegex ),
+		    newClass;
+
+		while( newClass = newClasses.shift() ) {
+			if( indexOf( classes, newClass ) === -1 ) {
+				classes.push( newClass );
+			}
+		}
+
+		this.getAttrs()[ 'class' ] = classes.join( " " );
+		return this;
+	},
+
+
+	/**
+	 * Convenience method to remove one or more CSS classes from the HtmlTag.
+	 *
+	 * @param {String} cssClass One or more space-separated CSS classes to remove.
+	 * @return {Autolinker.HtmlTag} This HtmlTag instance, so that method calls may be chained.
+	 */
+	removeClass : function( cssClass ) {
+		var classAttr = this.getClass(),
+		    whitespaceRegex = this.whitespaceRegex,
+		    indexOf = Autolinker.Util.indexOf,  // to support IE8 and below
+		    classes = ( !classAttr ) ? [] : classAttr.split( whitespaceRegex ),
+		    removeClasses = cssClass.split( whitespaceRegex ),
+		    removeClass;
+
+		while( classes.length && ( removeClass = removeClasses.shift() ) ) {
+			var idx = indexOf( classes, removeClass );
+			if( idx !== -1 ) {
+				classes.splice( idx, 1 );
+			}
+		}
+
+		this.getAttrs()[ 'class' ] = classes.join( " " );
+		return this;
+	},
+
+
+	/**
+	 * Convenience method to retrieve the CSS class(es) for the HtmlTag, which will each be separated by spaces when
+	 * there are multiple.
+	 *
+	 * @return {String}
+	 */
+	getClass : function() {
+		return this.getAttrs()[ 'class' ] || "";
+	},
+
+
+	/**
+	 * Convenience method to check if the tag has a CSS class or not.
+	 *
+	 * @param {String} cssClass The CSS class to check for.
+	 * @return {Boolean} `true` if the HtmlTag has the CSS class, `false` otherwise.
+	 */
+	hasClass : function( cssClass ) {
+		return ( ' ' + this.getClass() + ' ' ).indexOf( ' ' + cssClass + ' ' ) !== -1;
+	},
+
+
+	/**
+	 * Sets the inner HTML for the tag.
+	 *
+	 * @param {String} html The inner HTML to set.
+	 * @return {Autolinker.HtmlTag} This HtmlTag instance, so that method calls may be chained.
+	 */
+	setInnerHtml : function( html ) {
+		this.innerHtml = html;
+
+		return this;
+	},
+
+
+	/**
+	 * Retrieves the inner HTML for the tag.
+	 *
+	 * @return {String}
+	 */
+	getInnerHtml : function() {
+		return this.innerHtml || "";
+	},
+
+
+	/**
+	 * Override of superclass method used to generate the HTML string for the tag.
+	 *
+	 * @return {String}
+	 */
+	toAnchorString : function() {
+		var tagName = this.getTagName(),
+		    attrsStr = this.buildAttrsStr();
+
+		attrsStr = ( attrsStr ) ? ' ' + attrsStr : '';  // prepend a space if there are actually attributes
+
+		return [ '<', tagName, attrsStr, '>', this.getInnerHtml(), '</', tagName, '>' ].join( "" );
+	},
+
+
+	/**
+	 * Support method for {@link #toAnchorString}, returns the string space-separated key="value" pairs, used to populate
+	 * the stringified HtmlTag.
+	 *
+	 * @protected
+	 * @return {String} Example return: `attr1="value1" attr2="value2"`
+	 */
+	buildAttrsStr : function() {
+		if( !this.attrs ) return "";  // no `attrs` Object (map) has been set, return empty string
+
+		var attrs = this.getAttrs(),
+		    attrsArr = [];
+
+		for( var prop in attrs ) {
+			if( attrs.hasOwnProperty( prop ) ) {
+				attrsArr.push( prop + '="' + attrs[ prop ] + '"' );
+			}
+		}
+		return attrsArr.join( " " );
+	}
+
+} );
+
+/*global Autolinker */
+/*jshint sub:true */
+/**
+ * @protected
+ * @class Autolinker.AnchorTagBuilder
+ * @extends Object
+ *
+ * Builds anchor (&lt;a&gt;) tags for the Autolinker utility when a match is found.
+ *
+ * Normally this class is instantiated, configured, and used internally by an
+ * {@link Autolinker} instance, but may actually be retrieved in a {@link Autolinker#replaceFn replaceFn}
+ * to create {@link Autolinker.HtmlTag HtmlTag} instances which may be modified
+ * before returning from the {@link Autolinker#replaceFn replaceFn}. For
+ * example:
+ *
+ *     var html = Autolinker.link( "Test google.com", {
+ *         replaceFn : function( autolinker, match ) {
+ *             var tag = autolinker.getTagBuilder().build( match );  // returns an {@link Autolinker.HtmlTag} instance
+ *             tag.setAttr( 'rel', 'nofollow' );
+ *
+ *             return tag;
+ *         }
+ *     } );
+ *
+ *     // generated html:
+ *     //   Test <a href="http://google.com" target="_blank" rel="nofollow">google.com</a>
+ */
+Autolinker.AnchorTagBuilder = Autolinker.Util.extend( Object, {
+
+	/**
+	 * @cfg {Boolean} newWindow
+	 * @inheritdoc Autolinker#newWindow
+	 */
+
+	/**
+	 * @cfg {Object} truncate
+	 * @inheritdoc Autolinker#truncate
+	 */
+
+	/**
+	 * @cfg {String} className
+	 * @inheritdoc Autolinker#className
+	 */
+
+
+	/**
+	 * @constructor
+	 * @param {Object} [cfg] The configuration options for the AnchorTagBuilder instance, specified in an Object (map).
+	 */
+	constructor : function( cfg ) {
+		Autolinker.Util.assign( this, cfg );
+	},
+
+
+	/**
+	 * Generates the actual anchor (&lt;a&gt;) tag to use in place of the
+	 * matched text, via its `match` object.
+	 *
+	 * @param {Autolinker.match.Match} match The Match instance to generate an
+	 *   anchor tag from.
+	 * @return {Autolinker.HtmlTag} The HtmlTag instance for the anchor tag.
+	 */
+	build : function( match ) {
+		return new Autolinker.HtmlTag( {
+			tagName   : 'a',
+			attrs     : this.createAttrs( match.getType(), match.getAnchorHref() ),
+			innerHtml : this.processAnchorText( match.getAnchorText() )
+		} );
+	},
+
+
+	/**
+	 * Creates the Object (map) of the HTML attributes for the anchor (&lt;a&gt;)
+	 *   tag being generated.
+	 *
+	 * @protected
+	 * @param {"url"/"email"/"phone"/"twitter"/"hashtag"} matchType The type of
+	 *   match that an anchor tag is being generated for.
+	 * @param {String} anchorHref The href for the anchor tag.
+	 * @return {Object} A key/value Object (map) of the anchor tag's attributes.
+	 */
+	createAttrs : function( matchType, anchorHref ) {
+		var attrs = {
+			'href' : anchorHref  // we'll always have the `href` attribute
+		};
+
+		var cssClass = this.createCssClass( matchType );
+		if( cssClass ) {
+			attrs[ 'class' ] = cssClass;
+		}
+		if( this.newWindow ) {
+			attrs[ 'target' ] = "_blank";
+		}
+
+		return attrs;
+	},
+
+
+	/**
+	 * Creates the CSS class that will be used for a given anchor tag, based on
+	 * the `matchType` and the {@link #className} config.
+	 *
+	 * @private
+	 * @param {"url"/"email"/"phone"/"twitter"/"hashtag"} matchType The type of
+	 *   match that an anchor tag is being generated for.
+	 * @return {String} The CSS class string for the link. Example return:
+	 *   "myLink myLink-url". If no {@link #className} was configured, returns
+	 *   an empty string.
+	 */
+	createCssClass : function( matchType ) {
+		var className = this.className;
+
+		if( !className )
+			return "";
+		else
+			return className + " " + className + "-" + matchType;  // ex: "myLink myLink-url", "myLink myLink-email", "myLink myLink-phone", "myLink myLink-twitter", or "myLink myLink-hashtag"
+	},
+
+
+	/**
+	 * Processes the `anchorText` by truncating the text according to the
+	 * {@link #truncate} config.
+	 *
+	 * @private
+	 * @param {String} anchorText The anchor tag's text (i.e. what will be
+	 *   displayed).
+	 * @return {String} The processed `anchorText`.
+	 */
+	processAnchorText : function( anchorText ) {
+		anchorText = this.doTruncate( anchorText );
+
+		return anchorText;
+	},
+
+
+	/**
+	 * Performs the truncation of the `anchorText` based on the {@link #truncate}
+	 * option. If the `anchorText` is longer than the length specified by the
+	 * {@link #truncate} option, the truncation is performed based on the
+	 * `location` property. See {@link #truncate} for details.
+	 *
+	 * @private
+	 * @param {String} anchorText The anchor tag's text (i.e. what will be
+	 *   displayed).
+	 * @return {String} The truncated anchor text.
+	 */
+	doTruncate : function( anchorText ) {
+		var truncate = this.truncate;
+		if( !truncate ) return anchorText;
+
+		var truncateLength = truncate.length,
+			truncateLocation = truncate.location;
+
+		if( truncateLocation === 'smart' ) {
+			return Autolinker.truncate.TruncateSmart( anchorText, truncateLength, '..' );
+
+		} else if( truncateLocation === 'middle' ) {
+			return Autolinker.truncate.TruncateMiddle( anchorText, truncateLength, '..' );
+
+		} else {
+			return Autolinker.truncate.TruncateEnd( anchorText, truncateLength, '..' );
+		}
+	}
+
+} );
+
+/*global Autolinker */
+/**
+ * @private
+ * @class Autolinker.htmlParser.HtmlParser
+ * @extends Object
+ *
+ * An HTML parser implementation which simply walks an HTML string and returns an array of
+ * {@link Autolinker.htmlParser.HtmlNode HtmlNodes} that represent the basic HTML structure of the input string.
+ *
+ * Autolinker uses this to only link URLs/emails/Twitter handles within text nodes, effectively ignoring / "walking
+ * around" HTML tags.
+ */
+Autolinker.htmlParser.HtmlParser = Autolinker.Util.extend( Object, {
+
+	/**
+	 * @private
+	 * @property {RegExp} htmlRegex
+	 *
+	 * The regular expression used to pull out HTML tags from a string. Handles namespaced HTML tags and
+	 * attribute names, as specified by http://www.w3.org/TR/html-markup/syntax.html.
+	 *
+	 * Capturing groups:
+	 *
+	 * 1. The "!DOCTYPE" tag name, if a tag is a &lt;!DOCTYPE&gt; tag.
+	 * 2. If it is an end tag, this group will have the '/'.
+	 * 3. If it is a comment tag, this group will hold the comment text (i.e.
+	 *    the text inside the `&lt;!--` and `--&gt;`.
+	 * 4. The tag name for all tags (other than the &lt;!DOCTYPE&gt; tag)
+	 */
+	htmlRegex : (function() {
+		var commentTagRegex = /!--([\s\S]+?)--/,
+		    tagNameRegex = /[0-9a-zA-Z][0-9a-zA-Z:]*/,
+		    attrNameRegex = /[^\s\0"'>\/=\x01-\x1F\x7F]+/,   // the unicode range accounts for excluding control chars, and the delete char
+		    attrValueRegex = /(?:"[^"]*?"|'[^']*?'|[^'"=<>`\s]+)/, // double quoted, single quoted, or unquoted attribute values
+		    nameEqualsValueRegex = attrNameRegex.source + '(?:\\s*=\\s*' + attrValueRegex.source + ')?';  // optional '=[value]'
+
+		return new RegExp( [
+			// for <!DOCTYPE> tag. Ex: <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">)
+			'(?:',
+				'<(!DOCTYPE)',  // *** Capturing Group 1 - If it's a doctype tag
+
+					// Zero or more attributes following the tag name
+					'(?:',
+						'\\s+',  // one or more whitespace chars before an attribute
+
+						// Either:
+						// A. attr="value", or
+						// B. "value" alone (To cover example doctype tag: <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">)
+						'(?:', nameEqualsValueRegex, '|', attrValueRegex.source + ')',
+					')*',
+				'>',
+			')',
+
+			'|',
+
+			// All other HTML tags (i.e. tags that are not <!DOCTYPE>)
+			'(?:',
+				'<(/)?',  // Beginning of a tag or comment. Either '<' for a start tag, or '</' for an end tag.
+				          // *** Capturing Group 2: The slash or an empty string. Slash ('/') for end tag, empty string for start or self-closing tag.
+
+					'(?:',
+						commentTagRegex.source,  // *** Capturing Group 3 - A Comment Tag's Text
+
+						'|',
+
+						'(?:',
+
+							// *** Capturing Group 4 - The tag name
+							'(' + tagNameRegex.source + ')',
+
+							// Zero or more attributes following the tag name
+							'(?:',
+								'\\s+',                // one or more whitespace chars before an attribute
+								nameEqualsValueRegex,  // attr="value" (with optional ="value" part)
+							')*',
+
+							'\\s*/?',  // any trailing spaces and optional '/' before the closing '>'
+
+						')',
+					')',
+				'>',
+			')'
+		].join( "" ), 'gi' );
+	} )(),
+
+	/**
+	 * @private
+	 * @property {RegExp} htmlCharacterEntitiesRegex
+	 *
+	 * The regular expression that matches common HTML character entities.
+	 *
+	 * Ignoring &amp; as it could be part of a query string -- handling it separately.
+	 */
+	htmlCharacterEntitiesRegex: /(&nbsp;|&#160;|&lt;|&#60;|&gt;|&#62;|&quot;|&#34;|&#39;)/gi,
+
+
+	/**
+	 * Parses an HTML string and returns a simple array of {@link Autolinker.htmlParser.HtmlNode HtmlNodes}
+	 * to represent the HTML structure of the input string.
+	 *
+	 * @param {String} html The HTML to parse.
+	 * @return {Autolinker.htmlParser.HtmlNode[]}
+	 */
+	parse : function( html ) {
+		var htmlRegex = this.htmlRegex,
+		    currentResult,
+		    lastIndex = 0,
+		    textAndEntityNodes,
+		    nodes = [];  // will be the result of the method
+
+		while( ( currentResult = htmlRegex.exec( html ) ) !== null ) {
+			var tagText = currentResult[ 0 ],
+			    commentText = currentResult[ 3 ], // if we've matched a comment
+			    tagName = currentResult[ 1 ] || currentResult[ 4 ],  // The <!DOCTYPE> tag (ex: "!DOCTYPE"), or another tag (ex: "a" or "img")
+			    isClosingTag = !!currentResult[ 2 ],
+			    inBetweenTagsText = html.substring( lastIndex, currentResult.index );
+
+			// Push TextNodes and EntityNodes for any text found between tags
+			if( inBetweenTagsText ) {
+				textAndEntityNodes = this.parseTextAndEntityNodes( inBetweenTagsText );
+				nodes.push.apply( nodes, textAndEntityNodes );
+			}
+
+			// Push the CommentNode or ElementNode
+			if( commentText ) {
+				nodes.push( this.createCommentNode( tagText, commentText ) );
+			} else {
+				nodes.push( this.createElementNode( tagText, tagName, isClosingTag ) );
+			}
+
+			lastIndex = currentResult.index + tagText.length;
+		}
+
+		// Process any remaining text after the last HTML element. Will process all of the text if there were no HTML elements.
+		if( lastIndex < html.length ) {
+			var text = html.substring( lastIndex );
+
+			// Push TextNodes and EntityNodes for any text found between tags
+			if( text ) {
+				textAndEntityNodes = this.parseTextAndEntityNodes( text );
+				nodes.push.apply( nodes, textAndEntityNodes );
+			}
+		}
+
+		return nodes;
+	},
+
+
+	/**
+	 * Parses text and HTML entity nodes from a given string. The input string
+	 * should not have any HTML tags (elements) within it.
+	 *
+	 * @private
+	 * @param {String} text The text to parse.
+	 * @return {Autolinker.htmlParser.HtmlNode[]} An array of HtmlNodes to
+	 *   represent the {@link Autolinker.htmlParser.TextNode TextNodes} and
+	 *   {@link Autolinker.htmlParser.EntityNode EntityNodes} found.
+	 */
+	parseTextAndEntityNodes : function( text ) {
+		var nodes = [],
+		    textAndEntityTokens = Autolinker.Util.splitAndCapture( text, this.htmlCharacterEntitiesRegex );  // split at HTML entities, but include the HTML entities in the results array
+
+		// Every even numbered token is a TextNode, and every odd numbered token is an EntityNode
+		// For example: an input `text` of "Test &quot;this&quot; today" would turn into the
+		//   `textAndEntityTokens`: [ 'Test ', '&quot;', 'this', '&quot;', ' today' ]
+		for( var i = 0, len = textAndEntityTokens.length; i < len; i += 2 ) {
+			var textToken = textAndEntityTokens[ i ],
+			    entityToken = textAndEntityTokens[ i + 1 ];
+
+			if( textToken ) nodes.push( this.createTextNode( textToken ) );
+			if( entityToken ) nodes.push( this.createEntityNode( entityToken ) );
+		}
+		return nodes;
+	},
+
+
+	/**
+	 * Factory method to create an {@link Autolinker.htmlParser.CommentNode CommentNode}.
+	 *
+	 * @private
+	 * @param {String} tagText The full text of the tag (comment) that was
+	 *   matched, including its &lt;!-- and --&gt;.
+	 * @param {String} comment The full text of the comment that was matched.
+	 */
+	createCommentNode : function( tagText, commentText ) {
+		return new Autolinker.htmlParser.CommentNode( {
+			text: tagText,
+			comment: Autolinker.Util.trim( commentText )
+		} );
+	},
+
+
+	/**
+	 * Factory method to create an {@link Autolinker.htmlParser.ElementNode ElementNode}.
+	 *
+	 * @private
+	 * @param {String} tagText The full text of the tag (element) that was
+	 *   matched, including its attributes.
+	 * @param {String} tagName The name of the tag. Ex: An &lt;img&gt; tag would
+	 *   be passed to this method as "img".
+	 * @param {Boolean} isClosingTag `true` if it's a closing tag, false
+	 *   otherwise.
+	 * @return {Autolinker.htmlParser.ElementNode}
+	 */
+	createElementNode : function( tagText, tagName, isClosingTag ) {
+		return new Autolinker.htmlParser.ElementNode( {
+			text    : tagText,
+			tagName : tagName.toLowerCase(),
+			closing : isClosingTag
+		} );
+	},
+
+
+	/**
+	 * Factory method to create a {@link Autolinker.htmlParser.EntityNode EntityNode}.
+	 *
+	 * @private
+	 * @param {String} text The text that was matched for the HTML entity (such
+	 *   as '&amp;nbsp;').
+	 * @return {Autolinker.htmlParser.EntityNode}
+	 */
+	createEntityNode : function( text ) {
+		return new Autolinker.htmlParser.EntityNode( { text: text } );
+	},
+
+
+	/**
+	 * Factory method to create a {@link Autolinker.htmlParser.TextNode TextNode}.
+	 *
+	 * @private
+	 * @param {String} text The text that was matched.
+	 * @return {Autolinker.htmlParser.TextNode}
+	 */
+	createTextNode : function( text ) {
+		return new Autolinker.htmlParser.TextNode( { text: text } );
+	}
+
+} );
+/*global Autolinker */
+/**
+ * @abstract
+ * @class Autolinker.htmlParser.HtmlNode
+ *
+ * Represents an HTML node found in an input string. An HTML node is one of the
+ * following:
+ *
+ * 1. An {@link Autolinker.htmlParser.ElementNode ElementNode}, which represents
+ *    HTML tags.
+ * 2. A {@link Autolinker.htmlParser.CommentNode CommentNode}, which represents
+ *    HTML comments.
+ * 3. A {@link Autolinker.htmlParser.TextNode TextNode}, which represents text
+ *    outside or within HTML tags.
+ * 4. A {@link Autolinker.htmlParser.EntityNode EntityNode}, which represents
+ *    one of the known HTML entities that Autolinker looks for. This includes
+ *    common ones such as &amp;quot; and &amp;nbsp;
+ */
+Autolinker.htmlParser.HtmlNode = Autolinker.Util.extend( Object, {
+
+	/**
+	 * @cfg {String} text (required)
+	 *
+	 * The original text that was matched for the HtmlNode.
+	 *
+	 * - In the case of an {@link Autolinker.htmlParser.ElementNode ElementNode},
+	 *   this will be the tag's text.
+	 * - In the case of an {@link Autolinker.htmlParser.CommentNode CommentNode},
+	 *   this will be the comment's text.
+	 * - In the case of a {@link Autolinker.htmlParser.TextNode TextNode}, this
+	 *   will be the text itself.
+	 * - In the case of a {@link Autolinker.htmlParser.EntityNode EntityNode},
+	 *   this will be the text of the HTML entity.
+	 */
+	text : "",
+
+
+	/**
+	 * @constructor
+	 * @param {Object} cfg The configuration properties for the Match instance,
+	 * specified in an Object (map).
+	 */
+	constructor : function( cfg ) {
+		Autolinker.Util.assign( this, cfg );
+	},
+
+
+	/**
+	 * Returns a string name for the type of node that this class represents.
+	 *
+	 * @abstract
+	 * @return {String}
+	 */
+	getType : Autolinker.Util.abstractMethod,
+
+
+	/**
+	 * Retrieves the {@link #text} for the HtmlNode.
+	 *
+	 * @return {String}
+	 */
+	getText : function() {
+		return this.text;
+	}
+
+} );
+/*global Autolinker */
+/**
+ * @class Autolinker.htmlParser.CommentNode
+ * @extends Autolinker.htmlParser.HtmlNode
+ *
+ * Represents an HTML comment node that has been parsed by the
+ * {@link Autolinker.htmlParser.HtmlParser}.
+ *
+ * See this class's superclass ({@link Autolinker.htmlParser.HtmlNode}) for more
+ * details.
+ */
+Autolinker.htmlParser.CommentNode = Autolinker.Util.extend( Autolinker.htmlParser.HtmlNode, {
+
+	/**
+	 * @cfg {String} comment (required)
+	 *
+	 * The text inside the comment tag. This text is stripped of any leading or
+	 * trailing whitespace.
+	 */
+	comment : '',
+
+
+	/**
+	 * Returns a string name for the type of node that this class represents.
+	 *
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'comment';
+	},
+
+
+	/**
+	 * Returns the comment inside the comment tag.
+	 *
+	 * @return {String}
+	 */
+	getComment : function() {
+		return this.comment;
+	}
+
+} );
+/*global Autolinker */
+/**
+ * @class Autolinker.htmlParser.ElementNode
+ * @extends Autolinker.htmlParser.HtmlNode
+ *
+ * Represents an HTML element node that has been parsed by the {@link Autolinker.htmlParser.HtmlParser}.
+ *
+ * See this class's superclass ({@link Autolinker.htmlParser.HtmlNode}) for more
+ * details.
+ */
+Autolinker.htmlParser.ElementNode = Autolinker.Util.extend( Autolinker.htmlParser.HtmlNode, {
+
+	/**
+	 * @cfg {String} tagName (required)
+	 *
+	 * The name of the tag that was matched.
+	 */
+	tagName : '',
+
+	/**
+	 * @cfg {Boolean} closing (required)
+	 *
+	 * `true` if the element (tag) is a closing tag, `false` if its an opening
+	 * tag.
+	 */
+	closing : false,
+
+
+	/**
+	 * Returns a string name for the type of node that this class represents.
+	 *
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'element';
+	},
+
+
+	/**
+	 * Returns the HTML element's (tag's) name. Ex: for an &lt;img&gt; tag,
+	 * returns "img".
+	 *
+	 * @return {String}
+	 */
+	getTagName : function() {
+		return this.tagName;
+	},
+
+
+	/**
+	 * Determines if the HTML element (tag) is a closing tag. Ex: &lt;div&gt;
+	 * returns `false`, while &lt;/div&gt; returns `true`.
+	 *
+	 * @return {Boolean}
+	 */
+	isClosing : function() {
+		return this.closing;
+	}
+
+} );
+/*global Autolinker */
+/**
+ * @class Autolinker.htmlParser.EntityNode
+ * @extends Autolinker.htmlParser.HtmlNode
+ *
+ * Represents a known HTML entity node that has been parsed by the {@link Autolinker.htmlParser.HtmlParser}.
+ * Ex: '&amp;nbsp;', or '&amp#160;' (which will be retrievable from the {@link #getText}
+ * method.
+ *
+ * Note that this class will only be returned from the HtmlParser for the set of
+ * checked HTML entity nodes  defined by the {@link Autolinker.htmlParser.HtmlParser#htmlCharacterEntitiesRegex}.
+ *
+ * See this class's superclass ({@link Autolinker.htmlParser.HtmlNode}) for more
+ * details.
+ */
+Autolinker.htmlParser.EntityNode = Autolinker.Util.extend( Autolinker.htmlParser.HtmlNode, {
+
+	/**
+	 * Returns a string name for the type of node that this class represents.
+	 *
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'entity';
+	}
+
+} );
+/*global Autolinker */
+/**
+ * @class Autolinker.htmlParser.TextNode
+ * @extends Autolinker.htmlParser.HtmlNode
+ *
+ * Represents a text node that has been parsed by the {@link Autolinker.htmlParser.HtmlParser}.
+ *
+ * See this class's superclass ({@link Autolinker.htmlParser.HtmlNode}) for more
+ * details.
+ */
+Autolinker.htmlParser.TextNode = Autolinker.Util.extend( Autolinker.htmlParser.HtmlNode, {
+
+	/**
+	 * Returns a string name for the type of node that this class represents.
+	 *
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'text';
+	}
+
+} );
+/*global Autolinker */
+/**
+ * @private
+ * @class Autolinker.matchParser.MatchParser
+ * @extends Object
+ *
+ * Used by Autolinker to parse potential matches, given an input string of text.
+ *
+ * The MatchParser is fed a non-HTML string in order to search for matches.
+ * Autolinker first uses the {@link Autolinker.htmlParser.HtmlParser} to "walk
+ * around" HTML tags, and then the text around the HTML tags is passed into the
+ * MatchParser in order to find the actual matches.
+ */
+Autolinker.matchParser.MatchParser = Autolinker.Util.extend( Object, {
+
+	/**
+	 * @cfg {Object} urls
+	 * @inheritdoc Autolinker#urls
+	 */
+	urls : true,
+
+	/**
+	 * @cfg {Boolean} email
+	 * @inheritdoc Autolinker#email
+	 */
+	email : true,
+
+	/**
+	 * @cfg {Boolean} twitter
+	 * @inheritdoc Autolinker#twitter
+	 */
+	twitter : true,
+
+	/**
+	 * @cfg {Boolean} phone
+	 * @inheritdoc Autolinker#phone
+	 */
+	phone: true,
+
+	/**
+	 * @cfg {Boolean/String} hashtag
+	 * @inheritdoc Autolinker#hashtag
+	 */
+	hashtag : false,
+
+	/**
+	 * @cfg {Boolean} stripPrefix
+	 * @inheritdoc Autolinker#stripPrefix
+	 */
+	stripPrefix : true,
+
+
+	/**
+	 * @private
+	 * @property {RegExp} matcherRegex
+	 *
+	 * The regular expression that matches URLs, email addresses, phone #s,
+	 * Twitter handles, and Hashtags.
+	 *
+	 * This regular expression has the following capturing groups:
+	 *
+	 * 1.  Group that is used to determine if there is a Twitter handle match
+	 *     (i.e. \@someTwitterUser). Simply check for its existence to determine
+	 *     if there is a Twitter handle match. The next couple of capturing
+	 *     groups give information about the Twitter handle match.
+	 * 2.  The whitespace character before the \@sign in a Twitter handle. This
+	 *     is needed because there are no lookbehinds in JS regular expressions,
+	 *     and can be used to reconstruct the original string in a replace().
+	 * 3.  The Twitter handle itself in a Twitter match. If the match is
+	 *     '@someTwitterUser', the handle is 'someTwitterUser'.
+	 * 4.  Group that matches an email address. Used to determine if the match
+	 *     is an email address, as well as holding the full address. Ex:
+	 *     'me@my.com'
+	 * 5.  Group that matches a URL in the input text. Ex: 'http://google.com',
+	 *     'www.google.com', or just 'google.com'. This also includes a path,
+	 *     url parameters, or hash anchors. Ex: google.com/path/to/file?q1=1&q2=2#myAnchor
+	 * 6.  Group that matches a protocol URL (i.e. 'http://google.com'). This is
+	 *     used to match protocol URLs with just a single word, like 'http://localhost',
+	 *     where we won't double check that the domain name has at least one '.'
+	 *     in it.
+	 * 7.  Group that matches a 'www.' prefixed URL. This is only matched if the
+	 *     'www.' text was not prefixed by a scheme (i.e.: not prefixed by
+	 *     'http://', 'ftp:', etc.)
+	 * 8.  A protocol-relative ('//') match for the case of a 'www.' prefixed
+	 *     URL. Will be an empty string if it is not a protocol-relative match.
+	 *     We need to know the character before the '//' in order to determine
+	 *     if it is a valid match or the // was in a string we don't want to
+	 *     auto-link.
+	 * 9.  Group that matches a known TLD (top level domain), when a scheme
+	 *     or 'www.'-prefixed domain is not matched.
+	 * 10.  A protocol-relative ('//') match for the case of a known TLD prefixed
+	 *     URL. Will be an empty string if it is not a protocol-relative match.
+	 *     See #6 for more info.
+	 * 11. Group that is used to determine if there is a phone number match.
+	 * 12. If there is a phone number match, and a '+' sign was included with
+	 *     the phone number, this group will be populated with the '+' sign.
+	 * 13. Group that is used to determine if there is a Hashtag match
+	 *     (i.e. \#someHashtag). Simply check for its existence to determine if
+	 *     there is a Hashtag match. The next couple of capturing groups give
+	 *     information about the Hashtag match.
+	 * 14. The whitespace character before the #sign in a Hashtag handle. This
+	 *     is needed because there are no look-behinds in JS regular
+	 *     expressions, and can be used to reconstruct the original string in a
+	 *     replace().
+	 * 15. The Hashtag itself in a Hashtag match. If the match is
+	 *     '#someHashtag', the hashtag is 'someHashtag'.
+	 */
+	matcherRegex : (function() {
+		var twitterRegex = /(^|[^\w])@(\w{1,15})/,              // For matching a twitter handle. Ex: @gregory_jacobs
+
+		    hashtagRegex = /(^|[^\w])#(\w{1,139})/,              // For matching a Hashtag. Ex: #games
+
+		    emailRegex = /(?:[\-;:&=\+\$,\w\.]+@)/,             // something@ for email addresses (a.k.a. local-part)
+		    phoneRegex = /(?:(\+)?\d{1,3}[-\040.])?\(?\d{3}\)?[-\040.]?\d{3}[-\040.]\d{4}/,  // ex: (123) 456-7890, 123 456 7890, 123-456-7890, etc.
+		    protocolRegex = /(?:[A-Za-z][-.+A-Za-z0-9]*:(?![A-Za-z][-.+A-Za-z0-9]*:\/\/)(?!\d+\/?)(?:\/\/)?)/,  // match protocol, allow in format "http://" or "mailto:". However, do not match the first part of something like 'link:http://www.google.com' (i.e. don't match "link:"). Also, make sure we don't interpret 'google.com:8000' as if 'google.com' was a protocol here (i.e. ignore a trailing port number in this regex)
+		    wwwRegex = /(?:www\.)/,                             // starting with 'www.'
+		    domainNameRegex = /[A-Za-z0-9\.\-]*[A-Za-z0-9\-]/,  // anything looking at all like a domain, non-unicode domains, not ending in a period
+		    tldRegex = /\.(?:international|construction|contractors|enterprises|photography|productions|foundation|immobilien|industries|management|properties|technology|christmas|community|directory|education|equipment|institute|marketing|solutions|vacations|bargains|boutique|builders|catering|cleaning|clothing|computer|democrat|diamonds|graphics|holdings|lighting|partners|plumbing|supplies|training|ventures|academy|careers|company|cruises|domains|exposed|flights|florist|gallery|guitars|holiday|kitchen|neustar|okinawa|recipes|rentals|reviews|shiksha|singles|support|systems|agency|berlin|camera|center|coffee|condos|dating|estate|events|expert|futbol|kaufen|luxury|maison|monash|museum|nagoya|photos|repair|report|social|supply|tattoo|tienda|travel|viajes|villas|vision|voting|voyage|actor|build|cards|cheap|codes|dance|email|glass|house|mango|ninja|parts|photo|press|shoes|solar|today|tokyo|tools|watch|works|aero|arpa|asia|best|bike|blue|buzz|camp|club|cool|coop|farm|fish|gift|guru|info|jobs|kiwi|kred|land|limo|link|menu|mobi|moda|name|pics|pink|post|qpon|rich|ruhr|sexy|tips|vote|voto|wang|wien|wiki|zone|bar|bid|biz|cab|cat|ceo|com|edu|gov|int|kim|mil|net|onl|org|pro|pub|red|tel|uno|wed|xxx|xyz|ac|ad|ae|af|ag|ai|al|am|an|ao|aq|ar|as|at|au|aw|ax|az|ba|bb|bd|be|bf|bg|bh|bi|bj|bm|bn|bo|br|bs|bt|bv|bw|by|bz|ca|cc|cd|cf|cg|ch|ci|ck|cl|cm|cn|co|cr|cu|cv|cw|cx|cy|cz|de|dj|dk|dm|do|dz|ec|ee|eg|er|es|et|eu|fi|fj|fk|fm|fo|fr|ga|gb|gd|ge|gf|gg|gh|gi|gl|gm|gn|gp|gq|gr|gs|gt|gu|gw|gy|hk|hm|hn|hr|ht|hu|id|ie|il|im|in|io|iq|ir|is|it|je|jm|jo|jp|ke|kg|kh|ki|km|kn|kp|kr|kw|ky|kz|la|lb|lc|li|lk|lr|ls|lt|lu|lv|ly|ma|mc|md|me|mg|mh|mk|ml|mm|mn|mo|mp|mq|mr|ms|mt|mu|mv|mw|mx|my|mz|na|nc|ne|nf|ng|ni|nl|no|np|nr|nu|nz|om|pa|pe|pf|pg|ph|pk|pl|pm|pn|pr|ps|pt|pw|py|qa|re|ro|rs|ru|rw|sa|sb|sc|sd|se|sg|sh|si|sj|sk|sl|sm|sn|so|sr|st|su|sv|sx|sy|sz|tc|td|tf|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|za|zm|zw)\b/,   // match our known top level domains (TLDs)
+
+		    // Allow optional path, query string, and hash anchor, not ending in the following characters: "?!:,.;"
+		    // http://blog.codinghorror.com/the-problem-with-urls/
+		    urlSuffixRegex = /[\-A-Za-z0-9+&@#\/%=~_()|'$*\[\]?!:,.;]*[\-A-Za-z0-9+&@#\/%=~_()|'$*\[\]]/;
+
+		return new RegExp( [
+			'(',  // *** Capturing group $1, which can be used to check for a twitter handle match. Use group $3 for the actual twitter handle though. $2 may be used to reconstruct the original string in a replace()
+				// *** Capturing group $2, which matches the whitespace character before the '@' sign (needed because of no lookbehinds), and
+				// *** Capturing group $3, which matches the actual twitter handle
+				twitterRegex.source,
+			')',
+
+			'|',
+
+			'(',  // *** Capturing group $4, which is used to determine an email match
+				emailRegex.source,
+				domainNameRegex.source,
+				tldRegex.source,
+			')',
+
+			'|',
+
+			'(',  // *** Capturing group $5, which is used to match a URL
+				'(?:', // parens to cover match for protocol (optional), and domain
+					'(',  // *** Capturing group $6, for a scheme-prefixed url (ex: http://google.com)
+						protocolRegex.source,
+						domainNameRegex.source,
+					')',
+
+					'|',
+
+					'(',  // *** Capturing group $7, for a 'www.' prefixed url (ex: www.google.com)
+						'(.?//)?',  // *** Capturing group $8 for an optional protocol-relative URL. Must be at the beginning of the string or start with a non-word character
+						wwwRegex.source,
+						domainNameRegex.source,
+					')',
+
+					'|',
+
+					'(',  // *** Capturing group $9, for known a TLD url (ex: google.com)
+						'(.?//)?',  // *** Capturing group $10 for an optional protocol-relative URL. Must be at the beginning of the string or start with a non-word character
+						domainNameRegex.source,
+						tldRegex.source,
+					')',
+				')',
+
+				'(?:' + urlSuffixRegex.source + ')?',  // match for path, query string, and/or hash anchor - optional
+			')',
+
+			'|',
+
+			// this setup does not scale well for open extension :( Need to rethink design of autolinker...
+			// *** Capturing group $11, which matches a (USA for now) phone number, and
+			// *** Capturing group $12, which matches the '+' sign for international numbers, if it exists
+			'(',
+				phoneRegex.source,
+			')',
+
+			'|',
+
+			'(',  // *** Capturing group $13, which can be used to check for a Hashtag match. Use group $12 for the actual Hashtag though. $11 may be used to reconstruct the original string in a replace()
+				// *** Capturing group $14, which matches the whitespace character before the '#' sign (needed because of no lookbehinds), and
+				// *** Capturing group $15, which matches the actual Hashtag
+				hashtagRegex.source,
+			')'
+		].join( "" ), 'gi' );
+	} )(),
+
+	/**
+	 * @private
+	 * @property {RegExp} charBeforeProtocolRelMatchRegex
+	 *
+	 * The regular expression used to retrieve the character before a
+	 * protocol-relative URL match.
+	 *
+	 * This is used in conjunction with the {@link #matcherRegex}, which needs
+	 * to grab the character before a protocol-relative '//' due to the lack of
+	 * a negative look-behind in JavaScript regular expressions. The character
+	 * before the match is stripped from the URL.
+	 */
+	charBeforeProtocolRelMatchRegex : /^(.)?\/\//,
+
+	/**
+	 * @private
+	 * @property {Autolinker.MatchValidator} matchValidator
+	 *
+	 * The MatchValidator object, used to filter out any false positives from
+	 * the {@link #matcherRegex}. See {@link Autolinker.MatchValidator} for details.
+	 */
+
+
+	/**
+	 * @constructor
+	 * @param {Object} [cfg] The configuration options for the AnchorTagBuilder
+	 * instance, specified in an Object (map).
+	 */
+	constructor : function( cfg ) {
+		Autolinker.Util.assign( this, cfg );
+
+		this.matchValidator = new Autolinker.MatchValidator();
+	},
+
+
+	/**
+	 * Parses the input `text` to search for matches, and calls the `replaceFn`
+	 * to allow replacements of the matches. Returns the `text` with matches
+	 * replaced.
+	 *
+	 * @param {String} text The text to search and repace matches in.
+	 * @param {Function} replaceFn The iterator function to handle the
+	 *   replacements. The function takes a single argument, a {@link Autolinker.match.Match}
+	 *   object, and should return the text that should make the replacement.
+	 * @param {Object} [contextObj=window] The context object ("scope") to run
+	 *   the `replaceFn` in.
+	 * @return {String}
+	 */
+	replace : function( text, replaceFn, contextObj ) {
+		var me = this;  // for closure
+
+		return text.replace( this.matcherRegex, function( matchStr/*, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15*/ ) {
+			var matchDescObj = me.processCandidateMatch.apply( me, arguments );  // "match description" object
+
+			// Return out with no changes for match types that are disabled (url,
+			// email, phone, etc.), or for matches that are invalid (false
+			// positives from the matcherRegex, which can't use look-behinds
+			// since they are unavailable in JS).
+			if( !matchDescObj ) {
+				return matchStr;
+
+			} else {
+				// Generate replacement text for the match from the `replaceFn`
+				var replaceStr = replaceFn.call( contextObj, matchDescObj.match );
+				return matchDescObj.prefixStr + replaceStr + matchDescObj.suffixStr;
+			}
+		} );
+	},
+
+
+	/**
+	 * Processes a candidate match from the {@link #matcherRegex}.
+	 *
+	 * Not all matches found by the regex are actual URL/Email/Phone/Twitter/Hashtag
+	 * matches, as determined by the {@link #matchValidator}. In this case, the
+	 * method returns `null`. Otherwise, a valid Object with `prefixStr`,
+	 * `match`, and `suffixStr` is returned.
+	 *
+	 * @private
+	 * @param {String} matchStr The full match that was found by the
+	 *   {@link #matcherRegex}.
+	 * @param {String} twitterMatch The matched text of a Twitter handle, if the
+	 *   match is a Twitter match.
+	 * @param {String} twitterHandlePrefixWhitespaceChar The whitespace char
+	 *   before the @ sign in a Twitter handle match. This is needed because of
+	 *   no lookbehinds in JS regexes, and is need to re-include the character
+	 *   for the anchor tag replacement.
+	 * @param {String} twitterHandle The actual Twitter user (i.e the word after
+	 *   the @ sign in a Twitter match).
+	 * @param {String} emailAddressMatch The matched email address for an email
+	 *   address match.
+	 * @param {String} urlMatch The matched URL string for a URL match.
+	 * @param {String} schemeUrlMatch The match URL string for a protocol
+	 *   match. Ex: 'http://yahoo.com'. This is used to match something like
+	 *   'http://localhost', where we won't double check that the domain name
+	 *   has at least one '.' in it.
+	 * @param {String} wwwMatch The matched string of a 'www.'-prefixed URL that
+	 *   was matched. This is only matched if the 'www.' text was not prefixed
+	 *   by a scheme (i.e.: not prefixed by 'http://', 'ftp:', etc.).
+	 * @param {String} wwwProtocolRelativeMatch The '//' for a protocol-relative
+	 *   match from a 'www' url, with the character that comes before the '//'.
+	 * @param {String} tldMatch The matched string of a known TLD (top level
+	 *   domain), when a scheme or 'www.'-prefixed domain is not matched.
+	 * @param {String} tldProtocolRelativeMatch The '//' for a protocol-relative
+	 *   match from a TLD (top level domain) match, with the character that
+	 *   comes before the '//'.
+	 * @param {String} phoneMatch The matched text of a phone number
+	 * @param {String} phonePlusSignMatch The '+' sign in the phone number, if
+	 *   it was there.
+	 * @param {String} hashtagMatch The matched text of a Twitter
+	 *   Hashtag, if the match is a Hashtag match.
+	 * @param {String} hashtagPrefixWhitespaceChar The whitespace char
+	 *   before the # sign in a Hashtag match. This is needed because of no
+	 *   lookbehinds in JS regexes, and is need to re-include the character for
+	 *   the anchor tag replacement.
+	 * @param {String} hashtag The actual Hashtag (i.e the word
+	 *   after the # sign in a Hashtag match).
+	 *
+	 * @return {Object} A "match description object". This will be `null` if the
+	 *   match was invalid, or if a match type is disabled. Otherwise, this will
+	 *   be an Object (map) with the following properties:
+	 * @return {String} return.prefixStr The char(s) that should be prepended to
+	 *   the replacement string. These are char(s) that were needed to be
+	 *   included from the regex match that were ignored by processing code, and
+	 *   should be re-inserted into the replacement stream.
+	 * @return {String} return.suffixStr The char(s) that should be appended to
+	 *   the replacement string. These are char(s) that were needed to be
+	 *   included from the regex match that were ignored by processing code, and
+	 *   should be re-inserted into the replacement stream.
+	 * @return {Autolinker.match.Match} return.match The Match object that
+	 *   represents the match that was found.
+	 */
+	processCandidateMatch : function(
+		matchStr, twitterMatch, twitterHandlePrefixWhitespaceChar, twitterHandle,
+		emailAddressMatch, urlMatch, schemeUrlMatch, wwwMatch, wwwProtocolRelativeMatch,
+		tldMatch, tldProtocolRelativeMatch, phoneMatch, phonePlusSignMatch, hashtagMatch,
+		hashtagPrefixWhitespaceChar, hashtag
+	) {
+		// Note: The `matchStr` variable wil be fixed up to remove characters that are no longer needed (which will
+		// be added to `prefixStr` and `suffixStr`).
+
+		var protocolRelativeMatch = wwwProtocolRelativeMatch || tldProtocolRelativeMatch,
+		    match,  // Will be an Autolinker.match.Match object
+
+		    prefixStr = "",  // A string to use to prefix the anchor tag that is created. This is needed for the Twitter and Hashtag matches.
+		    suffixStr = "",  // A string to suffix the anchor tag that is created. This is used if there is a trailing parenthesis that should not be auto-linked.
+
+		    urls = this.urls;  // the 'urls' config
+
+		// Return out with `null` for match types that are disabled (url, email,
+		// twitter, hashtag), or for matches that are invalid (false positives
+		// from the matcherRegex, which can't use look-behinds since they are
+		// unavailable in JS).
+		if(
+			( schemeUrlMatch && !urls.schemeMatches ) ||
+			( wwwMatch && !urls.wwwMatches ) ||
+			( tldMatch && !urls.tldMatches ) ||
+			( emailAddressMatch && !this.email ) ||
+			( phoneMatch && !this.phone ) ||
+			( twitterMatch && !this.twitter ) ||
+			( hashtagMatch && !this.hashtag ) ||
+			!this.matchValidator.isValidMatch( urlMatch, schemeUrlMatch, protocolRelativeMatch )
+		) {
+			return null;
+		}
+
+		// Handle a closing parenthesis at the end of the match, and exclude it
+		// if there is not a matching open parenthesis
+		// in the match itself.
+		if( this.matchHasUnbalancedClosingParen( matchStr ) ) {
+			matchStr = matchStr.substr( 0, matchStr.length - 1 );  // remove the trailing ")"
+			suffixStr = ")";  // this will be added after the generated <a> tag
+		} else {
+			// Handle an invalid character after the TLD
+			var pos = this.matchHasInvalidCharAfterTld( urlMatch, schemeUrlMatch );
+			if( pos > -1 ) {
+				suffixStr = matchStr.substr(pos);  // this will be added after the generated <a> tag
+				matchStr = matchStr.substr( 0, pos ); // remove the trailing invalid chars
+			}
+		}
+
+		if( emailAddressMatch ) {
+			match = new Autolinker.match.Email( { matchedText: matchStr, email: emailAddressMatch } );
+
+		} else if( twitterMatch ) {
+			// fix up the `matchStr` if there was a preceding whitespace char,
+			// which was needed to determine the match itself (since there are
+			// no look-behinds in JS regexes)
+			if( twitterHandlePrefixWhitespaceChar ) {
+				prefixStr = twitterHandlePrefixWhitespaceChar;
+				matchStr = matchStr.slice( 1 );  // remove the prefixed whitespace char from the match
+			}
+			match = new Autolinker.match.Twitter( { matchedText: matchStr, twitterHandle: twitterHandle } );
+
+		} else if( phoneMatch ) {
+			// remove non-numeric values from phone number string
+			var cleanNumber = matchStr.replace( /\D/g, '' );
+ 			match = new Autolinker.match.Phone( { matchedText: matchStr, number: cleanNumber, plusSign: !!phonePlusSignMatch } );
+
+		} else if( hashtagMatch ) {
+			// fix up the `matchStr` if there was a preceding whitespace char,
+			// which was needed to determine the match itself (since there are
+			// no look-behinds in JS regexes)
+			if( hashtagPrefixWhitespaceChar ) {
+				prefixStr = hashtagPrefixWhitespaceChar;
+				matchStr = matchStr.slice( 1 );  // remove the prefixed whitespace char from the match
+			}
+			match = new Autolinker.match.Hashtag( { matchedText: matchStr, serviceName: this.hashtag, hashtag: hashtag } );
+
+		} else {  // url match
+			// If it's a protocol-relative '//' match, remove the character
+			// before the '//' (which the matcherRegex needed to match due to
+			// the lack of a negative look-behind in JavaScript regular
+			// expressions)
+			if( protocolRelativeMatch ) {
+				var charBeforeMatch = protocolRelativeMatch.match( this.charBeforeProtocolRelMatchRegex )[ 1 ] || "";
+
+				if( charBeforeMatch ) {  // fix up the `matchStr` if there was a preceding char before a protocol-relative match, which was needed to determine the match itself (since there are no look-behinds in JS regexes)
+					prefixStr = charBeforeMatch;
+					matchStr = matchStr.slice( 1 );  // remove the prefixed char from the match
+				}
+			}
+
+			match = new Autolinker.match.Url( {
+				matchedText : matchStr,
+				url : matchStr,
+				protocolUrlMatch : !!schemeUrlMatch,
+				protocolRelativeMatch : !!protocolRelativeMatch,
+				stripPrefix : this.stripPrefix
+			} );
+		}
+
+		return {
+			prefixStr : prefixStr,
+			suffixStr : suffixStr,
+			match     : match
+		};
+	},
+
+
+	/**
+	 * Determines if a match found has an unmatched closing parenthesis. If so,
+	 * this parenthesis will be removed from the match itself, and appended
+	 * after the generated anchor tag in {@link #processCandidateMatch}.
+	 *
+	 * A match may have an extra closing parenthesis at the end of the match
+	 * because the regular expression must include parenthesis for URLs such as
+	 * "wikipedia.com/something_(disambiguation)", which should be auto-linked.
+	 *
+	 * However, an extra parenthesis *will* be included when the URL itself is
+	 * wrapped in parenthesis, such as in the case of "(wikipedia.com/something_(disambiguation))".
+	 * In this case, the last closing parenthesis should *not* be part of the
+	 * URL itself, and this method will return `true`.
+	 *
+	 * @private
+	 * @param {String} matchStr The full match string from the {@link #matcherRegex}.
+	 * @return {Boolean} `true` if there is an unbalanced closing parenthesis at
+	 *   the end of the `matchStr`, `false` otherwise.
+	 */
+	matchHasUnbalancedClosingParen : function( matchStr ) {
+		var lastChar = matchStr.charAt( matchStr.length - 1 );
+
+		if( lastChar === ')' ) {
+			var openParensMatch = matchStr.match( /\(/g ),
+			    closeParensMatch = matchStr.match( /\)/g ),
+			    numOpenParens = ( openParensMatch && openParensMatch.length ) || 0,
+			    numCloseParens = ( closeParensMatch && closeParensMatch.length ) || 0;
+
+			if( numOpenParens < numCloseParens ) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+
+
+	/**
+	 * Determine if there's an invalid character after the TLD in a URL. Valid
+	 * characters after TLD are ':/?#'. Exclude protocol matched URLs from this
+	 * check.
+	 *
+	 * @private
+	 * @param {String} urlMatch The matched URL, if there was one. Will be an
+	 *   empty string if the match is not a URL match.
+	 * @param {String} protocolUrlMatch The match URL string for a protocol
+	 *   match. Ex: 'http://yahoo.com'. This is used to match something like
+	 *   'http://localhost', where we won't double check that the domain name
+	 *   has at least one '.' in it.
+	 * @return {Number} the position where the invalid character was found. If
+	 *   no such character was found, returns -1
+	 */
+	matchHasInvalidCharAfterTld : function( urlMatch, protocolUrlMatch ) {
+		if ( !urlMatch ) {
+			return -1;
+		}
+
+		var offset = 0;
+		if ( protocolUrlMatch ) {
+			offset = urlMatch.indexOf(':');
+			urlMatch = urlMatch.slice(offset);
+		}
+
+		var re = /^((.?\/\/)?[A-Za-z0-9\.\-]*[A-Za-z0-9\-]\.[A-Za-z]+)/;
+		var res = re.exec( urlMatch );
+		if ( res === null ) {
+			return -1;
+		}
+
+		offset += res[1].length;
+		urlMatch = urlMatch.slice(res[1].length);
+		if (/^[^.A-Za-z:\/?#]/.test(urlMatch)) {
+			return offset;
+		}
+
+		return -1;
+	}
+
+} );
+
+/*global Autolinker */
+/*jshint scripturl:true */
+/**
+ * @private
+ * @class Autolinker.MatchValidator
+ * @extends Object
+ *
+ * Used by Autolinker to filter out false positives from the
+ * {@link Autolinker.matchParser.MatchParser#matcherRegex}.
+ *
+ * Due to the limitations of regular expressions (including the missing feature
+ * of look-behinds in JS regular expressions), we cannot always determine the
+ * validity of a given match. This class applies a bit of additional logic to
+ * filter out any false positives that have been matched by the
+ * {@link Autolinker.matchParser.MatchParser#matcherRegex}.
+ */
+Autolinker.MatchValidator = Autolinker.Util.extend( Object, {
+
+	/**
+	 * @private
+	 * @property {RegExp} invalidProtocolRelMatchRegex
+	 *
+	 * The regular expression used to check a potential protocol-relative URL
+	 * match, coming from the {@link Autolinker.matchParser.MatchParser#matcherRegex}.
+	 * A protocol-relative URL is, for example, "//yahoo.com"
+	 *
+	 * This regular expression checks to see if there is a word character before
+	 * the '//' match in order to determine if we should actually autolink a
+	 * protocol-relative URL. This is needed because there is no negative
+	 * look-behind in JavaScript regular expressions.
+	 *
+	 * For instance, we want to autolink something like "Go to: //google.com",
+	 * but we don't want to autolink something like "abc//google.com"
+	 */
+	invalidProtocolRelMatchRegex : /^[\w]\/\//,
+
+	/**
+	 * Regex to test for a full protocol, with the two trailing slashes. Ex: 'http://'
+	 *
+	 * @private
+	 * @property {RegExp} hasFullProtocolRegex
+	 */
+	hasFullProtocolRegex : /^[A-Za-z][-.+A-Za-z0-9]*:\/\//,
+
+	/**
+	 * Regex to find the URI scheme, such as 'mailto:'.
+	 *
+	 * This is used to filter out 'javascript:' and 'vbscript:' schemes.
+	 *
+	 * @private
+	 * @property {RegExp} uriSchemeRegex
+	 */
+	uriSchemeRegex : /^[A-Za-z][-.+A-Za-z0-9]*:/,
+
+	/**
+	 * Regex to determine if at least one word char exists after the protocol (i.e. after the ':')
+	 *
+	 * @private
+	 * @property {RegExp} hasWordCharAfterProtocolRegex
+	 */
+	hasWordCharAfterProtocolRegex : /:[^\s]*?[A-Za-z]/,
+
+
+	/**
+	 * Determines if a given match found by the {@link Autolinker.matchParser.MatchParser}
+	 * is valid. Will return `false` for:
+	 *
+	 * 1) URL matches which do not have at least have one period ('.') in the
+	 *    domain name (effectively skipping over matches like "abc:def").
+	 *    However, URL matches with a protocol will be allowed (ex: 'http://localhost')
+	 * 2) URL matches which do not have at least one word character in the
+	 *    domain name (effectively skipping over matches like "git:1.0").
+	 * 3) A protocol-relative url match (a URL beginning with '//') whose
+	 *    previous character is a word character (effectively skipping over
+	 *    strings like "abc//google.com")
+	 *
+	 * Otherwise, returns `true`.
+	 *
+	 * @param {String} urlMatch The matched URL, if there was one. Will be an
+	 *   empty string if the match is not a URL match.
+	 * @param {String} protocolUrlMatch The match URL string for a protocol
+	 *   match. Ex: 'http://yahoo.com'. This is used to match something like
+	 *   'http://localhost', where we won't double check that the domain name
+	 *   has at least one '.' in it.
+	 * @param {String} protocolRelativeMatch The protocol-relative string for a
+	 *   URL match (i.e. '//'), possibly with a preceding character (ex, a
+	 *   space, such as: ' //', or a letter, such as: 'a//'). The match is
+	 *   invalid if there is a word character preceding the '//'.
+	 * @return {Boolean} `true` if the match given is valid and should be
+	 *   processed, or `false` if the match is invalid and/or should just not be
+	 *   processed.
+	 */
+	isValidMatch : function( urlMatch, protocolUrlMatch, protocolRelativeMatch ) {
+		if(
+			( protocolUrlMatch && !this.isValidUriScheme( protocolUrlMatch ) ) ||
+			this.urlMatchDoesNotHaveProtocolOrDot( urlMatch, protocolUrlMatch ) ||       // At least one period ('.') must exist in the URL match for us to consider it an actual URL, *unless* it was a full protocol match (like 'http://localhost')
+			this.urlMatchDoesNotHaveAtLeastOneWordChar( urlMatch, protocolUrlMatch ) ||  // At least one letter character must exist in the domain name after a protocol match. Ex: skip over something like "git:1.0"
+			this.isInvalidProtocolRelativeMatch( protocolRelativeMatch )                 // A protocol-relative match which has a word character in front of it (so we can skip something like "abc//google.com")
+		) {
+			return false;
+		}
+
+		return true;
+	},
+
+
+	/**
+	 * Determines if the URI scheme is a valid scheme to be autolinked. Returns
+	 * `false` if the scheme is 'javascript:' or 'vbscript:'
+	 *
+	 * @private
+	 * @param {String} uriSchemeMatch The match URL string for a full URI scheme
+	 *   match. Ex: 'http://yahoo.com' or 'mailto:a@a.com'.
+	 * @return {Boolean} `true` if the scheme is a valid one, `false` otherwise.
+	 */
+	isValidUriScheme : function( uriSchemeMatch ) {
+		var uriScheme = uriSchemeMatch.match( this.uriSchemeRegex )[ 0 ].toLowerCase();
+
+		return ( uriScheme !== 'javascript:' && uriScheme !== 'vbscript:' );
+	},
+
+
+	/**
+	 * Determines if a URL match does not have either:
+	 *
+	 * a) a full protocol (i.e. 'http://'), or
+	 * b) at least one dot ('.') in the domain name (for a non-full-protocol
+	 *    match).
+	 *
+	 * Either situation is considered an invalid URL (ex: 'git:d' does not have
+	 * either the '://' part, or at least one dot in the domain name. If the
+	 * match was 'git:abc.com', we would consider this valid.)
+	 *
+	 * @private
+	 * @param {String} urlMatch The matched URL, if there was one. Will be an
+	 *   empty string if the match is not a URL match.
+	 * @param {String} protocolUrlMatch The match URL string for a protocol
+	 *   match. Ex: 'http://yahoo.com'. This is used to match something like
+	 *   'http://localhost', where we won't double check that the domain name
+	 *   has at least one '.' in it.
+	 * @return {Boolean} `true` if the URL match does not have a full protocol,
+	 *   or at least one dot ('.') in a non-full-protocol match.
+	 */
+	urlMatchDoesNotHaveProtocolOrDot : function( urlMatch, protocolUrlMatch ) {
+		return ( !!urlMatch && ( !protocolUrlMatch || !this.hasFullProtocolRegex.test( protocolUrlMatch ) ) && urlMatch.indexOf( '.' ) === -1 );
+	},
+
+
+	/**
+	 * Determines if a URL match does not have at least one word character after
+	 * the protocol (i.e. in the domain name).
+	 *
+	 * At least one letter character must exist in the domain name after a
+	 * protocol match. Ex: skip over something like "git:1.0"
+	 *
+	 * @private
+	 * @param {String} urlMatch The matched URL, if there was one. Will be an
+	 *   empty string if the match is not a URL match.
+	 * @param {String} protocolUrlMatch The match URL string for a protocol
+	 *   match. Ex: 'http://yahoo.com'. This is used to know whether or not we
+	 *   have a protocol in the URL string, in order to check for a word
+	 *   character after the protocol separator (':').
+	 * @return {Boolean} `true` if the URL match does not have at least one word
+	 *   character in it after the protocol, `false` otherwise.
+	 */
+	urlMatchDoesNotHaveAtLeastOneWordChar : function( urlMatch, protocolUrlMatch ) {
+		if( urlMatch && protocolUrlMatch ) {
+			return !this.hasWordCharAfterProtocolRegex.test( urlMatch );
+		} else {
+			return false;
+		}
+	},
+
+
+	/**
+	 * Determines if a protocol-relative match is an invalid one. This method
+	 * returns `true` if there is a `protocolRelativeMatch`, and that match
+	 * contains a word character before the '//' (i.e. it must contain
+	 * whitespace or nothing before the '//' in order to be considered valid).
+	 *
+	 * @private
+	 * @param {String} protocolRelativeMatch The protocol-relative string for a
+	 *   URL match (i.e. '//'), possibly with a preceding character (ex, a
+	 *   space, such as: ' //', or a letter, such as: 'a//'). The match is
+	 *   invalid if there is a word character preceding the '//'.
+	 * @return {Boolean} `true` if it is an invalid protocol-relative match,
+	 *   `false` otherwise.
+	 */
+	isInvalidProtocolRelativeMatch : function( protocolRelativeMatch ) {
+		return ( !!protocolRelativeMatch && this.invalidProtocolRelMatchRegex.test( protocolRelativeMatch ) );
+	}
+
+} );
+
+/*global Autolinker */
+/**
+ * @abstract
+ * @class Autolinker.match.Match
+ * 
+ * Represents a match found in an input string which should be Autolinked. A Match object is what is provided in a 
+ * {@link Autolinker#replaceFn replaceFn}, and may be used to query for details about the match.
+ * 
+ * For example:
+ * 
+ *     var input = "...";  // string with URLs, Email Addresses, and Twitter Handles
+ *     
+ *     var linkedText = Autolinker.link( input, {
+ *         replaceFn : function( autolinker, match ) {
+ *             console.log( "href = ", match.getAnchorHref() );
+ *             console.log( "text = ", match.getAnchorText() );
+ *         
+ *             switch( match.getType() ) {
+ *                 case 'url' : 
+ *                     console.log( "url: ", match.getUrl() );
+ *                     
+ *                 case 'email' :
+ *                     console.log( "email: ", match.getEmail() );
+ *                     
+ *                 case 'twitter' :
+ *                     console.log( "twitter: ", match.getTwitterHandle() );
+ *             }
+ *         }
+ *     } );
+ *     
+ * See the {@link Autolinker} class for more details on using the {@link Autolinker#replaceFn replaceFn}.
+ */
+Autolinker.match.Match = Autolinker.Util.extend( Object, {
+	
+	/**
+	 * @cfg {String} matchedText (required)
+	 * 
+	 * The original text that was matched.
+	 */
+	
+	
+	/**
+	 * @constructor
+	 * @param {Object} cfg The configuration properties for the Match instance, specified in an Object (map).
+	 */
+	constructor : function( cfg ) {
+		Autolinker.Util.assign( this, cfg );
+	},
+
+	
+	/**
+	 * Returns a string name for the type of match that this class represents.
+	 * 
+	 * @abstract
+	 * @return {String}
+	 */
+	getType : Autolinker.Util.abstractMethod,
+	
+	
+	/**
+	 * Returns the original text that was matched.
+	 * 
+	 * @return {String}
+	 */
+	getMatchedText : function() {
+		return this.matchedText;
+	},
+	
+
+	/**
+	 * Returns the anchor href that should be generated for the match.
+	 * 
+	 * @abstract
+	 * @return {String}
+	 */
+	getAnchorHref : Autolinker.Util.abstractMethod,
+	
+	
+	/**
+	 * Returns the anchor text that should be generated for the match.
+	 * 
+	 * @abstract
+	 * @return {String}
+	 */
+	getAnchorText : Autolinker.Util.abstractMethod
+
+} );
+/*global Autolinker */
+/**
+ * @class Autolinker.match.Email
+ * @extends Autolinker.match.Match
+ * 
+ * Represents a Email match found in an input string which should be Autolinked.
+ * 
+ * See this class's superclass ({@link Autolinker.match.Match}) for more details.
+ */
+Autolinker.match.Email = Autolinker.Util.extend( Autolinker.match.Match, {
+	
+	/**
+	 * @cfg {String} email (required)
+	 * 
+	 * The email address that was matched.
+	 */
+	
+
+	/**
+	 * Returns a string name for the type of match that this class represents.
+	 * 
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'email';
+	},
+	
+	
+	/**
+	 * Returns the email address that was matched.
+	 * 
+	 * @return {String}
+	 */
+	getEmail : function() {
+		return this.email;
+	},
+	
+
+	/**
+	 * Returns the anchor href that should be generated for the match.
+	 * 
+	 * @return {String}
+	 */
+	getAnchorHref : function() {
+		return 'mailto:' + this.email;
+	},
+	
+	
+	/**
+	 * Returns the anchor text that should be generated for the match.
+	 * 
+	 * @return {String}
+	 */
+	getAnchorText : function() {
+		return this.email;
+	}
+	
+} );
+/*global Autolinker */
+/**
+ * @class Autolinker.match.Hashtag
+ * @extends Autolinker.match.Match
+ *
+ * Represents a Hashtag match found in an input string which should be
+ * Autolinked.
+ *
+ * See this class's superclass ({@link Autolinker.match.Match}) for more
+ * details.
+ */
+Autolinker.match.Hashtag = Autolinker.Util.extend( Autolinker.match.Match, {
+
+	/**
+	 * @cfg {String} serviceName (required)
+	 *
+	 * The service to point hashtag matches to. See {@link Autolinker#hashtag}
+	 * for available values.
+	 */
+
+	/**
+	 * @cfg {String} hashtag (required)
+	 *
+	 * The Hashtag that was matched, without the '#'.
+	 */
+
+
+	/**
+	 * Returns the type of match that this class represents.
+	 *
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'hashtag';
+	},
+
+
+	/**
+	 * Returns the matched hashtag.
+	 *
+	 * @return {String}
+	 */
+	getHashtag : function() {
+		return this.hashtag;
+	},
+
+
+	/**
+	 * Returns the anchor href that should be generated for the match.
+	 *
+	 * @return {String}
+	 */
+	getAnchorHref : function() {
+		var serviceName = this.serviceName,
+		    hashtag = this.hashtag;
+
+		switch( serviceName ) {
+			case 'twitter' :
+				return 'https://twitter.com/hashtag/' + hashtag;
+			case 'facebook' :
+				return 'https://www.facebook.com/hashtag/' + hashtag;
+			case 'instagram' :
+				return 'https://instagram.com/explore/tags/' + hashtag;
+
+			default :  // Shouldn't happen because Autolinker's constructor should block any invalid values, but just in case.
+				throw new Error( 'Unknown service name to point hashtag to: ', serviceName );
+		}
+	},
+
+
+	/**
+	 * Returns the anchor text that should be generated for the match.
+	 *
+	 * @return {String}
+	 */
+	getAnchorText : function() {
+		return '#' + this.hashtag;
+	}
+
+} );
+
+/*global Autolinker */
+/**
+ * @class Autolinker.match.Phone
+ * @extends Autolinker.match.Match
+ *
+ * Represents a Phone number match found in an input string which should be
+ * Autolinked.
+ *
+ * See this class's superclass ({@link Autolinker.match.Match}) for more
+ * details.
+ */
+Autolinker.match.Phone = Autolinker.Util.extend( Autolinker.match.Match, {
+
+	/**
+	 * @cfg {String} number (required)
+	 *
+	 * The phone number that was matched.
+	 */
+
+	/**
+	 * @cfg {Boolean} plusSign (required)
+	 *
+	 * `true` if the matched phone number started with a '+' sign. We'll include
+	 * it in the `tel:` URL if so, as this is needed for international numbers.
+	 *
+	 * Ex: '+1 (123) 456 7879'
+	 */
+
+
+	/**
+	 * Returns a string name for the type of match that this class represents.
+	 *
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'phone';
+	},
+
+
+	/**
+	 * Returns the phone number that was matched.
+	 *
+	 * @return {String}
+	 */
+	getNumber: function() {
+		return this.number;
+	},
+
+
+	/**
+	 * Returns the anchor href that should be generated for the match.
+	 *
+	 * @return {String}
+	 */
+	getAnchorHref : function() {
+		return 'tel:' + ( this.plusSign ? '+' : '' ) + this.number;
+	},
+
+
+	/**
+	 * Returns the anchor text that should be generated for the match.
+	 *
+	 * @return {String}
+	 */
+	getAnchorText : function() {
+		return this.matchedText;
+	}
+
+} );
+
+/*global Autolinker */
+/**
+ * @class Autolinker.match.Twitter
+ * @extends Autolinker.match.Match
+ * 
+ * Represents a Twitter match found in an input string which should be Autolinked.
+ * 
+ * See this class's superclass ({@link Autolinker.match.Match}) for more details.
+ */
+Autolinker.match.Twitter = Autolinker.Util.extend( Autolinker.match.Match, {
+	
+	/**
+	 * @cfg {String} twitterHandle (required)
+	 * 
+	 * The Twitter handle that was matched.
+	 */
+	
+
+	/**
+	 * Returns the type of match that this class represents.
+	 * 
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'twitter';
+	},
+	
+	
+	/**
+	 * Returns a string name for the type of match that this class represents.
+	 * 
+	 * @return {String}
+	 */
+	getTwitterHandle : function() {
+		return this.twitterHandle;
+	},
+	
+
+	/**
+	 * Returns the anchor href that should be generated for the match.
+	 * 
+	 * @return {String}
+	 */
+	getAnchorHref : function() {
+		return 'https://twitter.com/' + this.twitterHandle;
+	},
+	
+	
+	/**
+	 * Returns the anchor text that should be generated for the match.
+	 * 
+	 * @return {String}
+	 */
+	getAnchorText : function() {
+		return '@' + this.twitterHandle;
+	}
+	
+} );
+/*global Autolinker */
+/**
+ * @class Autolinker.match.Url
+ * @extends Autolinker.match.Match
+ *
+ * Represents a Url match found in an input string which should be Autolinked.
+ *
+ * See this class's superclass ({@link Autolinker.match.Match}) for more details.
+ */
+Autolinker.match.Url = Autolinker.Util.extend( Autolinker.match.Match, {
+
+	/**
+	 * @cfg {String} url (required)
+	 *
+	 * The url that was matched.
+	 */
+
+	/**
+	 * @cfg {Boolean} protocolUrlMatch (required)
+	 *
+	 * `true` if the URL is a match which already has a protocol (i.e. 'http://'), `false` if the match was from a 'www' or
+	 * known TLD match.
+	 */
+
+	/**
+	 * @cfg {Boolean} protocolRelativeMatch (required)
+	 *
+	 * `true` if the URL is a protocol-relative match. A protocol-relative match is a URL that starts with '//',
+	 * and will be either http:// or https:// based on the protocol that the site is loaded under.
+	 */
+
+	/**
+	 * @cfg {Boolean} stripPrefix (required)
+	 * @inheritdoc Autolinker#stripPrefix
+	 */
+
+
+	/**
+	 * @private
+	 * @property {RegExp} urlPrefixRegex
+	 *
+	 * A regular expression used to remove the 'http://' or 'https://' and/or the 'www.' from URLs.
+	 */
+	urlPrefixRegex: /^(https?:\/\/)?(www\.)?/i,
+
+	/**
+	 * @private
+	 * @property {RegExp} protocolRelativeRegex
+	 *
+	 * The regular expression used to remove the protocol-relative '//' from the {@link #url} string, for purposes
+	 * of {@link #getAnchorText}. A protocol-relative URL is, for example, "//yahoo.com"
+	 */
+	protocolRelativeRegex : /^\/\//,
+
+	/**
+	 * @private
+	 * @property {Boolean} protocolPrepended
+	 *
+	 * Will be set to `true` if the 'http://' protocol has been prepended to the {@link #url} (because the
+	 * {@link #url} did not have a protocol)
+	 */
+	protocolPrepended : false,
+
+
+	/**
+	 * Returns a string name for the type of match that this class represents.
+	 *
+	 * @return {String}
+	 */
+	getType : function() {
+		return 'url';
+	},
+
+
+	/**
+	 * Returns the url that was matched, assuming the protocol to be 'http://' if the original
+	 * match was missing a protocol.
+	 *
+	 * @return {String}
+	 */
+	getUrl : function() {
+		var url = this.url;
+
+		// if the url string doesn't begin with a protocol, assume 'http://'
+		if( !this.protocolRelativeMatch && !this.protocolUrlMatch && !this.protocolPrepended ) {
+			url = this.url = 'http://' + url;
+
+			this.protocolPrepended = true;
+		}
+
+		return url;
+	},
+
+
+	/**
+	 * Returns the anchor href that should be generated for the match.
+	 *
+	 * @return {String}
+	 */
+	getAnchorHref : function() {
+		var url = this.getUrl();
+
+		return url.replace( /&amp;/g, '&' );  // any &amp;'s in the URL should be converted back to '&' if they were displayed as &amp; in the source html
+	},
+
+
+	/**
+	 * Returns the anchor text that should be generated for the match.
+	 *
+	 * @return {String}
+	 */
+	getAnchorText : function() {
+		var anchorText = this.getMatchedText();
+
+		if( this.protocolRelativeMatch ) {
+			// Strip off any protocol-relative '//' from the anchor text
+			anchorText = this.stripProtocolRelativePrefix( anchorText );
+		}
+		if( this.stripPrefix ) {
+			anchorText = this.stripUrlPrefix( anchorText );
+		}
+		anchorText = this.removeTrailingSlash( anchorText );  // remove trailing slash, if there is one
+
+		return anchorText;
+	},
+
+
+	// ---------------------------------------
+
+	// Utility Functionality
+
+	/**
+	 * Strips the URL prefix (such as "http://" or "https://") from the given text.
+	 *
+	 * @private
+	 * @param {String} text The text of the anchor that is being generated, for which to strip off the
+	 *   url prefix (such as stripping off "http://")
+	 * @return {String} The `anchorText`, with the prefix stripped.
+	 */
+	stripUrlPrefix : function( text ) {
+		return text.replace( this.urlPrefixRegex, '' );
+	},
+
+
+	/**
+	 * Strips any protocol-relative '//' from the anchor text.
+	 *
+	 * @private
+	 * @param {String} text The text of the anchor that is being generated, for which to strip off the
+	 *   protocol-relative prefix (such as stripping off "//")
+	 * @return {String} The `anchorText`, with the protocol-relative prefix stripped.
+	 */
+	stripProtocolRelativePrefix : function( text ) {
+		return text.replace( this.protocolRelativeRegex, '' );
+	},
+
+
+	/**
+	 * Removes any trailing slash from the given `anchorText`, in preparation for the text to be displayed.
+	 *
+	 * @private
+	 * @param {String} anchorText The text of the anchor that is being generated, for which to remove any trailing
+	 *   slash ('/') that may exist.
+	 * @return {String} The `anchorText`, with the trailing slash removed.
+	 */
+	removeTrailingSlash : function( anchorText ) {
+		if( anchorText.charAt( anchorText.length - 1 ) === '/' ) {
+			anchorText = anchorText.slice( 0, -1 );
+		}
+		return anchorText;
+	}
+
+} );
+/*global Autolinker */
+/**
+ * A truncation feature where the ellipsis will be placed at the end of the URL.
+ *
+ * @param {String} anchorText
+ * @param {Number} truncateLen The maximum length of the truncated output URL string.
+ * @param {String} ellipsisChars The characters to place within the url, e.g. "..".
+ * @return {String} The truncated URL.
+ */
+Autolinker.truncate.TruncateEnd = function(anchorText, truncateLen, ellipsisChars){
+	return Autolinker.Util.ellipsis( anchorText, truncateLen, ellipsisChars );
+};
+
+/*global Autolinker */
+/**
+ * Date: 2015-10-05
+ * Author: Kasper Søfren <soefritz@gmail.com> (https://github.com/kafoso)
+ *
+ * A truncation feature, where the ellipsis will be placed in the dead-center of the URL.
+ *
+ * @param {String} url             A URL.
+ * @param {Number} truncateLen     The maximum length of the truncated output URL string.
+ * @param {String} ellipsisChars   The characters to place within the url, e.g. "..".
+ * @return {String} The truncated URL.
+ */
+Autolinker.truncate.TruncateMiddle = function(url, truncateLen, ellipsisChars){
+  if (url.length <= truncateLen) {
+    return url;
+  }
+  var availableLength = truncateLen - ellipsisChars.length;
+  var end = "";
+  if (availableLength > 0) {
+    end = url.substr((-1)*Math.floor(availableLength/2));
+  }
+  return (url.substr(0, Math.ceil(availableLength/2)) + ellipsisChars + end).substr(0, truncateLen);
+};
+
+/*global Autolinker */
+/**
+ * Date: 2015-10-05
+ * Author: Kasper Søfren <soefritz@gmail.com> (https://github.com/kafoso)
+ *
+ * A truncation feature, where the ellipsis will be placed at a section within
+ * the URL making it still somewhat human readable.
+ *
+ * @param {String} url						 A URL.
+ * @param {Number} truncateLen		 The maximum length of the truncated output URL string.
+ * @param {String} ellipsisChars	 The characters to place within the url, e.g. "..".
+ * @return {String} The truncated URL.
+ */
+Autolinker.truncate.TruncateSmart = function(url, truncateLen, ellipsisChars){
+	var parse_url = function(url){ // Functionality inspired by PHP function of same name
+		var urlObj = {};
+		var urlSub = url;
+		var match = urlSub.match(/^([a-z]+):\/\//i);
+		if (match) {
+			urlObj.scheme = match[1];
+			urlSub = urlSub.substr(match[0].length);
+		}
+		match = urlSub.match(/^(.*?)(?=(\?|#|\/|$))/i);
+		if (match) {
+			urlObj.host = match[1];
+			urlSub = urlSub.substr(match[0].length);
+		}
+		match = urlSub.match(/^\/(.*?)(?=(\?|#|$))/i);
+		if (match) {
+			urlObj.path = match[1];
+			urlSub = urlSub.substr(match[0].length);
+		}
+		match = urlSub.match(/^\?(.*?)(?=(#|$))/i);
+		if (match) {
+			urlObj.query = match[1];
+			urlSub = urlSub.substr(match[0].length);
+		}
+		match = urlSub.match(/^#(.*?)$/i);
+		if (match) {
+			urlObj.fragment = match[1];
+			//urlSub = urlSub.substr(match[0].length);  -- not used. Uncomment if adding another block.
+		}
+		return urlObj;
+	};
+
+	var buildUrl = function(urlObj){
+		var url = "";
+		if (urlObj.scheme && urlObj.host) {
+			url += urlObj.scheme + "://";
+		}
+		if (urlObj.host) {
+			url += urlObj.host;
+		}
+		if (urlObj.path) {
+			url += "/" + urlObj.path;
+		}
+		if (urlObj.query) {
+			url += "?" + urlObj.query;
+		}
+		if (urlObj.fragment) {
+			url += "#" + urlObj.fragment;
+		}
+		return url;
+	};
+
+	var buildSegment = function(segment, remainingAvailableLength){
+		var remainingAvailableLengthHalf = remainingAvailableLength/ 2,
+				startOffset = Math.ceil(remainingAvailableLengthHalf),
+				endOffset = (-1)*Math.floor(remainingAvailableLengthHalf),
+				end = "";
+		if (endOffset < 0) {
+			end = segment.substr(endOffset);
+		}
+		return segment.substr(0, startOffset) + ellipsisChars + end;
+	};
+	if (url.length <= truncateLen) {
+		return url;
+	}
+	var availableLength = truncateLen - ellipsisChars.length;
+	var urlObj = parse_url(url);
+	// Clean up the URL
+	if (urlObj.query) {
+		var matchQuery = urlObj.query.match(/^(.*?)(?=(\?|\#))(.*?)$/i);
+		if (matchQuery) {
+			// Malformed URL; two or more "?". Removed any content behind the 2nd.
+			urlObj.query = urlObj.query.substr(0, matchQuery[1].length);
+			url = buildUrl(urlObj);
+		}
+	}
+	if (url.length <= truncateLen) {
+		return url;
+	}
+	if (urlObj.host) {
+		urlObj.host = urlObj.host.replace(/^www\./, "");
+		url = buildUrl(urlObj);
+	}
+	if (url.length <= truncateLen) {
+		return url;
+	}
+	// Process and build the URL
+	var str = "";
+	if (urlObj.host) {
+		str += urlObj.host;
+	}
+	if (str.length >= availableLength) {
+		if (urlObj.host.length == truncateLen) {
+			return (urlObj.host.substr(0, (truncateLen - ellipsisChars.length)) + ellipsisChars).substr(0, truncateLen);
+		}
+		return buildSegment(str, availableLength).substr(0, truncateLen);
+	}
+	var pathAndQuery = "";
+	if (urlObj.path) {
+		pathAndQuery += "/" + urlObj.path;
+	}
+	if (urlObj.query) {
+		pathAndQuery += "?" + urlObj.query;
+	}
+	if (pathAndQuery) {
+		if ((str+pathAndQuery).length >= availableLength) {
+			if ((str+pathAndQuery).length == truncateLen) {
+				return (str + pathAndQuery).substr(0, truncateLen);
+			}
+			var remainingAvailableLength = availableLength - str.length;
+			return (str + buildSegment(pathAndQuery, remainingAvailableLength)).substr(0, truncateLen);
+		} else {
+			str += pathAndQuery;
+		}
+	}
+	if (urlObj.fragment) {
+		var fragment = "#"+urlObj.fragment;
+		if ((str+fragment).length >= availableLength) {
+			if ((str+fragment).length == truncateLen) {
+				return (str + fragment).substr(0, truncateLen);
+			}
+			var remainingAvailableLength2 = availableLength - str.length;
+			return (str + buildSegment(fragment, remainingAvailableLength2)).substr(0, truncateLen);
+		} else {
+			str += fragment;
+		}
+	}
+	if (urlObj.scheme && urlObj.host) {
+		var scheme = urlObj.scheme + "://";
+		if ((str+scheme).length < availableLength) {
+			return (scheme + str).substr(0, truncateLen);
+		}
+	}
+	if (str.length <= truncateLen) {
+		return str;
+	}
+	var end = "";
+	if (availableLength > 0) {
+		end = str.substr((-1)*Math.floor(availableLength/2));
+	}
+	return (str.substr(0, Math.ceil(availableLength/2)) + ellipsisChars + end).substr(0, truncateLen);
+};
+
+return Autolinker;
+
+}));
+
 
 $(function() {
     $('.comment-meta-rating').each(function() {
@@ -17806,7 +20993,7 @@ $(function() {
                     '<button data-id="{id}" class="btn btn-default btn-xxs delete">D</button>' +
                     '<button data-id="{id}" class="btn btn-default btn-xxs edit">E</button>' +
                     '<span class="user"><a href="{user.url}">{user.name}</a></span>' +
-                    '<span class="text">{content}</span> ' +
+                    '<span class="text">{formatted_content}</span> ' +
                 '</span>' +
             '</li>';
 
@@ -17866,6 +21053,48 @@ $(function() {
             this.lastUpdate = this.lastId = this.lastSeen = 0;
         }
 
+        var entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': '&quot;',
+            "'": '&#39;',
+            "/": '&#x2F;'
+        };
+
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return entityMap[s];
+            });
+        }
+
+        var probably_twhl = (/(?:\b|\/\/|^)twhl\.info(?:\b|\/|$)/i);
+
+        this.format = function(content)
+        {
+            // Linkify links but hide the html in base64 so they don't get encoded
+            content = Autolinker.link(content, {
+                replaceFn : function( autolinker, match ) {
+                    var tag = window.tag = autolinker.getTagBuilder().build(match);
+                    tag.setInnerHtml(escapeHtml(tag.getInnerHtml())); // Escape the link text
+                    if (probably_twhl.test(tag.getAttr('href'))) delete tag.attrs['target'];
+                    var str = tag.toAnchorString();
+                    return '\0\u9998'+window.btoa(str).replace('/','-')+'\u9999\0'; // B64 encode the whole thing, replace slashes as they'll be encoded later
+                }
+            });
+
+            // Escape any sneaky html
+            content = escapeHtml(content);
+
+            // Decode the base64 links so we're good again
+            content = content.replace(/\u0000\u9998([\s\S]*?)\u9999\u0000/g, function(match, b64) {
+                console.log(b64);
+                return window.atob(b64.replace('-','/'));
+            });
+
+            return content;
+        };
+
         this.updateStore = function(arr, full) {
             var obj, i;
 
@@ -17911,6 +21140,7 @@ $(function() {
                 obj['user.avatar'] = obj.user.avatar_small;
                 obj['time'] = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
                 obj['date'] = new Date(obj['time']).toLocaleString();
+                obj['formatted_content'] = this.format(obj.content);
                 this.shoutsContainer.append(template(shout_template, obj));
             }
             var sc = this.shoutsContainer[0];

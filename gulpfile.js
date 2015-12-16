@@ -27,6 +27,7 @@ elixir(function(mix) {
         'lib/nano-templating.js',
         'lib/jsdifflib.js',
         'lib/jssor.slider.mini.js',
+        'lib/autolinker.js',
         "boot/*.js"
     ]);
 });

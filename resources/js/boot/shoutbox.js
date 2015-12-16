@@ -46,7 +46,7 @@
                     '<button data-id="{id}" class="btn btn-default btn-xxs delete">D</button>' +
                     '<button data-id="{id}" class="btn btn-default btn-xxs edit">E</button>' +
                     '<span class="user"><a href="{user.url}">{user.name}</a></span>' +
-                    '<span class="text">{content}</span> ' +
+                    '<span class="text">{formatted_content}</span> ' +
                 '</span>' +
             '</li>';
 
@@ -106,6 +106,48 @@
             this.lastUpdate = this.lastId = this.lastSeen = 0;
         }
 
+        var entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': '&quot;',
+            "'": '&#39;',
+            "/": '&#x2F;'
+        };
+
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return entityMap[s];
+            });
+        }
+
+        var probably_twhl = (/(?:\b|\/\/|^)twhl\.info(?:\b|\/|$)/i);
+
+        this.format = function(content)
+        {
+            // Linkify links but hide the html in base64 so they don't get encoded
+            content = Autolinker.link(content, {
+                replaceFn : function( autolinker, match ) {
+                    var tag = window.tag = autolinker.getTagBuilder().build(match);
+                    tag.setInnerHtml(escapeHtml(tag.getInnerHtml())); // Escape the link text
+                    if (probably_twhl.test(tag.getAttr('href'))) delete tag.attrs['target'];
+                    var str = tag.toAnchorString();
+                    return '\0\u9998'+window.btoa(str).replace('/','-')+'\u9999\0'; // B64 encode the whole thing, replace slashes as they'll be encoded later
+                }
+            });
+
+            // Escape any sneaky html
+            content = escapeHtml(content);
+
+            // Decode the base64 links so we're good again
+            content = content.replace(/\u0000\u9998([\s\S]*?)\u9999\u0000/g, function(match, b64) {
+                console.log(b64);
+                return window.atob(b64.replace('-','/'));
+            });
+
+            return content;
+        };
+
         this.updateStore = function(arr, full) {
             var obj, i;
 
@@ -151,6 +193,7 @@
                 obj['user.avatar'] = obj.user.avatar_small;
                 obj['time'] = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
                 obj['date'] = new Date(obj['time']).toLocaleString();
+                obj['formatted_content'] = this.format(obj.content);
                 this.shoutsContainer.append(template(shout_template, obj));
             }
             var sc = this.shoutsContainer[0];
