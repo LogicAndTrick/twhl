@@ -12,7 +12,7 @@ class ImageTag extends Tag {
         $this->options = array('url');
     }
 
-    public function FormatResult($result, $parser, $scope, $options, $text)
+    public function FormatResult($result, $parser, $state, $scope, $options, $text)
     {
         $url = $text;
         if (array_key_exists('url', $options)) {
@@ -26,9 +26,12 @@ class ImageTag extends Tag {
         if ($this->element_class) $classes[] = $this->element_class;
         if ($this->token == 'simg') $classes[] = 'inline';
 
-        return '<span class="' . implode(' ', $classes) . '"><span class="caption-panel">'
+        // Non-inline images should eat any whitespace after them
+        if (!array_search('inline', $classes)) $state->SkipWhitespace();
+
+        return ' <span class="' . implode(' ', $classes) . '"><span class="caption-panel">'
              . '<img class="caption-body" src="' . $parser->CleanUrl($url) . '" alt="User posted image" />'
-             . '</span></span>';
+             . '</span></span> ';
     }
 
     public function Validate($options, $text)

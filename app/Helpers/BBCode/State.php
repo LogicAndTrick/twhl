@@ -29,6 +29,22 @@ class State
         return $ret;
     }
 
+    function IsWhitespace($str)
+    {
+        for ($i = 0; $i < strlen($str); $i++) {
+            $c = $str[$i];
+            if ($c != ' ' && $c != "\n" && $c != "\r" && $c != "\t") return false;
+        }
+        return true;
+    }
+
+    function SkipWhitespace()
+    {
+        while (!$this->Done() && $this->IsWhitespace($this->Peek(1))) {
+            $this->Next();
+        }
+    }
+
     function PeekTo($str)
     {
         $pos = strpos($this->text, $str, $this->index);

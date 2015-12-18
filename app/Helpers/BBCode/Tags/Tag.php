@@ -2,6 +2,9 @@
 
 namespace App\Helpers\BBCode\Tags;
 
+use App\Helpers\BBCode\Parser;
+use App\Helpers\BBCode\State;
+
 class Tag
 {
     public $token;
@@ -58,7 +61,7 @@ class Tag
                 if ($stack == 0) {
                     $state->Seek(strlen($this->token) + 3, false);
                     if (!$this->Validate($options, $text)) break;
-                    return $this->FormatResult($result, $parser, $scope, $options, $text);
+                    return $this->FormatResult($result, $parser, $state, $scope, $options, $text);
                 }
                 $text .= $state->Next();
             }
@@ -68,7 +71,7 @@ class Tag
             $text = $state->ScanTo('[/' . $this->token . ']');
             if ($state->Peek($tokenLength + 3) == '[/' . $this->token . ']' && $this->Validate($options, $text)) {
                 $state->Seek(strlen($this->token) + 3, false);
-                return $this->FormatResult($result, $parser, $scope, $options, $text);
+                return $this->FormatResult($result, $parser, $state, $scope, $options, $text);
             } else {
                 $state->Seek($index, true);
                 return false;
@@ -81,7 +84,7 @@ class Tag
         return true;
     }
 
-    public function FormatResult($result, $parser, $scope, $options, $text)
+    public function FormatResult($result, $parser, $state, $scope, $options, $text)
     {
         $str = '<' . $this->element;
         if ($this->element_class) $str .= ' class="' . $this->element_class . '"';

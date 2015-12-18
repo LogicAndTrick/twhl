@@ -12,7 +12,7 @@ class YoutubeTag extends Tag {
         $this->options = array('id');
     }
 
-    public function FormatResult($result, $parser, $scope, $options, $text)
+    public function FormatResult($result, $parser, $state, $scope, $options, $text)
     {
         $id = array_key_exists('id', $options) ? $options['id'] : $text;
         $classes = ['embedded', 'video'];

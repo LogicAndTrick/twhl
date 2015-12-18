@@ -11,6 +11,14 @@ class BBCodeTest extends TestCase {
     }
     */
 
+    public function testEatWhitespace()
+    {
+        $input = "[img:test|right] \r\ntest";
+        $expected = '<span class="embedded image right"><span class="caption-panel"><img class="caption-body" src="http://localhost:82/wiki/embed/test" alt="User posted image" /></span></span> test';
+        $output = app('bbcode')->Parse($input);
+        $this->assertEquals($expected, $output);
+    }
+
     public function testMultiStarBug()
     {
         $input = "* * * * *";

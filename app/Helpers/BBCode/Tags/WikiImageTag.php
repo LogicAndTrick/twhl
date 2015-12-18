@@ -61,14 +61,18 @@ class WikiImageTag extends LinkTag {
                 $url = '';
             }
             if ($caption) $caption = $caption;
-            return '<span class="' . implode(' ', $classes) . '">'
+
+            // Non-inline images should eat any whitespace after them
+            if (!array_search('inline', $classes)) $state->SkipWhitespace();
+
+            return ' <span class="' . implode(' ', $classes) . '">'
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'
                  . '<img class="caption-body" src="' . $parser->CleanUrl($src) . '" alt="' . ($caption ? $caption : 'User posted image') . '" />'
                  . ($caption ? '<span class="caption">' . $caption . '</span>' : '')
                  . '</span>'
                  . ($url ? '</a>' : '')
-                 . '</span>';
+                 . '</span> ';
         } else {
             return false;
         }
