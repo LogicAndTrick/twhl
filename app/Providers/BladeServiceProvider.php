@@ -45,16 +45,17 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('avatar');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['user', 'type'], ['show_name' => 'true', 'show_title' => 'true', 'show_border' => 'false', 'link' => 'true' ]);
+                $parameters = $this->parseBladeTemplatePattern($matches, ['user', 'type'], ['show_image' => 'true', 'show_name' => 'true', 'show_title' => 'true', 'show_border' => 'false', 'link' => 'true' ]);
                 $user = $parameters['user'];
                 $class = $parameters['type'];
                 $border = $parameters['show_border'] == 'true' ? 'border' : '';
+                $img = $class != 'text' && $parameters['show_image'] == 'true';
                 $name = $parameters['show_name'] == 'true';
                 $title = $class == 'full' && $parameters['show_title'] == 'true';
                 $link = $parameters['link'] == 'true';
                 return "{$matches[1]}<span class=\"avatar $class $border\">" .
                 ($link ? "\n<a href=\"<?php echo act('user', 'view', {$user}->id); ?>\">" : '') .
-                "\n<img src=\"<?php echo {$user}->getAvatarUrl('$class'); ?>\" alt=\"{$user}->name\"/>" .
+                ($img ? "\n<img src=\"<?php echo {$user}->getAvatarUrl('$class'); ?>\" alt=\"{$user}->name\"/>" : '') .
                 ($name ? "\n<span class=\"name\"><?php echo {$user}->name; ?></span>" : "") .
                 ($link ? "</a>" : '').
                 ($title ? "<?php if ({$user}->title_custom) { ?><span class=\"title\"><?php echo {$user}->title_text; ?></span><?php } ?>" : "") .

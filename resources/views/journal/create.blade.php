@@ -17,7 +17,7 @@
             </h4>
             <div id="preview-panel" class="well bbcode"></div>
         </div>
-        @submit
+        @submit = Create Journal
     @endform
 @endsection
 

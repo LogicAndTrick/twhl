@@ -70,6 +70,12 @@ tr.unread {
   &.border {
     border: 1px solid #eee;
     background-color: #fdfdfd;
+
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: darken(#fdfdfd, 5%);
+    }
   }
 
   &.full {
@@ -80,7 +86,7 @@ tr.unread {
     width: 65px;
   }
 
-  &.inline {
+  &.inline, &.text {
     display: inline;
     margin: 0px;
     padding: 0px;
@@ -88,5 +94,9 @@ tr.unread {
     img, span {
       display: inline;
     }
+  }
+
+  &.text {
+    font-size: 1.1em;
   }
 }

@@ -8,8 +8,33 @@
         <h1>Journals</h1>
         {!! $journals->render() !!}
     </hc>
-    @foreach ($journals as $journal)
-        <h2><a href="{{ act('journal', 'view', $journal->id) }}">{{ $journal->user->name }}</a></h2>
-        <div class="bbcode">{!! $journal->content_html !!}</div>
-    @endforeach
+    <ul class="media-list">
+        @foreach ($journals as $journal)
+            <li class="media media-panel" id="journal-{{ $journal->id }}">
+              <div class="media-left">
+                <div class="media-object">
+                    @avatar($journal->user small show_border=true show_name=false)
+                </div>
+              </div>
+              <div class="media-body">
+                <div class="media-heading">
+                    @avatar($journal->user text) &bull;
+                    @date($journal->created_at) &bull;
+                    <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
+                    </a>
+                    @if ($journal->isEditable())
+                        <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+                        <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                    @endif
+                </div>
+                <div class="bbcode">{!! $journal->content_html !!}</div>
+              </div>
+            </li>
+        @endforeach
+    </ul>
+    <div class="footer-container">
+        {!! $journals->render() !!}
+    </div>
 @endsection
