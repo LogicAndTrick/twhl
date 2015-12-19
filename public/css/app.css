@@ -7999,6 +7999,16 @@ hr[title]::before {
   padding-bottom: 5px;
   border-bottom: 1px solid #fafafa;
 }
+.media-heading h1,
+.media-heading h2,
+.media-heading h3 {
+  margin: 0 0 5px 0;
+}
+.media-heading h1 a,
+.media-heading h2 a,
+.media-heading h3 a {
+  color: #000;
+}
 .media-heading .btn:not(.link) {
   float: right;
   margin: 0 2px;
@@ -8200,6 +8210,9 @@ hr[title]::before {
 .media-panel > h5:first-child,
 .media-panel > h6:first-child {
   margin-top: 10px;
+}
+.media-panel.media-panel-small {
+  padding: 5px;
 }
 span.bbcode {
   display: inline-block;
@@ -8980,6 +8993,7 @@ tr.unread {
 .poll-results ul {
   list-style-type: none;
   margin: 0 auto;
+  padding: 0 10px 10px;
   max-width: 300px;
 }
 .poll-results li {

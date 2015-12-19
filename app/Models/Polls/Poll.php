@@ -12,7 +12,7 @@ class Poll extends Model {
 
     public function getDates()
     {
-        return ['close_date'];
+        return ['close_date', 'created_at', 'updated_at'];
     }
 
     public function items()

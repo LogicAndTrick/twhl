@@ -16,7 +16,10 @@ class UserController extends Controller {
 	}
 
     public function getIndex() {
-
+        $users = User::with([])->orderBy('created_at', 'desc')->paginate(60);
+		return view('user/user/index', [
+            'users' => $users
+        ]);
     }
 
 	public function getView($id) {
@@ -27,7 +30,7 @@ class UserController extends Controller {
         }
         $journals = Journal::where('user_id', '=', $id)->orderBy('created_at', 'desc')->take(5)->get();
         $vault_items = VaultItem::with(['vault_screenshots', 'user', 'game'])->where('user_id', '=', $id)->orderBy('created_at', 'desc')->take(5)->get();
-        return view('user/user/index', [
+        return view('user/user/view', [
             'user' => $user,
             'journals' => $journals,
             'vault_items' => $vault_items

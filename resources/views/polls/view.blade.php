@@ -12,11 +12,16 @@
             <li class="active">View Poll</li>
         </ol>
     </hc>
-    <div class="row">
-        <div class="col-md-4 col-lg-6">
+    <div class="media media-panel">
+        <div class="media-body">
+            <div class="media-heading">
+                @date($poll->created_at) &bull;
+                <a href="#comments" class="btn btn-xs btn-link link">
+                    <span class="glyphicon glyphicon-comment"></span>
+                    {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
+                </a>
+            </div>
             <div class="bbcode">{!! $poll->content_html !!}</div>
-        </div>
-        <div class="col-md-8 col-lg-6">
             <div class="well well-sm">
                 @if ($poll->isOpen() && !$user_vote && Auth::user())
                     @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
