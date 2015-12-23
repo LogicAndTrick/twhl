@@ -12,7 +12,8 @@ class Parser
 {
     public $elements = array();
     public $tags = array();
-    public $processors = array();
+    public $post_processors = array();
+    public $text_processors = array();
 
     function __construct($config = array())
     {
@@ -32,7 +33,7 @@ class Parser
                 $this->elements[] = $e;
             }
         }
-        if (array_key_exists('tags', $config) && is_array($config['elements'])) {
+        if (array_key_exists('tags', $config) && is_array($config['tags'])) {
             foreach ($config['tags'] as $cfg) {
                 if (!array_key_exists('class', $cfg)) continue;
                 $cls = $cfg['class'];
@@ -44,8 +45,8 @@ class Parser
                 $this->tags[] = $e;
             }
         }
-        if (array_key_exists('processors', $config) && is_array($config['elements'])) {
-            foreach ($config['processors'] as $cfg) {
+        if (array_key_exists('post_processors', $config) && is_array($config['post_processors'])) {
+            foreach ($config['post_processors'] as $cfg) {
                 if (!array_key_exists('class', $cfg)) continue;
                 $cls = $cfg['class'];
                 $e = new $cls($cfg);
@@ -53,7 +54,19 @@ class Parser
                     if ($k == 'class') continue;
                     $e->$k = $v;
                 }
-                $this->processors[] = $e;
+                $this->post_processors[] = $e;
+            }
+        }
+        if (array_key_exists('text_processors', $config) && is_array($config['text_processors'])) {
+            foreach ($config['text_processors'] as $cfg) {
+                if (!array_key_exists('class', $cfg)) continue;
+                $cls = $cfg['class'];
+                $e = new $cls($cfg);
+                foreach ($cfg as $k => $v) {
+                    if ($k == 'class') continue;
+                    $e->$k = $v;
+                }
+                $this->text_processors[] = $e;
             }
         }
     }
@@ -142,7 +155,7 @@ class Parser
 
     public function PostProcessString($result, $text, $scope) {
         $str = $text;
-        foreach ($this->processors as $pp) {
+        foreach ($this->post_processors as $pp) {
             if ($pp->InScope($scope)) {
                 $str = $pp->Process($result, $str, $scope);
             }
@@ -163,7 +176,7 @@ class Parser
 
         while (!$state->Done())
         {
-            $str .= $state->ScanTo('[');
+            $str .= $this->ParsePlainText($result, $state->ScanTo('['), $scope, $type);
             $token = $state->GetToken();
             $found = false;
             foreach ($inscope as $t) {
@@ -176,10 +189,20 @@ class Parser
                     }
                 }
             }
-            if (!$found) $str .= $state->Next();
+            if (!$found) $str .= $this->ParsePlainText($result, $state->Next(), $scope, $type);
         }
 
         $str = $this->PostProcessString($result, $str, $scope);
+        return $str;
+    }
+
+    public function ParsePlainText($result, $text, $scope, $type) {
+        $str = $text;
+        foreach ($this->text_processors as $pp) {
+            if ($pp->InScope($scope)) {
+                $str = $pp->Process($result, $str, $scope);
+            }
+        }
         return $str;
     }
 }

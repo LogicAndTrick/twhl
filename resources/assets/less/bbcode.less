@@ -34,8 +34,14 @@ span.bbcode {
   // Caption panel
   .caption-panel {
     display: inline-block;
-    border: 1px solid #dedede;
     max-width: 100%;
+
+    .panel;
+    .panel-default;
+    .panel-body;
+
+    padding: 0px;
+    margin: 0;
 
     .caption-body {
       padding: 5px;
@@ -48,11 +54,14 @@ span.bbcode {
       display: block;
       padding: 0 5px 5px;
       text-align: center;
+      font-size: 1.3em;
+      max-height: 6em;
+      overflow: hidden;
     }
   }
 
   blockquote {
-    margin-top: 20px;
+    margin: 15px 0;
     color: #666;
     font-size: 1.1em;
   }
@@ -61,7 +70,7 @@ span.bbcode {
   .embedded {
     display: block;
     text-align: center;
-    margin: 5px auto;
+    margin: 15px auto;
 
     &.inline {
       display: inline-block;
@@ -84,6 +93,11 @@ span.bbcode {
     &.medium { max-width: 400px;  }
     &.small { max-width: 200px; }
     &.thumb { max-width: 100px; }
+
+    &.large .caption { font-size: 1.3em; }
+    &.medium .caption { font-size: 1.1em; }
+    &.small .caption { font-size: 1em; }
+    &.thumb .caption { font-size: 0.8em; }
   }
 
   table .embedded {
@@ -121,6 +135,61 @@ span.bbcode {
         background-repeat: no-repeat;
         background-size: 15% auto;
       }
+    }
+  }
+
+  // Other lazy-loading embedded content
+
+  .embed-container {
+
+    display: block;
+
+    .panel;
+    .panel-default;
+    .panel-body;
+
+    padding: 10px;
+
+    .embed-content {
+      overflow: hidden;
+
+      h2 {
+        margin: 0 0 4px;
+      }
+    }
+
+    .embed-image {
+      margin-top: 15px;
+      max-height: 500px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .uninitialised {
+      line-height: 500px;
+      font-size: 2em;
+      padding: 30px;
+      background-color: #bbb;
+    }
+
+     .slider, &.slider { height: 340px; }
+     .slides { height: 250px; }
+
+     @media (min-width: @screen-sm-min) {
+       .slider, &.slider { height: 440px; }
+       .slides { height: 350px; }
+     }
+
+    @media (min-width: @screen-md-min) {
+      .slider, &.slider { height: 540px; }
+      .slides { height: 450px; }
+    }
+
+    @media (min-width: @screen-lg-min) {
+      .slider, &.slider { height: 640px; }
+      .slides { height: 550px; }
     }
   }
 

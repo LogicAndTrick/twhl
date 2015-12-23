@@ -6437,7 +6437,11 @@ button.close {
 .modal-footer:before,
 .modal-footer:after,
 .media-panel:before,
-.media-panel:after {
+.media-panel:after,
+.bbcode .caption-panel:before,
+.bbcode .caption-panel:after,
+.bbcode .embed-container:before,
+.bbcode .embed-container:after {
   content: " ";
   display: table;
 }
@@ -6456,7 +6460,9 @@ button.close {
 .pager:after,
 .panel-body:after,
 .modal-footer:after,
-.media-panel:after {
+.media-panel:after,
+.bbcode .caption-panel:after,
+.bbcode .embed-container:after {
   clear: both;
 }
 .center-block {
@@ -6860,6 +6866,53 @@ fieldset[disabled] .btn-inverse.active {
 .nav > li > a.navbar-user-info img {
   display: inline-block;
   padding-right: 6px;
+}
+@-webkit-keyframes pulse {
+  0% {
+    background-color: #ffe2b8;
+  }
+  50% {
+    background-color: #fea320;
+  }
+  100% {
+    background-color: #ffe2b8;
+  }
+}
+@keyframes pulse {
+  0% {
+    background-color: #ffe2b8;
+  }
+  50% {
+    background-color: #fea320;
+  }
+  100% {
+    background-color: #ffe2b8;
+  }
+}
+.nav > li.has-notification:not(.open) {
+  background: #ff7e2d;
+  -webkit-animation: pulse 5s infinite;
+          animation: pulse 5s infinite;
+  position: relative;
+}
+.nav > li.has-notification:not(.open)::after {
+  content: ' ';
+  position: absolute;
+  background: linear-gradient(270deg, #ffffff 0%, transparent 35%, transparent 65%, #ffffff 100%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.nav > li.has-notification:not(.open) * {
+  z-index: 1;
+}
+.nav .dropdown-menu .has-notification a {
+  color: white;
+  background-color: #fea320;
+}
+.nav .dropdown-menu .has-notification a:hover {
+  background-color: #feb853;
 }
 body {
   background: url('../images/body-background.png') #f4f4f4;
@@ -8246,8 +8299,205 @@ span.bbcode {
 }
 .bbcode .caption-panel {
   display: inline-block;
-  border: 1px solid #dedede;
   max-width: 100%;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 0px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  border-color: #dddddd;
+  padding: 15px;
+  padding: 0px;
+  margin: 0;
+}
+.bbcode .caption-panel > .list-group,
+.bbcode .caption-panel > .panel-collapse > .list-group {
+  margin-bottom: 0;
+}
+.bbcode .caption-panel > .list-group .list-group-item,
+.bbcode .caption-panel > .panel-collapse > .list-group .list-group-item {
+  border-width: 1px 0;
+  border-radius: 0;
+}
+.bbcode .caption-panel > .list-group:first-child .list-group-item:first-child,
+.bbcode .caption-panel > .panel-collapse > .list-group:first-child .list-group-item:first-child {
+  border-top: 0;
+  border-top-right-radius: -1px;
+  border-top-left-radius: -1px;
+}
+.bbcode .caption-panel > .list-group:last-child .list-group-item:last-child,
+.bbcode .caption-panel > .panel-collapse > .list-group:last-child .list-group-item:last-child {
+  border-bottom: 0;
+  border-bottom-right-radius: -1px;
+  border-bottom-left-radius: -1px;
+}
+.bbcode .caption-panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.bbcode .caption-panel > .table,
+.bbcode .caption-panel > .table-responsive > .table,
+.bbcode .caption-panel > .panel-collapse > .table {
+  margin-bottom: 0;
+}
+.bbcode .caption-panel > .table caption,
+.bbcode .caption-panel > .table-responsive > .table caption,
+.bbcode .caption-panel > .panel-collapse > .table caption {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.bbcode .caption-panel > .table:first-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child {
+  border-top-right-radius: -1px;
+  border-top-left-radius: -1px;
+}
+.bbcode .caption-panel > .table:first-child > thead:first-child > tr:first-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
+.bbcode .caption-panel > .table:first-child > tbody:first-child > tr:first-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {
+  border-top-left-radius: -1px;
+  border-top-right-radius: -1px;
+}
+.bbcode .caption-panel > .table:first-child > thead:first-child > tr:first-child td:first-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
+.bbcode .caption-panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+.bbcode .caption-panel > .table:first-child > thead:first-child > tr:first-child th:first-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
+.bbcode .caption-panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {
+  border-top-left-radius: -1px;
+}
+.bbcode .caption-panel > .table:first-child > thead:first-child > tr:first-child td:last-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
+.bbcode .caption-panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+.bbcode .caption-panel > .table:first-child > thead:first-child > tr:first-child th:last-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
+.bbcode .caption-panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+.bbcode .caption-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {
+  border-top-right-radius: -1px;
+}
+.bbcode .caption-panel > .table:last-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child {
+  border-bottom-right-radius: -1px;
+  border-bottom-left-radius: -1px;
+}
+.bbcode .caption-panel > .table:last-child > tbody:last-child > tr:last-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
+.bbcode .caption-panel > .table:last-child > tfoot:last-child > tr:last-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {
+  border-bottom-left-radius: -1px;
+  border-bottom-right-radius: -1px;
+}
+.bbcode .caption-panel > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+.bbcode .caption-panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.bbcode .caption-panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+.bbcode .caption-panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
+  border-bottom-left-radius: -1px;
+}
+.bbcode .caption-panel > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+.bbcode .caption-panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.bbcode .caption-panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+.bbcode .caption-panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.bbcode .caption-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
+  border-bottom-right-radius: -1px;
+}
+.bbcode .caption-panel > .panel-body + .table,
+.bbcode .caption-panel > .panel-body + .table-responsive,
+.bbcode .caption-panel > .table + .panel-body,
+.bbcode .caption-panel > .table-responsive + .panel-body {
+  border-top: 1px solid #dddddd;
+}
+.bbcode .caption-panel > .table > tbody:first-child > tr:first-child th,
+.bbcode .caption-panel > .table > tbody:first-child > tr:first-child td {
+  border-top: 0;
+}
+.bbcode .caption-panel > .table-bordered,
+.bbcode .caption-panel > .table-responsive > .table-bordered {
+  border: 0;
+}
+.bbcode .caption-panel > .table-bordered > thead > tr > th:first-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > thead > tr > th:first-child,
+.bbcode .caption-panel > .table-bordered > tbody > tr > th:first-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,
+.bbcode .caption-panel > .table-bordered > tfoot > tr > th:first-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+.bbcode .caption-panel > .table-bordered > thead > tr > td:first-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > thead > tr > td:first-child,
+.bbcode .caption-panel > .table-bordered > tbody > tr > td:first-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,
+.bbcode .caption-panel > .table-bordered > tfoot > tr > td:first-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+  border-left: 0;
+}
+.bbcode .caption-panel > .table-bordered > thead > tr > th:last-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > thead > tr > th:last-child,
+.bbcode .caption-panel > .table-bordered > tbody > tr > th:last-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,
+.bbcode .caption-panel > .table-bordered > tfoot > tr > th:last-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+.bbcode .caption-panel > .table-bordered > thead > tr > td:last-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > thead > tr > td:last-child,
+.bbcode .caption-panel > .table-bordered > tbody > tr > td:last-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,
+.bbcode .caption-panel > .table-bordered > tfoot > tr > td:last-child,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+  border-right: 0;
+}
+.bbcode .caption-panel > .table-bordered > thead > tr:first-child > td,
+.bbcode .caption-panel > .table-responsive > .table-bordered > thead > tr:first-child > td,
+.bbcode .caption-panel > .table-bordered > tbody > tr:first-child > td,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,
+.bbcode .caption-panel > .table-bordered > thead > tr:first-child > th,
+.bbcode .caption-panel > .table-responsive > .table-bordered > thead > tr:first-child > th,
+.bbcode .caption-panel > .table-bordered > tbody > tr:first-child > th,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr:first-child > th {
+  border-bottom: 0;
+}
+.bbcode .caption-panel > .table-bordered > tbody > tr:last-child > td,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,
+.bbcode .caption-panel > .table-bordered > tfoot > tr:last-child > td,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
+.bbcode .caption-panel > .table-bordered > tbody > tr:last-child > th,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,
+.bbcode .caption-panel > .table-bordered > tfoot > tr:last-child > th,
+.bbcode .caption-panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th {
+  border-bottom: 0;
+}
+.bbcode .caption-panel > .table-responsive {
+  border: 0;
+  margin-bottom: 0;
+}
+.bbcode .caption-panel > .panel-heading {
+  color: #333333;
+  background-color: #f5f5f5;
+  border-color: #dddddd;
+}
+.bbcode .caption-panel > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #dddddd;
+}
+.bbcode .caption-panel > .panel-heading .badge {
+  color: #f5f5f5;
+  background-color: #333333;
+}
+.bbcode .caption-panel > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #dddddd;
+}
+.bbcode .caption-panel > h1:first-child,
+.bbcode .caption-panel > h2:first-child,
+.bbcode .caption-panel > h3:first-child,
+.bbcode .caption-panel > h4:first-child,
+.bbcode .caption-panel > h5:first-child,
+.bbcode .caption-panel > h6:first-child {
+  margin-top: 10px;
 }
 .bbcode .caption-panel .caption-body {
   padding: 5px;
@@ -8259,16 +8509,19 @@ span.bbcode {
   display: block;
   padding: 0 5px 5px;
   text-align: center;
+  font-size: 1.3em;
+  max-height: 6em;
+  overflow: hidden;
 }
 .bbcode blockquote {
-  margin-top: 20px;
+  margin: 15px 0;
   color: #666;
   font-size: 1.1em;
 }
 .bbcode .embedded {
   display: block;
   text-align: center;
-  margin: 5px auto;
+  margin: 15px auto;
 }
 .bbcode .embedded.inline {
   display: inline-block;
@@ -8305,6 +8558,18 @@ span.bbcode {
 }
 .bbcode .embedded.thumb {
   max-width: 100px;
+}
+.bbcode .embedded.large .caption {
+  font-size: 1.3em;
+}
+.bbcode .embedded.medium .caption {
+  font-size: 1.1em;
+}
+.bbcode .embedded.small .caption {
+  font-size: 1em;
+}
+.bbcode .embedded.thumb .caption {
+  font-size: 0.8em;
 }
 .bbcode table .embedded {
   display: inline-block;
@@ -8368,6 +8633,259 @@ span.bbcode {
   background-repeat: no-repeat;
   background-size: 15% auto;
 }
+.bbcode .embed-container {
+  display: block;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: 0px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  border-color: #dddddd;
+  padding: 15px;
+  padding: 10px;
+}
+.bbcode .embed-container > .list-group,
+.bbcode .embed-container > .panel-collapse > .list-group {
+  margin-bottom: 0;
+}
+.bbcode .embed-container > .list-group .list-group-item,
+.bbcode .embed-container > .panel-collapse > .list-group .list-group-item {
+  border-width: 1px 0;
+  border-radius: 0;
+}
+.bbcode .embed-container > .list-group:first-child .list-group-item:first-child,
+.bbcode .embed-container > .panel-collapse > .list-group:first-child .list-group-item:first-child {
+  border-top: 0;
+  border-top-right-radius: -1px;
+  border-top-left-radius: -1px;
+}
+.bbcode .embed-container > .list-group:last-child .list-group-item:last-child,
+.bbcode .embed-container > .panel-collapse > .list-group:last-child .list-group-item:last-child {
+  border-bottom: 0;
+  border-bottom-right-radius: -1px;
+  border-bottom-left-radius: -1px;
+}
+.bbcode .embed-container > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+.bbcode .embed-container > .table,
+.bbcode .embed-container > .table-responsive > .table,
+.bbcode .embed-container > .panel-collapse > .table {
+  margin-bottom: 0;
+}
+.bbcode .embed-container > .table caption,
+.bbcode .embed-container > .table-responsive > .table caption,
+.bbcode .embed-container > .panel-collapse > .table caption {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.bbcode .embed-container > .table:first-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child {
+  border-top-right-radius: -1px;
+  border-top-left-radius: -1px;
+}
+.bbcode .embed-container > .table:first-child > thead:first-child > tr:first-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
+.bbcode .embed-container > .table:first-child > tbody:first-child > tr:first-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {
+  border-top-left-radius: -1px;
+  border-top-right-radius: -1px;
+}
+.bbcode .embed-container > .table:first-child > thead:first-child > tr:first-child td:first-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
+.bbcode .embed-container > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+.bbcode .embed-container > .table:first-child > thead:first-child > tr:first-child th:first-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
+.bbcode .embed-container > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {
+  border-top-left-radius: -1px;
+}
+.bbcode .embed-container > .table:first-child > thead:first-child > tr:first-child td:last-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
+.bbcode .embed-container > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+.bbcode .embed-container > .table:first-child > thead:first-child > tr:first-child th:last-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
+.bbcode .embed-container > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+.bbcode .embed-container > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {
+  border-top-right-radius: -1px;
+}
+.bbcode .embed-container > .table:last-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child {
+  border-bottom-right-radius: -1px;
+  border-bottom-left-radius: -1px;
+}
+.bbcode .embed-container > .table:last-child > tbody:last-child > tr:last-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
+.bbcode .embed-container > .table:last-child > tfoot:last-child > tr:last-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {
+  border-bottom-left-radius: -1px;
+  border-bottom-right-radius: -1px;
+}
+.bbcode .embed-container > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+.bbcode .embed-container > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+.bbcode .embed-container > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+.bbcode .embed-container > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
+  border-bottom-left-radius: -1px;
+}
+.bbcode .embed-container > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+.bbcode .embed-container > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+.bbcode .embed-container > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+.bbcode .embed-container > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+.bbcode .embed-container > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
+  border-bottom-right-radius: -1px;
+}
+.bbcode .embed-container > .panel-body + .table,
+.bbcode .embed-container > .panel-body + .table-responsive,
+.bbcode .embed-container > .table + .panel-body,
+.bbcode .embed-container > .table-responsive + .panel-body {
+  border-top: 1px solid #dddddd;
+}
+.bbcode .embed-container > .table > tbody:first-child > tr:first-child th,
+.bbcode .embed-container > .table > tbody:first-child > tr:first-child td {
+  border-top: 0;
+}
+.bbcode .embed-container > .table-bordered,
+.bbcode .embed-container > .table-responsive > .table-bordered {
+  border: 0;
+}
+.bbcode .embed-container > .table-bordered > thead > tr > th:first-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > thead > tr > th:first-child,
+.bbcode .embed-container > .table-bordered > tbody > tr > th:first-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr > th:first-child,
+.bbcode .embed-container > .table-bordered > tfoot > tr > th:first-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+.bbcode .embed-container > .table-bordered > thead > tr > td:first-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > thead > tr > td:first-child,
+.bbcode .embed-container > .table-bordered > tbody > tr > td:first-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr > td:first-child,
+.bbcode .embed-container > .table-bordered > tfoot > tr > td:first-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tfoot > tr > td:first-child {
+  border-left: 0;
+}
+.bbcode .embed-container > .table-bordered > thead > tr > th:last-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > thead > tr > th:last-child,
+.bbcode .embed-container > .table-bordered > tbody > tr > th:last-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr > th:last-child,
+.bbcode .embed-container > .table-bordered > tfoot > tr > th:last-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+.bbcode .embed-container > .table-bordered > thead > tr > td:last-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > thead > tr > td:last-child,
+.bbcode .embed-container > .table-bordered > tbody > tr > td:last-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr > td:last-child,
+.bbcode .embed-container > .table-bordered > tfoot > tr > td:last-child,
+.bbcode .embed-container > .table-responsive > .table-bordered > tfoot > tr > td:last-child {
+  border-right: 0;
+}
+.bbcode .embed-container > .table-bordered > thead > tr:first-child > td,
+.bbcode .embed-container > .table-responsive > .table-bordered > thead > tr:first-child > td,
+.bbcode .embed-container > .table-bordered > tbody > tr:first-child > td,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr:first-child > td,
+.bbcode .embed-container > .table-bordered > thead > tr:first-child > th,
+.bbcode .embed-container > .table-responsive > .table-bordered > thead > tr:first-child > th,
+.bbcode .embed-container > .table-bordered > tbody > tr:first-child > th,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr:first-child > th {
+  border-bottom: 0;
+}
+.bbcode .embed-container > .table-bordered > tbody > tr:last-child > td,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr:last-child > td,
+.bbcode .embed-container > .table-bordered > tfoot > tr:last-child > td,
+.bbcode .embed-container > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
+.bbcode .embed-container > .table-bordered > tbody > tr:last-child > th,
+.bbcode .embed-container > .table-responsive > .table-bordered > tbody > tr:last-child > th,
+.bbcode .embed-container > .table-bordered > tfoot > tr:last-child > th,
+.bbcode .embed-container > .table-responsive > .table-bordered > tfoot > tr:last-child > th {
+  border-bottom: 0;
+}
+.bbcode .embed-container > .table-responsive {
+  border: 0;
+  margin-bottom: 0;
+}
+.bbcode .embed-container > .panel-heading {
+  color: #333333;
+  background-color: #f5f5f5;
+  border-color: #dddddd;
+}
+.bbcode .embed-container > .panel-heading + .panel-collapse > .panel-body {
+  border-top-color: #dddddd;
+}
+.bbcode .embed-container > .panel-heading .badge {
+  color: #f5f5f5;
+  background-color: #333333;
+}
+.bbcode .embed-container > .panel-footer + .panel-collapse > .panel-body {
+  border-bottom-color: #dddddd;
+}
+.bbcode .embed-container > h1:first-child,
+.bbcode .embed-container > h2:first-child,
+.bbcode .embed-container > h3:first-child,
+.bbcode .embed-container > h4:first-child,
+.bbcode .embed-container > h5:first-child,
+.bbcode .embed-container > h6:first-child {
+  margin-top: 10px;
+}
+.bbcode .embed-container .embed-content {
+  overflow: hidden;
+}
+.bbcode .embed-container .embed-content h2 {
+  margin: 0 0 4px;
+}
+.bbcode .embed-container .embed-image {
+  margin-top: 15px;
+  max-height: 500px;
+}
+.bbcode .embed-container img {
+  max-width: 100%;
+}
+.bbcode .embed-container .uninitialised {
+  line-height: 500px;
+  font-size: 2em;
+  padding: 30px;
+  background-color: #bbb;
+}
+.bbcode .embed-container .slider,
+.bbcode .embed-container.slider {
+  height: 340px;
+}
+.bbcode .embed-container .slides {
+  height: 250px;
+}
+@media (min-width: 768px) {
+  .bbcode .embed-container .slider,
+  .bbcode .embed-container.slider {
+    height: 440px;
+  }
+  .bbcode .embed-container .slides {
+    height: 350px;
+  }
+}
+@media (min-width: 992px) {
+  .bbcode .embed-container .slider,
+  .bbcode .embed-container.slider {
+    height: 540px;
+  }
+  .bbcode .embed-container .slides {
+    height: 450px;
+  }
+}
+@media (min-width: 1200px) {
+  .bbcode .embed-container .slider,
+  .bbcode .embed-container.slider {
+    height: 640px;
+  }
+  .bbcode .embed-container .slides {
+    height: 550px;
+  }
+}
 .wiki-navigation {
   background: #D5ECFF;
   margin: 0 -15px;
@@ -8419,6 +8937,9 @@ ul.wiki-categories .header {
   display: block;
   max-width: 95%;
   margin: 10px auto;
+}
+.vault-filter-form {
+  margin-bottom: 15px;
 }
 @media (max-width: 1199px) {
   .vault-filter-container .btn-group > .btn {
@@ -8528,7 +9049,7 @@ ul.wiki-categories .header {
 }
 .vault-list {
   list-style-type: none;
-  padding: 15px;
+  padding: 0 15px;
 }
 .vault-list > * {
   padding: 0;
@@ -8550,10 +9071,11 @@ ul.wiki-categories .header {
 }
 .vault-item {
   margin: 2px;
-  border: 1px solid #ccc;
+  border: 1px solid #dddddd;
   padding: 5px;
   text-align: center;
   line-height: 1.6em;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 .vault-item .game-icon {
   float: left;

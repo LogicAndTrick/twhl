@@ -26,12 +26,17 @@ class ImageTag extends Tag {
         if ($this->element_class) $classes[] = $this->element_class;
         if ($this->token == 'simg') $classes[] = 'inline';
 
-        // Non-inline images should eat any whitespace after them
-        if (!array_search('inline', $classes)) $state->SkipWhitespace();
+        $el = 'span';
 
-        return ' <span class="' . implode(' ', $classes) . '"><span class="caption-panel">'
+        // Non-inline images should eat any whitespace after them
+        if (!array_search('inline', $classes)) {
+            $state->SkipWhitespace();
+            $el = 'div';
+        }
+
+        return ' <' . $el . ' class="' . implode(' ', $classes) . '"><span class="caption-panel">'
              . '<img class="caption-body" src="' . $parser->CleanUrl($url) . '" alt="User posted image" />'
-             . '</span></span> ';
+             . '</span></' . $el . '> ';
     }
 
     public function Validate($options, $text)

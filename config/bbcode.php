@@ -3,26 +3,26 @@
 return [
     'tags' => [
         // Standard inline
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'b',      'element' => 'strong'                                   ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'i',      'element' => 'em'                                       ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'u',      'element' => 'span', 'element_class' => 'underline'     ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 's',      'element' => 'span', 'element_class' => 'strikethrough' ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'b',      'element' => 'strong'                                   ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'i',      'element' => 'em'                                       ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'u',      'element' => 'span', 'element_class' => 'underline'     ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 's',      'element' => 'span', 'element_class' => 'strikethrough' ],
 
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'green',  'element' => 'span', 'element_class' => 'green'         ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'green',  'element' => 'span', 'element_class' => 'green'         ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
 
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ ], 'token' => 'code',   'element' => 'code'                                     ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'code',   'element' => 'code'                                     ],
 
         // Standard block
         [ 'class' => 'App\Helpers\BBCode\Tags\PreTag',   'scopes' => [ ] ],
 
         // Links
-        [ 'class' => 'App\Helpers\BBCode\Tags\LinkTag',      'scopes' => [ ], 'token' => 'url' ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\LinkTag',      'scopes' => [ ], 'token' => 'email' ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\QuickLinkTag', 'scopes' => [ ] ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\WikiLinkTag',  'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\LinkTag',      'scopes' => [ 'excerpt' ], 'token' => 'url' ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\LinkTag',      'scopes' => [ 'excerpt' ], 'token' => 'email' ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\QuickLinkTag', 'scopes' => [ 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WikiLinkTag',  'scopes' => [ 'excerpt' ] ],
 
         // Embedded
         [ 'class' => 'App\Helpers\BBCode\Tags\ImageTag',     'scopes' => [ ], 'token' => 'img' ],
@@ -32,26 +32,31 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\YoutubeTag',     'scopes' => [ ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\WikiYoutubeTag', 'scopes' => [ ] ],
 
+        [ 'class' => 'App\Helpers\BBCode\Tags\VaultEmbedTag', 'scopes' => [ ] ],
+
         // Custom
         [ 'class' => 'App\Helpers\BBCode\Tags\QuoteTag',         'scopes' => [ ] ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',          'scopes' => [ ] ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',          'scopes' => [ 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ 'excerpt' ] ],
     ],
     'elements' => [
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdCodeElement',    'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\PreElement',       'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdHeadingElement', 'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdLineElement',    'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdQuoteElement',   'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdListElement',    'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdTableElement',   'scopes' => [] ],
-        [ 'class' => 'App\Helpers\BBCode\Elements\MdPanelElement',   'scopes' => [] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdCodeElement',    'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\PreElement',       'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdHeadingElement', 'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdLineElement',    'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdQuoteElement',   'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdListElement',    'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdTableElement',   'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdPanelElement',   'scopes' => [ ] ],
     ],
-    'processors' => [
-        [ 'class' => 'App\Helpers\BBCode\Processors\AutoLinkingProcessor', 'scopes' => [] ],
+    'text_processors' => [
+        [ 'class' => 'App\Helpers\BBCode\Processors\MarkdownTextProcessor', 'scopes' => [ 'excerpt' ] ],
+    ],
+    'post_processors' => [
+        [ 'class' => 'App\Helpers\BBCode\Processors\AutoLinkingProcessor', 'scopes' => [ 'excerpt' ] ],
         [
             'class' => 'App\Helpers\BBCode\Processors\SmiliesProcessor',
-            'scopes' => [],
+            'scopes' => [ 'excerpt' ],
             'smilies' => [
                 'aggrieved'    => [ ':aggrieved:'              ],
                 'aghast'       => [ ':aghast:'                 ],
@@ -105,6 +110,6 @@ return [
                 'nya'          => [ ':nya:'                    ],
             ]
         ],
-        [ 'class' => 'App\Helpers\BBCode\Processors\NewLineProcessor',     'scopes' => [] ],
+        [ 'class' => 'App\Helpers\BBCode\Processors\NewLineProcessor',     'scopes' => [ ] ],
     ]
 ];

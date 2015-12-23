@@ -89,6 +89,12 @@ class VaultController extends Controller {
         return redirect($item->getDownloadUrl());
     }
 
+    public function getEmbed($id) {
+        $item = VaultItem::with(['vault_screenshots', 'user'])->findOrFail($id);
+
+        return response()->json($item);
+    }
+
     // Create / edit
 
     public function getCreate() {

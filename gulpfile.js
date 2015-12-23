@@ -19,6 +19,7 @@ elixir(function(mix) {
         'lib/jquery.js',
         'lib/jquery.cookie.js',
         'lib/jquery.mousewheel.js',
+        'lib/jquery.appear.js',
         'lib/bootstrap.js',
         'lib/select2.js',
         'lib/select2-data-api.js',

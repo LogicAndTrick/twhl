@@ -11,10 +11,18 @@ class BBCodeTest extends TestCase {
     }
     */
 
+    public function testPreElement()
+    {
+        $input = "asd [pre]<b>test</b>[/pre] asd";
+        $expected = 'asd <pre><code>&lt;b&gt;test&lt;/b&gt;</code></pre> asd';
+        $output = app('bbcode')->Parse($input);
+        $this->assertEquals($expected, $output);
+    }
+
     public function testEatWhitespace()
     {
         $input = "[img:test|right] \r\ntest";
-        $expected = '<span class="embedded image right"><span class="caption-panel"><img class="caption-body" src="http://localhost:82/wiki/embed/test" alt="User posted image" /></span></span> test';
+        $expected = '<div class="embedded image right"><span class="caption-panel"><img class="caption-body" src="http://localhost:82/wiki/embed/test" alt="User posted image" /></span></div> test';
         $output = app('bbcode')->Parse($input);
         $this->assertEquals($expected, $output);
     }

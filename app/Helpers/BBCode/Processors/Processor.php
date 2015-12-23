@@ -10,7 +10,7 @@ abstract class Processor {
 
     public function InScope($scope)
     {
-        return !$scope || count($this->scopes) == 0 || array_search($scope, $this->scopes) !== false;
+        return !$scope || $scope == '' || array_search($scope, $this->scopes) !== false;
     }
 }
 

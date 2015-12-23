@@ -41,6 +41,8 @@ class WikiYoutubeTag extends LinkTag {
                 return false;
             }
 
+            $state->SkipWhitespace();
+
             $caption = null;
             $classes = ['embedded', 'video'];
             if ($this->element_class) $classes[] = $this->element_class;
@@ -49,7 +51,8 @@ class WikiYoutubeTag extends LinkTag {
                 if ($this->IsClass($l)) $classes[] = $l;
                 else $caption = trim($p);
             }
-            if ($caption) $caption = $caption;
+
+            // The caption is already html escaped at this point (the default element cleans all strings)
             $impl = implode(' ', $classes);
             $cap = $caption ? "<span class='caption'>" . $caption . '</span>' : '';
             return "<div class='{$impl}'>"

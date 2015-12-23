@@ -99,6 +99,6 @@ class Tag
     public function InScope($scope, $type)
     {
         if ($this->block && $type != 'block') return false;
-        return !$scope || count($this->scopes) == 0 || array_search($scope, $this->scopes) !== false;
+        return !$scope || $scope == '' || array_search($scope, $this->scopes) !== false;
     }
 }

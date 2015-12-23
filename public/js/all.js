@@ -9546,6 +9546,120 @@ return jQuery;
 
 }));
 
+/*
+ * jQuery appear plugin
+ *
+ * Copyright (c) 2012 Andrey Sidorov
+ * licensed under MIT license.
+ *
+ * https://github.com/morr/jquery.appear/
+ *
+ * Version: 0.3.6
+ */
+(function($) {
+  var selectors = [];
+
+  var check_binded = false;
+  var check_lock = false;
+  var defaults = {
+    interval: 250,
+    force_process: false
+  };
+  var $window = $(window);
+
+  var $prior_appeared = [];
+
+  function process() {
+    check_lock = false;
+    for (var index = 0, selectorsLength = selectors.length; index < selectorsLength; index++) {
+      var $appeared = $(selectors[index]).filter(function() {
+        return $(this).is(':appeared');
+      });
+
+      $appeared.trigger('appear', [$appeared]);
+
+      if ($prior_appeared[index]) {
+        var $disappeared = $prior_appeared[index].not($appeared);
+        $disappeared.trigger('disappear', [$disappeared]);
+      }
+      $prior_appeared[index] = $appeared;
+    }
+  };
+
+  function add_selector(selector) {
+    selectors.push(selector);
+    $prior_appeared.push();
+  }
+
+  // "appeared" custom filter
+  $.expr[':']['appeared'] = function(element) {
+    var $element = $(element);
+    if (!$element.is(':visible')) {
+      return false;
+    }
+
+    var window_left = $window.scrollLeft();
+    var window_top = $window.scrollTop();
+    var offset = $element.offset();
+    var left = offset.left;
+    var top = offset.top;
+
+    if (top + $element.height() >= window_top &&
+        top - ($element.data('appear-top-offset') || 0) <= window_top + $window.height() &&
+        left + $element.width() >= window_left &&
+        left - ($element.data('appear-left-offset') || 0) <= window_left + $window.width()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  $.fn.extend({
+    // watching for element's appearance in browser viewport
+    appear: function(options) {
+      var opts = $.extend({}, defaults, options || {});
+      var selector = this.selector || this;
+      if (!check_binded) {
+        var on_check = function() {
+          if (check_lock) {
+            return;
+          }
+          check_lock = true;
+
+          setTimeout(process, opts.interval);
+        };
+
+        $(window).scroll(on_check).resize(on_check);
+        check_binded = true;
+      }
+
+      if (opts.force_process) {
+        setTimeout(process, opts.interval);
+      }
+      add_selector(selector);
+      return $(selector);
+    }
+  });
+
+  $.extend({
+    // force elements's appearance check
+    force_appear: function() {
+      if (check_binded) {
+        process();
+        return true;
+      }
+      return false;
+    }
+  });
+})(function() {
+  if (typeof module !== 'undefined') {
+    // Node
+    return require('jquery');
+  } else {
+    return jQuery;
+  }
+}());
+
 /*!
  * Bootstrap v3.3.5 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -20945,6 +21059,125 @@ $(function() {
         });
     });
 });
+$(document).on('click', '.video-content .uninitialised', function(event) {
+    var $t = $(this),
+      ytid = $t.data('youtube-id'),
+       url = 'https://www.youtube.com/embed/' + ytid + '?autoplay=1&rel=0',
+     frame = $('<iframe></iframe>').attr({ src: url, frameborder: 0, allowfullscreen: ''}).addClass('caption-body');
+    $t.replaceWith(frame);
+});
+
+
+var embed_templates = {
+    vault_slider_screenshot: '<div><img data-u="image" data-src2="{image_large}" alt="Screenshot" /><img data-u="thumb" data-src2="{image_thumb}" alt="Thumbnail" /></div>',
+    vault_slider: '<div id="{slider_id}" class="slider">' +
+            '<div class="loading" data-u="loading">Loading...</div>' +
+            '<div class="slides" data-u="slides">{slider_screenshots}</div>' +
+            '<div data-u="thumbnavigator" class="thumbs"><div data-u="slides"><div data-u="prototype" class="p"><div data-u="thumbnailtemplate" class="i"></div></div></div></div>' +
+            '<span data-u="arrowleft" class="arrow left" style="top: 123px; left: 8px;"></span><span data-u="arrowright" class="arrow right" style="top: 123px; right: 8px;"></span>' +
+            '</div>',
+    vault: '<h2><a href="{url}">{name}</a> by ' +
+            '<span class="avatar inline "><a href="{user_url}"><img src="{user_avatar}" alt="{user_name}"><span class="name"> {user_name}</span></a></span>' +
+            '</h2>{vault_slider}',
+    vault_no_slider: '<a href="{url}"><img class="embed-image" src="{shot}" alt="Screenshot" /></a>'
+};
+
+var __uniq = 0;
+var embed_callbacks = {
+    vault: function (element, data) {
+        var images = data.vault_screenshots;
+        images.forEach(function (img) {
+            img.image_large = template(window.urls.embed.vault_screenshot, { shot: img.image_large });
+            img.image_thumb= template(window.urls.embed.vault_screenshot, { shot: img.image_thumb });
+        });
+
+        if (images.length <= 1) {
+            // 1 or zero screenshots - no need for a slide show
+            // Just put screenshot image in there
+            var shot = images.length == 1 ? images[0].image_large : window.urls.images.no_screenshot_320;
+            var embed_no_slider = template(embed_templates.vault, {
+                url: template(window.urls.view.vault, data),
+                name: data.name,
+                user_url: template(window.urls.view.vault, data.user),
+                user_avatar: data.user.avatar_inline,
+                user_name: data.user.name,
+                vault_slider: template(embed_templates.vault_no_slider, { shot: shot, url: template(window.urls.view.vault, data) })
+            });
+
+            // Set the content
+            element.html(embed_no_slider);
+        } else {
+
+            var sid = 'vault-slider-'+(__uniq++);
+
+            // Sort the shots
+            images.sort(function(a, b) {
+                if (a.is_primary) return -1;
+                if (b.is_primary) return +1;
+                return a.order_index - b.order_index;
+            });
+
+            // Assemble the slide show
+            var shots = images.map(function(s) {
+                return template(embed_templates.vault_slider_screenshot, s);
+            }).join('');
+            var show = template(embed_templates.vault_slider, { slider_id: sid, slider_screenshots: shots });
+            var embed = template(embed_templates.vault, {
+                url: template(window.urls.view.vault, data),
+                name: data.name,
+                user_url: template(window.urls.view.vault, data.user),
+                user_avatar: data.user.avatar_inline,
+                user_name: data.user.name,
+                vault_slider: show
+            });
+
+            // Set the content
+            element.html(embed);
+
+            // Initialise the slide show
+            var slider = new $JssorSlider$(sid, {
+                $AutoPlay: true,
+                $AutoPlayInterval: 4000,
+                $SlideDuration: 250,
+                $FillMode: 5,
+
+                $ThumbnailNavigatorOptions: {
+                    $Class: $JssorThumbnailNavigator$,
+                    $ChanceToShow: 2,
+                    $SpacingX: 8,
+                    $DisplayPieces: 10,
+                    $ParkingPosition: 360
+                },
+
+                $ArrowNavigatorOptions: {
+                    $Class: $JssorArrowNavigator$,
+                    $AutoCenter: 2
+                }
+            });
+        }
+    }
+};
+
+$(document).on('appear', '.embed-content .uninitialised', function(e, $affected) {
+  var $t = $(this).text('Loading...'),
+     par = $t.parent(),
+     typ = $t.data('embed-type'),
+      id = $t.data(typ+'-id'),
+     url = template(window.urls.embed[typ], {id:id});
+
+    if ($t.data('stop')) return;
+    $t.data('stop', true);
+
+    $.get(url, { }).done(function(data) {
+        embed_callbacks[typ].call(window, par, data);
+    });
+});
+
+$(function() {
+    $('.embed-content .uninitialised').appear();
+    // Force already-visible stuff to appear
+    setTimeout($.force_appear, 10);
+});
 /*
  * TWHL Shoutbox - Because there's not enough useless JavaScript in the world yet
  */
@@ -21088,7 +21321,6 @@ $(function() {
 
             // Decode the base64 links so we're good again
             content = content.replace(/\u0000\u9998([\s\S]*?)\u9999\u0000/g, function(match, b64) {
-                console.log(b64);
                 return window.atob(b64.replace('-','/'));
             });
 
@@ -21197,7 +21429,6 @@ $(function() {
                 self.container.find('input,button').prop('disabled', false);
                 self.container.removeClass('refreshing');
                 self.container.find('.error').addClass('show').find('.message').text(req.responseJSON.text[0]);
-                console.log(arguments);
                 input.val(content).focus();
             }).done(function() {
                 self.cancelEdit();
@@ -21210,8 +21441,6 @@ $(function() {
             this.editing = id;
             this.container.addClass('editing');
             this.container.find('input').val(data.content).focus();
-
-            console.log(id, data);
         };
 
         this.beginDelete = function(id, data) {
@@ -21219,8 +21448,6 @@ $(function() {
             this.deleting = id;
             this.container.addClass('deleting');
             this.container.find('input').val(data.content).focus();
-
-            console.log(id, data);
         };
 
         this.cancelEdit = function() {
@@ -21329,12 +21556,5 @@ $(function() {
         e.stopPropagation();
         $(e.currentTarget).toggleClass('on');
     });
-});
-$(document).on('click', '.video-content .uninitialised', function(event) {
-    var $t = $(this),
-      ytid = $t.data('youtube-id'),
-       url = 'https://www.youtube.com/embed/' + ytid + '?autoplay=1&rel=0',
-     frame = $('<iframe></iframe>').attr({ src: url, frameborder: 0, allowfullscreen: ''}).addClass('caption-body');
-    $t.replaceWith(frame);
 });
 //# sourceMappingURL=all.js.map
