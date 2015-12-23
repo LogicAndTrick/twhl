@@ -15,7 +15,7 @@
         {!! $items->render() !!}
     </hc>
 
-    <form method="get" action="{{ act('vault', 'index') }}">
+    <form method="get" action="{{ act('vault', 'index') }}" class="vault-filter-form">
         <input type="hidden" data-filter="filter-games" name="games" value="{{ Request::get('games') }}"/>
         <input type="hidden" data-filter="filter-categories" name="cats" value="{{ Request::get('cats') }}"/>
         <input type="hidden" data-filter="filter-types" name="types" value="{{ Request::get('types') }}"/>

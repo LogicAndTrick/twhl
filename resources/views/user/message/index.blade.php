@@ -43,5 +43,7 @@
             @endforeach
         </tbody>
     </table>
-
+    <div class="footer-container">
+        {!! $threads->render() !!}
+    </div>
 @endsection

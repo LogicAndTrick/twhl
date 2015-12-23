@@ -1,6 +1,7 @@
 <?php namespace App\Models\Accounts;
 
 use App\Models\Comments\Comment;
+use App\Models\Messages\MessageUser;
 use App\Models\Wiki\WikiRevision;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -50,6 +51,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             if ($this->name != $nh->name && array_search($nh->name, $ret) === false) $ret[] = $nh->name;
         }
         return $ret;
+    }
+
+    public function unreadPrivateMessageCount()
+    {
+        return MessageUser::where('user_id', '=', $this->id)
+                    ->where('is_unread', '=', true)
+                    ->count();
+
     }
 
     public function deleteAvatar() {

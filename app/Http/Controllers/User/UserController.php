@@ -37,19 +37,11 @@ class UserController extends Controller {
         ]);
 	}
 
-    public function getMaps($id) {
-
-    }
-
     public function getPosts($id) {
 
     }
 
     public function getThreads($id) {
-
-    }
-
-    public function getJournals($id) {
 
     }
 }

@@ -1,3 +1,7 @@
+.vault-filter-form {
+  margin-bottom: 15px;
+}
+
 .vault-filter-container {
   @media (max-width: 1199px) {
     .btn-group > .btn {
@@ -130,7 +134,7 @@
 
 .vault-list {
   list-style-type: none;
-  padding: 15px;
+  padding: 0 15px;
 
   > * {
     padding: 0;
@@ -158,10 +162,12 @@
 
 .vault-item {
   margin: 2px;
-  border: 1px solid #ccc;
+  border: 1px solid @panel-default-border;
   padding: 5px;
   text-align: center;
   line-height: 1.6em;
+
+  .box-shadow(0 1px 1px rgba(0,0,0,.05));
 
   .game-icon {
     float: left;

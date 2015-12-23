@@ -141,7 +141,6 @@
 
             // Decode the base64 links so we're good again
             content = content.replace(/\u0000\u9998([\s\S]*?)\u9999\u0000/g, function(match, b64) {
-                console.log(b64);
                 return window.atob(b64.replace('-','/'));
             });
 
@@ -250,7 +249,6 @@
                 self.container.find('input,button').prop('disabled', false);
                 self.container.removeClass('refreshing');
                 self.container.find('.error').addClass('show').find('.message').text(req.responseJSON.text[0]);
-                console.log(arguments);
                 input.val(content).focus();
             }).done(function() {
                 self.cancelEdit();
@@ -263,8 +261,6 @@
             this.editing = id;
             this.container.addClass('editing');
             this.container.find('input').val(data.content).focus();
-
-            console.log(id, data);
         };
 
         this.beginDelete = function(id, data) {
@@ -272,8 +268,6 @@
             this.deleting = id;
             this.container.addClass('deleting');
             this.container.find('input').val(data.content).focus();
-
-            console.log(id, data);
         };
 
         this.cancelEdit = function() {

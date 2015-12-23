@@ -64,15 +64,24 @@
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
-						<li class="dropdown">
+                        {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
+						<li class="dropdown {{ $unread_count > 0 ? 'has-notification' : '' }}">
 							<a href="{{ act('panel', 'index') }}" class="dropdown-toggle navbar-user-info" data-toggle="dropdown">
                                 <img src="{{ Auth::user()->getAvatarUrl('small') }}" alt="{{ Auth::user()->name }}"/>
+                                @if ($unread_count > 0)
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                @endif
                                 {{ Auth::user()->name }}
                                 <span class="caret"></span>
                             </a>
 							<ul class="dropdown-menu" role="menu">
-                                <li><a href="{{ act('panel', 'index') }}">Control Panel</a></li>
-								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+                                <li class="{{ $unread_count > 0 ? 'has-notification' : '' }}">
+                                    <a href="{{ act('message', 'index') }}">
+                                        <span class="glyphicon glyphicon-envelope"></span> {{ $unread_count != 0 ? $unread_count : '' }} Private Message{{ $unread_count == 1 ? '' : 's' }}
+                                    </a>
+                                </li>
+                                <li><a href="{{ act('panel', 'index') }}"><span class="glyphicon glyphicon-user"></span> Control Panel</a></li>
+								<li><a href="{{ url('/auth/logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 							</ul>
 						</li>
 					@endif
@@ -108,6 +117,20 @@
         </div>
     @endif
     <script type="text/javascript">
+        window.urls = {
+            embed: {
+                vault: '{{ url("vault/embed/{id}") }}',
+                vault_screenshot: '{{ asset("uploads/vault/{shot}") }}'
+            },
+            view: {
+                user: '{{ url("user/view/{id}") }}',
+                vault: '{{ url("vault/view/{id}") }}'
+            },
+            images: {
+                no_screenshot_320: '{{ asset("images/no-screenshot-320.png") }}',
+                no_screenshot_640: '{{ asset("images/no-screenshot-640.png") }}'
+            }
+        };
         $('body').shoutbox({
             url:'{{ url("shout/{action}") }}',
             userUrl:'{{ url("user/view/{id}") }}',

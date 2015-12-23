@@ -60,12 +60,23 @@
             <hc class="text-right">
                 <h3>Recent Journals</h3>
                 <ol class="breadcrumb">
-                    <li><a href="{{ act('journal', 'user', $user->id) }}">See All</a></li>
+                    <li><a href="{{ act('journal', 'index').'?user='.$user->id }}">See All</a></li>
                 </ol>
             </hc>
-            <ul>
+            <ul class="media-list">
                 @foreach ($journals as $journal)
-                    <li>{{ app('bbcode')->Parse(substr($journal->content_text, 0, 100)) }}</li>
+                    <li class="media media-panel">
+                        <div class="media-body">
+                            <div class="media-heading">
+                                @date($journal->created_at) &bull;
+                                <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
+                                </a>
+                            </div>
+                            <div class="bbcode">{!! app('bbcode')->ParseExcerpt($journal->content_text) !!}</div>
+                        </div>
+                    </li>
                 @endforeach
             </ul>
         </div>

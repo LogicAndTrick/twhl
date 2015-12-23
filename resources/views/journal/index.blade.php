@@ -6,6 +6,12 @@
             <a href="{{ act('journal', 'create') }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Create new journal</a>
         @endif
         <h1>Journals</h1>
+        @if ($user)
+            <ol class="breadcrumb">
+                <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
+                <li class="active">Posted by @avatar($user inline)</li>
+            </ol>
+        @endif
         {!! $journals->render() !!}
     </hc>
     <ul class="media-list">

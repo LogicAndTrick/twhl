@@ -12,3 +12,41 @@
     padding-right: 6px;
   }
 }
+
+@keyframes pulse
+{
+   0% {background-color: lighten(@twhl-brand, 30%);}
+  50% {background-color: @twhl-brand;}
+ 100% {background-color: lighten(@twhl-brand, 30%);}
+}
+.nav > li.has-notification:not(.open) {
+  background: #ff7e2d;
+  animation: pulse 5s infinite;
+  position: relative;
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    background: linear-gradient(270deg, white 0%, transparent 35%, transparent 65%, white 100%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  * {
+    z-index: 1;
+  }
+}
+.nav .dropdown-menu .has-notification {
+
+
+  a {
+    color: white;
+    background-color: @twhl-brand;
+
+    &:hover {
+      background-color: lighten(@twhl-brand, 10%);
+    }
+  }
+}

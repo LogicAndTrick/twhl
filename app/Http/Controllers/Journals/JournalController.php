@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Journals;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\User;
 use App\Models\Comments\Comment;
 use App\Models\Journal;
 use Request;
@@ -16,9 +17,16 @@ class JournalController extends Controller {
 
 	public function getIndex()
 	{
-        $journals = Journal::with(['user'])->orderBy('created_at', 'desc')->paginate();
+        $query = Journal::with(['user'])->orderBy('created_at', 'desc');
+
+        $user = intval(Request::get('user'));
+        $user = $user > 0 ? User::find($user) : null;
+        if ($user) $query = $query->whereUserId($user->id);
+
+        $journals = $query->paginate();
 		return view('journal/index', [
-            'journals' => $journals
+            'journals' => $journals,
+            'user' => $user
         ]);
 	}
 

@@ -58,6 +58,18 @@ class Parser
         }
     }
 
+    public function ParseExcerpt($text, $length = 200, $scope = 'excerpt') {
+        $len = strlen($text);
+        if ($len > $length) {
+            $text = substr($text, 0, $length);
+        }
+        $parsed = $this->Parse($text, $scope);
+        if ($len > $length) {
+            $parsed .= '...';
+        }
+        return $parsed;
+    }
+
     public function Parse($text, $scope = '') {
         $result = $this->ParseResult($text, $scope);
         return $result->text;

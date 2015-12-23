@@ -14,7 +14,7 @@
             <dt>Vault Items</dt>
             <dd><a href="{{ act('vault', 'index').'?users='.$user->id }}">{{ $user->stat_vault_items }} ({{ round($user->stat_vault_items / $age, 2) }})</a></dd>
             <dt>Journals</dt>
-            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_journals }} ({{ round($user->stat_journals / $age, 2) }})</a></dd>
+            <dd><a href="{{ act('journal', 'index').'?user='.$user->id }}">{{ $user->stat_journals }} ({{ round($user->stat_journals / $age, 2) }})</a></dd>
             <dt>Wiki Edits</dt>
             <dd>{{ $user->stat_wiki_edits }} ({{ round($user->stat_wiki_edits / $age, 2) }})</dd>
             <dt>Comments</dt>
