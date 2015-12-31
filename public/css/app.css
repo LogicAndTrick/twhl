@@ -6860,6 +6860,19 @@ fieldset[disabled] .btn-inverse.active {
   display: inline-block;
   padding-right: 6px;
 }
+.nav .navbar-dropdown-search input {
+  min-width: 180px;
+}
+@media (max-width: 767px) {
+  .nav .navbar-inline-search form {
+    margin: 0 15px;
+  }
+}
+@media (min-width: 768px) {
+  .nav .navbar-inline-search input {
+    max-width: 150px;
+  }
+}
 .nav > li > a.navbar-user-info {
   padding: 2px 4px;
 }
@@ -8060,7 +8073,7 @@ hr[title]::before {
 .media-heading h1 a,
 .media-heading h2 a,
 .media-heading h3 a {
-  color: #000;
+  color: #2a6598;
 }
 .media-heading .btn:not(.link) {
   float: right;
@@ -9197,6 +9210,13 @@ ul.wiki-categories .header {
 .rating-5 {
   color: #00ca00;
 }
+.competition-winners h4 {
+  margin-bottom: 5px;
+}
+.competition-winners .avatar {
+  display: inline-block;
+  margin: 5px;
+}
 .comp-status-message {
   font-size: 110%;
   display: block;
@@ -9525,6 +9545,45 @@ tr.unread {
 }
 .poll-results .chosen {
   font-weight: bold;
+}
+.search-results h2 {
+  display: inline-block;
+  margin: 0;
+}
+.search-results .pagination {
+  display: inline-block;
+  margin: 0px 20px 5px;
+  vertical-align: middle;
+}
+.search-results .pagination > li > a,
+.search-results .pagination > li > span {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.search-results .pagination > li:first-child > a,
+.search-results .pagination > li:first-child > span {
+  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.search-results .pagination > li:last-child > a,
+.search-results .pagination > li:last-child > span {
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+}
+.search-results .table {
+  margin-top: 5px;
+}
+.search-results .td .bbcode {
+  margin-bottom: 0;
+}
+.search-results .search-posts tr > :nth-child(1),
+.search-results .search-wikis tr > :nth-child(1) {
+  min-width: 150px;
+}
+.search-results .search-posts tr > :nth-child(2),
+.search-results .search-wikis tr > :nth-child(2) {
+  min-width: 150px;
 }
 body > .container,
 body > .container-fluid {

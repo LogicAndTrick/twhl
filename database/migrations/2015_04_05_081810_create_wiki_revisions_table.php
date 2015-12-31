@@ -25,6 +25,8 @@ class CreateWikiRevisionsTable extends Migration {
             $table->foreign('user_id')->references('id')->on('users');
 		});
 
+        DB::unprepared("ALTER TABLE wiki_revisions ADD FULLTEXT wiki_revisions_content_text_fulltext (title, content_text);");
+
         DB::unprepared("
             CREATE PROCEDURE update_wiki_object(oid INT)
             BEGIN

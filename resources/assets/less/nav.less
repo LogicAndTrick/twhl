@@ -5,6 +5,26 @@
     padding-right: 6px;
   }
 }
+
+.nav .navbar-dropdown-search {
+  input {
+    min-width: 180px;
+  }
+}
+
+.nav .navbar-inline-search {
+  @media (max-width: @screen-xs-max) {
+     form {
+       margin: 0 15px;
+     }
+  }
+  @media (min-width: @screen-sm-min) {
+    input {
+      max-width: 150px;
+    }
+  }
+}
+
 .nav > li > a.navbar-user-info {
   padding: 2px 4px;
   img {

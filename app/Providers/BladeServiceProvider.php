@@ -53,7 +53,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $name = $parameters['show_name'] == 'true';
                 $title = $class == 'full' && $parameters['show_title'] == 'true';
                 $link = $parameters['link'] == 'true';
-                return "{$matches[1]}<span class=\"avatar $class $border\">" .
+                return "{$matches[1]}<span class=\"avatar $class $border\" title=\"<?php echo {$user}->name; ?>\">" .
                 ($link ? "\n<a href=\"<?php echo act('user', 'view', {$user}->id); ?>\">" : '') .
                 ($img ? "\n<img src=\"<?php echo {$user}->getAvatarUrl('$class'); ?>\" alt=\"<?php echo {$user}->name; ?>\"/>" : '') .
                 ($name ? "\n<span class=\"name\"><?php echo {$user}->name; ?></span>" : "") .

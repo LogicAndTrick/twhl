@@ -2,7 +2,7 @@
 
 @section('content')
     <hc>
-        <h1>Edit Journal Post #{{ $journal->id }} by @include('user._avatar', [ 'class' => 'inline', 'user' => $journal->user ])</h1>
+        <h1>Edit Journal Post #{{ $journal->id }} by @avatar($journal->user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
             <li><a href="{{ act('journal', 'view', $journal->id) }}">Journal #{{ $journal->id }}</a></li>

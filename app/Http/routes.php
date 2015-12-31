@@ -46,4 +46,5 @@ Route::controllers([
     'poll' => 'Polls\PollController',
 
     'api' => 'Api\ApiController',
+    'search' => 'Search\SearchController'
 ]);

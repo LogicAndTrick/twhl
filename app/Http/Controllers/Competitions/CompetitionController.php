@@ -17,7 +17,7 @@ class CompetitionController extends Controller {
 	}
 
 	public function getIndex() {
-        $comps = Competition::with(['type', 'judge_type'])->where('status_id', '!=', CompetitionStatus::DRAFT)->get();
+        $comps = Competition::with(['type', 'judge_type', 'results', 'entries', 'entries.user'])->where('status_id', '!=', CompetitionStatus::DRAFT)->get();
         return view('competitions/competition/index', [
             'comps' => $comps
         ]);

@@ -221,6 +221,17 @@ class Competition extends Model {
         return array_merge($entries[1], $entries[2], $entries[3], $entries[0]);
     }
 
+    public function getEntriesForWinners() {
+        $entries = [1 => [], 2 => [], 3 => []];
+        foreach ($this->entries as $entry) {
+            $result = $this->results->where('entry_id', $entry->id)->first();
+            if ($result && $result->rank > 0) {
+                $entries[$result->rank][] = $entry;
+            }
+        }
+        return array_merge($entries[1], $entries[2], $entries[3]);
+    }
+
     public function getEntriesForJudging() {
         $votes = $this->votes;
         return array_sort($this->entries, function($e) use ($votes) {

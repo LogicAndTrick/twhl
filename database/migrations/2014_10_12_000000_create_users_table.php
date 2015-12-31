@@ -74,6 +74,8 @@ class CreateUsersTable extends Migration {
 			$table->timestamps();
             $table->softDeletes();
 		});
+
+        DB::unprepared("ALTER TABLE users ADD FULLTEXT users_name_fulltext (name, info_biography_text);");
 	}
 
 	/**

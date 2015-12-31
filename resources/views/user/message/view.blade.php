@@ -14,7 +14,7 @@
             {? $expand = $message->id == $thread->last_message_id || array_search($message->id, $unread) !== false; ?}
             <div class="message">
                 <div class="sender-info {{ $expand ? '' : 'collapsed' }}" data-toggle="collapse" data-target="#message-{{ $message->id }}">
-                    @include('user._avatar', [ 'user' => $message->user, 'class' => 'inline' ]),
+                    @avatar($message->user inline)
                     @date($message->created_at)
                     <span class="collapsed-only"></span>
                 </div>
@@ -31,7 +31,7 @@
     <ul class="inline-bullet message-thread-participants">
         <li>Thread participants</li>
         @foreach ($thread->participants as $p)
-            <li>@include('user._avatar', [ 'user' => $p, 'class' => 'inline' ])</li>
+            <li>@avatar($p inline)</li>
         @endforeach
     </ul>
     @form(message/send)

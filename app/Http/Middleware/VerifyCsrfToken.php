@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\Util\StringUtils;
 class VerifyCsrfToken extends BaseVerifier {
 
     protected $except = [
-        'shout/*'
+        'shout/*',
+        'search/*'
     ];
 }

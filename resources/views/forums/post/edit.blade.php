@@ -2,7 +2,7 @@
 
 @section('content')
     <hc>
-        <h1>Edit Post by @include('user._avatar', [ 'class' => 'inline', 'user' => $post->user ])</h1>
+        <h1>Edit Post by @avatar($post->user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>

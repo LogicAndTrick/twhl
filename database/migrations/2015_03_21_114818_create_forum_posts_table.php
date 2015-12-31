@@ -28,6 +28,8 @@ class CreateForumPostsTable extends Migration {
             $table->index('created_at');
 		});
 
+        DB::unprepared("ALTER TABLE forum_posts ADD FULLTEXT forum_posts_content_text_fulltext (content_text);");
+
         DB::unprepared("
             CREATE PROCEDURE update_thread_statistics(tid INT)
             BEGIN

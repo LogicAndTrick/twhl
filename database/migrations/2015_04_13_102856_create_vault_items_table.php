@@ -40,6 +40,8 @@ class CreateVaultItemsTable extends Migration {
             $table->foreign('license_id')->references('id')->on('licenses');
 		});
 
+        DB::unprepared("ALTER TABLE vault_items ADD FULLTEXT vault_items_name_content_text_fulltext (name, content_text);");
+
         DB::unprepared("
             CREATE PROCEDURE update_user_vault_statistics(uid INT)
             BEGIN

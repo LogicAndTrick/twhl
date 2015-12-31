@@ -28,15 +28,15 @@
                 <tr>
                     <td>
                         <a href="{{ act('thread', 'view', $thread->id) }}?page=last">{{ $thread->title }}</a><br>
-                        by <a href="#">{{ $thread->user->name }}</a>,
-                        {{ Date::TimeAgo($thread->created_at) }}
+                        by @avatar($thread->user inline),
+                        @date($thread->created_at)
                     </td>
                     <td>{{ $thread->stat_posts }}</td>
                     <td>{{ $thread->stat_views }}</td>
                     <td class="last-post">
                         @if ($thread->last_post)
-                            <a href="{{ act('thread', 'view', $thread->id) }}?page=last#post-{{ $thread->last_post->id }}">{{ Date::TimeAgo($thread->last_post->created_at) }}</a><br>
-                            by <a href="#">{{ $thread->last_post->user->name }}</a>
+                            <a href="{{ act('thread', 'view', $thread->id) }}?page=last#post-{{ $thread->last_post->id }}">{{ $thread->last_post->created_at->diffForHumans() }}</a><br>
+                            by @avatar($thread->last_post->user inline)
                         @endif
                     </td>
                 </tr>

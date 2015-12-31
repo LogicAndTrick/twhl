@@ -29,6 +29,8 @@ class CreateForumThreadsTable extends Migration {
             $table->foreign('forum_id')->references('id')->on('forums');
             $table->foreign('user_id')->references('id')->on('users');
 		});
+
+        DB::unprepared("ALTER TABLE forum_threads ADD FULLTEXT forum_threads_title_fulltext (title);");
 	}
 
 	/**

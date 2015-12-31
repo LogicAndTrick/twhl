@@ -6,7 +6,7 @@
             <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
             <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
         @endif
-        <h1>Journal Post by @include('user._avatar', [ 'class' => 'inline', 'user' => $journal->user ])</h1>
+        <h1>Journal Post by @avatar($journal->user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
             <li class="active">View Journal</li>

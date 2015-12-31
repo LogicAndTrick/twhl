@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-4 text-center">
-        @include('user._avatar', [ 'user' => $user, 'border' => true ])
+        @avatar($user full show_border=true)
         <a href="{{ act('message', 'send', $user->id) }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-envelope"></span> Send Message</a>
         <hr title="Stats"/>
         <dl class="dl-horizontal dl-small">

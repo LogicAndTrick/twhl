@@ -24,6 +24,20 @@ class ThreadController extends Controller {
         return 1;
 	}
 
+    public function getLocatePost($id) {
+        $post = ForumPost::findOrFail($id);
+        $thread = ForumThread::findOrFail($post->thread_id);
+        $forum = Forum::findOrFail($thread->forum_id);
+        $all_posts = $thread->posts;
+        $index = 0;
+        for ($index = 0; $index < $all_posts->count(); $index++) {
+            $p = $all_posts[$index];
+            if ($p->id == $id) break;
+        }
+        $page = ceil(($index+1) / 50);
+        return redirect('thread/view/'.$thread->id.'?page='.$page.'#post-'.$id);
+    }
+
     public function getView($id)
     {
         $thread = ForumThread::findOrFail($id);

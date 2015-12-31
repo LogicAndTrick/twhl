@@ -8,12 +8,27 @@
         @endif
         <h1>Competitions</h1>
     </hc>
-    <ul>
+    <ul class="media-list">
         @foreach ($comps->sortByDesc('close_date') as $comp)
-        <li>
-            <h4><a href="{{ act('competition', $comp->isClosed() ? 'results' : 'brief', $comp->id) }}">{{ $comp->name }}</a></h4>
-            <strong>{{ $comp->getStatusText() }}</strong> &bull; {{ $comp->type->name }} &bull; {{ $comp->judge_type->name }}<br/>
-            {{ $comp->isActive() ? 'Closes' : 'Closed' }} on {{ $comp->close_date->format('jS F Y') }}
+        <li class="media media-panel">
+            <div class="media-body">
+                <div class="media-heading">
+                    <h2><a href="{{ act('competition', $comp->isClosed() ? 'results' : 'brief', $comp->id) }}">{{ $comp->name }}</a></h2>
+                    <strong>{{ $comp->getStatusText() }}</strong> &bull;
+                    {{ $comp->type->name }} &bull;
+                    {{ $comp->judge_type->name }}
+                </div>
+                {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->close_date) ({{ $comp->close_date->format('jS F Y') }})
+                @if ($comp->isClosed())
+                    <div class="competition-winners">
+                        <h4>Winners</h4>
+                        @foreach ($comp->getEntriesForWinners() as $entry)
+                            {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
+                            @avatar($entry->user small show_border=true show_name=false)
+                        @endforeach
+                    </div>
+                @endif
+            </div>
         </li>
         @endforeach
     </ul>

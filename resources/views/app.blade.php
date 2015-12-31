@@ -35,7 +35,8 @@
 				</button>
 				<a class="navbar-brand" href="{{ url('/') }}">
                     <img src="{{ asset('images/logo_icon.png') }}" alt="">
-                    The Whole Half-Life
+                    <span class="hidden-sm">The Whole Half-Life</span>
+                    <span class="visible-sm-inline">TWHL</span>
                 </a>
 			</div>
 
@@ -60,6 +61,40 @@
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown visible-sm-block visible-md-block navbar-dropdown-search">
+                        <a href="#" class="dropdown-toggle navbar-search" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-search"></span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <form action="{{ url('search/index') }}" method="get">
+                                    <div class="navbar-form">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                                                <input type="text" class="form-control" name="search" placeholder="Search">
+                                                <span class="input-group-btn"><button type="submit" class="btn btn-default">Go</button></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="hidden-sm hidden-md navbar-inline-search">
+                        <form action="{{ url('search/index') }}" method="get">
+                            <div class="navbar-form">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                                        <input type="text" class="form-control" name="search" placeholder="Search">
+                                        <span class="input-group-btn"><button type="submit" class="btn btn-default">Go</button></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
 					@if (Auth::guest())
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
@@ -136,6 +171,9 @@
             userUrl:'{{ url("user/view/{id}") }}',
             active: '{{ Auth::user() != null ? "true" : "false" }}',
             moderator: '{{ permission("Admin") ? "true" : "false" }}'
+        });
+        $('.navbar-dropdown-search').on('shown.bs.dropdown', function () {
+            $(this).find('input:text').focus();
         });
     </script>
     @yield('scripts', '')

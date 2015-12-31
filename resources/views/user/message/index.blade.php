@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         @date($thread->last_message->created_at) by
-                        @include('user._avatar', [ 'user' => $thread->last_message->user, 'class' => 'inline' ])
+                        @avatar($thread->last_message->user inline)
                     </td>
                 </tr>
             @endforeach
