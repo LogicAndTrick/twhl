@@ -69,6 +69,11 @@ class VaultItem extends Model {
         return $this->hasMany('App\Models\Vault\VaultItemReview', 'item_id');
     }
 
+    public function motms()
+    {
+        return $this->hasMany('App\Models\Vault\Motm', 'item_id');
+    }
+
     public function hasPrimaryScreenshot()
     {
         return $this->getPrimaryScreenshot() != null;

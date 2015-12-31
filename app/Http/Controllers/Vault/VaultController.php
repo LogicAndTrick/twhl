@@ -65,7 +65,7 @@ class VaultController extends Controller {
 	}
 
     public function getView($id) {
-        $item = VaultItem::with(['user', 'game', 'engine', 'license', 'vault_item_reviews', 'vault_screenshots', 'vault_includes', 'vault_category', 'vault_type'])->findOrFail($id);
+        $item = VaultItem::with(['user', 'game', 'engine', 'license', 'vault_item_reviews', 'vault_screenshots', 'vault_includes', 'vault_category', 'vault_type', 'motms'])->findOrFail($id);
         $item->timestamps = false;
         $item->stat_views++;
         $item->save();

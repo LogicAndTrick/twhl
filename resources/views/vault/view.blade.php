@@ -49,6 +49,15 @@
         <span data-u="arrowright" class="arrow right" style="top: 123px; right: 8px;"></span>
     </div>
 
+    @foreach ($item->motms as $motm)
+        <div class="alert alert-success">
+            <h3>
+                <span class="glyphicon glyphicon-certificate"></span>
+                Map of the Month winner for {{ $motm->getDateString() }}!
+            </h3>
+        </div>
+    @endforeach
+
     <div class="row">
         <div class="col-sm-8">
             <hc>
