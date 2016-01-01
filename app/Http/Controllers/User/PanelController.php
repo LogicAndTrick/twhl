@@ -255,7 +255,7 @@ class PanelController extends Controller {
         $id = Request::input('id');
         $ban = Ban::findOrFail($id);
         $ban->delete();
-        return redirect('panel/edit-bans/'.$id);
+        return redirect('panel/edit-bans/'.$ban->user_id);
     }
 
     public function getObliterate($id) {

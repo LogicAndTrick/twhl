@@ -28,7 +28,7 @@ class MessageController extends Controller {
 
         $threads = MessageThread::whereRaw('(select count(*) from message_users as mu where mu.thread_id = message_threads.id and mu.user_id = ?)', [ $user->id ])
             ->with(['last_message', 'last_message.user'])
-            ->orderBy('updated_at')
+            ->orderBy('updated_at', 'desc')
             ->paginate();
 
         $thread_ids = $threads->map(function($x) { return $x->id; })->toArray();

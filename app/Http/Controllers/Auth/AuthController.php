@@ -45,7 +45,7 @@ class AuthController extends Controller {
    	{
         Validator::extend('never', function($attribute, $value, $parameters) { return false; }, 'Registration is disabled.');
    		return Validator::make($data, [
-   			'name' => 'required|max:255|unique:users|never',
+   			'name' => 'required|max:255|unique:users',
    			'email' => 'required|email|max:255|unique:users',
    			'password' => 'required|confirmed|min:6',
    		]);
