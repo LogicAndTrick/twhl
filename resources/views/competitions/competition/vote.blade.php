@@ -1,3 +1,4 @@
+@title('Competition Result Voting: '.$comp->name)
 @extends('app')
 
 @section('content')

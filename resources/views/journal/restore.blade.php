@@ -1,3 +1,4 @@
+@title('Restore Journal Post')
 @extends('app')
 
 @section('content')

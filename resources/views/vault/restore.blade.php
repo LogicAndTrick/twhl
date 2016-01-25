@@ -1,3 +1,4 @@
+@title('Restore Vault Item: '.$item->name)
 @extends('app')
 
 @section('content')

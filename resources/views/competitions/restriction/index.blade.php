@@ -1,3 +1,4 @@
+@title('Competition Restrictions')
 @extends('app')
 
 @section('content')

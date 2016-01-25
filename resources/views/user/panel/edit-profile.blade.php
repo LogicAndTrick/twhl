@@ -1,3 +1,4 @@
+@title('Update Profile')
 @extends('app')
 
 @section('content')

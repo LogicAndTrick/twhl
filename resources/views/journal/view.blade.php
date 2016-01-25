@@ -1,3 +1,4 @@
+@title('Journal Post by '.$journal->user->name)
 @extends('app')
 
 @section('content')

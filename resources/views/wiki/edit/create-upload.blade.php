@@ -1,3 +1,4 @@
+@title('Upload New Wiki File')
 @extends('app')
 
 @section('content')

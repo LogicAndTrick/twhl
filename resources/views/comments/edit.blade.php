@@ -1,3 +1,4 @@
+@title('Edit Comment')
 @extends('app')
 
 @section('content')

@@ -1,3 +1,4 @@
+@title('Message Thread: '.$thread->subject)
 @extends('app')
 
 @section('content')

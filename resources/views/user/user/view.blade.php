@@ -1,3 +1,4 @@
+@title('User: '.$user->name)
 @extends('app')
 
 @section('content')

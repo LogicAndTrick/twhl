@@ -1,3 +1,4 @@
+@title('Revert Wiki Page')
 @extends('app')
 
 @section('content')

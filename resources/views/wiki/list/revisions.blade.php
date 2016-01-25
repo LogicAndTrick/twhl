@@ -1,3 +1,4 @@
+@title('History of Wiki Page: '.$revision->getNiceTitle())
 @extends('app')
 
 @section('content')

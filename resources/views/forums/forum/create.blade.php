@@ -1,5 +1,5 @@
+@title('Create Forum')
 @extends('app')
-
 
 @section('content')
     <hc>

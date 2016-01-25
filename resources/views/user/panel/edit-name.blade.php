@@ -1,3 +1,4 @@
+@title('Update Username: '.$user->name)
 @extends('app')
 
 @section('content')

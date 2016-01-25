@@ -78,6 +78,15 @@ class BladeServiceProvider extends ServiceProvider {
             }, $view);
         });
 
+        // @title(page_title)
+        Blade::extend(function($view, $compiler) {
+            $pattern = '/(?<!\w)\s*@title\((.*)\)(?!\w)/';
+            return preg_replace_callback($pattern, function($matches) {
+                $page_title = $matches[1];
+                return '<?php $page_title = ('. $page_title .'); ?>';
+            }, $view);
+        });
+
         // @form(url)
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('form');

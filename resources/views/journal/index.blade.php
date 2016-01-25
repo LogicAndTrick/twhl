@@ -1,3 +1,4 @@
+@title('Journals')
 @extends('app')
 
 @section('content')

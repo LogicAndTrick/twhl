@@ -1,3 +1,4 @@
+@title('Upload to the Vault')
 @extends('app')
 
 @section('content')

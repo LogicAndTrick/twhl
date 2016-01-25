@@ -1,3 +1,4 @@
+@title('Vault Items')
 @extends('app')
 
 @section('content')

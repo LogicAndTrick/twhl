@@ -1,3 +1,4 @@
+@title('Member List')
 @extends('app')
 
 @section('content')

@@ -1,3 +1,4 @@
+@title('Edit Forum Thread: '.$thread->title)
 @extends('app')
 
 @section('content')

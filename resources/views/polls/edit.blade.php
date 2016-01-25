@@ -1,3 +1,4 @@
+@title('Edit Poll: '.$poll->title)
 @extends('app')
 
 @section('content')

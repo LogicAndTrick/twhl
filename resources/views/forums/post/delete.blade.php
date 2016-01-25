@@ -1,3 +1,4 @@
+@title('Delete Forum Post by '.$post->user->name)
 @extends('app')
 
 @section('content')

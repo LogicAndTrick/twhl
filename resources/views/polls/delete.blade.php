@@ -1,3 +1,4 @@
+@title('Delete Poll: '.$poll->title)
 @extends('app')
 
 @section('content')

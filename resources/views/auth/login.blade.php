@@ -1,3 +1,4 @@
+@title('Login')
 @extends('app')
 
 @section('content')

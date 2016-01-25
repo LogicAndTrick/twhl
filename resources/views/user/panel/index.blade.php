@@ -1,3 +1,4 @@
+@title('User Control Panel: '.$user->name)
 @extends('app')
 
 @section('content')

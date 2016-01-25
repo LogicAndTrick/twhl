@@ -1,3 +1,4 @@
+@title('Create Forum Thread: '.$forum->name)
 @extends('app')
 
 @section('content')

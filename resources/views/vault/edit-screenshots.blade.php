@@ -1,3 +1,4 @@
+@title('Vault Item Screenshots: '.$item->name)
 @extends('app')
 
 @section('content')

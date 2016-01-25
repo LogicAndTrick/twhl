@@ -1,3 +1,4 @@
+@title('Create Competition')
 @extends('app')
 
 @section('content')

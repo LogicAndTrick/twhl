@@ -1,3 +1,4 @@
+@title('Delete Forum Thread: '.$thread->title)
 @extends('app')
 
 @section('content')

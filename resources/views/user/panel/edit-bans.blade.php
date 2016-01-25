@@ -1,3 +1,4 @@
+@title('Manage Bans: '.$user->name)
 @extends('app')
 
 @section('content')

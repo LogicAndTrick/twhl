@@ -1,3 +1,4 @@
+@title('Forum: '.$forum->name)
 @extends('app')
 
 @section('content')

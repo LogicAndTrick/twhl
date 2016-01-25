@@ -1,3 +1,4 @@
+@title('Reset Password')
 @extends('app')
 
 @section('content')

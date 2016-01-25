@@ -1,3 +1,4 @@
+@title($item->name)
 @extends('app')
 
 @section('content')

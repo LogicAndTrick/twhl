@@ -1,3 +1,4 @@
+@title('Restore Forum Thread: '.$thread->title)
 @extends('app')
 
 @section('content')

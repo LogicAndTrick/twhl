@@ -1,3 +1,4 @@
+@title('Update Password: '.$user->name)
 @extends('app')
 
 @section('content')

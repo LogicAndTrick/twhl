@@ -1,3 +1,4 @@
+@title('Edit Vault Item: '.$item->name)
 @extends('app')
 
 @section('content')

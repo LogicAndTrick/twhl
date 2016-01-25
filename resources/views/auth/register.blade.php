@@ -1,3 +1,4 @@
+@title('Register Account')
 @extends('app')
 
 @section('content')

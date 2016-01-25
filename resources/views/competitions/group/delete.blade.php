@@ -1,3 +1,4 @@
+@title('Delete Competition Restriction Group: '.$group->title)
 @extends('app')
 
 @section('content')

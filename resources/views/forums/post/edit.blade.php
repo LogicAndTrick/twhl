@@ -1,3 +1,4 @@
+@title('Edit Forum Post by '.$post->user->name)
 @extends('app')
 
 @section('content')

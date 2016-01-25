@@ -1,3 +1,4 @@
+@title('Create Poll')
 @extends('app')
 
 @section('content')

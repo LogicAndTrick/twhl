@@ -1,3 +1,4 @@
+@title('Delete Competition Entry: '.$entry->name)
 @extends('app')
 
 @section('content')

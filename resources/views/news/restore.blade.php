@@ -1,3 +1,4 @@
+@title('Restore News Post: '.$news->title)
 @extends('app')
 
 @section('content')

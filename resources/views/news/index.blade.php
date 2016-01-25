@@ -1,3 +1,4 @@
+@title('News Posts')
 @extends('app')
 
 @section('content')

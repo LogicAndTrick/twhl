@@ -1,3 +1,4 @@
+@title('Create Journal Post')
 @extends('app')
 
 @section('content')

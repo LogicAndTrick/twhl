@@ -1,3 +1,4 @@
+@title('Edit Vault Item Review for: '.$item->name)
 @extends('app')
 
 @section('content')

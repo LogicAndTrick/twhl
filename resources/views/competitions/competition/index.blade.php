@@ -1,3 +1,4 @@
+@title('Competitions')
 @extends('app')
 
 @section('content')

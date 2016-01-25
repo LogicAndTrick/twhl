@@ -1,3 +1,4 @@
+@title('Forum Posts')
 @extends('app')
 
 @section('content')

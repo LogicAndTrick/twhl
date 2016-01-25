@@ -1,3 +1,4 @@
+@title('Edit Competition Entry Screenshots: '.$entry->name)
 @extends('app')
 
 @section('content')

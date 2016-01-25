@@ -31,4 +31,7 @@ class WikiObject extends Model {
         return permission('WikiCreate') && permission($this->permission->name);
     }
 
+    public function isProtected() {
+        return !!$this->permission_id;
+    }
 }

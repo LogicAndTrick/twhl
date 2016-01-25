@@ -1,3 +1,4 @@
+@title('Update Avatar')
 @extends('app')
 
 @section('content')

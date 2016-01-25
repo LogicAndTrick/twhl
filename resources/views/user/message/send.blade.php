@@ -1,3 +1,4 @@
+@title('Send Private Message')
 @extends('app')
 
 @section('content')

@@ -1,3 +1,4 @@
+@title('Banned')
 @extends('app')
 
 @section('content')

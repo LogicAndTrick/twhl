@@ -1,3 +1,4 @@
+@title($searched ? 'Search Results' : 'Search TWHL')
 @extends('app')
 
 @section('content')

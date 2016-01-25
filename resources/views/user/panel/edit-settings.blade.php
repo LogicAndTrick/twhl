@@ -1,3 +1,4 @@
+@title('Update Site Settings')
 @extends('app')
 
 @section('content')

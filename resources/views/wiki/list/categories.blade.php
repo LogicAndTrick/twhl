@@ -1,3 +1,4 @@
+@title('Wiki Categories')
 @extends('app')
 
 @section('content')
