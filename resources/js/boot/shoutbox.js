@@ -196,7 +196,7 @@
                 this.shoutsContainer.append(template(shout_template, obj));
             }
             var sc = this.shoutsContainer[0];
-            sc.scrollTop = sc.scrollHeight;
+            setTimeout(function() { sc.scrollTop = sc.scrollHeight; }, 0);
             this.updateTimes();
             this.container.find('form').removeClass('loading');
             if (this.options.active == 'true') this.container.find('input, button').prop('disabled', false);

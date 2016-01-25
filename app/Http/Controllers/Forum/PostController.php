@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Forum;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\User;
 use App\Models\Forums\Forum;
 use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
@@ -15,6 +16,35 @@ class PostController extends Controller {
         $this->permission(['create', 'edit'], 'ForumCreate');
         $this->permission('delete', 'ForumAdmin');
 	}
+
+    public function getIndex()
+   	{
+       $auth_user = Auth::user();
+       $auth_user_id = $auth_user ? $auth_user->id : 0;
+
+       $query = ForumPost::with(['thread'])
+           ->leftJoin('forums as f', 'f.id', '=', 'forum_posts.forum_id')
+           ->whereRaw('(
+               f.permission_id is null
+               or f.permission_id in (
+                   select up.permission_id from user_permissions up
+                   left join users u on up.user_id = u.id
+                   where u.id = ?
+               ))', [$auth_user_id])
+           ->orderBy('forum_posts.created_at', 'desc')
+           ->select('forum_posts.*');
+
+       $user = intval(Request::get('user'));
+       $user = $user > 0 ? User::find($user) : null;
+       if ($user) $query = $query->whereUserId($user->id);
+
+       $posts = $query->paginate(50);
+
+       return view('forums/post/index', [
+           'posts' => $posts,
+           'user' => $user
+       ]);
+   	}
 
 	public function postCreate()
 	{

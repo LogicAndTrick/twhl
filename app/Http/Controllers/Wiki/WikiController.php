@@ -282,6 +282,9 @@ class WikiController extends Controller {
 
     public function getEdit($page) {
         $rev = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)->where('slug', '=', $page)->first();
+
+        if (!$rev->wiki_object->canEdit()) return abort(404);
+
         return view('wiki/edit/page', [
             'revision' => $rev
         ]);
@@ -291,6 +294,9 @@ class WikiController extends Controller {
         $id = intval(Request::input('id'));
         $rev = WikiRevision::findOrFail($id);
         $obj = WikiObject::findOrFail($rev->object_id);
+
+        if (!$obj->canEdit()) return abort(404);
+
         Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) use ($obj) {
             $s = WikiRevision::CreateSlug($value);
             $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->where('object_id', '!=', $obj->id)->first();
@@ -299,7 +305,8 @@ class WikiController extends Controller {
         Validator::extend('must_change', function($attribute, $value, $parameters) use ($rev, $obj) {
             return trim($rev->content_text) != trim(Request::input('content_text'))
                 || trim($rev->title) != trim(Request::input('title'))
-                || ($obj->type_id == WikiType::UPLOAD && Request::file('file'));
+                || ($obj->type_id == WikiType::UPLOAD && Request::file('file')
+                || (permission('WikiAdmin') && $obj->permission_id != Request::input('permission_id')));
         });
         Validator::extend('valid_categories', function($attribute, $value, $parameters) {
             return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
@@ -325,12 +332,20 @@ class WikiController extends Controller {
             'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
         $revision = $this->createRevision($obj, $rev);
+
+        if(permission('WikiAdmin')) {
+            $obj->permission_id = Request::input('permission_id');
+            $obj->save();
+        }
+
         return redirect('wiki/page/'.$revision->slug);
     }
 
     public function getRevert($id) {
         $rev = WikiRevision::with(['wiki_object', 'user'])->where('is_active', '=', false)->findOrFail($id);
         $obj = $rev->wiki_object;
+
+        if (!$obj->canEdit()) return abort(404);
 
         return view('wiki/edit/revert', [
             'object' => $obj,
@@ -342,6 +357,8 @@ class WikiController extends Controller {
         $id = intval(Request::input('id'));
         $rev = WikiRevision::with(['wiki_object', 'user'])->where('is_active', '=', false)->findOrFail($id);
         $obj = $rev->wiki_object;
+
+        if (!$obj->canEdit()) return abort(404);
 
         $this->validate(Request::instance(), [
             'reason' => 'max:200'

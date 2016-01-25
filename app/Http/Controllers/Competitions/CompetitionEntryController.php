@@ -32,18 +32,28 @@ class CompetitionEntryController extends Controller {
         };
         Validator::extend('valid_extension_file', $func);
         Validator::extend('valid_extension_screen', $func);
+        Validator::extend('image_size', function($attr, $value, $parameters) {
+            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
+            $info = getimagesize($value->getPathName());
+            return $info[0] <= $max && $info[1] <= $max;
+        });
 
         $entry = !$user ? null : CompetitionEntry::whereUserId($user->id)->whereCompetitionId($competition->id)->first();
         $screen_valid = $entry ? '' : 'required|';
 
         $file_valid = $competition->isVoted() ? '' : 'required|';
 
+
+        Validator::extend('image_limit', function($attr, $value, $parameters) use ($entry) {
+            return !$entry || $entry->screenshots->count() < 10;
+        });
+
         $controller->validate(Request::instance(), [
             'id' => 'required|numeric',
             'user_id' => ($request_user_id ? 'required|' : '') . 'numeric',
             'title' => 'required|max:255',
             'content_text' => 'max:2000',
-            'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:jpeg,jpg,png',
+            'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:jpeg,jpg,png|image_size:3000|image_limit',
 
             '__upload_method' => $file_valid.'in:file,link',
             'link' => 'required_if:__upload_method,link|max:512',
@@ -51,6 +61,8 @@ class CompetitionEntryController extends Controller {
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
             'valid_extension_screen' => 'Only the following file formats are allowed: jpg, png',
+            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+            'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
         ]);
 
         if (!$user) abort(404);
@@ -140,18 +152,31 @@ class CompetitionEntryController extends Controller {
     }
 
     public function postAddScreenshot() {
-        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        });
-        $this->validate(Request::instance(), [
-            'id' => 'required|numeric',
-            'screenshot' => 'required|max:2048|valid_extension:jpeg,jpg,png',
-        ], [
-            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
-        ]);
 
         $id = Request::input('id');
         $entry = CompetitionEntry::findOrFail($id);
+
+        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
+        });
+        Validator::extend('image_size', function($attr, $value, $parameters) {
+            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
+            $info = getimagesize($value->getPathName());
+            return $info[0] <= $max && $info[1] <= $max;
+        });
+        Validator::extend('image_limit', function($attr, $value, $parameters) use ($entry) {
+            return !$entry || $entry->screenshots->count() < 10;
+        });
+
+        $this->validate(Request::instance(), [
+            'id' => 'required|numeric',
+            'screenshot' => 'required|max:2048|valid_extension:jpeg,jpg,png|image_size:3000|image_limit',
+        ], [
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
+            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+            'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
+        ]);
+
         $comp = Competition::findOrFail($entry->competition_id);
 
         if (!permission('CompetitionAdmin') && !$comp->canJudge() && $entry->user_id != Auth::user()->id) abort(404);

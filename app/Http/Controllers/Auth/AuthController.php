@@ -26,12 +26,16 @@ class AuthController extends Controller {
      */
     protected function authenticated(Request $request, User $user)
     {
+        $request->session()->set('login_time', Carbon::create());
+        $request->session()->set('last_access_time', $user->last_access_time);
+
         $user->last_login_time = Carbon::create();
         $user->last_access_time = Carbon::create();
         $user->last_access_page = $request->getPathInfo();
         $user->last_access_ip = $request->ip();
         $user->stat_logins++;
         $user->save();
+
         return redirect()->intended($this->redirectPath());
     }
 
@@ -48,6 +52,7 @@ class AuthController extends Controller {
    			'name' => 'required|max:255|unique:users',
    			'email' => 'required|email|max:255|unique:users',
    			'password' => 'required|confirmed|min:6',
+            'g-recaptcha-response' => 'required|recaptcha',
    		]);
    	}
 

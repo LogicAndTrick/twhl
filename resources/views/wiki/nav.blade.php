@@ -2,7 +2,7 @@
     @if (isset($revision) && $revision)
         <div class="btn-group" role="group">
             <a class="btn btn-default title-button" href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a>
-            @if (permission('WikiCreate'))
+            @if (permission('WikiCreate') && $revision->wiki_object->canEdit())
                 <a class="btn btn-default" href="{{ act('wiki', 'edit', $revision->slug) }}">Edit</a>
             @endif
             <a class="btn btn-default" href="{{ act('wiki', 'history', $revision->slug) }}">History</a>

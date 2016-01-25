@@ -49,7 +49,7 @@
                 </label>
             </div>
             <div class="panel-body">
-                @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
+                @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb) - Leave blank to use current file
                 @text(link $location) = Link to File (Dropbox, Steam Workshop, etc.)
             </div>
         </div>

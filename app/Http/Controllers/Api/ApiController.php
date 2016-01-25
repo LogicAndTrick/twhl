@@ -81,9 +81,9 @@ class ApiController extends Controller {
 
         $items = $query->skip(($page - 1) * $count)->take($count)->get();
 
-        if ($plain) return $items->toArray();
+        if ($plain) return $items->values()->toArray();
         return [
-            'items' => $items->toArray(),
+            'items' => $items->values()->toArray(),
             'total' => $total,
             'pages' => $pages,
             'page' => $page

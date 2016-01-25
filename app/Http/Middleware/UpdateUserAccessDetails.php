@@ -39,6 +39,14 @@ class UpdateUserAccessDetails {
     protected function update(Request $request)
     {
         $user = Auth::user();
+
+        if (!$request->session()->has('login_time')) {
+            $request->session()->set('login_time', Carbon::create());
+            $request->session()->set('last_access_time', $user->last_access_time);
+            $user->last_login_time = Carbon::create();
+            $user->stat_logins++;
+        }
+
         $user->last_access_time = Carbon::create();
         $user->last_access_page = $request->getPathInfo();
         $user->last_access_ip = $request->ip();

@@ -12,6 +12,8 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
+    elixir.config.production = true;
+
     mix.less([
         'app.less'
     ]);
@@ -20,7 +22,13 @@ elixir(function(mix) {
         'lib/jquery.cookie.js',
         'lib/jquery.mousewheel.js',
         'lib/jquery.appear.js',
+        'lib/jquery.plugin.js',
+        'lib/jquery.countdown.js',
+        'lib/jquery-ui.min.js',
+        'lib/Chart.js',
         'lib/bootstrap.js',
+        'lib/bootbox.min.js',
+        'lib/dropzone.js',
         'lib/select2.js',
         'lib/select2-data-api.js',
         'lib/select2-pagination.js',

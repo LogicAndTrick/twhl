@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Forum;
 
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\User;
 use App\Models\Forums\Forum;
 use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
@@ -19,9 +20,33 @@ class ThreadController extends Controller {
         $this->permission(['edit', 'delete', 'restore'], 'ForumAdmin');
 	}
 
-	public function getIndex($id)
+	public function getIndex()
 	{
-        return 1;
+        $auth_user = Auth::user();
+        $auth_user_id = $auth_user ? $auth_user->id : 0;
+
+        $query = ForumThread::with(['last_post', 'last_post.user', 'forum'])
+            ->leftJoin('forums as f', 'f.id', '=', 'forum_threads.forum_id')
+            ->whereRaw('(
+                f.permission_id is null
+                or f.permission_id in (
+                    select up.permission_id from user_permissions up
+                    left join users u on up.user_id = u.id
+                    where u.id = ?
+                ))', [$auth_user_id])
+            ->orderBy('forum_threads.created_at', 'desc')
+            ->select('forum_threads.*');
+
+        $user = intval(Request::get('user'));
+        $user = $user > 0 ? User::find($user) : null;
+        if ($user) $query = $query->whereUserId($user->id);
+
+        $threads = $query->paginate(50);
+
+        return view('forums/thread/index', [
+            'threads' => $threads,
+            'user' => $user
+        ]);
 	}
 
     public function getLocatePost($id) {
@@ -40,10 +65,11 @@ class ThreadController extends Controller {
 
     public function getView($id)
     {
-        $thread = ForumThread::findOrFail($id);
+        $thread = ForumThread::with(['user'])->findOrFail($id);
         $forum = Forum::findOrFail($thread->forum_id);
 
         // Update stats
+        $thread->markAsRead();
         $thread->stat_views++;
         $thread->save();
 

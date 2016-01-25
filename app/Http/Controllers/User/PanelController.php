@@ -159,13 +159,19 @@ class PanelController extends Controller {
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
+        Validator::extend('image_size', function($attr, $value, $parameters) {
+            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
+            $info = getimagesize($value->getPathName());
+            return $info[0] <= $max && $info[1] <= $max;
+        });
 
         $this->validate(Request::instance(), [
             'type' => 'in:upload,preset',
-            'upload' => 'required_if:type,upload|valid_extension:jpeg,jpg,png',
+            'upload' => 'required_if:type,upload|valid_extension:jpeg,jpg,png|image_size:1000',
             'preset' => 'required_if:type,preset'
         ], [
-            'valid_extension' => 'Only the following file formats are allowed: jpg, png'
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
+            'image_size' => 'The image can\'t be larger than 1000px square. It will be resized to 100px anyway, please upload a smaller image!'
         ]);
 
         if (Request::input('type') == 'upload') {

@@ -1,6 +1,10 @@
 <?php namespace App\Models\Vault;
 
 use App\Models\Comments\CommentMeta;
+use App\Models\Messages\Message;
+use App\Models\Messages\MessageThread;
+use App\Models\Messages\MessageThreadUser;
+use App\Models\Messages\MessageUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -174,10 +178,58 @@ class VaultItem extends Model {
     }
 
     public function commentsCanAddMeta($meta) {
+        if (!Auth::check() || Auth::user()->id == $this->user_id) return false;
+
         switch ($meta) {
             case CommentMeta::RATING:
                 return $this->flag_ratings;
         }
         return true;
+    }
+
+    public function onCommentCreated($comment) {
+
+        if (!$this->flag_notify || $comment->user_id == $this->user_id) return;
+
+        /*
+         * Send a PM to the item owner
+         * TODO: Make a more robust notifications engine and move this logic into there
+         */
+
+        $users = [$this->user_id];
+        $url = act('vault', 'view', $this->id);
+        $post_text = "This is an automated notification of a new comment that's been posted on: [{$url}|{$this->name}]. Don't reply to the comment here, unless you want nobody else to see the response. You should go to the vault page and post a comment there.\n\n---\n\n{$comment->content_text}";
+
+        // Start a new thread
+        if (array_search($comment->user_id, $users) === false) $users[] = Auth::user()->id;
+
+        // Make the thread
+        $thread = MessageThread::Create([
+            'user_id' => $comment->user_id,
+            'subject' => 'Comment on Vault item: ' . $this->name
+        ]);
+
+        // Assign all the users to the thread
+        foreach ($users as $user) MessageThreadUser::Create([ 'thread_id' => $thread->id, 'user_id' => $user ]);
+
+        // Make the message
+        $message = Message::Create([
+            'user_id' => $comment->user_id,
+            'thread_id' => $thread->id,
+            'content_text' => $post_text,
+            'content_html' => app('bbcode')->Parse($post_text)
+        ]);
+
+        // Send the message to all the users
+        foreach ($users as $user) {
+            MessageUser::Create([
+                'thread_id' => $thread->id,
+                'message_id' => $message->id,
+                'user_id' => $user,
+                'is_unread' => $user != $comment->user_id
+            ]);
+        }
+
+        $thread->update([ 'last_message_id' => $message->id ]);
     }
 }

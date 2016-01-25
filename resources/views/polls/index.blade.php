@@ -21,6 +21,8 @@
                             <a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a>
                             @if ($poll->isOpen())
                                 <small>Voting now!</small>
+                            @else
+                                <small>Voting closed</small>
                             @endif
                         </h2>
                         @date($poll->created_at) &bull;
@@ -29,7 +31,7 @@
                             {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
                         </a>
                     </div>
-                    <div class="bbcode">{!! $poll->content_html !!}</div>
+                    <div class="bbcode">{!! $poll->content_html !!}</div>{{ $poll->close_date->diffInSeconds(null, false) }}
                     <div class="well well-sm">
                         @if ($poll->isOpen() && Auth::user() && array_search($poll->id, $user_polls) === false)
                             @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
@@ -41,8 +43,4 @@
             </li>
         @endforeach
     </ul>
-@endsection
-
-@section('scripts')
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 @endsection

@@ -26,6 +26,9 @@
             <div id="preview-panel" class="well bbcode"></div>
         </div>
         @text(message) = Description of Edit
+        @if (permission('WikiAdmin'))
+            @autocomplete(permission_id api/permissions $revision->wiki_object clearable=true) = Permission required to modify
+        @endif
         @submit = Edit Page
     @endform
 @endsection

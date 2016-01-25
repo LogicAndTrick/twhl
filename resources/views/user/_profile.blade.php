@@ -10,7 +10,7 @@
             <dt>Profile Hits</dt>
             <dd>{{ $user->stat_profile_hits }} ({{ round($user->stat_profile_hits / $age, 2) }})</dd>
             <dt>Forum Posts</dt>
-            <dd><a href="{{ act('user', 'view', $user->id) }}">{{ $user->stat_forum_posts }} ({{ round($user->stat_forum_posts / $age, 2) }})</a></dd>
+            <dd><a href="{{ act('post', 'index').'?user='.$user->id }}">{{ $user->stat_forum_posts }} ({{ round($user->stat_forum_posts / $age, 2) }})</a></dd>
             <dt>Vault Items</dt>
             <dd><a href="{{ act('vault', 'index').'?users='.$user->id }}">{{ $user->stat_vault_items }} ({{ round($user->stat_vault_items / $age, 2) }})</a></dd>
             <dt>Journals</dt>

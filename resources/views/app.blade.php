@@ -106,7 +106,7 @@
                                 @if ($unread_count > 0)
                                     <span class="glyphicon glyphicon-exclamation-sign"></span>
                                 @endif
-                                {{ Auth::user()->name }}
+                                <span class="name">{{ Auth::user()->name }}</span>
                                 <span class="caret"></span>
                             </a>
 							<ul class="dropdown-menu" role="menu">

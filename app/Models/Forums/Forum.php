@@ -1,7 +1,9 @@
 <?php namespace App\Models\Forums;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\ScopeInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -31,6 +33,31 @@ class Forum extends Model {
     {
         return $this->hasMany('App\Models\Forums\ForumPost');
     }
+
+    /**
+     * Checks if a forum has new posts or not. If the user is logged in, the last access time of the previous
+     * session is used. Otherwise, anything less than a day old is new.
+     * @return bool
+     */
+    public function hasNewPosts()
+    {
+        if ($this->last_post == null) return false;
+
+        $last_access = session('last_access_time');
+        if (!$last_access || !($last_access instanceof Carbon)) $last_access = Carbon::create()->addDays(1);
+
+        return $this->last_post->updated_at > $last_access;
+    }
+
+    public function getIconClasses()
+    {
+        $str = [$this->slug];
+
+        if ($this->hasNewPosts()) $str[] = 'thread_active';
+        else $str[] = 'thread_inactive';
+
+        return implode(' ', $str);
+    }
 }
 
 /**
@@ -48,7 +75,7 @@ trait ForumPermission
     }
 }
 
-class ForumPermissionScope implements ScopeInterface
+class ForumPermissionScope implements Scope
 {
     private $permission_sql = '(
     permission_id is null
@@ -63,19 +90,5 @@ class ForumPermissionScope implements ScopeInterface
         $user = Auth::user();
         $id = $user ? $user->id : 0;
         $builder->whereRaw($this->permission_sql, [$id]);
-    }
-
-    public function remove(Builder $builder, Model $model)
-    {
-        $query = $builder->getQuery();
-
-        foreach ((array) $query->wheres as $key => $where)
-        {
-            if ($where['type'] == 'raw' && $where['sql'] == $this->permission_sql)
-            {
-                unset($query->wheres[$key]);
-                $query->wheres = array_values($query->wheres);
-            }
-        }
     }
 }

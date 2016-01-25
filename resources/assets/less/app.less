@@ -12,6 +12,8 @@
 @import "select2.less";
 @import "diffview.less";
 @import "slider.less";
+@import (inline) "../css/jquery.countdown.css";
+@import (inline) "../css/dropzone.css";
 
 // shared/common
 @import "headings.less";
@@ -19,6 +21,7 @@
 @import "bbcode.less";
 
 // sections
+@import "forum.less";
 @import "wiki.less";
 @import "vault.less";
 @import "competition.less";
@@ -199,5 +202,15 @@ textarea.form-control {
     .formatted {
       display: none;
     }
+  }
+}
+
+.g-recaptcha {
+  margin-bottom: 5px;
+}
+
+.comment-meta-rating {
+  .stars img {
+    cursor: pointer;
   }
 }

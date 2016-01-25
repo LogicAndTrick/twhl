@@ -136,7 +136,7 @@
                             <span class="glyphicon glyphicon-star"></span>
                             Your review score: <strong class="rating-{{ $user_review->getStarRating() }}">{{ number_format(round($user_review->getRating() * 10) / 10, 1) }}</strong>
                         </a>
-                    @else
+                    @elseif ($item->canReview())
                         <a class="btn btn-primary" href="{{ act('vault-review', 'create', $item->id) }}">
                             <span class="glyphicon glyphicon-star"></span>
                             Post a review

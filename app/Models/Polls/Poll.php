@@ -30,7 +30,7 @@ class Poll extends Model {
     }
 
     public function isClosed() {
-        return $this->close_date->diffInSeconds() < 0;
+        return $this->close_date->diffInSeconds(null, false) > 0;
     }
 
     public function commentsIsLocked() {

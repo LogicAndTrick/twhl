@@ -12,23 +12,25 @@
             <li class="active">View Journal</li>
         </ol>
     </hc>
-    <div class="media media-panel">
-        <div class="media-left">
-            <div class="media-object">
-                @avatar($journal->user small show_border=true show_name=false)
+    <div>
+        <div class="media media-panel">
+            <div class="media-left">
+                <div class="media-object">
+                    @avatar($journal->user small show_border=true show_name=false)
+                </div>
             </div>
-        </div>
-        <div class="media-body">
-            <div class="media-heading">
-                @avatar($journal->user text) &bull;
-                @date($journal->created_at) &bull;
-                <a href="#comments" class="btn btn-xs btn-link link">
-                    <span class="glyphicon glyphicon-comment"></span>
-                    {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
-                </a>
-            </div>
-            <div class="bbcode">
-                {!! $journal->content_html !!}
+            <div class="media-body">
+                <div class="media-heading">
+                    @avatar($journal->user text) &bull;
+                    @date($journal->created_at) &bull;
+                    <a href="#comments" class="btn btn-xs btn-link link">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
+                    </a>
+                </div>
+                <div class="bbcode">
+                    {!! $journal->content_html !!}
+                </div>
             </div>
         </div>
     </div>

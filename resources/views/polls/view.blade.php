@@ -12,28 +12,26 @@
             <li class="active">View Poll</li>
         </ol>
     </hc>
-    <div class="media media-panel">
-        <div class="media-body">
-            <div class="media-heading">
-                @date($poll->created_at) &bull;
-                <a href="#comments" class="btn btn-xs btn-link link">
-                    <span class="glyphicon glyphicon-comment"></span>
-                    {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
-                </a>
-            </div>
-            <div class="bbcode">{!! $poll->content_html !!}</div>
-            <div class="well well-sm">
-                @if ($poll->isOpen() && !$user_vote && Auth::user())
-                    @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
-                @else
-                    @include('polls/_results', [ 'poll' => $poll, 'user_votes' => $user_votes ])
-                @endif
+    <div>
+        <div class="media media-panel">
+            <div class="media-body">
+                <div class="media-heading">
+                    @date($poll->created_at) &bull;
+                    <a href="#comments" class="btn btn-xs btn-link link">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
+                    </a>
+                </div>
+                <div class="bbcode">{!! $poll->content_html !!}</div>
+                <div class="well well-sm">
+                    @if ($poll->isOpen() && !$user_vote && Auth::user())
+                        @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
+                    @else
+                        @include('polls/_results', [ 'poll' => $poll, 'user_votes' => $user_votes ])
+                    @endif
+                </div>
             </div>
         </div>
     </div>
     @include('comments.list', [ 'article' => $poll, 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::POLL, 'article_id' => $poll->id ])
-@endsection
-
-@section('scripts')
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
 @endsection

@@ -12,7 +12,10 @@
     </hc>
     @form(post/delete)
         @hidden(id $post)
-        <p>You are about to delete a post. Are you sure?</p>
+        <p>Are you sure you want to delete this post?</p>
+        <div class="well">
+            <div class="bbcode">{!! $post->content_html !!}</div>
+        </div>
         @submit = Delete Post
     @endform
 @endsection

@@ -17,7 +17,7 @@ class ShoutController extends Controller {
 
 	public function getShouts($last = 0) {
         $car = Carbon::createFromTimestamp($last - 10);
-        return Shout::with(['user'])->where('updated_at', '>=', $car)->orderBy('created_at', 'desc')->take(50)->get()->reverse();
+        return Shout::with(['user'])->where('updated_at', '>=', $car)->orderBy('created_at', 'desc')->take(50)->get()->reverse()->values();
 	}
 
     public function postAdd() {

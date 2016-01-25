@@ -30,6 +30,8 @@ class VaultReviewController extends Controller {
         if ($existing_review) return redirect('vault-review/edit/'.$existing_review->id);
 
         $item = VaultItem::with(['user', 'vault_screenshots'])->findOrFail($id);
+        if ($item->user_id == Auth::user()->id) abort(404);
+
         return view('vault/review/create', [
             'item' => $item
         ]);
@@ -39,6 +41,10 @@ class VaultReviewController extends Controller {
 
         $existing_review = VaultItemReview::whereUserId(Auth::user()->id)->whereItemId(Request::input('item_id'))->first();
         if ($existing_review) return redirect('vault-review/edit/'.$existing_review->id);
+
+        $id = Request::input('item_id');
+        $item = VaultItem::findOrFail($id);
+        if ($item->user_id == Auth::user()->id) abort(404);
 
         $this->validate(Request::instance(), [
             'item_id' => 'required',

@@ -1,4 +1,3 @@
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 <script type="text/javascript">
     var gallery_url_template = "{{ url('competition/entry-screenshot-gallery/{id}') }}";
     $(function() {

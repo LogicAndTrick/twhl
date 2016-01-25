@@ -7,6 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Request;
 use Input;
+use DB;
 
 class ForumController extends Controller {
 
@@ -20,8 +21,24 @@ class ForumController extends Controller {
         $forums = Forum::with(['last_post', 'last_post.thread', 'last_post.user'])->orderBy('order_index');
         $show_deleted = Input::get('deleted') !== null && permission('ForumAdmin');
         if ($show_deleted) $forums = $forums->withTrashed();
+        $forums = $forums->get();
+
+        $recent_threads = ForumThread::with(['last_post', 'last_post.user'])->from(
+            DB::raw(
+                '(' . implode(' union all ', $forums->map(function ($f) {
+                    return "(select *
+                            from forum_threads t
+                            where t.forum_id = {$f->id}
+                            and t.deleted_at is null
+                            order by t.updated_at desc
+                            limit 5)";
+                })->toArray()) . ') forum_threads'
+            )
+        )->get();
+
 		return view('forums/forum/index', [
-            'forums' => $forums->get(),
+            'forums' => $forums,
+            'recent_threads' => $recent_threads,
             'show_deleted' => $show_deleted
         ]);
 	}

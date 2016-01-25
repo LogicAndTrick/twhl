@@ -13,10 +13,10 @@
                 <div class="panel-body">
                     <ul>
                         <li><a href="{{ act('user', 'view', $user->id) }}"><span class="glyphicon glyphicon-user"></span> View Public Profile</a></li>
-                        <li><a href="{{ act('user', 'view', $user->id) }}"><span class="glyphicon glyphicon-file"></span> View Vault Items</a></li>
-                        <li><a href="{{ act('user', 'view', $user->id) }}"><span class="glyphicon glyphicon-book"></span> View Journals</a></li>
-                        <li><a href="{{ act('user', 'view', $user->id) }}"><span class="glyphicon glyphicon-th-list"></span> View Forum Threads</a></li>
-                        <li><a href="{{ act('user', 'view', $user->id) }}"><span class="glyphicon glyphicon-list-alt"></span> View Forum Posts</a></li>
+                        <li><a href="{{ act('vault', 'index').'?users='.$user->id }}"><span class="glyphicon glyphicon-file"></span> View Vault Items</a></li>
+                        <li><a href="{{ act('journal', 'index').'?user='.$user->id }}"><span class="glyphicon glyphicon-book"></span> View Journals</a></li>
+                        <li><a href="{{ act('thread', 'index').'?user='.$user->id }}"><span class="glyphicon glyphicon-th-list"></span> View Forum Threads</a></li>
+                        <li><a href="{{ act('post', 'index').'?user='.$user->id }}"><span class="glyphicon glyphicon-list-alt"></span> View Forum Posts</a></li>
                         <li><a href="{{ url('message/index/'.$user->id) }}"><span class="glyphicon glyphicon-envelope"></span> View Private Messages</a></li>
                     </ul>
                 </div>

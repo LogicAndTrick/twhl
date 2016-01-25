@@ -1,6 +1,7 @@
 <?php namespace App\Models\Forums;
 
 use App\Helpers\Date;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -88,5 +89,49 @@ class ForumThread extends Model {
         if (!$this->is_open) return 'This thread has been closed, responses cannot be posted.';
         if (Date::DiffDays(Date::Now(), $this->last_post->updated_at) > 90) return 'This thread has automatically been locked because it has been idle for over 90 days.';
         return null;
+    }
+
+    /**
+     * Checks if a forum has new posts or not. If the user is logged in, the last access time of the previous
+     * session is used. Otherwise, anything less than a day old is new. The session is used to keep track of
+     * threads the user has visited recently.
+     * @return bool
+     */
+    public function hasNewPosts()
+    {
+        if ($this->last_post == null) return false;
+
+        $last_access = session('last_access_time');
+        if (!$last_access || !($last_access instanceof Carbon)) $last_access = Carbon::create()->addDays(1);
+
+        $thread_read = session('thread_persistance_data');
+        if ($thread_read && is_array($thread_read) && array_key_exists($this->id, $thread_read)) {
+            $read = $thread_read[$this->id];
+            if ($read instanceof Carbon && $read > $last_access) $last_access = $read;
+        }
+
+        return $this->last_post->updated_at > $last_access;
+    }
+
+    public function markAsRead()
+    {
+        $thread_read = session('thread_persistance_data');
+        if (!$thread_read || !is_array($thread_read)) $thread_read = [];
+        $thread_read[$this->id] = Carbon::create();
+        session(['thread_persistance_data' => $thread_read]);
+    }
+
+    public function getIconClasses()
+    {
+        $str = [];
+
+        if ($this->hasNewPosts()) $str[] = 'thread_active';
+        else $str[] = 'thread_inactive';
+
+        if (!$this->is_open && $this->is_sticky) $str[] = 'sticky_locked';
+        else if (!$this->is_open) $str[] = 'locked';
+        else if ($this->is_sticky) $str[] = 'sticky';
+
+        return implode(' ', $str);
     }
 }

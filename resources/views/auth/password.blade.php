@@ -22,3 +22,11 @@
         </div>
     </div>
 @endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $('form').submit(function() {
+            $(this).find('button').prop('disabled', true);
+        });
+    </script>
+@endsection

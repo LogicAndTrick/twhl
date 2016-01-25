@@ -31,9 +31,23 @@
     display: inline-block;
     padding-right: 6px;
   }
+  .name {
+    display: inline-block;
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    word-wrap: break-word;
+    @media (min-width: @screen-sm-min) {
+      max-width: 110px;
+    }
+    @media (min-width: @screen-md-min) {
+      max-width: 200px;
+    }
+  }
 }
 
-@keyframes pulse
+@keyframes background-pulse
 {
    0% {background-color: lighten(@twhl-brand, 30%);}
   50% {background-color: @twhl-brand;}
@@ -41,7 +55,7 @@
 }
 .nav > li.has-notification:not(.open) {
   background: #ff7e2d;
-  animation: pulse 5s infinite;
+  animation: background-pulse 5s infinite;
   position: relative;
 
   &::after {

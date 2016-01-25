@@ -119,6 +119,9 @@
             </li>
         @endforeach
     </ul>
+    <div class="footer-container">
+        {!! $items->render() !!}
+    </div>
 @endsection
 
 @section('scripts')

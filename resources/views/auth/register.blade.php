@@ -12,6 +12,7 @@
                 @text(email) = Email
                 @password(password) = Password
                 @password(password_confirmation) = Confirm Password
+                {!! Recaptcha::render() !!}
                 <div>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </div>

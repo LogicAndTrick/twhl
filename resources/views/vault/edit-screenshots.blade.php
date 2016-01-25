@@ -25,7 +25,7 @@
             <img src="{{ asset('images/loading.gif') }}" alt="Loading" /> Please wait...
         </li>
     </ul>
-    <h3>Upload Screenshots <small>Maximum size: 2mb</small></h3>
+    <h3>Upload Screenshots <small>Maximum size: 2mb, maximum width/height: 3000px</small></h3>
     <form id="screenshot-upload" action="{{ act('vault', 'create-screenshot') }}" class="dropzone" enctype="multipart/form-data">
         <input type='hidden' name='_token' value='{{ csrf_token() }}'/>
         <input type="hidden" name="id" value="{{ $item->id }}"/>
@@ -34,10 +34,6 @@
             <button class="btn btn-default" type="submit">Upload</button>
         </div>
     </form>
-@endsection
-
-@section('styles')
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/dropzone.css"/>
 @endsection
 
 @section('scripts')
@@ -57,8 +53,6 @@
             </div>
         </li>
     </script>
-    <script type="text/javascript" src="{{ asset('js/jquery-ui.min.js') }}"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dropzone/4.0.1/min/dropzone.min.js"></script>
     <script type="text/javascript">
 
         Dropzone.options.screenshotUpload = {

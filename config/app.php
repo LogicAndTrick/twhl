@@ -2,6 +2,19 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Application Environment
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "environment" your application is currently
+    | running in. This may determine how you prefer to configure various
+    | services your application utilizes. Set this in your ".env" file.
+    |
+    */
+
+    'env' => env('APP_ENV', 'production'),
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application Debug Mode
@@ -113,13 +126,11 @@ return [
 		/*
 		 * Laravel Framework Service Providers...
 		 */
-		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
         'Illuminate\Broadcasting\BroadcastServiceProvider',
 		'Illuminate\Bus\BusServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
 		'Illuminate\Foundation\Providers\ConsoleSupportServiceProvider',
-		'Illuminate\Routing\ControllerServiceProvider',
 		'Illuminate\Cookie\CookieServiceProvider',
 		'Illuminate\Database\DatabaseServiceProvider',
 		'Illuminate\Encryption\EncryptionServiceProvider',
@@ -144,12 +155,12 @@ return [
         'App\Providers\BladeServiceProvider',
         'App\Providers\HelpersServiceProvider',
         'App\Providers\BBCodeServiceProvider',
-		'App\Providers\BusServiceProvider',
-		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
 
-        'App\Providers\StartupServiceProvider'
+        'App\Providers\StartupServiceProvider',
+
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
 	],
 
@@ -199,7 +210,9 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 
-        'Date'      => 'App\Helpers\Date'
+        'Date'      => 'App\Helpers\Date',
+
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
 
 	],
 

@@ -61,10 +61,14 @@ tr.unread {
   text-align: center;
   margin: 10px auto;
   padding: 10px;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   img, span {
     display: block;
     margin: 0 auto;
+    max-width: 100%;
   }
 
   &.border {
@@ -80,6 +84,9 @@ tr.unread {
 
   &.full {
     width: 120px;
+    img {
+      margin-bottom: 5px;
+    }
   }
 
   &.small {

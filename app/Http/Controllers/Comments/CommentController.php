@@ -117,6 +117,9 @@ class CommentController extends Controller {
             $comment->comment_metas()->saveMany($metas);
         }
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
+        if (method_exists($article, 'onCommentCreated')) {
+            $article->onCommentCreated($comment);
+        }
         return redirect($this->replaceUrlVars($config['redirect'], $comment) );
 	}
 

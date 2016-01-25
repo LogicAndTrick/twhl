@@ -1,4 +1,4 @@
-@if (!$user_review && $item->reviewsAllowed())
+@if (!$user_review && $item->canReview())
     <div class="alert alert-info">
         <p>
             Want to post a detailed review instead of a simple star rating?

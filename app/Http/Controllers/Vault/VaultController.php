@@ -147,6 +147,11 @@ class VaultController extends Controller {
         };
         Validator::extend('valid_extension_file', $func);
         Validator::extend('valid_extension_screen', $func);
+        Validator::extend('image_size', function($attr, $value, $parameters) {
+            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
+            $info = getimagesize($value->getPathName());
+            return $info[0] <= $max && $info[1] <= $max;
+        });
         $this->validate(Request::instance(), [
             'engine_id' => 'required',
             'game_id' => 'required',
@@ -154,7 +159,7 @@ class VaultController extends Controller {
             'type_id' => 'required',
             // 'license_id' => 'required', // Default to license 1 = none
             'item_name' => 'required|max:120',
-            'screen' => 'max:2048|valid_extension_screen:jpeg,jpg,png',
+            'screen' => 'max:2048|valid_extension_screen:jpeg,jpg,png|image_size:3000',
             'content_text' => 'required|max:10000',
 
             '__upload_method' => 'required|in:file,link',
@@ -163,6 +168,7 @@ class VaultController extends Controller {
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
             'valid_extension_screen' => 'Only the following file formats are allowed: jpg, png',
+            'image_size' => 'The image cannot have a width or height of more than 3000 pixels'
         ]);
 
         $uploaded = Request::input('__upload_method') == 'file';
@@ -277,7 +283,7 @@ class VaultController extends Controller {
 
             '__upload_method' => 'required|in:file,link',
             'link' => 'required_if:__upload_method,link|max:512',
-            'file' => 'required_if:__upload_method,file|max:16384|valid_extension:zip,rar,7z'
+            'file' => 'max:16384|valid_extension:zip,rar,7z'
         ], [
             'valid_extension' => 'Only the following file formats are allowed: zip, rar, 7z'
         ]);
@@ -291,16 +297,18 @@ class VaultController extends Controller {
         if ($uploaded) {
             $file = Request::file('file');
 
-            $dir = public_path('uploads/vault/items');
-            $name = 'twhl-vault-' . $item->id . '.' . strtolower($file->getClientOriginalExtension());
-            $file->move($dir, $name);
+            if ($file) {
+                $dir = public_path('uploads/vault/items');
+                $name = 'twhl-vault-' . $item->id . '.' . strtolower($file->getClientOriginalExtension());
+                $file->move($dir, $name);
 
-            $file_name = $dir . '/' . $name;
-            $size = filesize($file_name);
+                $file_name = $dir . '/' . $name;
+                $size = filesize($file_name);
 
-            $item->file_location = $name;
-            $item->file_size = $size;
-            $item->save();
+                $item->file_location = $name;
+                $item->file_size = $size;
+                $item->save();
+            }
         } else {
             $item->file_location = $location;
             $item->file_size = $size;
@@ -345,10 +353,20 @@ class VaultController extends Controller {
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
+        Validator::extend('image_size', function($attr, $value, $parameters) {
+            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
+            $info = getimagesize($value->getPathName());
+            return $info[0] <= $max && $info[1] <= $max;
+        });
+        Validator::extend('image_limit', function($attr, $value, $parameters) use ($item) {
+            return $item->vault_screenshots->count() < 20;
+        });
         $this->validate(Request::instance(), [
-            'file' => 'required|max:2048|valid_extension:jpeg,jpg,png'
+            'file' => 'required|max:2048|valid_extension:jpeg,jpg,png|image_size:3000|image_limit'
         ], [
             'valid_extension' => 'Only the following file formats are allowed: jpg, png',
+            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+            'image_limit' => 'You can\'t add more than 20 screenshots to a vault item'
         ]);
 
         $file = Request::file('file');

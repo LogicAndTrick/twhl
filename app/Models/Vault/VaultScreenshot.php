@@ -16,7 +16,7 @@ class VaultScreenshot extends Model {
             $shots = ['image_thumb', 'image_small', 'image_medium', 'image_large', 'image_full'];
             foreach ($shots as $s) {
                 $location = public_path('uploads/vault/'.$this->$s);
-                if (file_exists($location)) unlink($location);
+                if (file_exists($location) && is_file($location)) unlink($location);
             }
         }
         return $result;

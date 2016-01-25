@@ -1,0 +1,97 @@
+.thread-listing {
+  .col-icon {
+    width: 24px;
+  }
+  .col-posts, .col-views {
+    width: 60px;
+    text-align: center;
+  }
+  .col-last-post {
+    width: 180px;
+  }
+  .col-mod {
+    width: 22px;
+
+    a {
+      display: block;
+      margin-top: 4px;
+      line-height: 12px;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .thread-title {
+    font-weight: bold;
+  }
+}
+
+.forum-icon {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: 24px;
+  height: 24px;
+
+  &::before, &::after {
+    width: 24px;
+    height: 24px;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &.thread_active {
+    &::before { content: ' '; background: url('/images/threads/thread_active.png'); }
+    &.goldsource::before { background: url('/images/threads/forum_goldsource_active.png'); }
+    &.meta::before { background: url('/images/threads/forum_meta_active.png'); }
+    &.general::before { background: url('/images/threads/forum_general_active.png'); }
+    &.mods::before { background: url('/images/threads/forum_mods_active.png'); }
+    &.source::before { background: url('/images/threads/forum_source_active.png'); }
+  }
+
+  &.thread_inactive {
+    &::before { content: ' '; background: url('/images/threads/thread_inactive.png'); }
+    &.goldsource::before { background: url('/images/threads/forum_goldsource_inactive.png'); }
+    &.meta::before { background: url('/images/threads/forum_meta_inactive.png'); }
+    &.general::before { background: url('/images/threads/forum_general_inactive.png'); }
+    &.mods::before { background: url('/images/threads/forum_mods_inactive.png'); }
+    &.source::before { background: url('/images/threads/forum_source_inactive.png'); }
+  }
+
+  &.locked::after {
+    content: ' ';
+    z-index: 1;
+    background: url('/images/threads/badge_locked.png');
+  }
+  &.sticky::after {
+    content: ' ';
+    z-index: 1;
+    background: url('/images/threads/badge_sticky.png');
+  }
+  &.sticky_locked::after {
+    content: ' ';
+    z-index: 1;
+    background: url('/images/threads/badge_sticky_locked.png');
+  }
+}
+
+.post-listing {
+  .post-info {
+    text-align: center;
+
+    .avatar.full {
+      width: 150px;
+
+      @media (max-width: @screen-sm-max) {
+        width: 120px;
+      }
+      @media (max-width: @screen-xs-max) {
+        width: 100px;
+      }
+    }
+  }
+}

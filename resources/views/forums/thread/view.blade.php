@@ -11,7 +11,10 @@
             @endif
         @endif
 
-        <h1>{{ $thread->title }}</h1>
+        <h1>
+            {{ $thread->title }}
+            <small>Created @date($thread->created_at) by @avatar($thread->user inline)</small>
+        </h1>
 
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
@@ -22,25 +25,39 @@
         {!! $posts->render() !!}
     </hc>
 
-    @foreach ($posts as $post)
-        <div class="row" id="post-{{ $post->id }}">
-            <div class="col-md-10 bbcode">
-                {!! $post->content_html !!}
-            </div>
-            <div class="col-md-2">
-                {{ Date::TimeAgo($post->created_at) }}<br>
-                @if ($post->isEditable($thread))
-                    <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
-                @endif
-                @if (permission('ForumAdmin'))
-                    <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
-                @endif
-                <br>
-                {{ $post->user->name }}
-            </div>
-        </div>
-        <hr/>
-    @endforeach
+    <ul class="media-list post-listing">
+        @foreach ($posts as $post)
+            <li class="media media-panel post" id="post-{{ $post->id }}">
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a> &bull;
+                        @date($post->created_at)
+                        @if (permission('ForumAdmin'))
+                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span class="hidden-xs">Delete</span>
+                            </a>
+                        @endif
+                        @if ($post->isEditable($thread))
+                            <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs">Edit</span>
+                            </a>
+                        @endif
+                    </div>
+                    <div class="bbcode post-content">{!! $post->content_html !!}</div>
+                </div>
+                <div class="media-right">
+                    <div class="media-object post-info">
+                        @avatar($post->user full show_border=true)
+                    </div>
+                </div>
+            </li>
+        @endforeach
+    </ul>
+    <div class="footer-container">
+        {!! $posts->render() !!}
+    </div>
 
     @if (!$thread->isPostable())
         <div class="well">
@@ -58,7 +75,7 @@
             </div>
         @endif
         @form(post/create)
-            <h3>Add Post</h3>
+            <h3>Post a Reply</h3>
             <input type="hidden" name="thread_id" value="{{ $thread->id }}" />
             @textarea(text) = Post Content
             <div class="form-group">

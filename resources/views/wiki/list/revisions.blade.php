@@ -12,6 +12,8 @@
         {!! $history->render() !!}
     </hc>
 
+    {? $can_revert = $revision->wiki_object->canEdit(); ?}
+
     <table class="table table-bordered table-striped history">
         <thead>
             <tr>
@@ -20,7 +22,9 @@
                 <th>Revision</th>
                 <th>User</th>
                 <th>Message</th>
-                <th>Revert</th>
+                @if ($can_revert)
+                    <th>Revert</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -31,11 +35,13 @@
                     <td><a href="{{ act('wiki', 'page', $rev->slug, $rev->id) }}">#{{ $rev->id }} - {{ Date::TimeAgo( $rev->created_at ) }}</a></td>
                     <td>@avatar($rev->user inline)</td>
                     <td>{{ $rev->message }}</td>
-                    <td>
-                        @if ($rev->id != $revision->id )
-                            <a class="btn btn-primary" href="{{ act('wiki', 'revert', $rev->id) }}">Revert</a>
-                        @endif
-                    </td>
+                    @if ($can_revert)
+                        <td>
+                            @if ($rev->id != $revision->id )
+                                <a class="btn btn-primary" href="{{ act('wiki', 'revert', $rev->id) }}">Revert</a>
+                            @endif
+                        </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
