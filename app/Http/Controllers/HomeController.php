@@ -32,7 +32,7 @@ class HomeController extends Controller {
             ->first();
 
         $new_maps = VaultItem::with(['user', 'vault_screenshots'])
-            ->whereTypeId(1) // Maps
+            ->whereIn('type_id', [1,4]) // Maps and mods
             ->orderBy('updated_at', 'desc')
             ->limit(6)
             ->get();
@@ -41,7 +41,7 @@ class HomeController extends Controller {
         if ($motm) $excluded[] = $motm->item_id;
 
         $top_maps = VaultItem::with(['user', 'vault_screenshots'])
-            ->whereTypeId(1) // Maps
+            ->whereIn('type_id', [1,4]) // Maps and mods
             ->whereCategoryId(2) // Completed
             ->whereFlagRatings(true)
             ->where('stat_ratings', '>=', 5)

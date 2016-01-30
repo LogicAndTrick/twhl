@@ -143,7 +143,7 @@ class VaultItem extends Model {
     {
         if (!$this->flag_ratings) return false; // Can't review if you can't rate
         if ($this->category_id != 2) return false; // Only completed stuff can be reviewed
-        if ($this->type_id != 1) return false; // Only maps can be reviewed
+        if ($this->type_id != 1 && $this->type_id != 4) return false; // Only maps and mods can be reviewed
         return true;
     }
 

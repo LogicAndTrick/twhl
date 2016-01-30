@@ -26,7 +26,6 @@ class ApiController extends Controller {
     public function __construct()
     {
         $this->permission(['format'], true);
-        $this->permission(['permissions'], 'Admin');
     }
 
     private function filter($query, $filter_cols, $sort_cols = []) {

@@ -43,6 +43,11 @@ class CreateVaultTypesTable extends Migration {
             'name' => 'Application',
             'orderindex' => 5
         ]);
+
+        \App\Models\Vault\VaultType::Create([
+            'name' => 'Prefab',
+            'orderindex' => 6
+        ]);
 	}
 
 	/**

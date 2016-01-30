@@ -29,7 +29,7 @@ class UpdateMotmWinners extends Command {
             if (!$motm) {
                 $this->comment("The MOTM for {$ym->format('F Y')} needs to be created.");
                 $winner = VaultItem::with(['user'])
-                            ->whereTypeId(1) // Maps
+                            ->whereIn('type_id', [1,4]) // Maps and mods
                             ->whereCategoryId(2) // Completed
                             ->whereFlagRatings(true)
                             ->whereRaw('(MONTH(created_at) = ? AND YEAR(created_at) = ?)', [$month, $year])

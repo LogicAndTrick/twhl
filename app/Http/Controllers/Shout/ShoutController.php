@@ -12,7 +12,7 @@ class ShoutController extends Controller {
 
 	public function __construct() {
         $this->permission(['add'], true);
-        $this->permission(['edit', 'delete'], 'Admin');
+        $this->permission(['edit', 'delete'], 'ForumAdmin');
 	}
 
 	public function getShouts($last = 0) {
