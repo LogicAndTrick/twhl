@@ -21,7 +21,7 @@ class CreateShoutsTable extends Migration {
             CREATE PROCEDURE update_user_shout_statistics(uid INT)
             BEGIN
                 UPDATE users
-                SET stat_shouts = (SELECT COUNT(*) FROM shouts WHERE user_id = uid AND deleted_at IS NULL)
+                SET stat_shouts = (SELECT COUNT(*) FROM shouts WHERE user_id = uid)
                 WHERE id = uid;
             END;
         ");

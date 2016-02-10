@@ -116,7 +116,7 @@ class CompetitionEntryController extends Controller {
         $screen->move($temp_dir, $temp_name);
         $thumbs = Image::MakeThumbnails(
             $temp_dir . '/' . $temp_name, Image::$comp_image_sizes,
-            public_path('uploads/competition/'), $shot->id . '.' . strtolower($screen->getClientOriginalExtension())
+            public_path('uploads/competition/'), $shot->id . '.' . strtolower($screen->getClientOriginalExtension()), true
         );
         unlink($temp_dir . '/' . $temp_name);
 

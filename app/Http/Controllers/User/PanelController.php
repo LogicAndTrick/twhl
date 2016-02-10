@@ -185,7 +185,7 @@ class PanelController extends Controller {
             $temp_dir = public_path('uploads/avatars/temp');
             $temp_name = $user->id . '_temp.' . strtolower($upload->getClientOriginalExtension());
             $upload->move($temp_dir, $temp_name);
-            Image::MakeThumbnails($temp_dir . '/' . $temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), $name);
+            Image::MakeThumbnails($temp_dir . '/' . $temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), $name, true);
             unlink($temp_dir . '/' . $temp_name);
 
             $user->update([ 'avatar_custom' => true, 'avatar_file' => $name ]);

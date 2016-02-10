@@ -19,7 +19,7 @@ class ProcessComments extends Command {
         $total = count($comments);
         foreach ($comments as $com) {
             try {
-            $com->content_html = app('bbcode')->Parse($com->content_text);
+                $com->content_html = app('bbcode')->Parse($com->content_text);
             } catch (\Exception $ex) {
                 $this->comment("ERROR processing ({$count}/{$total}): {$com->id}");
                 throw $ex;

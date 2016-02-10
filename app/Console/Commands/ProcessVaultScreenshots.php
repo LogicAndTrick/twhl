@@ -50,7 +50,7 @@ class ProcessVaultScreenshots extends Command {
                     copy($file, $temp_dir . '/' . $temp_name);
                     $thumbs = Image::MakeThumbnails(
                         $temp_dir . '/' . $temp_name, Image::$vault_image_sizes,
-                        public_path('uploads/vault/'), $shot->id . '.' . $ext
+                        public_path('uploads/vault/'), $shot->id . '.' . $ext, true
                     );
                     unlink($temp_dir . '/' . $temp_name);
 
