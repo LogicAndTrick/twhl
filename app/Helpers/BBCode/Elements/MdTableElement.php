@@ -65,9 +65,11 @@ class MdTableElement extends Element {
             $str .= '<tr>';
             $count = count($row['cells']);
             for ($i = 0; $i < $max_cells; $i++) {
-                $cell_text = $this->parser->CleanString($row['cells'][$i]);
                 $text = '';
-                if ($i < $count) $text = $this->parser->ParseBBCode($result, $cell_text, $scope, 'inline');
+                if ($i < $count) {
+                    $cell_text = $this->parser->CleanString($row['cells'][$i]);
+                    $text = $this->parser->ParseBBCode($result, $cell_text, $scope, 'inline');
+                }
                 $str .= '<' . $row['type'] . '>' . $text . '</' . $row['type'] . '>';
             }
             $str .= '</tr>';

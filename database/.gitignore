@@ -1,14 +1,2 @@
 *.sqlite
-transfer/0001_*.sql
-transfer/0002_*.sql
-transfer/0003_*.sql
-transfer/0004_*.sql
-transfer/0005_*.sql
-transfer/0006_*.sql
-transfer/0007_*.sql
-transfer/0008_*.sql
-transfer/0009_*.sql
-transfer/0010_*.sql
-transfer/0011_*.sql
-transfer/0012_*.sql
-transfer/0099_*.sql
+transfer/*
