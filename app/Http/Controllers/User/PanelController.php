@@ -105,7 +105,7 @@ class PanelController extends Controller {
         $id = Request::input('id');
         $user = PanelController::GetUser($id);
         $this->validate(Request::instance(), [
-            'email' => 'required|email',
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
             'timezone' => 'required|between:-12,12'
         ]);
         $user->update([

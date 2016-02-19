@@ -14,7 +14,7 @@
 
     <ul>
     @foreach ($categories as $c)
-        <li><a href="{{ act('wiki', 'page', 'category:'.$c->value) }}">Category: {{ $c->value }}</a></li>
+        <li><a href="{{ act('wiki', 'page', 'category:'.$c->value) }}">Category: {{ $c->title }}</a></li>
     @endforeach
     </ul>
 

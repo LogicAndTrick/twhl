@@ -40,16 +40,13 @@ class TwhlUserProvider extends EloquentUserProvider {
 
         // Classic TWHL password conversion
         // Legacy password: 20 characters max, md5 hashed
-        // If the substr/md5 hash matches, we set the standard password and clear the legacy password.
         if ($user->legacy_password) {
             $legacy_plain = $plain;
             if (strlen($legacy_plain) > 20) $legacy_plain = substr($legacy_plain, 0, 20);
             $legacy_pass = md5(strtolower(trim($legacy_plain)));
             if ($user->legacy_password == $legacy_pass) {
-                $user->update([
-                    'password' => $this->hasher->make($plain),
-                    'legacy_password' => ''
-                ]);
+				// Users with a legacy password won't be able to do anything until they reset their password.
+                return true;
             }
         }
 

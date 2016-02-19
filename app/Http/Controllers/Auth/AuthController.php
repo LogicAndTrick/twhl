@@ -14,8 +14,52 @@ class AuthController extends Controller {
 
 	public function __construct()
 	{
-		$this->middleware('guest', ['except' => 'getLogout']);
+		$this->middleware('guest', ['except' => ['getLogout', 'getConvert', 'postConvert'] ]);
 	}
+
+	/**
+	 * Convert a legacy TWHL3 account into a TWHL4 account.
+	 */
+	public function getConvert()
+	{
+        $user = Auth::user();
+        if (!$user || !$user->legacy_password) return redirect('/home');
+
+        return view('auth.convert', [
+            'user' => $user
+        ]);
+	}
+
+    public function postConvert(Request $request) {
+        $user = Auth::user();
+        if (!$user || !$user->legacy_password) return redirect('/home');
+
+        Validator::extend('match_legacy_password', function($attr, $value, $parameters) use ($user) {
+            $legacy_plain = $value;
+            if (strlen($legacy_plain) > 20) $legacy_plain = substr($legacy_plain, 0, 20);
+            $legacy_pass = md5(strtolower(trim($legacy_plain)));
+            return $user->legacy_password == $legacy_pass;
+        });
+
+        $this->validate($request->instance(), [
+            'email' => 'required|confirmed|email|max:255|unique:users,email,'.$user->id,
+            'old_password' => 'required|match_legacy_password',
+            'password' => 'required|confirmed|min:6',
+            'agree_rules' => 'accepted'
+        ], [
+            'match_legacy_password' => 'This doesn\'t match your current password.',
+            'accepted' => 'You must agree to the rules.'
+        ]);
+
+
+        $user->update([
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+            'legacy_password' => ''
+        ]);
+
+        return redirect('home');
+    }
 
     /**
      * Called after a user has successfully logged in
@@ -49,10 +93,13 @@ class AuthController extends Controller {
         Validator::extend('never', function($attribute, $value, $parameters) { return false; }, 'Registration is disabled.');
    		return Validator::make($data, [
    			'name' => 'required|max:255|unique:users',
-   			'email' => 'required|email|max:255|unique:users',
+   			'email' => 'required|confirmed|email|max:255|unique:users',
    			'password' => 'required|confirmed|min:6',
             'g-recaptcha-response' => 'required|recaptcha',
-   		]);
+            'agree_rules' => 'accepted'
+   		], [
+            'accepted' => 'You must agree to the rules.'
+        ]);
    	}
 
    	/**

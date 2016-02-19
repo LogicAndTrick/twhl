@@ -12,6 +12,7 @@ use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiObject;
 use DB;
 use Auth;
+use Illuminate\Support\Collection;
 
 class HomeController extends Controller {
 
@@ -72,22 +73,25 @@ class HomeController extends Controller {
             ->take(5)
             ->select('forum_threads.*')
             ->get();
-        $thread_users = User::with([])
-            ->from(
-                DB::raw(
-                    '(' . implode(' union all ', $threads->map(function ($t) {
-                        return "(select distinct p.thread_id, u.*
-                                from forum_posts p
-                                left join users u on p.user_id = u.id
-                                where p.thread_id = {$t->id}
-                                and p.user_id != {$t->last_post->user_id}
-                                and p.deleted_at is null
-                                and u.deleted_at is null
-                                order by p.updated_at desc
-                                limit 5)";
-                    })->toArray()) . ') users'
-                )
-            )->get();
+
+        if ($threads->count() > 0) {
+            $thread_users = User::with([])
+            ->from(DB::raw(
+                '(' . implode(' union all ', $threads->map(function ($t) {
+                    return "(select distinct p.thread_id, u.*
+                                    from forum_posts p
+                                    left join users u on p.user_id = u.id
+                                    where p.thread_id = {$t->id}
+                                    and p.user_id != {$t->last_post->user_id}
+                                    and p.deleted_at is null
+                                    and u.deleted_at is null
+                                    order by p.updated_at desc
+                                    limit 5)";
+                })->toArray()) . ') users'
+            ))->get();
+        } else {
+            $thread_users = new Collection();
+        }
 
         // Journals section
         $journals = Journal::with(['user'])

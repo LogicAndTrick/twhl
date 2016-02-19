@@ -27,6 +27,10 @@ class DeployFormat extends Command
 
     public function handle()
     {
+        // Stop some triggers because they're pretty slow
+        DB::unprepared("DROP TRIGGER IF EXISTS forum_posts_update_statistics_on_update");
+        DB::unprepared("DROP TRIGGER IF EXISTS wiki_revisions_update_statistics_on_update");
+
         // Comments
         $this->process('Comment', Comment::where('content_html', '=', '')->where('content_text', '!=', ''));
 
@@ -45,7 +49,7 @@ class DeployFormat extends Command
         $this->process('Competition result', CompetitionResult::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Forum Posts
-        $this->process('Forum post', ForumPost::where('content_html', '=', ''));
+        $this->process('Forum post', ForumPost::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Journals
         $this->process('Journal', Journal::where('content_html', '=', '')->where('content_text', '!=', ''));
@@ -81,16 +85,48 @@ class DeployFormat extends Command
                 }
             }
             $rev->wiki_revision_metas()->saveMany($meta);
-            DB::statement('CALL update_wiki_object(?);', [$rev->object_id]);
+            //DB::statement('CALL update_wiki_object(?);', [$rev->object_id]);
         });
+
+        // Let's get those triggers back in there
+        DB::unprepared("
+            CREATE TRIGGER wiki_revisions_update_statistics_on_update AFTER UPDATE ON wiki_revisions
+            FOR EACH ROW BEGIN
+                CALL update_user_wiki_statistics(NEW.user_id);
+
+                IF NEW.user_id != OLD.user_id THEN
+                    CALL update_user_wiki_statistics(OLD.user_id);
+                END IF;
+            END;");
+
+        DB::unprepared("
+            CREATE TRIGGER forum_posts_update_statistics_on_update AFTER UPDATE ON forum_posts
+            FOR EACH ROW BEGIN
+                CALL update_thread_statistics(NEW.thread_id);
+                CALL update_forum_statistics(NEW.forum_id);
+                CALL update_user_forum_statistics(NEW.user_id);
+
+                IF NEW.thread_id != OLD.thread_id THEN
+                    CALL update_thread_statistics(OLD.thread_id);
+                END IF;
+
+                IF NEW.forum_id != OLD.forum_id THEN
+                    CALL update_forum_statistics(OLD.forum_id);
+                END IF;
+
+                IF NEW.user_id != OLD.user_id THEN
+                    CALL update_user_forum_statistics(OLD.user_id);
+                END IF;
+            END;");
     }
 
     private function process($type, $query, $source = 'content_text', $target = 'content_html', $callback = null)
     {
+        $inc = 10000;
         $this->comment("Processing: {$type}");
         $grand_total = $query->count();
-        for ($i = 0; $i < $grand_total; $i += 10000) {
-            $query_result = $query->offset($i)->limit(10000)->get();
+        for ($i = 0; $i < $grand_total; $i += $inc) {
+            $query_result = $query->offset($i)->limit($inc)->get();
             $total = $query_result->count();
             $count = 1;
             $last_reported = 0;
@@ -114,7 +150,7 @@ class DeployFormat extends Command
     }
 
     private function report($type, $total, $count, $last_reported) {
-        if ($count - $last_reported >= $total / 100) {
+        if ($count - $last_reported >= $total / 10) {
             $this->comment("{$type} {$count}/{$total}");
             return $count;
         }

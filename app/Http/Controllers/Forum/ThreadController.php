@@ -81,6 +81,7 @@ class ThreadController extends Controller {
         foreach ($posts as $p) {
             if ($p->content_html == '' && $p->content_text != '') {
                 $p->content_html = app('bbcode')->Parse($p->content_text);
+                $p->timestamps = false;
                 $p->save();
             }
         }

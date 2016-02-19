@@ -7,7 +7,7 @@
 </hc>
 
 <ul class="media-list">
-    @foreach ($comments as $comment)
+    @foreach ($comments->sortBy('created_at') as $comment)
         <li class="media" id="comment-{{ $comment->id }}">
             <div class="media-left">
                 <div class="media-object">
