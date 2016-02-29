@@ -61,7 +61,6 @@ class HomeController extends Controller {
         // Forums section
         $threads = ForumThread::with(['last_post', 'last_post.user'])
             ->leftJoin('forums as f', 'f.id', '=', 'forum_threads.forum_id')
-            ->leftJoin('forum_posts as p', 'p.id', '=', 'forum_threads.last_post_id')
             ->whereRaw('(
                 f.permission_id is null
                 or f.permission_id in (
@@ -69,7 +68,7 @@ class HomeController extends Controller {
                     left join users u on up.user_id = u.id
                     where u.id = ?
                 ))', [$user_id])
-            ->orderBy('p.updated_at', 'desc')
+            ->orderBy('forum_threads.last_post_at', 'desc')
             ->take(5)
             ->select('forum_threads.*')
             ->get();
@@ -78,16 +77,14 @@ class HomeController extends Controller {
             $thread_users = User::with([])
             ->from(DB::raw(
                 '(' . implode(' union all ', $threads->map(function ($t) {
-                    return "(select distinct p.thread_id, u.*
+                    return "(select distinct p.thread_id, p.user_id
                                     from forum_posts p
-                                    left join users u on p.user_id = u.id
                                     where p.thread_id = {$t->id}
                                     and p.user_id != {$t->last_post->user_id}
                                     and p.deleted_at is null
-                                    and u.deleted_at is null
                                     order by p.updated_at desc
                                     limit 5)";
-                })->toArray()) . ') users'
+                })->toArray()) . ') thread_users left join users on users.id = thread_users.user_id'
             ))->get();
         } else {
             $thread_users = new Collection();
@@ -108,6 +105,7 @@ class HomeController extends Controller {
         // Poll section
         $polls = Poll::with(['items'])
             ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->take(1)
             ->get();
 

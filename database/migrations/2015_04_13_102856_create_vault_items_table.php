@@ -38,6 +38,8 @@ class CreateVaultItemsTable extends Migration {
             $table->foreign('category_id')->references('id')->on('vault_categories');
             $table->foreign('type_id')->references('id')->on('vault_types');
             $table->foreign('license_id')->references('id')->on('licenses');
+
+            $table->index('updated_at');
 		});
 
         DB::unprepared("ALTER TABLE vault_items ADD FULLTEXT vault_items_name_content_text_fulltext (name, content_text);");

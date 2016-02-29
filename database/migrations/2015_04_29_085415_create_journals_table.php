@@ -19,6 +19,8 @@ class CreateJournalsTable extends Migration {
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->index('created_at');
 		});
 
         DB::unprepared("

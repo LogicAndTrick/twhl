@@ -21,6 +21,7 @@ class CreateForumThreadsTable extends Migration {
             $table->integer('stat_views');
             $table->integer('stat_posts');
             $table->integer('last_post_id');
+			$table->timestamp('last_post_at')->nullable();
             $table->boolean('is_open');
             $table->boolean('is_sticky');
 			$table->timestamps();
@@ -28,6 +29,11 @@ class CreateForumThreadsTable extends Migration {
 
             $table->foreign('forum_id')->references('id')->on('forums');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->index('forum_id');
+            $table->index('user_id');
+            $table->index('last_post_id');
+            $table->index('last_post_at');
 		});
 
         DB::unprepared("ALTER TABLE forum_threads ADD FULLTEXT forum_threads_title_fulltext (title);");

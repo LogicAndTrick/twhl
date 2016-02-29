@@ -23,9 +23,10 @@ class CreateForumPostsTable extends Migration {
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->index('forum_id');
-            $table->index('thread_id');
+            $table->index(['thread_id', 'created_at']);
             $table->index('user_id');
             $table->index('created_at');
+            $table->index('updated_at');
 		});
 
         DB::unprepared("ALTER TABLE forum_posts ADD FULLTEXT forum_posts_content_text_fulltext (content_text);");
@@ -36,6 +37,7 @@ class CreateForumPostsTable extends Migration {
                 -- Update last post & post count
                 UPDATE forum_threads SET
                     last_post_id = (SELECT id from forum_posts WHERE thread_id = tid AND deleted_at IS NULL ORDER BY created_at DESC LIMIT 1),
+                    last_post_at = (SELECT updated_at from forum_posts WHERE thread_id = tid AND deleted_at IS NULL ORDER BY created_at DESC LIMIT 1),
                     stat_posts = (SELECT COUNT(*) FROM forum_posts WHERE thread_id = tid AND deleted_at IS NULL)
                 WHERE id = tid;
             END;");

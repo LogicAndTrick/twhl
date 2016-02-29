@@ -140,13 +140,20 @@
                     </tr>
                 </thead>
                 <tbody>
+                {? $debug_query_total = 0; $debug_query_count = 0; ?}
                 @foreach (DB::getQueryLog() as $query)
+                    {? $debug_query_total += $query['time']; $debug_query_count++; ?}
                     <tr>
                         <td>{{ $query['query'] }}</td>
                         <td>{{ print_r($query['bindings'], true) }}</td>
                         <td>{{ $query['time'] }}ms</td>
                     </tr>
                 @endforeach
+                <tr>
+                    <th>Total</th>
+                    <th>{{ $debug_query_count }} queries</th>
+                    <th>{{ $debug_query_total }}ms</th>
+                </tr>
                 </tbody>
             </table>
         </div>

@@ -16,6 +16,7 @@ class CreateWikiRevisionMetasTable extends Migration {
 
             $table->foreign('revision_id')->references('id')->on('wiki_revisions');
             $table->index(['key', 'value']);
+			$table->index(['revision_id', 'key']);
 		});
 	}
 

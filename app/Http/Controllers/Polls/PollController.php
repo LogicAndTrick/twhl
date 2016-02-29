@@ -20,7 +20,7 @@ class PollController extends Controller {
 	}
 
 	public function getIndex() {
-        $polls = Poll::with(['items'])->orderBy('close_date', 'desc')->paginate(5);
+        $polls = Poll::with(['items'])->orderBy('close_date', 'desc')->orderBy('id', 'desc')->paginate(5);
         $user_votes = [];
         $user_polls = [];
         if (Auth::user()) {

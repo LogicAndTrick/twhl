@@ -31,7 +31,7 @@ class WikiController extends Controller {
     // Listings
 
     public function getPages() {
-        $revisions = WikiRevision::where('is_active', '=', 1)
+        $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)
             ->leftJoin('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
             ->where('o.type_id', '=', WikiType::PAGE)
             ->orderBy('title')
@@ -43,7 +43,7 @@ class WikiController extends Controller {
     }
 
     public function getUploads() {
-        $revisions = WikiRevision::where('is_active', '=', 1)
+        $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)
             ->leftJoin('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
             ->where('o.type_id', '=', WikiType::UPLOAD)
             ->orderBy('title')
@@ -62,7 +62,7 @@ class WikiController extends Controller {
         $page = intval(Request::get('page')) ?: 1;
         $offset = ($page - 1) * 50;
 
-        $cats = DB::select("select distinct m.value as value $sql limit 50 offset $offset", $param);
+        $cats = DB::select("select distinct m.value as value $sql order by r.title limit 50 offset $offset", $param);
         $categories = new LengthAwarePaginator($cats, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);
 
         foreach ($cats as $c) {

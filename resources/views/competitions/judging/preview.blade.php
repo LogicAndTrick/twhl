@@ -39,6 +39,7 @@
                 <div class="media-body">
                     <h3>
                         {{ $entry->title }} &mdash; By @avatar($entry->user inline)
+                        <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
                     </h3>
                     @if ($result->rank == 1)
                         <h4>1st Place</h4>

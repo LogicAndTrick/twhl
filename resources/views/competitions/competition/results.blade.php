@@ -43,6 +43,9 @@
                 <div class="media-body">
                     <h3>
                         {{ $entry->title }} &mdash; By @avatar($entry->user inline)
+                        @if ($entry->file_location)
+                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
+                        @endif
                     </h3>
                     {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
                     @if ($result->rank == 1)

@@ -48,13 +48,11 @@ class ForumController extends Controller {
         // TODO Forums: thread listing - open/sticky icons, user avatars
         $page = intval(Input::get('page')) ?: 1;
         $forum = Forum::where('slug', '=', $slug)->firstOrFail();
-        $thread_query = ForumThread::where('forum_threads.forum_id', '=', $forum->id)
+        $thread_query = ForumThread::where('forum_id', '=', $forum->id)
             ->with(['last_post', 'last_post.user', 'user'])
-            ->leftJoin('forum_posts as p', 'p.id', '=', 'forum_threads.last_post_id')
-            ->select('forum_threads.*')
             ->orderBy('is_sticky', 'desc')
-            ->orderBy('p.created_at', 'desc')
-            ->orderBy('forum_threads.updated_at', 'desc');
+            ->orderBy('last_post_at', 'desc')
+            ->orderBy('updated_at', 'desc');
         $count = $thread_query->getQuery()->getCountForPagination();
         $threads = $thread_query->skip(($page - 1) * 50)->take(50)->get();
         $pag = new LengthAwarePaginator($threads, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);

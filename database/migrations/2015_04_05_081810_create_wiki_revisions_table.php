@@ -23,6 +23,8 @@ class CreateWikiRevisionsTable extends Migration {
 
             $table->foreign('object_id')->references('id')->on('wiki_objects');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->index(['deleted_at', 'is_active', 'slug']);
 		});
 
         DB::unprepared("ALTER TABLE wiki_revisions ADD FULLTEXT wiki_revisions_content_text_fulltext (title, content_text);");
