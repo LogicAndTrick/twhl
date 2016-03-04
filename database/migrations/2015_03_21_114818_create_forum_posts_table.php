@@ -22,11 +22,13 @@ class CreateForumPostsTable extends Migration {
             $table->foreign('thread_id')->references('id')->on('forum_threads');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->index('forum_id');
-            $table->index(['thread_id', 'created_at']);
-            $table->index('user_id');
-            $table->index('created_at');
-            $table->index('updated_at');
+            $table->index(['deleted_at', 'forum_id']);
+            $table->index(['deleted_at', 'thread_id', 'created_at']);
+            $table->index(['deleted_at', 'forum_id', 'created_at']);
+            $table->index(['deleted_at', 'user_id']);
+            $table->index(['deleted_at', 'created_at']);
+            $table->index(['deleted_at', 'updated_at', 'id']);
+            $table->index(['deleted_at', 'updated_at']);
 		});
 
         DB::unprepared("ALTER TABLE forum_posts ADD FULLTEXT forum_posts_content_text_fulltext (content_text);");

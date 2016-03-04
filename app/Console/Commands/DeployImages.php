@@ -64,8 +64,8 @@ class DeployImages extends Command
         $compodl_path = $path . DIRECTORY_SEPARATOR . 'compodl'; // comp entries - done
         $compopics_path = $path . DIRECTORY_SEPARATOR . 'compopics'; // comp images + comp entry screenshots - done
         $mapvault_path = $path . DIRECTORY_SEPARATOR . 'mapvault'; // vault screenshots + vault items - done
-        $tutorialdl_path = $path . DIRECTORY_SEPARATOR . 'tutorialdl'; // tutorial attachments
-        $tutpics_path = $path . DIRECTORY_SEPARATOR . 'tutpics'; // tutorial images
+        $tutorialdl_path = $path . DIRECTORY_SEPARATOR . 'tutorialdl'; // tutorial attachments - done
+        $tutpics_path = $path . DIRECTORY_SEPARATOR . 'tutpics'; // tutorial images - done
         $uploads_path = $path . DIRECTORY_SEPARATOR . 'uploads'; // competition entries - done
 
         if (!is_dir($avatars_path)) { $this->comment('Couldn\'t find the "avatars" folder.'); return; }
@@ -298,6 +298,8 @@ class DeployImages extends Command
         foreach ($items as $item) {
             $server_path = $item->getServerFilePath();
 
+            continue;
+
             if (!$item->is_hosted_externally && !file_exists($server_path)) {
                 $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . substr($item->file_location, -4);
                 if (is_file($path)) {
@@ -347,6 +349,140 @@ class DeployImages extends Command
 
             $count++;
             $last_reported = $this->report("Vault Items: ", $total, $count, $last_reported);
+        }
+
+
+        /**
+         * -----------------------------------------------------
+         * PROCESS TUTORIALS AND OTHER WIKI IMAGES / ATTACHMENTS
+         * -----------------------------------------------------
+         */
+
+
+        $revisions = WikiRevision::where('is_active', '=', 1)->get();
+        $count = 1;
+        $total = $revisions->count();
+        $last_reported = 0;
+
+        foreach ($revisions as $revis) {
+            $text = $revis->content_text;
+
+            preg_match_all('/\[\[upload:(.*?)(\]\]|\|)/', $text, $result, PREG_SET_ORDER);
+            for ($i = 0; $i < count($result); $i++) {
+
+                $name = $result[$i][1];
+            	$file_name = $tutorialdl_path . DIRECTORY_SEPARATOR . $result[$i][1];
+
+                // Find an entry in the wiki for this
+                $rev = WikiRevision::where('slug', '=', 'upload:'.$name)->where('is_active', '=', 1)->first();
+                if (!$rev && is_file($file_name)) {
+                    // No wiki entry found, create a new one
+                    $rev_desc = "[cat:Tutorial Attachments]\nThis is the attachment for: [[{$revis->title}]]";
+                    $info = pathinfo($file_name);
+
+                    $obj = WikiObject::Create([
+                        'type_id' => WikiType::UPLOAD
+                    ]);
+
+                    $rev = WikiRevision::Create([
+                        'object_id' => $obj->id,
+                        'user_id' => $revis->user_id,
+                        'is_active' => true,
+                        'slug' => 'upload:'.$name,
+                        'title' => $name,
+                        'content_text' => $rev_desc,
+                        'content_html' => app('bbcode')->Parse($rev_desc),
+                        'message' => 'Automatically migrated from TWHL3'
+                    ]);
+
+                    $upload = WikiUpload::Create([
+                        'object_id' => $obj->id,
+                        'revision_id' => $rev->id,
+                        'extension' => $info['extension']
+                    ]);
+
+                    $dir = public_path($upload->getRelativeDirectoryName());
+                    if (!is_dir($dir)) mkdir($dir);
+                    $path = $upload->getServerFileName();
+                    copy($file_name, $path);
+
+                    $size = filesize($path);
+
+                    $rev->wiki_revision_metas()->saveMany([
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => 'Tutorial_Attachments' ]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::UPLOAD_ID, 'value' => $upload->id]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::FILE_SIZE, 'value' => $size])
+                    ]);
+
+                    DB::statement('CALL update_wiki_object(?);', [$obj->id]);
+                }
+            }
+
+            preg_match_all('/\[img:(.*?)(\]|\|)/', $text, $result, PREG_SET_ORDER);
+            for ($i = 0; $i < count($result); $i++) {
+                $name = $result[$i][1];
+                $file_name = $tutpics_path . DIRECTORY_SEPARATOR . $result[$i][1];
+
+                try {
+                    $info = getimagesize($path);
+                } catch (\ErrorException $ex) {
+                    $info = null;
+                }
+
+                // Find an entry in the wiki for this
+                $rev = WikiRevision::where('slug', '=', 'upload:'.$name)->where('is_active', '=', 1)->first();
+                if (!$rev && is_file($file_name) && !!$info) {
+                    // No wiki entry found, create a new one
+                    $rev_desc = "[cat:Tutorial Images]\nThis is an image for: [[{$revis->title}]]";
+                    $info = pathinfo($file_name);
+
+                    $obj = WikiObject::Create([
+                        'type_id' => WikiType::UPLOAD
+                    ]);
+
+                    $rev = WikiRevision::Create([
+                        'object_id' => $obj->id,
+                        'user_id' => $revis->user_id,
+                        'is_active' => true,
+                        'slug' => 'upload:'.$name,
+                        'title' => $name,
+                        'content_text' => $rev_desc,
+                        'content_html' => app('bbcode')->Parse($rev_desc),
+                        'message' => 'Automatically migrated from TWHL3'
+                    ]);
+
+                    $upload = WikiUpload::Create([
+                        'object_id' => $obj->id,
+                        'revision_id' => $rev->id,
+                        'extension' => $info['extension']
+                    ]);
+
+                    $dir = public_path($upload->getRelativeDirectoryName());
+                    if (!is_dir($dir)) mkdir($dir);
+                    $path = $upload->getServerFileName();
+                    copy($file_name, $path);
+
+                    try {
+                        $info = getimagesize($path);
+                    } catch (\ErrorException $ex) {
+                        $info = null;
+                    }
+                    $size = filesize($path);
+
+                    $rev->wiki_revision_metas()->saveMany([
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => 'Tutorial_Images' ]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::UPLOAD_ID, 'value' => $upload->id]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::FILE_SIZE, 'value' => $size]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::IMAGE_WIDTH, 'value' => $info ? $info[0] : 0]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::IMAGE_HEIGHT, 'value' => $info ? $info[1] : 0]),
+                    ]);
+
+                    DB::statement('CALL update_wiki_object(?);', [$obj->id]);
+                }
+            }
+
+            $count++;
+            $last_reported = $this->report("Wiki Revisions: ", $total, $count, $last_reported);
         }
     }
 

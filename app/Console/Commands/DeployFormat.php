@@ -78,7 +78,7 @@ class DeployFormat extends Command
             foreach ($result->meta as $c => $v) {
                 if ($c == 'WikiLink') {
                     foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $val ]);
-                } else if ($c == 'WikiImage') {
+                } else if ($c == 'WikiUpload') {
                     foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val ]);
                 } else if ($c == 'WikiCategory') {
                     foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $val) ]);
@@ -126,7 +126,7 @@ class DeployFormat extends Command
         $this->comment("Processing: {$type}");
         $grand_total = $query->count();
         for ($i = 0; $i < $grand_total; $i += $inc) {
-            $query_result = $query->offset($i)->limit($inc)->get();
+            $query_result = $query->limit($inc)->get();
             $total = $query_result->count();
             $count = 1;
             $last_reported = 0;

@@ -1,3 +1,8 @@
+audio[controls] {
+  min-height: 38px;
+  width: 500px;
+}
+
 span.bbcode {
   display: inline-block;
   margin-bottom: 5px;
@@ -29,6 +34,25 @@ span.bbcode {
   }
   span.red {
     color: red;
+  }
+  span.spoiler {
+    color: #333;
+    background-color: #333;
+    border: 1px solid #333;
+    padding-right: 3px;
+
+    &::before {
+      display: inline;
+      color: black;
+      background-color: white;
+      content: attr(title);
+      padding: 0 3px;
+      margin-right: 3px;
+    }
+
+    &:hover, &.on {
+      color: white;
+    }
   }
 
   // Caption panel
@@ -64,6 +88,10 @@ span.bbcode {
     margin: 15px 0;
     color: #666;
     font-size: 1.1em;
+
+    .quote-name {
+      display: block;
+    }
   }
 
   // Embedded images / video

@@ -10,7 +10,6 @@ return [
 
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'green',  'element' => 'span', 'element_class' => 'green'         ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
 
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'code',   'element' => 'code'                                     ],
@@ -38,6 +37,7 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\QuoteTag',         'scopes' => [ ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',          'scopes' => [ 'excerpt' ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\SpoilerTag',       'scopes' => [ 'excerpt' ] ],
     ],
     'elements' => [
         [ 'class' => 'App\Helpers\BBCode\Elements\MdCodeElement',    'scopes' => [ ] ],

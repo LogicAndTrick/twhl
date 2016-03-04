@@ -47,7 +47,7 @@ class ProcessWikiuploads extends Command {
             foreach ($parse_result->meta as $c => $v) {
                 if ($c == 'WikiLink') {
                     foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $val ]);
-                } else if ($c == 'WikiImage') {
+                } else if ($c == 'WikiUpload') {
                     foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val ]);
                 } else if ($c == 'WikiCategory') {
                     foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $val) ]);

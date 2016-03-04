@@ -16,4 +16,8 @@ $(function() {
         e.stopPropagation();
         $(e.currentTarget).toggleClass('on');
     });
+    $(document).on('click', '.spoiler', function (e) {
+        e.stopPropagation();
+        $(e.currentTarget).toggleClass('on');
+    });
 });

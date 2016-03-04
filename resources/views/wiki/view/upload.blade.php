@@ -20,17 +20,43 @@
         <a href="{{ act('wiki', 'page', $revision->slug) }}">Click here</a> to see the current revision of this image.
     </div>
 @endif
-<div class="wiki-image">
-    <img src="{{ $upload->getResourceFileName() }}" alt="{{ $revision->getNiceTitle() }}">
+@if ($upload->isEmbeddable())
+    <div class="wiki-image">
+        @if ($upload->isImage())
+                <img src="{{ $upload->getResourceFileName() }}" alt="{{ $revision->getNiceTitle() }}">
+        @elseif ($upload->isVideo())
+            <video src="{{ $upload->getResourceFileName() }}" controls>
+                Your browser doesn't support embedded video. Use the embed URL below to download it.
+            </video>
+        @elseif ($upload->isAudio())
+            <audio src="{{ $upload->getResourceFileName() }}" controls>
+                Your browser doesn't support embedded audio. Use the embed URL below to download it.
+            </audio>
+        @endif
+    </div>
+@endif
+
+<div class="text-center">
+    <a class="btn btn-success btn-lg" href="{{ $upload->getEmbeddableFileName() }}">
+        <span class="glyphicon glyphicon-download-alt"></span> Download
+    </a>
 </div>
 
 <h4>Upload Details</h4>
 <dl class="dl-horizontal dl-wide">
     <dt>File Size</dt><dd>{{ format_filesize($revision->getFileSize()) }}</dd>
-    <dt>Image Width</dt><dd>{{ $revision->getImageWidth() }}</dd>
-    <dt>Image Height</dt><dd>{{ $revision->getImageHeight() }}</dd>
-    <dt>BBCode (TWHL only)</dt><dd>[img:{{ $revision->getEmbedSlug() }}]</dd>
-    <dt>Embed URL (dynamic)</dt><dd><a href="{{ act('wiki', 'embed', $revision->getEmbedSlug(), 'current.'.$upload->extension) }}">{{ act('wiki', 'embed', $revision->getEmbedSlug(), 'current.'.$upload->extension) }}</a></dd>
+    @if ($upload->isImage())
+        <dt>Image Width</dt><dd>{{ $revision->getImageWidth() }}</dd>
+        <dt>Image Height</dt><dd>{{ $revision->getImageHeight() }}</dd>
+        <dt>BBCode (TWHL only)</dt><dd>[img:{{ $revision->getEmbedSlug() }}]</dd>
+    @endif
+    @if ($upload->isVideo())
+        <dt>BBCode (TWHL only)</dt><dd>[video:{{ $revision->getEmbedSlug() }}]</dd>
+    @endif
+    @if ($upload->isAudio())
+        <dt>BBCode (TWHL only)</dt><dd>[audio:{{ $revision->getEmbedSlug() }}]</dd>
+    @endif
+    <dt>Embed URL (dynamic)</dt><dd><a href="{{ $upload->getEmbeddableFileName() }}">{{ $upload->getEmbeddableFileName() }}</a></dd>
     <dt>Embed URL (permalink)</dt><dd><a href="{{ $upload->getResourceFileName() }}">{{ $upload->getResourceFileName() }}</a></dd>
 </dl>
 

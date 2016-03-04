@@ -14,18 +14,30 @@ class WikiImageTag extends LinkTag {
         $this->options = array('url');
     }
 
+    private $tags = ['img', 'video', 'audio'];
+
+    private function getTag($state)
+    {
+        foreach ($this->tags as $tag) {
+            $peekTag = $state->Peek(2 + strlen($tag));
+            $pt = $state->PeekTo(']');
+            if ($peekTag == "[{$tag}:" && $pt && strlen($pt) > (2 + strlen($tag)) && strstr($pt, "\n") === false) return $tag;
+        }
+        return null;
+    }
+
     public function Matches($state, $token)
     {
-        $peekTag = $state->Peek(5);
-        $pt = $state->PeekTo(']');
-        return $peekTag == '[img:' && $pt && strlen($pt) > 5 && strstr($pt, "\n") === false;
+        $tag = $this->getTag($state);
+        return $tag != null;
     }
 
     public function Parse($result, $parser, $state, $scope)
     {
         $index = $state->Index();
 
-        if ($state->ScanTo(':') != '[img' || $state->Next() != ':') {
+        $tag = $this->getTag($state);
+        if ($state->ScanTo(':') != "[{$tag}" || $state->Next() != ':') {
             $state->Seek($index, true);
             return false;
         }
@@ -39,7 +51,7 @@ class WikiImageTag extends LinkTag {
             $params = isset($regs[2]) ? explode('|', trim($regs[2])) : [];
             $src = $image;
             if (strstr($image, '/') === false) {
-                $result->AddMeta('WikiImage', $image);
+                $result->AddMeta('WikiUpload', $image);
                 $src = url('/wiki/embed/' . WikiRevision::CreateSlug($image));
             }
             $url = null;
@@ -52,7 +64,7 @@ class WikiImageTag extends LinkTag {
                 else if (strlen($l) > 4 && substr($l, 0, 4) == 'url:') $url = trim(substr($p, 4));
                 else $caption = trim($p);
             }
-            if ($url && $this->ValidateUrl($url)) {
+            if ($tag == 'img' && $url && $this->ValidateUrl($url)) {
                 if (!preg_match('%^[a-z]{2,10}://%i', $url)) {
                     $result->AddMeta('WikiLink', $url);
                     $url = url('/wiki/page/' . WikiRevision::CreateSlug($url));
@@ -73,7 +85,7 @@ class WikiImageTag extends LinkTag {
             return ' <' . $el . ' class="' . implode(' ', $classes) . '"'.($caption ? " title='$caption'" : '').'>'
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'
-                 . '<img class="caption-body" src="' . $parser->CleanUrl($src) . '" alt="' . ($caption ? $caption : 'User posted image') . '" />'
+                 . $this->getEmbedObject($tag, $parser, $src, $caption)
                  . ($caption ? '<span class="caption">' . $caption . '</span>' : '')
                  . '</span>'
                  . ($url ? '</a>' : '')
@@ -81,6 +93,18 @@ class WikiImageTag extends LinkTag {
         } else {
             return false;
         }
+    }
+
+    private function getEmbedObject($tag, $parser, $url, $caption)
+    {
+        switch ($tag) {
+            case 'img':
+                return '<img class="caption-body" src="' . $parser->CleanUrl($url) . '" alt="' . ($caption ? $caption : 'User posted image') . '" />';
+            case 'video':
+            case 'audio':
+                return "<$tag class=\"caption-body\" src=\"$url\" controls>Your browser doesn't support embedded $tag.</$tag>";
+        }
+        return '';
     }
 
     private function ValidateUrl($url)

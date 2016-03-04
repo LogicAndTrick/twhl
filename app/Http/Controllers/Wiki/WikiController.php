@@ -142,21 +142,25 @@ class WikiController extends Controller {
 
     public function getEmbed($id)
     {
+        $upload = null;
         $rev = null;
         if (substr($id, 0, 4) == 'rev:') {
             $rev = WikiRevision::with(['wiki_revision_metas'])->where('id', '=', substr($id, 4))->first();
         } else if (substr($id, 0, 3) == 'id:') {
-            $up = WikiUpload::where('id', '=', substr($id, 3))->first();
-            if ($up) return redirect($up->getResourceFileName());
+            $upload = WikiUpload::where('id', '=', substr($id, 3))->first();
+            $rev = $upload->revision;
         }
+
         if (!$rev) {
+            $upload = null;
             $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:'.$id)->first();
         }
-        if ($rev) {
-            $upload = $rev->getUpload();
-            if ($upload) return redirect($upload->getResourceFileName());
-        }
-        return redirect(asset('images/image-not-found.png'));
+
+        if ($rev && !$upload) $upload = $rev->getUpload();
+
+        if (!$rev || !$upload) return response()->download(public_path('images/image-not-found.png'));
+
+        return response()->download($upload->getServerFileName(), $rev->title . '.' . $upload->extension);
     }
 
     // Create/Edit/Delete
@@ -198,7 +202,7 @@ class WikiController extends Controller {
         foreach ($parse_result->meta as $c => $v) {
             if ($c == 'WikiLink') {
                 foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $val ]);
-            } else if ($c == 'WikiImage') {
+            } else if ($c == 'WikiUpload') {
                 foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val ]);
             } else if ($c == 'WikiCategory') {
                 foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $val) ]);
@@ -388,7 +392,7 @@ class WikiController extends Controller {
         foreach ($parse_result->meta as $c => $v) {
             if ($c == 'WikiLink') {
                 foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $val]);
-            } else if ($c == 'WikiImage') {
+            } else if ($c == 'WikiUpload') {
                 foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val]);
             } else if ($c == 'WikiCategory') {
                 foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => $val]);
@@ -426,15 +430,22 @@ class WikiController extends Controller {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
 
+        $max_size = 1024*4;
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
+        if (permission('Admin')) {
+            $max_size = 1024*16;
+            $allowed_extensions .= ',zip,rar';
+        }
+
         $this->validate(Request::instance(), [
             'title' => 'required|max:200|unique_wiki_slug',
-            'file' => 'required|max:4096|valid_extension:jpeg,jpg,png,gif',
+            'file' => "required|max:{$max_size}|valid_extension:{$allowed_extensions}",
             'content_text' => 'required|max:65536|valid_categories',
             'message' => 'max:200'
         ], [
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
             'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
-            'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
+            'valid_extension' => 'Only the following file formats are allowed: ' . $allowed_extensions
         ]);
         $type = WikiType::UPLOAD;
         $object = WikiObject::Create([ 'type_id' => $type ]);

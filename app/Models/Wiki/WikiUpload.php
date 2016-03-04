@@ -8,8 +8,41 @@ class WikiUpload extends Model {
     protected $table = 'wiki_uploads';
     protected $fillable = ['object_id', 'revision_id', 'extension'];
 
+    public function revision()
+    {
+        return $this->belongsTo('App\Models\Wiki\WikiRevision', 'revision_id');
+    }
+
+    public function isEmbeddable() {
+        return $this->extension == 'jpg'
+            || $this->extension == 'jpeg'
+            || $this->extension == 'png'
+            || $this->extension == 'gif'
+            || $this->extension == 'mp3'
+            || $this->extension == 'mp4';
+    }
+
+    public function isImage() {
+        return $this->extension == 'jpg'
+            || $this->extension == 'jpeg'
+            || $this->extension == 'png'
+            || $this->extension == 'gif';
+    }
+
+    public function isVideo() {
+        return $this->extension == 'mp4';
+    }
+
+    public function isAudio() {
+        return $this->extension == 'mp3';
+    }
+
     public function getServerFileName() {
         return public_path($this->getRelativePath());
+    }
+
+    public function getEmbeddableFileName() {
+        return act('wiki', 'embed', $this->revision->getEmbedSlug());
     }
 
     public function getResourceFileName() {
