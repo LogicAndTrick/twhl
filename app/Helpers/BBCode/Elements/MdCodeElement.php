@@ -15,15 +15,25 @@ class MdCodeElement extends Element {
     function Matches($lines)
     {
         $value = $lines->Value();
-        return trim($value) != '' && $value[0] == ' ';
+        if (trim($value) == '') return false;
+        if (strlen($value) > 4 && substr($value, 0, 4) == '    ') return true;
+        if ($value[0] == "\t") return true;
+        return false;
     }
 
     function Consume($parser, $lines)
     {
-        $rtval = rtrim($lines->Value());
-        $value = trim($lines->Value());
-        $level = strlen($rtval) - strlen($value);
-        $expected = str_repeat(' ', $level);
+        $val = $lines->Value();
+        if ($val[0] == "\t") {
+            $expected = "\t";
+            $level = 1;
+            $value = substr($val, 1);
+        } else {
+            $rtval = rtrim($val);
+            $value = trim($val);
+            $level = strlen($rtval) - strlen($value);
+            $expected = str_repeat(' ', $level);
+        }
 
         $arr = array();
         $arr[] = $value;

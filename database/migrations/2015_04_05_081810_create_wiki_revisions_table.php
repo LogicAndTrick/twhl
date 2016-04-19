@@ -33,17 +33,25 @@ class CreateWikiRevisionsTable extends Migration {
             CREATE PROCEDURE update_wiki_object(oid INT)
             BEGIN
                 DECLARE rid INT;
+                DECLARE del TIMESTAMP;
 
                 UPDATE wiki_revisions SET is_active = 0 WHERE object_id = oid;
 
-                -- Get the current revision id
-                SELECT id INTO rid
-                FROM wiki_revisions WHERE object_id = oid AND deleted_at IS NULL
-                ORDER BY created_at DESC LIMIT 1;
+                -- Check if the object is deleted
+                SELECT deleted_at INTO del
+                FROM wiki_objects WHERE id = oid
+                LIMIT 1;
 
-                -- Update current revision
-                UPDATE wiki_objects SET current_revision_id = rid WHERE id = oid;
-                UPDATE wiki_revisions SET is_active = 1 WHERE id = rid;
+                IF del IS NULL THEN
+                    -- Get the current revision id
+                    SELECT id INTO rid
+                    FROM wiki_revisions WHERE object_id = oid AND deleted_at IS NULL
+                    ORDER BY created_at DESC LIMIT 1;
+
+                    -- Update current revision
+                    UPDATE wiki_objects SET current_revision_id = rid WHERE id = oid;
+                    UPDATE wiki_revisions SET is_active = 1 WHERE id = rid;
+                END IF;
             END;");
 
         DB::unprepared("

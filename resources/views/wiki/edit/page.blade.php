@@ -4,6 +4,9 @@
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
     <hc>
+        @if (permission('WikiAdmin'))
+            <a href="{{ act('wiki', 'delete', $revision->wiki_object->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+        @endif
         <h1>Edit: {{ $revision->getNiceTitle() }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ url('/wiki') }}">Wiki</a></li>

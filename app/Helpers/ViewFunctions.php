@@ -68,3 +68,11 @@ if (!function_exists('format_filesize'))
         return round($pbytes, 2) . 'pb';
     }
 }
+
+if (!function_exists('egg'))
+{
+    function egg()
+    {
+        return \App\Helpers\Egg::GetEggClass();
+    }
+}

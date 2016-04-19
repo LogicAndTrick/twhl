@@ -1,12 +1,15 @@
 <?php namespace App\Models\Wiki;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WikiObject extends Model {
 
 	//
     protected $table = 'wiki_objects';
     protected $fillable = ['type_id', 'permission_id'];
+
+    use SoftDeletes;
 
     public function current_revision()
     {
@@ -29,6 +32,10 @@ class WikiObject extends Model {
     public function canEdit() {
         if (!$this->permission_id) return true;
         return permission('WikiCreate') && permission($this->permission->name);
+    }
+
+    public function canDelete() {
+        return permission('WikiAdmin');
     }
 
     public function isProtected() {

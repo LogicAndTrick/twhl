@@ -15,7 +15,7 @@ use DB;
 class MessageController extends Controller {
 
 	public function __construct() {
-        $this->permission(['index'], true);
+        $this->permission(['index', 'view', 'send', 'delete'], true);
 	}
 
     private static function GetUser($id) {
@@ -140,6 +140,17 @@ class MessageController extends Controller {
     }
 
     public function getDelete($id) {
+        $thread = MessageThread::with(['participants'])->findOrFail($id);
+        if (!$thread->canView()) abort(404);
 
+        return view('user/message/delete', [
+            'thread' => $thread
+        ]);
+    }
+
+    public function postDelete() {
+        $id = Request::input('id');
+        MessageUser::where('thread_id', '=', $id)->where('user_id', '=', Auth::user()->id)->delete();
+        return redirect('message/index');
     }
 }

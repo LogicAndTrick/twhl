@@ -19,11 +19,12 @@
         It's basically the same as email, except less convenient! Enjoy!
     </div>
     </h2>
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered message-list">
         <thead>
             <tr>
                 <th>Subject</th>
                 <th>Last Message</th>
+                <th class="col-mod"></th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,9 @@
                     <td>
                         @date($thread->last_message->created_at) by
                         @avatar($thread->last_message->user inline)
+                    </td>
+                    <td class="col-mod">
+                        <a href="{{ act('message', 'delete', $thread->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></a>
                     </td>
                 </tr>
             @endforeach

@@ -31,7 +31,7 @@ class WikiController extends Controller {
     // Listings
 
     public function getPages() {
-        $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)
+        $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)->whereNull('deleted_at')
             ->leftJoin('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
             ->where('o.type_id', '=', WikiType::PAGE)
             ->orderBy('title')
@@ -405,6 +405,28 @@ class WikiController extends Controller {
         $revision->wiki_revision_metas()->saveMany($meta);
         DB::statement('CALL update_wiki_object(?);', [$obj->id]);
         return redirect('wiki/page/'.$revision->slug);
+    }
+
+    public function getDelete($id)
+    {
+        $obj = WikiObject::with(['current_revision'])->findOrFail($id);
+        if (!$obj->canDelete()) abort(404);
+
+        return view('wiki/edit/delete', [
+            'object' => $obj,
+            'revision' => $obj->current_revision
+        ]);
+    }
+
+    public function postDelete()
+    {
+        $id = intval(Request::input('id'));
+        $obj = WikiObject::findOrFail($id);
+        if (!$obj->canDelete()) abort(404);
+
+        $obj->delete();
+        DB::statement('CALL update_wiki_object(?);', [$obj->id]);
+        return redirect('wiki');
     }
 
     // Uploads

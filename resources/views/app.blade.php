@@ -23,7 +23,7 @@
     <!-- Scripts -->
     <script type="text/javascript" src="{{ asset('/js/all.js') }}"></script>
 </head>
-<body>
+<body class="{{ egg() }}">
 	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container">
 			<div class="navbar-header">
