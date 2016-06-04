@@ -60,6 +60,30 @@ class DeployImages extends Command
 
         $this->comment('Located: ' . $path);
 
+        $temp = public_path('uploads');
+        if (!is_dir($temp)) mkdir($temp);
+
+        $temp = public_path('uploads/avatars');
+        if (!is_dir($temp)) mkdir($temp);
+
+        $temp = public_path('uploads/competition');
+        if (!is_dir($temp)) mkdir($temp);
+
+        $temp = public_path('uploads/competition/attachments');
+        if (!is_dir($temp)) mkdir($temp);
+
+        $temp = public_path('uploads/competition/entries');
+        if (!is_dir($temp)) mkdir($temp);
+
+        $temp = public_path('uploads/vault');
+        if (!is_dir($temp)) mkdir($temp);
+
+        $temp = public_path('uploads/vault/items');
+        if (!is_dir($temp)) mkdir($temp);
+
+        $temp = public_path('uploads/wiki');
+        if (!is_dir($temp)) mkdir($temp);
+
         $avatars_path = $path . DIRECTORY_SEPARATOR . 'avatars'; // avatars - done
         $compodl_path = $path . DIRECTORY_SEPARATOR . 'compodl'; // comp entries - done
         $compopics_path = $path . DIRECTORY_SEPARATOR . 'compopics'; // comp images + comp entry screenshots - done
@@ -220,8 +244,6 @@ class DeployImages extends Command
         foreach ($competitions as $comp) {
             $text = $comp->brief_text;
 
-            continue;
-
             preg_match_all('/\[img:(.*?)(\]|\|)/', $text, $result, PREG_SET_ORDER);
             for ($i = 0; $i < count($result); $i++) {
                 $name = $result[$i][1];
@@ -297,8 +319,6 @@ class DeployImages extends Command
 
         foreach ($items as $item) {
             $server_path = $item->getServerFilePath();
-
-            continue;
 
             if (!$item->is_hosted_externally && !file_exists($server_path)) {
                 $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . substr($item->file_location, -4);
