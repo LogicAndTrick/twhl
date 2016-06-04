@@ -92,10 +92,10 @@ class BladeServiceProvider extends ServiceProvider {
             $pattern = $this->createBladeTemplatePattern('form');
             return preg_replace_callback($pattern, function($matches) {
                 $parameters = $this->parseBladeTemplatePattern($matches, ['url'], ['method' => 'post', 'upload' => false]);
-                $url = url($parameters['url']);
+                $url = $parameters['url'];
                 $method = $parameters['method'];
                 $upload = $parameters['upload'] ? "enctype='multipart/form-data'" : '';
-                return "{$matches[1]}<form action='$url' method='$method' $upload><input type='hidden' name='_token' value='<?php echo csrf_token(); ?>'>";
+                return "{$matches[1]}<form action='<?php url(\"$url\") ?>' method='$method' $upload><input type='hidden' name='_token' value='<?php echo csrf_token(); ?>'>";
             }, $view);
         });
 
@@ -305,7 +305,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $mapped_name = array_get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
-                $parameters['url'] = url($parameters['url']);
+                $parameters['url'] = "<?php url('{$parameters['url']}') ?>";
                 if (!$parameters['placeholder']) $parameters['placeholder'] = array_get($parameters, 'label', $name);
                 $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
