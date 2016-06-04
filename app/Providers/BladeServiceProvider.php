@@ -95,7 +95,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $url = $parameters['url'];
                 $method = $parameters['method'];
                 $upload = $parameters['upload'] ? "enctype='multipart/form-data'" : '';
-                return "{$matches[1]}<form action='<?php url(\"$url\") ?>' method='$method' $upload><input type='hidden' name='_token' value='<?php echo csrf_token(); ?>'>";
+                return "{$matches[1]}<form action='<?php echo url(\"$url\"); ?>' method='$method' $upload><input type='hidden' name='_token' value='<?php echo csrf_token(); ?>'>";
             }, $view);
         });
 
