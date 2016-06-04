@@ -49,7 +49,10 @@ class Image
         } else {
             imagefill($new_image, 0, 0, imagecolorallocate($new_image, 255, 255, 255));
         }
-        imageantialias($new_image, true);
+        // Ubuntu doesn't include a version of GD that supports imageantialias
+        if (function_exists('imageantialias')) {
+            imageantialias($new_image, true);
+        }
         $dx = ($actual_dims[0] - $new_dims[0]) / 2;
         $dy = ($actual_dims[1] - $new_dims[1]) / 2;
         imagecopyresampled($new_image, $this->_image, $dx, $dy, 0, 0, $new_dims[0], $new_dims[1], $this->Width(), $this->Height());
