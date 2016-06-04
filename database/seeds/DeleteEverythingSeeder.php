@@ -13,6 +13,8 @@ class DeleteEverythingSeeder extends \Illuminate\Database\Seeder
     public function run()
     {
         $this->clearAndReset([
+            'vault_item_reviews',
+
             'comment_metas',
             'comments',
 
@@ -44,6 +46,7 @@ class DeleteEverythingSeeder extends \Illuminate\Database\Seeder
 
             'shouts',
 
+            'motms',
             'vault_screenshots',
             'vault_item_includes',
             'vault_items',
@@ -53,6 +56,7 @@ class DeleteEverythingSeeder extends \Illuminate\Database\Seeder
             'wiki_revisions',
             'wiki_objects',
 
+            'bans',
             'password_resets',
             'user_permissions',
             'user_name_history',

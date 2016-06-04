@@ -83,6 +83,38 @@ class Comment extends Model {
         return null;
     }
 
+    public static function canCreate($type)
+    {
+        // User must be logged in
+        $user = Auth::user();
+        if (!$user) return false;
+
+        $permission = null;
+        switch ($type) {
+            case Comment::NEWS;
+                $permission = 'News';
+                break;
+            case Comment::JOURNAL;
+                $permission = 'Journal';
+                break;
+            case Comment::VAULT;
+            case Comment::REVIEW;
+                $permission = 'Vault';
+                break;
+            case Comment::POLL:
+                $permission = 'Poll';
+                break;
+            case Comment::WIKI:
+                $permission = 'Wiki';
+                break;
+            default:
+                throw new \Exception('Undefined comment type in isEditable: ' . $permission);
+        }
+
+        // Admins of the section and global admins can do anything
+        return permission($permission . 'Comment') || permission('Admin') || permission($permission . 'Admin');
+    }
+
     /**
      * @param array $comments All the comments in the article. If null, the list will be fetched from the database.
      * @throws \Exception

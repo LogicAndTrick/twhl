@@ -1,0 +1,269 @@
+﻿TWHL uses a custom text syntax that we call /WikiCode/. It is a combination of Markdown and BBCode, with a few extra things to spice it up. If you're familiar with either of these markup systems, you shouldn't have too much trouble.
+
+== Basic text formatting
+
+There are two ways to do basic text formatting - the /Markdown/ way and the /BBCode/ way. Markdown style is usually faster to type, but BBCode is generally more flexible.
+
+|= Format | Markdown style | BBCode style
+|- *Bold text* | `*Bold text*` | [code][b]Bold text[/b][/code]
+|- /Italic text/ | `/Italic text/` | [code][i]Italic text[/i][/code]
+|- _Underlined text_ | `_Underlined text_` | [code][u]Underlined text[/u][/code]
+|- -Strikethrough text- | `-Strikethrough text-` | [code][s]Strikethrough text[/s][/code]
+|- `Inline code` | [code]`Inline code`[/code] | [code][ code ]Inline code[ /code ][/code] (remove extra spaces)
+
+== Smilies/emoticons/emoji
+
+Before the land of smartphones and dedicated Unicode glyphs, emoji were known as 'smilies', and were not text, but images! Bizarre, I know. TWHL has complete Unicode support, so go nuts with your smartphone keyboards and you won't have any issues with favourites such as `U+1F4A9: PILE OF POO`: 💩. For us plebs using desktop browsers, though, you can also use the traditional smilies from the good ol' days.
+
+Here is TWHL's library of smilies and their corresponding text representations. Simply type the text and it will be replaced with a smiley image in the post.
+
+ :aggrieved: :aghast: :x :badass: :confused: :cry: :cyclops: :lol: :| :furious:
+:glad: :heart: :D :nervous: :nuke: :nuts: :quizzical: :roll: :( :)
+:o :thebox: :thefinger: :tired: :P :cool: :\ :biggrin: ;) :zonked:
+:sarcastic: :combine: :gak: :^_^: :pwned: :target: :ninja: :hammer: :pirate: :walter:
+:plastered: :zomg: :heartbreak: :ciggie: :combines: :crowbar: :death: :freeman: :hecu: :nya: 
+
+    :aggrieved:  :aghast:    :x            :badass:   :confused:  :cry:      :cyclops:    :lol:      :|        :furious:
+    :glad:       :heart:     :D            :nervous:  :nuke:      :nuts:     :quizzical:  :roll:     :(        :)
+    :o           :thebox:    :thefinger:   :tired:    :P          :cool:     :\           :biggrin:  ;)        :zonked:
+    :sarcastic:  :combine:   :gak:         :^_^:      :pwned:     :target:   :ninja:      :hammer:   :pirate:  :walter:
+    :plastered:  :zomg:      :heartbreak:  :ciggie:   :combines:  :crowbar:  :death:      :freeman:  :hecu:    :nya:
+
+== Linking
+
+On the web, linking is one of the more useful things you can do. So, of course there are multiple ways you can link to things using WikiCode. To use auto-linking, make sure the URL starts with `http://`. Be careful, because some browsers don't include this by default.
+
+|= Link method | Markup | Result
+|- Standard link | [code][url]http://example.com[/url][/code] | [url]http://example.com[/url]
+|- Custom link | [code][url=http://example.com]Example link[/url][/code] | [url=http://example.com]Example link[/url]
+|- Standard email link | [code][email]test@example.com[/email][/code] | [email]test@example.com[/email]
+|- Custom email link | [code][email=test@example.com]Example email link[/email][/code] | [email=test@example.com]Example email link[/email]
+|- Quick link | [code][http://example.com][/code] | [http://example.com]
+|- Custom quick link | [code][http://example.com|Example link][/code] | [http://example.com|Example link]
+|- Link to TWHL wiki page | [code][[Home]][/code] | [[Home]]
+|- Custom link to TWHL wiki page | [code][[Home|Example link]][/code] | [[Home|Example link]]
+|- Auto-link | `http://example.com` | http://example.com
+
+== Images
+
+Embedding images another useful thing to do, especially on a wiki. Because it's important, there's a few different ways that images can be added to a post. The output isn't shown in this case because images can take a fair amount of space, but you can experiment by using the preview button when typing a post.
+
+|= Format | Markup | Notes
+|- Normal image | [code][img]http://example.com/example.jpg[/img][/code] | Embed a normal image (breaks text top and bottom)
+|- Link image | [code][url=http://example.com][img]http://example.com/example.jpg[/img][/url][/code] | Clickable to open a URL
+|- Inline image | [code][simg]http://example.com/example.jpg[/simg][/code] | Embed a small image (inline with text)
+|- Advanced image | [code][img:http://example.com/example.jpg][/code] | See details on the advanced image format below
+|- Link to TWHL wiki image | [code][img:example.jpg][/code] | `example.jpg` is the title of the wiki upload
+
+=== Using the advanced image tag
+
+[img:https://placehold.it/400|url:http://example.com|small|right|This image has a url, the size is 'small', and the position is 'right'.]
+
+Sometimes you wish you had more flexibility when embedding images. Well, now you do! The advanced image tag gives you a few options when adding images to your post.
+
+The syntax can look something like this: [code][img:example.jpg|url:http://example.com|size_modifier|position_modifier|caption_text][/code]
+
+Where every field aside from `img:` is optional. An explanation of each option:
+
+- `url:` - should explain itself. Use this to make the image link to a website when you click on it.
+- `size_modifier` - by default, the image tries to fill the width of the page. You can use the size modifier to change it to a fixed size. Valid values are: `thumb`, `small`, `medium`, and `large`.
+- `position_modifier` - by default, the image is centered and text will be wrapped above and below the image. You can use the position modifier to change the position and make the text flow around the image. Valid values are `inline`, `left`, `right`, and `center`.
+- `caption_text` - if you type anything aside from the values above, it will be treated as a caption to the image. You can only use plain text in the caption.
+
+As an aside, video and audio files may sometimes be uploaded to the wiki. You can embed these files on modern browsers using the advanced image tag. Just replace [code][img:][/code] with [code][video:][/code] or [code][audio:][/code] to use them. You can embed external video and audio as well, but note that some formats are not supported on some browsers, so it might not work for everyone. The safest formats to use are mp3 for audio, and mp4 for video.
+
+== Youtube
+
+[youtube:oGlhgVz5r6E|left|medium|This is the caption text]
+
+Embedding Youtube videos was an often-requested feature in TWHL, and now everybody can do it. To embed the video, you first need to find the video ID. You can find this in the URL of any Youtube video - it's a string of 10 or so letters and numbers. It's underlined in the example below.
+
+youtube.com/watch?v=[u]oGlhgVz5r6E[/u]
+
+Once you have the ID, you can use the [code][youtube][/code] tag to add it to your post:
+
+    [youtube]oGlhgVz5r6E[/youtube]
+
+You may also use the advanced image syntax. The options are similar to the [code][img:][/code] tag, but you can't use the `url:`, `inline`, or `thumb` options in the tag. An example:
+
+    [youtube:oGlhgVz5r6E|left|medium|This is the caption text]
+
+== Headings
+
+Headings follow the HTML trend by having six levels. To use a heading, start a new line with `=` symbols. The more symbols you use, the smaller the heading will be.
+
+~~~
+= Heading 1 (Largest)
+== Heading 2
+=== Heading 3
+==== Heading 4
+===== Heading 5
+====== Heading 6 (Smallest)
+~~~
+
+These headings are generated by this code:
+
+    = Heading 1 (Largest)
+    == Heading 2
+    === Heading 3
+    ==== Heading 4
+    ===== Heading 5
+    ====== Heading 6 (Smallest)
+
+== Lists
+
+You can make lists by using `*` for bullet points or `#` for ordered lists. You can create sub-lists by adding extra symbols. You can mix list types on each level.
+
+~~~
+* List item 1
+* List item 2
+** List item 2.1
+** List item 2.2
+
+# Step 1
+# Step 2
+#* Be sure to do step 1 before step 2!
+~~~
+
+The markup for the above looks like:
+
+    * List item 1
+    * List item 2
+    ** List item 2.1
+    ** List item 2.2
+    
+    # Step 1
+    # Step 2
+    #* Be sure to do step 1 before step 2!
+
+== Quotes
+
+Often you want to quote another user when you are replying to them. Again, there are two different ways to quote users.
+
+> Markdown style quotes
+> This is the second line of the quote
+
+The code looks like this:
+
+    > Markdown style quotes
+    > This is the second line of the quote
+
+It's important to note that additional lines in the quote must also start with the '>' character.
+
+Quotes can be nested quite easily:
+
+>> This is the parent quote
+> This is the child quote
+
+And the markup:
+
+    >> This is the parent quote
+    > This is the child quote
+
+The second way to quote users is to use the [code][quote][/code] BBCode tag. These quotes can be nested as well. The new lines are not required, they are simply there to make it easier to read the example.
+
+    [quote]
+        [quote]This is the parent quote[/quote]
+        This is the child quote
+    [/quote]
+
+BBCode quotes have the advantage of adding the name of the person you are quoting:
+
+[quote=GLaDOS]Oh, hi. So, how are you holding up? Because I'm a potato![/quote]
+
+Which can be done like this:
+
+    [quote=GLaDOS]Oh, hi. So, how are you holding up? Because I'm a potato![/quote]
+
+== Panels
+
+Panels are a simple way to separate some content into its own block. Panels can't be nested within each other, but they can contain any other markup you want. To create a panel, simply mark the start of the content with `~~~`. The end of the panel will be marked by the next line that starts with `~~~`.
+
+If the first line of your panel content starts with `:`, it will be used as the panel title.
+
+~~~
+:Panel Title
+This is a panel.
+The markup for a panel looks like this:
+    ~~~
+    :Panel Title
+    This is a panel.
+    ~~~
+~~~
+
+Panels can have different colours as well. The options are: `message` (green), `info` (blue), `warning` (yellow), and `error` (red). To use these colours, put the option after the `~~~` at the beginning of the panel.
+
+~~~info
+:Information Panel
+This is an 'informative' panel, it is coloured blue.
+The markup for an info panel looks like this:
+    ~~~info
+    :Information Panel
+    This is an 'informative' panel, it is coloured blue.
+    ~~~
+~~~
+
+== Horizontal line
+
+This is a pretty simple one. Simply have a line of text that has nothing but `---`. It'll draw a line that's useful for separating sections of text in a post. It looks like this:
+
+---
+
+== Wiki category
+
+This is the only tag that's specific to the wiki. You can use it in other places, but it will just be ignored. Add this tag to categorise wiki pages. Make sure you spell the category correctly, or the page will link to the wrong category. Here's some examples:
+
+    [cat:Put Category Name Here]
+    [cat:Source Tutorials]
+    [cat:Requires Further Detail]
+
+== Embedded vault
+
+If you're posting on a WIP thread or want to show off your new map or mod, you can embed the map vault item into the post. This is also good for posting example maps on a wiki page. To embed a vault item you need to know the ID of the item. You can find this at the end of the URL on the vault page. For example: twhl.info/vault/view/[u]1234[/u]
+
+Then you put that ID in a vault tag like this:
+
+    [vault:1234]
+
+The vault item will be added to the page as a screenshot slideshow, along with a link to the item. If you would like to see what it looks like, you can use the post preview function to experiment with this feature.
+
+== Tables
+
+If you want to get really fancy with your post, you can insert a table. The contents of a table can only be inline - for example, inline images, text formatting, links, and so on. You can't put stuff like Youtube videos or quotes in a table.
+
+To create a table, you use one line of text per table row. For a header row, start the line with `|=`. For a normal row, start the line with `|-`. After that, simply enter the contents of each column, separated by a `|` character. For example:
+
+|= Header 1 | Header 2
+|- Value 1 | Value 2
+
+This table can be created by typing this:
+
+    |= Header 1 | Header 2
+    |- Value 1  | Value 2
+
+== Advanced text formatting
+
+These advanced text formatting techniques are not possible using the Markdown style.
+
+|= Format | BBCode | Notes
+|- [font=red]Colour text[/font] | [code][font=red]Colour text[/font][/code] | Can use any colour name from the [https://developer.mozilla.org/en/docs/Web/CSS/color_value#Color_keywords|CSS colour list]
+|- [font=#FEA320]Colour text 2[/font] | [code][font=#FEA320]Colour text 2[/font][/code] | Can use any RGB hex value
+|- [font size=20]Large text[/font] | [code][font size=20]Large text[/font][/code] | Can use sizes between 6px and 40px
+|- [font size=8]Small text[/font] | [code][font size=8]Small text[/font][/code] | The standard text size is 14px
+|- [font color=red size=20]Large red text[/font] | [code][font color=red size=20]Large text[/font][/code] | Both size and colour can be combined. Remember to use the American spelling for "color".
+|- [spoiler]Spoiler tag[/spoiler] | [code][spoiler]Spoiler tag[/spoiler][/code] | Don't spoil stuff for others!
+|- [spoiler=Half-Life]There's a resonance cascade[/spoiler] | [code][spoiler=Half-Life]There's a resonance cascade[/spoiler][/code] | It's polite to specify what game/movie/etc. the spoiler is for
+
+== Code blocks
+
+You may be wondering how those text blocks appeared above without the BBCode inside them being formatted. This is one of the features of a code block - everything inside them is treated as plain text, and not formatted. This is good for posting snippets of code. To post a code block using the Markdown style, put four spaces in front of every line in the block. If you're the kind of person to use tabs instead of spaces, a single tab will work as well.
+
+	    Each line in a code block should start with four spaces, or a tab character.
+
+If indenting lines of code is too annoying, the BBCode tag you want is [code][pre][/code]. It stands for "preformatted".
+
+	[pre]All the text inside this tag will be a code block. There's no need to add extra indents.[/pre]
+
+---
+
+Phew! That's everything! I know there's a lot of stuff here, but don't worry too much about it. If you need to do a particular thing, just come back to this page later so you can refresh your memory.

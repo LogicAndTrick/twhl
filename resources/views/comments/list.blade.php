@@ -50,7 +50,7 @@
     <div class="alert alert-info text-center">
         <h4>Comments are locked</h4>
     </div>
-@else
+@elseif (\App\Models\Comments\Comment::canCreate($article_type))
     <h3>Add New Comment</h3>
 
     @if (isset($inject_add))
@@ -60,4 +60,13 @@
     @endif
 
     @include('comments.create', [ 'article' => $article, 'article_type' => $article_type, 'article_id' => $article_id, 'text' => '', 'comment' => null ])
+@elseif (!Auth::user())
+    <p>
+        You must log in to post a comment.
+        You can <a href="{{ act('auth', 'login') }}">login</a> or <a href="{{ act('auth', 'register') }}">register a new account</a>.
+    </p>
+@else
+    <p>
+        You don't have permission to post comments here.
+    </p>
 @endif

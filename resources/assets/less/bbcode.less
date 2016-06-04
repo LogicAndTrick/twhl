@@ -17,6 +17,11 @@ span.bbcode {
 
   margin-bottom: 10px;
 
+  // Fix some margins
+  table, ul, ol, pre, .embed-panel {
+    margin-top: 10px;
+  }
+
   &::after {
     content: '';
     display: block;
@@ -137,6 +142,25 @@ span.bbcode {
   table .embedded {
     .embedded.inline;
   }
+
+  // panels
+
+  .panel-primary {
+    background-color: lighten(@panel-primary-border, 10%);
+  }
+  .panel-success {
+    background-color: lighten(@panel-success-border, 10%);
+  }
+  .panel-info {
+    background-color: lighten(@panel-info-border, 10%);
+  }
+  .panel-warning {
+    background-color: lighten(@panel-warning-border, 10%);
+  }
+  .panel-danger {
+    background-color: lighten(@panel-danger-border, 10%);
+  }
+
 
   .video .caption-panel {
     display: block;

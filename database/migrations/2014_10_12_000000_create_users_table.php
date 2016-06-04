@@ -22,8 +22,8 @@ class CreateUsersTable extends Migration {
             $table->string('legacy_password', 60);
 			$table->rememberToken();
 
-            $table->dateTime('last_login_time')->nullable();
-            $table->dateTime('last_access_time')->nullable();
+            $table->timestamp('last_login_time')->nullable();
+            $table->timestamp('last_access_time')->nullable();
             $table->string('last_access_page')->nullable();
             $table->string('last_access_ip', 15)->nullable();
 

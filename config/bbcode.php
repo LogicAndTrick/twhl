@@ -12,8 +12,6 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
 
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'code',   'element' => 'code'                                     ],
-
         // Standard block
         [ 'class' => 'App\Helpers\BBCode\Tags\PreTag',   'scopes' => [ ] ],
 
@@ -38,6 +36,7 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',          'scopes' => [ 'excerpt' ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ 'excerpt' ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\SpoilerTag',       'scopes' => [ 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\CodeTag',          'scopes' => [ 'excerpt' ] ],
     ],
     'elements' => [
         [ 'class' => 'App\Helpers\BBCode\Elements\MdCodeElement',    'scopes' => [ ] ],

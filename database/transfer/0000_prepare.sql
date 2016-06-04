@@ -1,3 +1,7 @@
+
+/* Get the session out of strict mode */
+SET SESSION sql_mode = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+
 DROP FUNCTION IF EXISTS unesc;
 
 CREATE FUNCTION unesc (

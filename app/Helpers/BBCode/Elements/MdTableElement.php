@@ -52,6 +52,7 @@ class MdTableElement extends Element {
                 $last = $i + 1;
             }
         }
+        if ($last < $len) $ret[] = substr($text, $last, ($i-$last) + ($i == $len - 1 ? 1 : 0));
         return $ret;
     }
 

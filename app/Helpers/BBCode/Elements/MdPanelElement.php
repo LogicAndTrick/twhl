@@ -7,6 +7,7 @@ class MdPanelElement extends Element {
     public $parser;
     public $text;
     public $meta;
+    public $title;
 
     function __construct()
     {
@@ -24,6 +25,7 @@ class MdPanelElement extends Element {
         $current = $lines->Current();
 
         $meta = substr($lines->Value(), 3);
+        $title = '';
 
         $found = false;
         $arr = array();
@@ -33,7 +35,8 @@ class MdPanelElement extends Element {
                 $found = true;
                 break;
             }
-            $arr[] = $value;
+            if (strlen($value) > 0 && $value[0] == ':') $title = trim(substr($value, 1));
+            else $arr[] = $value;
         }
 
         if (!$found) {
@@ -45,16 +48,18 @@ class MdPanelElement extends Element {
         $el->parser = $parser;
         $el->text = implode("\n", $arr);
         $el->meta = strtolower(trim($meta));
+        $el->title = $title;
         return $el;
     }
 
     function Parse($result, $scope)
     {
-        $cls = 'well';
-        if ($this->meta == 'message') $cls = 'alert alert-success';
-        else if ($this->meta == 'info') $cls = 'alert alert-info';
-        else if ($this->meta == 'warning') $cls = 'alert alert-warning';
-        else if ($this->meta == 'error') $cls = 'alert alert-danger';
-        return "<div class=\"$cls\">" . $this->parser->ParseBlock($result, $this->text, $scope) . '</div>';
+        $cls = '';
+        if ($this->meta == 'message') $cls = 'panel panel-success';
+        else if ($this->meta == 'info') $cls = 'panel panel-info';
+        else if ($this->meta == 'warning') $cls = 'panel panel-warning';
+        else if ($this->meta == 'error') $cls = 'panel panel-danger';
+        else $cls = 'panel panel-default';
+        return "<div class=\"embed-panel $cls\">" . ($this->title != '' ? "<div class=\"panel-heading\">{$this->parser->CleanString($this->title)}</div>" : '') . "<div class=\"panel-body\">" . $this->parser->ParseBlock($result, $this->text, $scope) . '</div></div>';
     }
 }
