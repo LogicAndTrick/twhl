@@ -69,6 +69,7 @@ class ThreadController extends Controller {
         $forum = Forum::findOrFail($thread->forum_id);
 
         // Update stats
+        $thread->timestamps = false;
         $thread->markAsRead();
         $thread->stat_views++;
         $thread->save();
