@@ -38,7 +38,7 @@
                 </div>
                 <div class="media-right">
                     <div class="media-object post-info">
-                        @avatar($post->user full show_border=true)
+                        @avatar($post->user full)
                         @if ($post->isEditable($thread))
                             <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
                                 <span class="glyphicon glyphicon-pencil"></span>

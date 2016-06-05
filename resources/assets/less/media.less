@@ -78,6 +78,21 @@
     z-index: 0;
   }
 
+  .media-right{
+    position: relative;
+    padding-left: 30px;
+
+    &::after {
+      background: #fafafa;
+      bottom: 0;
+      content: ' ';
+      left: 15px;
+      position: absolute;
+      top: 0;
+      width: 1px;
+    }
+  }
+
   &:nth-child(2n) {
     .table-striped;
     background-color: @table-bg-accent;
@@ -97,6 +112,10 @@
     &::after {
       background: darken(@twhl-brand, 15%);
       background: linear-gradient(to left, darken(@twhl-brand, 15%), #bbb 70%);
+    }
+
+    .media-right::after {
+      background: #e6e6e6;
     }
   }
 }
