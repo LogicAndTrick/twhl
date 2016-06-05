@@ -31,7 +31,7 @@
                                 <span class="forum-icon {{ $forum->getIconClasses() }}"></span>
                                 {{ $forum->name }}
                             </a>
-                            <small>{{ $forum->stat_posts }} posts in {{ $forum->stat_threads }} threads</small>
+                            <small class="pull-right">{{ $forum->stat_posts }} posts in {{ $forum->stat_threads }} threads</small>
                         </h2>
                     </div>
                     <div class="row">

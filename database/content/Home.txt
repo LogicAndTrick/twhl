@@ -1,0 +1,28 @@
+[cat:Meta]
+
+Welcome to the TWHL Wiki! The wiki contains all of the collective knowledge that the community has acquired over the years.
+
+== Exploring Wiki Content
+
+Articles are grouped into /categories/. If you want to see them all, click *See all categories* in the wiki menu at the top of the page.
+
+Here are some of the most important categories to get you started:
+
+- [[category:Tutorials|Tutorials]] - all tutorials for all engines
+-- [[category:Goldsource Tutorials|Goldsource Tutorials]] - all Goldsource (Half-Life 1 engine) tutorials
+-- [[category:Source Tutorials|Source Tutorials]] - all Source tutorials
+-- [[category:General Tutorials|General Tutorials]] - tutorials that aren't specific to one engine
+- [[category:VERC Archive|VERC Archive]] - an archive of the now-defunct Valve Editing Resource Center (VERC) articles
+- [[category:Entity Guides|Entity Guides]] - entity guides for Goldsource and Source games
+- [[category:Error Guides|Error Guides]] - common mapping errors and how to resolve them
+- [[category:Definitions|Definitions]] - definitions for some common terms used when mapping and modding
+
+== Contributing to the Wiki
+
+The best thing about a wiki is that you can add your own knowledge so others can benefit from it!
+
+Here's a few resources to help you get started on editing the wiki:
+
+- [[TWHL: WikiCode Syntax|WikiCode Syntax]] - a guide on TWHL's wiki markup syntax
+- [[TWHL: Editing the Wiki|Editing the Wiki]] - a short guide on how to contribute to the wiki
+- [[TWHL: Site Rules|Site Rules]] - please remember to follow the site rules when updating the wiki

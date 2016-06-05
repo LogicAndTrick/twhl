@@ -1,4 +1,6 @@
-﻿TWHL uses a custom text syntax that we call /WikiCode/. It is a combination of Markdown and BBCode, with a few extra things to spice it up. If you're familiar with either of these markup systems, you shouldn't have too much trouble.
+﻿[cat:Meta]
+
+TWHL uses a custom text syntax that we call /WikiCode/. It is a combination of Markdown and BBCode, with a few extra things to spice it up. If you're familiar with either of these markup systems, you shouldn't have too much trouble.
 
 == Basic text formatting
 

@@ -1,0 +1,54 @@
+[cat:Meta]
+
+== Welcome to TWHL!
+
+Like many community sites, we have a set of rules that we expect users to follow when interacting with other people on the site.
+
+We don't like complicated rules any more than you, so here's a basic summary:
+
+- Be nice
+- No piracy (and nothing else illegal either!)
+- No spam
+
+If you disobey the rules, depending on how severe your actions are, we will do one of the following:
+
+- Delete or edit the offending post, and...
+- Ask you not do it again.
+- Send you a warning about breaking the rules.
+- Temporarily ban you for a short period.
+- Permanently ban your account.
+
+Please keep in mind that the administrators devote their time and effort to this community in order to keep it a helpful and informative place. Follow the appropriate rules, listen to the administrators, and you'll do fine. Treat the community well, and it will treat you well in return. If you have any questions regarding any of the forum rules, please contact any of the administrators and they will be glad to help you!
+
+More detailed descriptions of each of the rules are below:
+
+= Be Nice
+
+"Be Nice" covers a lot of stuff - but basically, it means that you should respect other people and not be mean or annoying.
+
+Please use common sense here, but in case you would like some examples, here's an incomplete list of guidelines for some situations:
+
+- Don't post porn/gore or other potentially offensive content to the forums. Only post content appropriate for all ages.
+-- If you absolutely have to, put a big "NSFW" warning on any links that might contain inappropriate content.
+- Discrimination-based insults (race, gender, religion, political views) are absolutely not allowed. Honestly, just don't talk about those subjects entirely.
+- When posting a question or asking for help, be sure to explain everything that you did so other users don't have to ask you for extra information.
+- When answering somebody else's questions, post enough information to be helpful, rather than insulting them for now knowing the answer.
+- Treat newbies well - remember, you were a newbie once too! New members help keep the community alive. Be patient and help them out.
+- When creating a post (forum, vault, etc) - pick the appropriate category related to your post. The category is often important for context of the post.
+- Before posting a question on the forums, use the search function to see if your question has already been asked before.
+
+= No Piracy (and nothing else illegal either!)
+
+At TWHL we don't tolerate discussion or promotion of piracy. If you post a warez link or encourage other users to illegally download software, the moderator team will quickly take action and warn/ban you based on your actions. The same rule goes for any other illegal activities (in any country) that you might think to do. We don't care what you do that's illegal elsewhere, but *do not mention it on TWHL!*
+
+= No Spam
+
+Spam is a cancer that plagues the internet. We don't like it, you don't like it. Please don't do it on TWHL.
+
+"Spam" covers several categories, some examples are:
+
+- Automated bot/script spam is absolutely not allowed, you will be banned and all your posts deleted.
+- Repeatedly posting the same question or bumping your question in the forums will be considered spam if you do it too many times.
+- Copypasta and meme images are considered spam and will generally be deleted if they're long or annoying.
+- If you've been banned and you create a second account, you'll be considered a spammer and you will be permanently banned.
+- Posting lots of low-effort content and filling up the site with rubbish posts is not allowed either.

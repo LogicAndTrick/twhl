@@ -7,6 +7,7 @@
 	<title>{{ isset($page_title) && !!$page_title ? $page_title . ' - ' : '' }}TWHL: Half-Life and Source Mapping Tutorials and Resources</title>
 
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
     @yield('styles', '')
 

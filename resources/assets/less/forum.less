@@ -1,13 +1,36 @@
+.recent-forum-threads {
+  .col-thread {
+
+  }
+  .col-time {
+    width: 140px;
+  }
+  .col-user {
+    width: 180px;
+  }
+}
+
 .thread-listing {
   .col-icon {
     width: 24px;
   }
   .col-posts, .col-views {
-    width: 60px;
-    text-align: center;
+    width: 100px;
+    text-align: right;
+    .views {
+      opacity: 0.7;
+    }
   }
   .col-last-post {
-    width: 180px;
+    width: 200px;
+    .avatar.small {
+      margin: 0;
+      padding: 0;
+      float: left;
+    }
+  }
+  .col-created-by {
+    width: 160px;
   }
   .col-mod {
     width: 22px;
@@ -85,6 +108,7 @@
 
     .avatar.full {
       width: 150px;
+      margin-bottom: 10px;
 
       @media (max-width: @screen-sm-max) {
         width: 120px;

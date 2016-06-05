@@ -145,7 +145,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='text' class='form-control' id='$id' placeholder='$label' name='$mapped_name' value='$collect' />" .
+                "<input type='text' class='form-control' id='$id' name='$mapped_name' value='$collect' />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -172,7 +172,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='password' class='form-control' id='$id' placeholder='$label' name='$mapped_name' value='$collect' />" .
+                "<input type='password' class='form-control' id='$id' name='$mapped_name' value='$collect' />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -289,7 +289,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<textarea class='form-control $class' id='$id' placeholder='$label' name='$mapped_name'>$collect</textarea>" .
+                "<textarea class='form-control $class' id='$id' name='$mapped_name'>$collect</textarea>" .
                 "$error_message</div>";
             }, $view);
         });
@@ -305,8 +305,8 @@ class BladeServiceProvider extends ServiceProvider {
                 $mapped_name = array_get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
-                $parameters['url'] = "<?php url('{$parameters['url']}') ?>";
-                if (!$parameters['placeholder']) $parameters['placeholder'] = array_get($parameters, 'label', $name);
+                $parameters['url'] = "<?php echo url('{$parameters['url']}') ?>";
+                //if (!$parameters['placeholder']) $parameters['placeholder'] = array_get($parameters, 'label', $name);
                 $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
@@ -349,7 +349,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='file' id='$id' placeholder='$label' name='$mapped_name' />" .
+                "<input type='file' id='$id' name='$mapped_name' />" .
                 "$error_message</div>";
             }, $view);
         });

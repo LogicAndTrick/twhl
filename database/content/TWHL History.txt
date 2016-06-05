@@ -1,0 +1,53 @@
+[cat:Meta]
+
+== TWHL v4: 2016
+
+Who would have thought that after all these years, the Goldsource community is still alive and strong? Coming up on 18 years since the original release of Half-Life 1, I've finally managed to finish the fabled TWHL4 to keep up with the pace of the rest of the modding community. Big thanks to the folks that helped me with design advice: Ant, Strider, Archie, Grim, as well as anybody who tested the beta and provided feedback. And of course big thanks to Atom and Seventh-Monkey for creating the site and keeping it alive for all these years.
+
+TWHL4 represents my vision of a more modern resources website - more configurable, more flexible, and more open. My hope is that the TWHL wiki can become one of the most valuable resources on the internet for Goldsource modding (and maybe even Source too!).
+
+TWHL has been around for 14 years now. The next 14 are just around the corner! Let's go!
+
+ *-- Penguinboy*
+
+---
+
+== TWHL v3: 2008
+
+I joined TWHL way back in 2003. Two years later, I become a moderator. Now, as Seventh-Monkey has stepped down from wholly active development, I have taken over the reigns and I bring you TWHL: Version 3. Thanks to the collective efforts of Penguinboy, Strider, ZombieLoffe, Seventh-Monkey and others, we were able to band together and make TWHL3 a reality.
+
+I will strive to bring TWHL back to the days when I joined: back to a time of carefree enjoyment and tolerance. TWHL3 is the catalyst for it.
+
+Change is good.
+
+Here's to many more years of TWHL!
+
+ *-- Ant*
+
+---
+
+== TWHL v2: 2005
+
+Then I came along as a lost newbie mapper overwhelmed by hideous errors. I stayed for a bit because the place seemed nice and friendly, and I started answering other peoples' questions. Then, for some reason, I was invited to become a moderator. I did, and serving as such, continued to answer questions on HL1 regularly until mid-July 2005, when, having picked up PHP again (the scripting language in which this site is written) I asked atom if I might continue development of the site.
+
+I did, and here we are today, with active development contiuing. Sadly our oldest moderator and great site contributor Andy has taken leave of us for awhile, but we also have two new moderators, RabidMonkey and Ant, one or both of whom may also help along with code too in the future.
+
+Long live TWHL! Good stuff atom, Andy, Slayer, and everybody who got this place going and keeps it so!
+
+Wish me luck.
+
+ *-- Seventh-Monkey*
+
+---
+
+== TWHL v1: 2002
+
+The original TWHL was nothing like this site. It was my first attempt at HTML, and looked as such. It wasn't so much about mapping as much as just anything Half-Life. It could never have supported an online community, but it got enough visitors for me to want to redesign it.
+
+Although this incarnation of TWHL also began as an experiment (in PHP this time), it has survived its first year and has grown far larger and faster than I expected. As I redesigned the site, I thought it would be a good idea to concentrate on its community features. Initially, I went about this in all the wrong ways, but soon discovered what needed fixing, and now TWHL boasts a large and happy community of people from all round the world. It is what keeps the site alive!
+
+However, TWHL wouldn't be what it is today if the many cool people who write tutorials and help out on the forums didn't do so. Andy deserves a special mention here: he arrived in the site's first few months, and has expended considerable time and energy on pretty much every aspect of the site.
+
+We're looking forward to carrying TWHL into the future, supporting Half-Life 2 when it arrives, but always keeping a place for that original masterpiece. Long live Gordon Freeman!
+
+ *-- atom*

@@ -1,0 +1,34 @@
+[cat:Meta]
+
+It's not hard to get involved with wiki updates. Here's a short guide to get you started.
+
+== Editing Pages
+
+# Create a TWHL account if you haven't got one. Only registered users can make changes.
+# Navigate to the page you want to edit and click the "Edit" button at the top of the page.
+# Add your changes to the page. Click "Update preview" to preview your changes.
+# If you want, type a short description of what changes you made in the "Description of Edit" box.
+# Click "Edit Page" to post your changes!
+
+== Creating New Pages
+
+# Create a TWHL account if you haven't got one. Only registered users can make changes.
+# Click the "Create a new page" link at the top of the wiki.
+# Choose an appropriate title for your page. If you're adding a tutorial, put "Tutorial: " at the start of the title. (Example: "Tutorial: Custom Sounds")
+# Add the content of your page. Click "Update preview" to preview the page.
+# Click "Create Page" to post your page!
+
+== Reverting Changes
+
+If someone's made a bad edit or posted some spam to a page, you should revert it. One way to do that is to edit the page and remove the changes, but you can also revert back to a previous version of the page.
+
+# Navigate to the page you want to revert.
+# Click the "History" button at the top of the page.
+# Find the version of the page you want to revert to. Usually it will be the second one in the list (i.e. the previous version).
+# Click the "Revert" button next to that version of the page.
+# Type a reason for why you are reverting the changes in the reason box.
+# Click "Revert to this Revision" to revert to the selected version.
+
+== Deleting Pages
+
+Only an admin can delete a page. Contact an admin to get a page deleted.

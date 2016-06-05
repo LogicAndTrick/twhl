@@ -14,7 +14,7 @@
 
         <h1>
             {{ $thread->title }}
-            <small>Created @date($thread->created_at) by @avatar($thread->user inline)</small>
+            <small class="pull-right">Created @date($thread->created_at) by @avatar($thread->user inline)</small>
         </h1>
 
         <ol class="breadcrumb">
@@ -31,26 +31,26 @@
             <li class="media media-panel post" id="post-{{ $post->id }}">
                 <div class="media-body">
                     <div class="media-heading">
-                        <a href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a> &bull;
-                        @date($post->created_at)
-                        @if (permission('ForumAdmin'))
-                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
-                                <span class="glyphicon glyphicon-remove"></span>
-                                <span class="hidden-xs">Delete</span>
-                            </a>
-                        @endif
-                        @if ($post->isEditable($thread))
-                            <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs">Edit</span>
-                            </a>
-                        @endif
+                        Posted @date($post->created_at)
+                        <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
                     </div>
                     <div class="bbcode post-content">{!! $post->content_html !!}</div>
                 </div>
                 <div class="media-right">
                     <div class="media-object post-info">
                         @avatar($post->user full show_border=true)
+                        @if ($post->isEditable($thread))
+                            <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs">Edit</span>
+                            </a>
+                        @endif
+                        @if (permission('ForumAdmin'))
+                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span class="hidden-xs">Delete</span>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </li>
