@@ -73,6 +73,7 @@ class ThreadController extends Controller {
         $thread->markAsRead();
         $thread->stat_views++;
         $thread->save();
+        $thread->timestamps = true;
 
         $page = intval(Input::get('page')) ?: 1;
         $post_query = ForumPost::with('user')->where('thread_id', '=', $id)->orderBy('created_at');

@@ -13,7 +13,7 @@
         @endif
         <h1>Forum Listings</h1>
     </hc>
-    <ul class="media-list">
+    <ul class="media-list forum-listing">
         @foreach ($forums as $forum)
             <li class="media media-panel {{ $forum->deleted_at ? 'inactive' : '' }}">
                 <div class="media-body">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <p>
+                            <p class="description">
                                 {{ $forum->description }}
                             </p>
                         </div>
