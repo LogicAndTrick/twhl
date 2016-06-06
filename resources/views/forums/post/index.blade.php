@@ -21,8 +21,8 @@
             <li class="media media-panel post" id="post-{{ $post->id }}">
                 <div class="media-body">
                     <div class="media-heading">
-                        @date($post->created_at) &bull;
-                        In <a href="{{ act('thread', 'view', $post->thread_id) }}">{{ $post->thread->title }}</a>
+                        Posted @date($post->created_at)
+                        in <a href="{{ act('thread', 'view', $post->thread_id) }}">{{ $post->thread->title }}</a>
                         <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
                     </div>
                     <div class="bbcode post-content">{!! $post->content_html !!}</div>
@@ -30,16 +30,16 @@
                 <div class="media-right">
                     <div class="media-object post-info">
                         @avatar($post->user full show_border=false)
-                        @if (permission('ForumAdmin'))
-                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
-                                <span class="glyphicon glyphicon-remove"></span>
-                                <span class="hidden-xs">Delete</span>
-                            </a>
-                        @endif
                         @if ($post->isEditable($post->thread))
                             <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs">Edit</span>
+                            </a>
+                        @endif
+                        @if (permission('ForumAdmin'))
+                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
+                                <span class="glyphicon glyphicon-remove"></span>
+                                <span class="hidden-xs">Delete</span>
                             </a>
                         @endif
                     </div>
