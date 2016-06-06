@@ -1,4 +1,4 @@
-@title('Forum: '.$forum->name)
+@title($forum->name)
 @extends('app')
 
 @section('content')

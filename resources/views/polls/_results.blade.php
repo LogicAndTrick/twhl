@@ -11,6 +11,7 @@
         ];
         $total_votes += $item->stat_votes;
     }
+    if ($total_votes == 0) $total_votes = 1;
     $i = 0;
     $front_page = isset($front) && !!$front;
 ?>
