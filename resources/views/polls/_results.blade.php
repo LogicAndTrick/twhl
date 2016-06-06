@@ -15,10 +15,10 @@
     $front_page = isset($front) && !!$front;
 ?>
 <div class="poll-results row">
-    <div class="{{ $front_page ? 'col-xs-12' : 'col-md-5' }}">
+    <div class="{{ $front_page ? 'col-xs-12' : 'col-md-6' }}">
         <canvas id="poll-chart-{{ $poll->id }}" width="220" height="220"></canvas>
     </div>
-    <div class="{{ $front_page ? 'col-xs-12' : 'col-md-7' }}">
+    <div class="{{ $front_page ? 'col-xs-12' : 'col-md-6' }}">
         <ul>
             @foreach ($poll->items->sortByDesc('stat_votes') as $item)
                 <li style="border-color: {{ $colours[$i++%count($colours)] }}" class="{{ array_search($item->id, $user_votes) !== false ? 'chosen' : '' }}">
