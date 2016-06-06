@@ -17,17 +17,13 @@
         <div class="media media-panel">
             <div class="media-left">
                 <div class="media-object">
-                    @avatar($news->user small show_border=true show_name=false)
+                    @avatar($news->user small show_border=false show_name=false)
                 </div>
             </div>
             <div class="media-body">
                 <div class="media-heading">
                     @avatar($news->user text) &bull;
-                    @date($news->created_at) &bull;
-                    <a href="#comments" class="btn btn-xs btn-link link">
-                        <span class="glyphicon glyphicon-comment"></span>
-                        {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
-                    </a>
+                    @date($news->created_at)
                 </div>
                 <div class="bbcode">
                     {!! $news->content_html !!}

@@ -12,7 +12,7 @@
             <div class="media-left">
                 <div class="media-object">
                     @if ($comment->user)
-                        @avatar($comment->user small show_name=false show_border=true)
+                        @avatar($comment->user small show_name=false show_border=false)
                     @endif
                 </div>
             </div>
@@ -25,7 +25,7 @@
                             <a href="{{ act('comment', 'delete', $comment->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs">Delete</span></a>
                         @endif
                         @if($comment->isEditable($comments))
-                            <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-xs">Edit</span></a>
+                            <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-xs">Edit</span></a>
                         @endif
                         @if ($comment->user)
                             @avatar($comment->user text) &bull;

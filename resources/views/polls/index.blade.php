@@ -20,25 +20,22 @@
                         @endif
                         <h2>
                             <a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a>
-                            @if ($poll->isOpen())
-                                <small>Voting now!</small>
-                            @else
-                                <small>Voting closed</small>
-                            @endif
                         </h2>
-                        @date($poll->created_at) &bull;
-                        <a href="{{ act('poll', 'view', $poll->id) }}" class="btn btn-xs btn-link link">
-                            <span class="glyphicon glyphicon-comment"></span>
-                            {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
-                        </a>
+                        @date($poll->created_at) &bull; {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }}
                     </div>
-                    <div class="bbcode">{!! $poll->content_html !!}</div>{{ $poll->close_date->diffInSeconds(null, false) }}
+                    <div class="bbcode">{!! $poll->content_html !!}</div>
                     <div class="well well-sm">
                         @if ($poll->isOpen() && Auth::user() && array_search($poll->id, $user_polls) === false)
                             @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
                         @else
                             @include('polls/_results', [ 'poll' => $poll, 'user_votes' => $user_votes ])
                         @endif
+                    </div>
+                    <div class="media-footer">
+                        <a href="{{ act('poll', 'view', $poll->id) }}" class="btn btn-xs btn-link link">
+                            <span class="glyphicon glyphicon-comment"></span>
+                            {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
+                        </a>
                     </div>
                 </div>
             </li>

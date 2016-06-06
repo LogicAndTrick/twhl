@@ -17,11 +17,7 @@
         <div class="media media-panel">
             <div class="media-body">
                 <div class="media-heading">
-                    @date($poll->created_at) &bull;
-                    <a href="#comments" class="btn btn-xs btn-link link">
-                        <span class="glyphicon glyphicon-comment"></span>
-                        {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
-                    </a>
+                    @date($poll->created_at) &bull; {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }}
                 </div>
                 <div class="bbcode">{!! $poll->content_html !!}</div>
                 <div class="well well-sm">

@@ -14,7 +14,7 @@
             <li class="media media-panel" id="news-{{ $news->id }}">
               <div class="media-left">
                 <div class="media-object">
-                    @avatar($news->user small show_border=true show_name=false)
+                    @avatar($news->user small show_border=false show_name=false)
                 </div>
               </div>
               <div class="media-body">
@@ -25,13 +25,15 @@
                     @endif
                     <h2><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></h2>
                     @avatar($news->user text) &bull;
-                    @date($news->created_at) &bull;
+                    @date($news->created_at)
+                </div>
+                <div class="bbcode">{!! $news->content_html !!}</div>
+                <div class="media-footer">
                     <a href="{{ act('news', 'view', $news->id) }}" class="btn btn-xs btn-link link">
                         <span class="glyphicon glyphicon-comment"></span>
                         {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
                     </a>
                 </div>
-                <div class="bbcode">{!! $news->content_html !!}</div>
               </div>
             </li>
         @endforeach
