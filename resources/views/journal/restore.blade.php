@@ -1,9 +1,9 @@
-@title('Restore Journal Post')
+@title('Restore journal post')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Restore Journal Post #{{ $journal->id }} by @avatar($journal->user inline)</h1>
+        <h1>Restore journal: {{ $journal->getTitle() }} by @avatar($journal->user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
             <li><a href="{{ act('journal', 'view', $journal->id) }}">Journal #{{ $journal->id }}</a></li>

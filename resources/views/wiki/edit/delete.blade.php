@@ -1,10 +1,10 @@
-@title('Delete Wiki Page')
+@title('Delete wiki page')
 @extends('app')
 
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
     <hc>
-        <h1>Delete Wiki Page: {{ $revision->getNiceTitle() }}</h1>
+        <h1>Delete: {{ $revision->getNiceTitle() }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ url('/wiki') }}">Wiki</a></li>
             <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>

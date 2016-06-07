@@ -3,7 +3,7 @@
 
 @section('content')
     <hc>
-        <h1>Edit Competition: {{ $comp->name }}</h1>
+        <h1>Edit competition: {{ $comp->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>

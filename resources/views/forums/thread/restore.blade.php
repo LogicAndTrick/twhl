@@ -1,9 +1,9 @@
-@title('Restore Forum Thread: '.$thread->title)
+@title('Restore forum thread: '.$thread->title)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Restore Thread: {{ $thread->title }}</h1>
+        <h1>Restore thread: {{ $thread->title }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>

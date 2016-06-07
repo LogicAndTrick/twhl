@@ -16,9 +16,9 @@ class MarkdownTextProcessor extends Processor {
          * Very simple rules: no nesting, no newlines, must start/end on a word boundary
          */
 
-        $pre = '%(?<=^|[\p{P}\s])';
+        $pre = '%(?<=^|[!\^()+=\[\]{}"\'<>?,.\s])';
         $mid = '([^<>\r\n]*?)';
-        $post = '(?=[\p{P}\s]|$)%imu';
+        $post = '(?=[!\^()+=\[\]{}"\'<>?,.\s]|$)%imu';
 
         // Bold
         $text = preg_replace("{$pre}\*{$mid}\*{$post}", '<strong>$1</strong>', $text);

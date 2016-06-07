@@ -1,4 +1,4 @@
-@title('Private Messages')
+@title('Private messages')
 @extends('app')
 
 @section('content')

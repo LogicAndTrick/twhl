@@ -1,10 +1,10 @@
-@title('Vault Items')
+@title('Vault items')
 @extends('app')
 
 @section('content')
     <hc>
         <a class="btn btn-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Upload to the Vault</a>
-        <h1>Vault Items</h1>
+        <h1>Vault items</h1>
         <ol class="breadcrumb">
             @if ($filtering)
                 <li><a href="{{ act('vault', 'index') }}">Vault</a></li>

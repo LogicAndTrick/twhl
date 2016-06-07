@@ -1,9 +1,9 @@
-@title('Member List')
+@title('Member list')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>TWHL Members</h1>
+        <h1>TWHL members</h1>
         {!! $users->render() !!}
     </hc>
     <div class="row">

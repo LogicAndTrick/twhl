@@ -8,7 +8,7 @@
             <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-list-alt"></span> Edit Rules</a>
             <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
         @endif
-        <h1>Competition Brief: {{ $comp->name }}</h1>
+        <h1>Competition brief: {{ $comp->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li class="active">View Brief</li>

@@ -1,9 +1,9 @@
-@title('Edit Competition Entry Screenshots: '.$entry->name)
+@title('Edit competition entry screenshots: '.$entry->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Edit Entry Screenshots: {{ $entry->name }}</h1>
+        <h1>Edit entry screenshots: {{ $entry->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>

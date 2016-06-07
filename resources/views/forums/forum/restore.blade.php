@@ -1,9 +1,9 @@
-@title('Restore Forum: '.$forum->name)
+@title('Restore forum: '.$forum->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Restore Deleted Forum: {{ $forum->name }}</h1>
+        <h1>Restore deleted forum: {{ $forum->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li class="active">Restore</li>

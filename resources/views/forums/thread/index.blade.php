@@ -1,10 +1,10 @@
-@title('Forum Threads')
+@title('Forum threads')
 @extends('app')
 
 @section('content')
 
     <hc>
-        <h1>Forum Threads</h1>
+        <h1>Forum threads</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             @if ($user)

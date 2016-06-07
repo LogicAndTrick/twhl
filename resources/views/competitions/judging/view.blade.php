@@ -1,4 +1,4 @@
-@title('Competition Judging: '.$comp->name)
+@title('Competition judging: '.$comp->name)
 @extends('app')
 
 @section('content')
@@ -8,7 +8,7 @@
         @endif
         <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Preview Results</a>
         <a href="{{ act('competition-judging', 'create-entry', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Add Entry</a>
-        <h1>Competition Judging: {{ $comp->name }}</h1>
+        <h1>Competition judging: {{ $comp->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>

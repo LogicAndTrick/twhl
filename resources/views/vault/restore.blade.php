@@ -1,9 +1,9 @@
-@title('Restore Vault Item: '.$item->name)
+@title('Restore vault item: '.$item->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Restore Vault Item: {{ $item->name }}</h1>
+        <h1>Restore vault item: {{ $item->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
             <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>

@@ -1,9 +1,9 @@
-@title('Edit Competition Restriction')
+@title('Edit competition restriction')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Edit Competition Restriction</h1>
+        <h1>Edit competition restriction</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li><a href="{{ act('competition-restriction', 'index') }}">Restrictions</a></li>

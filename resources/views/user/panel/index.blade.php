@@ -1,9 +1,9 @@
-@title('User Control Panel: '.$user->name)
+@title('User control panel: '.$user->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>User Control Panel: {{ $user->name }}</h1>
+        <h1>User control panel: {{ $user->name }}</h1>
     </hc>
     <div class="row">
         <div class="col-md-6">

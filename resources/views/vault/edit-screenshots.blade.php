@@ -1,9 +1,9 @@
-@title('Vault Item Screenshots: '.$item->name)
+@title('Vault item screenshots: '.$item->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Vault Item Screenshots: {{ $item->name }}</h1>
+        <h1>Vault item screenshots: {{ $item->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
             <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>

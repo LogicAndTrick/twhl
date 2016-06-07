@@ -4,7 +4,7 @@
 @section('content')
     <hc>
         <h1>
-            Edit Comment by
+            Edit comment by
             @if ($comment->user)
                 @avatar($comment->user inline)
             @else

@@ -1,4 +1,4 @@
-@title('Competition Result Voting: '.$comp->name)
+@title('Competition voting: '.$comp->name)
 @extends('app')
 
 @section('content')
@@ -6,7 +6,7 @@
         @if ($comp->canJudge())
             <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> View/Edit Results</a>
         @endif
-        <h1>Competition Voting: {{ $comp->name }}</h1>
+        <h1>Competition voting: {{ $comp->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>

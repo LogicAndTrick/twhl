@@ -1,9 +1,9 @@
-@title($searched ? 'Search Results' : 'Search TWHL')
+@title($searched ? 'Search results' : 'Search TWHL')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Search TWHL</h1>
+        <h1>{{ $searched ? 'Search results' : 'Search TWHL' }}</h1>
     </hc>
     <form action="{{ url('search/index') }}" method="get">
         <div class="input-group">
@@ -28,36 +28,41 @@
 
             <hr />
 
-            <h2>Users</h2>
-            @if ($results_users && $results_users->count() > 0)
-                {!! $results_users->render() !!}
-                <table class="table table-condensed table-striped table-bordered search-users">
+            <h2>Wiki articles</h2>
+            @if ($results_wikis && $results_wikis->count() > 0)
+                {!! $results_wikis->render() !!}
+                <table class="table table-condensed table-striped table-bordered search-wikis">
                     <thead>
                         <tr>
-                            <th>User</th>
-                            <th>Biography Excerpt</th>
+                            <th>Article</th>
+                            <th>Last Modified</th>
+                            <th>Excerpt</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($results_users as $user)
+                        @foreach ($results_wikis as $wiki)
                             <tr>
                                 <td>
-                                    @avatar($user inline)
+                                    <a href="{{ act('wiki', 'page', $wiki->slug) }}">{{ $wiki->getNiceTitle() }}</a>
                                 </td>
                                 <td>
-                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($user->info_biography_text) !!}</div>
+                                    @date($wiki->created_at)
+                                    by @avatar($wiki->user inline)
+                                </td>
+                                <td>
+                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($wiki->content_text) !!}</div>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             @else
-                <p>No matching users were found.</p>
+                <p>No matching wiki articles were found.</p>
             @endif
 
             <hr/>
 
-            <h2>Thread Titles</h2>
+            <h2>Thread titles</h2>
             @if ($results_threads && $results_threads->count() > 0)
                 {!! $results_threads->render() !!}
                 <table class="table table-condensed table-striped table-bordered search-threads">
@@ -91,7 +96,7 @@
 
             <hr/>
 
-            <h2>Forum Posts</h2>
+            <h2>Forum posts</h2>
             @if ($results_posts && $results_posts->count() > 0)
                 {!! $results_posts->render() !!}
                 <table class="table table-condensed table-striped table-bordered search-posts">
@@ -126,41 +131,7 @@
 
             <hr/>
 
-            <h2>Wiki Articles</h2>
-            @if ($results_wikis && $results_wikis->count() > 0)
-                {!! $results_wikis->render() !!}
-                <table class="table table-condensed table-striped table-bordered search-wikis">
-                    <thead>
-                        <tr>
-                            <th>Article</th>
-                            <th>Last Modified</th>
-                            <th>Excerpt</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($results_wikis as $wiki)
-                            <tr>
-                                <td>
-                                    <a href="{{ act('wiki', 'page', $wiki->slug) }}">{{ $wiki->getNiceTitle() }}</a>
-                                </td>
-                                <td>
-                                    @date($wiki->created_at)
-                                    by @avatar($wiki->user inline)
-                                </td>
-                                <td>
-                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($wiki->content_text) !!}</div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                <p>No matching wiki articles were found.</p>
-            @endif
-
-            <hr/>
-
-            <h2>Vault Items</h2>
+            <h2>Vault items</h2>
             @if ($results_vaults && $results_vaults->count() > 0)
                 {!! $results_vaults->render() !!}
                 <p>For a more refined vault search, go to the <a href="{{ act('vault', 'index') }}">vault listings page</a>.</p>
@@ -196,6 +167,35 @@
             @else
                 <p>No matching vault items were found.</p>
                 <p>For a more refined vault search, go to the <a href="{{ act('vault', 'index') }}">vault listings page</a>.</p>
+            @endif
+
+            <hr/>
+
+            <h2>Users</h2>
+            @if ($results_users && $results_users->count() > 0)
+                {!! $results_users->render() !!}
+                <table class="table table-condensed table-striped table-bordered search-users">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Biography Excerpt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($results_users as $user)
+                            <tr>
+                                <td>
+                                    @avatar($user inline)
+                                </td>
+                                <td>
+                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($user->info_biography_text) !!}</div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p>No matching users were found.</p>
             @endif
 
         @else

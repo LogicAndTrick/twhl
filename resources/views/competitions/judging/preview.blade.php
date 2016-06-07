@@ -1,9 +1,9 @@
-@title('Preview Competition Results: '.$comp->name)
+@title('Preview competition results: '.$comp->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Preview Results: {{ $comp->name }}</h1>
+        <h1>Preview results: {{ $comp->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>

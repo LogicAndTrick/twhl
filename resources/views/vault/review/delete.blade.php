@@ -1,4 +1,4 @@
-@title('Delete Vault Item Review for: '.$item->name)
+@title('Delete vault item review for: '.$item->name)
 @extends('app')
 
 @section('content')

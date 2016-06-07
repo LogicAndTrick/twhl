@@ -1,9 +1,9 @@
-@title('Delete Forum: '.$forum->name)
+@title('Delete forum: '.$forum->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Delete Forum {{ $forum->name }}</h1>
+        <h1>Delete forum {{ $forum->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li class="active">Delete</li>

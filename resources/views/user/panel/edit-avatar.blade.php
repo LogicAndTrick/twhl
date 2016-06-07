@@ -1,9 +1,9 @@
-@title('Update Avatar')
+@title('Update avatar')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Update Avatar: {{ $user->name }}</h1>
+        <h1>Update avatar: {{ $user->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
             <li class="active">Update Avatar</li>

@@ -1,4 +1,4 @@
-@title('News Post: '.$news->title)
+@title('News post: '.$news->title)
 @extends('app')
 
 @section('content')

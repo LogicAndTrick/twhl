@@ -1,9 +1,9 @@
-@title('Create Forum')
+@title('Create forum')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Create Forum</h1>
+        <h1>Create forum</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li class="active">Create</li>

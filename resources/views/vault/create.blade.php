@@ -1,9 +1,9 @@
-@title('Upload to the Vault')
+@title('Upload to the vault')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Upload to the Vault</h1>
+        <h1>Upload to the vault</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
             <li class="active">Add New Vault Item</li>

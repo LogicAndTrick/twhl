@@ -1,9 +1,9 @@
-@title('Edit Forum: '.$forum->name)
+@title('Edit forum: '.$forum->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Edit Forum: {{ $forum->name }}</h1>
+        <h1>Edit forum: {{ $forum->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li class="active">Edit</li>

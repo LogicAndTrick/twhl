@@ -1,9 +1,9 @@
-@title('Update Site Settings')
+@title('Update site settings')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Update Site Settings: {{ $user->name }}</h1>
+        <h1>Update site settings: {{ $user->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
             <li class="active">Update Settings</li>

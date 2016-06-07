@@ -1,9 +1,9 @@
-@title('Delete Journal Post')
+@title('Delete journal post')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Delete Journal Post #{{ $journal->id }} by @avatar($journal->user inline)</h1>
+        <h1>Delete journal: {{ $journal->getTitle() }} by @avatar($journal->user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
             <li><a href="{{ act('journal', 'view', $journal->id) }}">Journal #{{ $journal->id }}</a></li>

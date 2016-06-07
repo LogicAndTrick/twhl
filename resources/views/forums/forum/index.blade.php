@@ -1,4 +1,4 @@
-@title('Forum Listings')
+@title('Forum listings')
 @extends('app')
 
 @section('content')
@@ -11,7 +11,7 @@
             @endif
             <a class="btn btn-primary btn-xs" href="{{ act('forum', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new forum</a>
         @endif
-        <h1>Forum Listings</h1>
+        <h1>Forum listing</h1>
     </hc>
     <ul class="media-list forum-listing">
         @foreach ($forums as $forum)
@@ -44,7 +44,7 @@
                             <table class="table table-condensed recent-forum-threads">
                                 <thead>
                                     <tr>
-                                        <th class="col-thread">Recently Active Threads</th>
+                                        <th class="col-thread">Recently Active Threads <a class="see-all" href="{{ act('forum', 'view', $forum->slug) }}">See all</a></th>
                                         <th class="col-time">Last Post</th>
                                         <th class="col-user">By User</th>
                                     </tr>

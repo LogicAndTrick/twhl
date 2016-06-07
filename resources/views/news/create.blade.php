@@ -1,9 +1,9 @@
-@title('Create News Post')
+@title('Create news post')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Create News Post</h1>
+        <h1>Create news post</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('news', 'index') }}">News</a></li>
             <li class="active">Create News</li>

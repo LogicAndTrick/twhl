@@ -9,11 +9,15 @@ class Journal extends Model {
     use SoftDeletes;
 
 	protected $table = 'journals';
-    protected $fillable = ['user_id', 'content_text', 'content_html', 'stat_comments', 'flag_locked'];
+    protected $fillable = ['user_id', 'title', 'content_text', 'content_html', 'stat_comments', 'flag_locked'];
 
     public function user()
     {
         return $this->belongsTo('App\Models\Accounts\User');
+    }
+
+    public function getTitle() {
+        return $this->title ? $this->title : 'Journal #'.$this->id;
     }
 
     public function isEditable() {

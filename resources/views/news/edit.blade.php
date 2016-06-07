@@ -1,9 +1,9 @@
-@title('Edit News Post: '.$news->title)
+@title('Edit news post: '.$news->title)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Edit News Post: {{ $news->title }}</h1>
+        <h1>Edit news post: {{ $news->title }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('news', 'index') }}">News</a></li>
             <li><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></li>

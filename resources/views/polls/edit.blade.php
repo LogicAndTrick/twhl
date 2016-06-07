@@ -1,9 +1,9 @@
-@title('Edit Poll: '.$poll->title)
+@title('Edit poll: '.$poll->title)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Edit Poll: {{ $poll->title }}</h1>
+        <h1>Edit poll: {{ $poll->title }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('poll', 'index') }}">Polls</a></li>
             <li><a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a></li>

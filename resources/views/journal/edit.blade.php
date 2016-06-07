@@ -1,9 +1,9 @@
-@title('Edit Journal Post')
+@title('Edit journal post')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Edit Journal Post #{{ $journal->id }} by @avatar($journal->user inline)</h1>
+        <h1>Edit journal: {{ $journal->getTitle() }} by @avatar($journal->user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
             <li><a href="{{ act('journal', 'view', $journal->id) }}">Journal #{{ $journal->id }}</a></li>
@@ -12,6 +12,7 @@
     </hc>
     @form(journal/edit)
         @hidden(id $journal)
+        @text(title $journal) = Journal Title
         @textarea(content_text:text $journal) = Journal Content
         <div class="form-group">
             <h4>

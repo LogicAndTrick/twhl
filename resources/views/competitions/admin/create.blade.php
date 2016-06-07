@@ -3,7 +3,7 @@
 
 @section('content')
     <hc>
-        <h1>Create New Competition</h1>
+        <h1>Create new competition</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li class="active">Create Competition</li>

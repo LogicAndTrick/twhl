@@ -4,7 +4,7 @@
 @section('content')
     <hc>
         <h1>
-            Delete Comment by
+            Delete comment by
             @if ($comment->user)
                 @avatar($comment->user inline)
             @else

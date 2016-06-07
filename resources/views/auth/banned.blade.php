@@ -3,7 +3,7 @@
 
 @section('content')
     <hc>
-        <h1>You Have Been Banned</h1>
+        <h1>You have been banned</h1>
     </hc>
     <p>
         You have been banned from TWHL.

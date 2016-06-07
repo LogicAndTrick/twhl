@@ -1,9 +1,9 @@
-@title('Delete Forum Post by '.$post->user->name)
+@title('Delete forum post by '.$post->user->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Delete Post by @avatar($post->user inline)</h1>
+        <h1>Delete post by @avatar($post->user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>

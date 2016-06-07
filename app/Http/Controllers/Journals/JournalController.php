@@ -48,10 +48,12 @@ class JournalController extends Controller {
 
     public function postCreate() {
         $this->validate(Request::instance(), [
+            'title' => 'required|max:150',
             'text' => 'required|max:10000'
         ]);
         $journal = Journal::Create([
             'user_id' => Auth::user()->id,
+            'title' => Request::input('title'),
             'content_text' => Request::input('text'),
             'content_html' => app('bbcode')->Parse(Request::input('text')),
             'stat_comments' => 0,
@@ -73,9 +75,11 @@ class JournalController extends Controller {
         $journal = Journal::findOrFail($id);
         if (!$journal->isEditable()) abort(404);
         $this->validate(Request::instance(), [
+            'title' => 'required|max:150',
             'text' => 'required|max:10000'
         ]);
         $journal->update([
+            'title' => Request::input('title'),
             'content_text' => Request::input('text'),
             'content_html' => app('bbcode')->Parse(Request::input('text')),
         ]);

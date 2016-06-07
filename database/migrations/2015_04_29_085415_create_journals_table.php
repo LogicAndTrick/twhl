@@ -11,6 +11,7 @@ class CreateJournalsTable extends Migration {
 		{
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->string('title');
             $table->text('content_text');
             $table->text('content_html');
             $table->integer('stat_comments');

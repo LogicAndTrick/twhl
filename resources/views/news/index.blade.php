@@ -1,4 +1,4 @@
-@title('News Posts')
+@title('News posts')
 @extends('app')
 
 @section('content')
@@ -6,7 +6,7 @@
         @if (permission('NewsAdmin'))
             <a class="btn btn-primary btn-xs" href="{{ act('news', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new news post</a>
         @endif
-        <h1>News Posts</h1>
+        <h1>News posts</h1>
         {!! $newses->render() !!}
     </hc>
     <ul class="media-list">

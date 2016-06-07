@@ -3,7 +3,7 @@
 
 @section('content')
     <hc>
-        <h1>Request Password Reset</h1>
+        <h1>Request password reset</h1>
     </hc>
 
     @if (session('status'))

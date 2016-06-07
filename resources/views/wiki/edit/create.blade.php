@@ -1,10 +1,10 @@
-@title('Create New Wiki Page')
+@title('Create new wiki page')
 @extends('app')
 
 @section('content')
     @include('wiki.nav')
     <hc>
-        <h1>Create New Page</h1>
+        <h1>Create new page</h1>
         <ol class="breadcrumb">
             <li><a href="{{ url('/wiki') }}">Wiki</a></li>
             <li class="active">Create Page</li>

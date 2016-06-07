@@ -1,9 +1,9 @@
-@title('Obliterate User: '.$user->name)
+@title('Obliterate user: '.$user->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Obliterate User: @avatar($user inline)</h1>
+        <h1>Obliterate user: @avatar($user inline)</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
             <li class="active">Obliterate</li>

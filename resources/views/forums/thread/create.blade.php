@@ -1,9 +1,9 @@
-@title('Create Forum Thread: '.$forum->name)
+@title('Create forum thread: '.$forum->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Create Thread: {{ $forum->name }}</h1>
+        <h1>Create thread: {{ $forum->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>

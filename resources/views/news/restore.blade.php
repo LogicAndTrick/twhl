@@ -1,9 +1,9 @@
-@title('Restore News Post: '.$news->title)
+@title('Restore news post: '.$news->title)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Restore News Post: {{ $news->title }}</h1>
+        <h1>Restore news post: {{ $news->title }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('news', 'index') }}">News</a></li>
             <li><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></li>

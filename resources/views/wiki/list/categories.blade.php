@@ -1,10 +1,10 @@
-@title('Wiki Categories')
+@title('Wiki categories')
 @extends('app')
 
 @section('content')
     @include('wiki.nav')
     <hc>
-        <h1>Wiki Categories</h1>
+        <h1>Wiki categories</h1>
         <ol class="breadcrumb">
             <li><a href="{{ url('/wiki') }}">Wiki</a></li>
             <li class="active">Category List</li>

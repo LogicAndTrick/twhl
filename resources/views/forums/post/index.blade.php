@@ -1,9 +1,9 @@
-@title('Forum Posts')
+@title('Forum posts')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Forum Posts</h1>
+        <h1>Forum posts</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
             @if ($user)

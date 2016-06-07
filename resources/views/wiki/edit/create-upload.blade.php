@@ -1,10 +1,10 @@
-@title('Upload New Wiki File')
+@title('Upload new wiki file')
 @extends('app')
 
 @section('content')
     @include('wiki.nav')
     <hc>
-        <h1>Upload New File</h1>
+        <h1>Upload new file</h1>
         <ol class="breadcrumb">
             <li><a href="{{ url('/wiki') }}">Wiki</a></li>
             <li class="active">Create File</li>

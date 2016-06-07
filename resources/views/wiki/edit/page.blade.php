@@ -1,4 +1,4 @@
-@title('Edit Wiki Page: ')
+@title('Edit wiki page: ')
 @extends('app')
 
 @section('content')

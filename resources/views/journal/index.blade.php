@@ -25,12 +25,13 @@
               </div>
               <div class="media-body">
                 <div class="media-heading">
-                    @avatar($journal->user text) &bull;
-                    @date($journal->created_at)
                     @if ($journal->isEditable())
                         <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
                         <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                     @endif
+                    <h2><a href="{{ act('journal', 'view', $journal->id) }}">{{ $journal->getTitle() }}</a></h2>
+                    @avatar($journal->user text) &bull;
+                    @date($journal->created_at)
                 </div>
                 <div class="bbcode">{!! $journal->content_html !!}</div>
                 <div class="media-footer">

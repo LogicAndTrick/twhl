@@ -1,9 +1,9 @@
-@title('Delete Competition Entry: '.$entry->name)
+@title('Delete competition entry: '.$entry->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Delete Competition Entry: {{ $entry->name }}</h1>
+        <h1>Delete competition entry: {{ $entry->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>

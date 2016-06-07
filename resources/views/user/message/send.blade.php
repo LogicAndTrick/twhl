@@ -1,9 +1,9 @@
-@title('Send Private Message')
+@title('Send private message')
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Send Private Message</h1>
+        <h1>Send private message</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index') }}">Control Panel</a></li>
             <li><a href="{{ act('message', 'index') }}">Private Messages</a></li>

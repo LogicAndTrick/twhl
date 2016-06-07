@@ -1,9 +1,9 @@
-@title('Update Password: '.$user->name)
+@title('Update password: '.$user->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Update Password: {{ $user->name }}</h1>
+        <h1>Update password: {{ $user->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
             <li class="active">Update Password</li>

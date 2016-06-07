@@ -1,9 +1,9 @@
-@title('Manage Bans: '.$user->name)
+@title('Manage bans: '.$user->name)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Manage Bans: {{ $user->name }}</h1>
+        <h1>Manage bans: {{ $user->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
             <li class="active">Manage Bans</li>

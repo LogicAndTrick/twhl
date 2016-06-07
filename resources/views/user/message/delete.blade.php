@@ -1,9 +1,9 @@
-@title('Delete Message Thread: '.$thread->subject)
+@title('Delete message thread: '.$thread->subject)
 @extends('app')
 
 @section('content')
     <hc>
-        <h1>Delete Message Thread: {{ $thread->subject }}</h1>
+        <h1>Delete message thread: {{ $thread->subject }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index') }}">Control Panel</a></li>
             <li><a href="{{ act('message', 'index') }}">Private Messages</a></li>
