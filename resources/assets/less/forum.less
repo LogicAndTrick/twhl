@@ -26,9 +26,9 @@
   .col-posts, .col-views {
     width: 100px;
     text-align: right;
-    .views {
-      opacity: 0.7;
-    }
+  }
+  .views {
+    opacity: 0.7;
   }
   .col-last-post {
     width: 200px;
@@ -124,6 +124,39 @@
       }
       @media (max-width: @screen-xs-max) {
         width: 100px;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: @screen-xs-max) {
+  .recent-forum-threads {
+    .col-time, .col-user {
+      display: none;
+    }
+  }
+  .thread-listing {
+    .col-icon, .col-mod, .col-posts, .col-views {
+      display: none;
+    }
+    td.col-last-post { font-size: 0.85em; }
+    .col-last-post {
+      width: 50px;
+      text-align: center;
+      .avatar.small {
+        width: 45px;
+        display: block;
+      }
+      .avatar.text {
+        display: none;
+      }
+    }
+  }
+  .post-listing {
+    .post {
+      .media-right {
+        display: none;
       }
     }
   }

@@ -152,7 +152,7 @@
     </div>
 
     @if (app('config')->get('app.debug'))
-        <div class="container" style="padding-top: 20px;">
+        <div class="container hidden-xs hidden-sm" style="padding-top: 20px;">
             <table class="table table-bordered table-condensed">
                 <thead>
                     <tr>

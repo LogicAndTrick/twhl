@@ -21,7 +21,7 @@
                 <th class="col-icon"></th>
                 <th class="col-topic">Topic</th>
                 <th class="col-posts">Posts</th>
-                <th class="col-last-post">Last Post</th>
+                <th class="col-last-post"><span class="hidden-xs">Last Post</span></th>
                 @if (permission('ForumAdmin'))
                     <th class="col-mod"></th>
                 @endif
@@ -36,11 +36,20 @@
                         </a>
                     </td>
                     <td class="col-topic">
+                        <div class="visible-xs-inline-block">
+                            <a class="thread-title" href="{{ act('thread', 'view', $thread->id) }}?page=last">
+                                <span class="forum-icon {{ $thread->getIconClasses() }}"></span>
+                            </a>
+                        </div>
                         <a class="thread-title" href="{{ act('thread', 'view', $thread->id) }}">{{ $thread->title }}</a><br/>
                         @avatar($thread->user text), @date($thread->created_at)
+                        <div class="visible-xs-block">
+                            <span class="posts">{{ $thread->stat_posts }} {{ ($thread->stat_posts == 1 ? 'reply' : 'replies') }}</span> &bull;
+                            <span class="views">{{ $thread->stat_views }} {{ ($thread->stat_views == 1 ? 'view' : 'views') }}</span>
+                        </div>
                     </td>
                     <td class="col-posts">
-                        {{ $thread->stat_posts }} {{ ($thread->stat_posts == 1 ? 'reply' : 'replies') }}<br/>
+                        <span class="posts">{{ $thread->stat_posts }} {{ ($thread->stat_posts == 1 ? 'reply' : 'replies') }}</span><br/>
                         <span class="views">{{ $thread->stat_views }} {{ ($thread->stat_views == 1 ? 'view' : 'views') }}</span>
                     </td>
                     <td class="col-last-post">

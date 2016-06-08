@@ -1,4 +1,11 @@
 
+h1,h2,h3 {
+  .btn {
+    float: right;
+    margin: 0 2px;
+  }
+}
+
 .header-container {
   margin-bottom: 10px;
   padding: 10px;
@@ -87,5 +94,25 @@ hr[title] {
     top: -0.7em;
     background: white;
     padding: 0 15px;
+  }
+}
+
+// Responsive
+@media (max-width: @screen-xs-max) {
+  .header-container, h1, h2, h3 {
+    .btn {
+      font-size: 0;
+
+      .glyphicon {
+        font-size: 12px;
+        line-height: 15px;
+      }
+    }
+  }
+  h1, h2, h3 {
+    small, small.pull-right {
+      float: none !important;
+      display: block;
+    }
   }
 }
