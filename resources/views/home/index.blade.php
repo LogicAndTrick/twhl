@@ -60,30 +60,6 @@
                     </a>
                 </div>
                 @endforeach
-
-                @foreach ($top_maps->slice(2, 3) as $item)
-                <div class="col-xs-2 tagged">
-                    <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
-                        <span class="tag small">Top</span>
-                        <span class="vault-item-details small">
-                            @avatar($item->user inline link=false)<hr />
-                            {{ $item->name }}
-                        </span>
-                    </a>
-                </div>
-                @endforeach
-
-                @foreach ($new_maps->slice(3, 3) as $item)
-                <div class="col-xs-2 tagged">
-                    <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
-                        <span class="tag right small">New</span>
-                        <span class="vault-item-details small">
-                            @avatar($item->user inline link=false)<hr />
-                            {{ $item->name }}
-                        </span>
-                    </a>
-                </div>
-                @endforeach
             </div>
         </div>
         <div class="col-sm-3">

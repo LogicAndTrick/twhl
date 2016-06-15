@@ -96,7 +96,7 @@
         @foreach ($items as $item)
             <li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="vault-item">
-                    <img class="game-icon" src="{{ asset('images/games/' . $item->game->abbreviation . '_32.png') }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
+                    <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
                     <a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a>
                     <a class="screenshot" href="{{ act('vault', 'view', $item->id) }}">
                         <img src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" />
@@ -104,7 +104,7 @@
                     @if ($item->flag_ratings && $item->stat_ratings > 0)
                         <span class="stars">
                             @foreach ($item->getRatingStars() as $star)
-                                <img src="{{ asset('images/stars/gold_'.$star.'_16.png') }}" alt="{{ $star }} star" />
+                                <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
                             @endforeach
                             ({{$item->stat_ratings}})
                         </span>
@@ -195,7 +195,7 @@
             });
 
             $('.filter-games').parent().on('show.bs.dropdown', function() {
-                var s = $('[name=search]'),
+                var s = $('.vault-filter-form [name=search]'),
                     fg = $('.filter-games'),
                     bt = fg.siblings('[data-toggle="dropdown"]'),
                     w = s.outerWidth() + s.siblings('.input-group-addon').outerWidth(),
@@ -210,7 +210,7 @@
             // Load dynamic content
 
             $.get('{{ url("api/games") }}', { all: true }, function(data) {
-                var templ = '<li class="stop-close filter-action" data-filter-value="{id}" data-text="{abbreviation}"><img src="{{ asset("images/games/{abbreviation}_{size}.png") }}" alt="{name}" /> {name}</li>';
+                var templ = '<li class="stop-close filter-action" data-filter-value="{id}" data-text="{abbreviation}"><img src="{{ asset("images/games/{abbreviation}_{size}.svg") }}" alt="{name}" /> {name}</li>';
                 populate_filter('filter-games', data, templ, { size: 32 });
             });
             $.get('{{ url("api/vault-categories") }}', { all: true }, function(data) {

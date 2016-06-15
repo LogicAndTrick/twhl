@@ -32,7 +32,7 @@
                 @foreach ($vault_items as $item)
                     <li class="col-xs-12">
                         <div class="vault-item">
-                            <img class="game-icon" src="{{ asset('images/games/' . $item->game->abbreviation . '_32.png') }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
+                            <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
                             <a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a>
                             <a class="screenshot" href="{{ act('vault', 'view', $item->id) }}">
                                 <img src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" />
@@ -40,7 +40,7 @@
                             @if ($item->flag_ratings && $item->stat_ratings > 0)
                                 <span class="stars">
                                     @foreach ($item->getRatingStars() as $star)
-                                        <img src="{{ asset('images/stars/gold_'.$star.'_16.png') }}" alt="{{ $star }} star" />
+                                        <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
                                     @endforeach
                                     ({{$item->stat_ratings}})
                                 </span>

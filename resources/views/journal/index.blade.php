@@ -30,7 +30,7 @@
                         <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                     @endif
                     <h2><a href="{{ act('journal', 'view', $journal->id) }}">{{ $journal->getTitle() }}</a></h2>
-                    @avatar($journal->user text) &bull;
+                    <span class="visible-xs-inline">@avatar($journal->user inline)</span><span class="hidden-xs">@avatar($journal->user text)</span> &bull;
                     @date($journal->created_at)
                 </div>
                 <div class="bbcode">{!! $journal->content_html !!}</div>

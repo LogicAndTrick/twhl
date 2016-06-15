@@ -24,6 +24,11 @@
       display: none;
     }
   }
+  @media (max-width: 679px) {
+    & > .btn-group {
+      display: none;
+    }
+  }
 }
 .vault-filter {
   li {
@@ -161,19 +166,17 @@
 }
 
 .vault-item {
+  .media-panel;
+
   margin: 2px;
-  border: 1px solid @panel-default-border;
   padding: 5px;
   text-align: center;
   line-height: 1.6em;
-
-  .box-shadow(0 1px 1px rgba(0,0,0,.05));
+  min-height: 310px;
 
   .game-icon {
     float: left;
     position: relative;
-    top: -6px;
-    left: -6px;
   }
 
   a {
@@ -187,6 +190,14 @@
 
     img {
       max-width: 100%;
+    }
+  }
+
+  .stars {
+    padding-bottom: 3px;
+    display: inline-block;
+    img {
+      height: 1.2em;
     }
   }
 }
@@ -220,6 +231,10 @@
     display: block;
     text-align: center;
     margin: 10px;
+
+    img {
+      height: 30px;
+    }
   }
 
   .review-info {

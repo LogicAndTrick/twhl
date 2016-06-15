@@ -1,15 +1,15 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            Review by @avatar($obj->user inline)
+            Review by @avatar($obj->user inline) &bull;
+            @date($comment->created_at)
             @if ($comment->hasRating())
-                <span style="padding-left: 10px;">
+                <span class="stars">
                     @foreach ($comment->getRatingStars() as $star)
-                        <img src="{{ asset('images/stars/gold_'.$star.'_16.png') }}" alt="{{ $star }} star" />
+                        <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
                     @endforeach
                 </span>
             @endif
-            @date($comment->created_at)
             @if($obj->isEditable())
                 <a href="{{ act('vault-review', 'delete', $obj->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs">Delete</span></a>
                 <a href="{{ act('vault-review', 'edit', $obj->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-xs">Edit</span></a>

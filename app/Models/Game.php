@@ -9,4 +9,9 @@ class Game extends Model {
     public $fillable = ['engine_id', 'name', 'abbreviation', 'orderindex'];
     public $visible = ['id', 'engine_id', 'name', 'abbreviation', 'orderindex'];
 
+    public function getIconUrl()
+    {
+        return asset('images/games/' . $this->abbreviation . '_32.svg');
+    }
+
 }

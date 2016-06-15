@@ -77,38 +77,50 @@
   }
 
   &.thread_active {
-    &::before { content: ' '; background: url('/images/threads/thread_active.png'); }
-    &.goldsource::before { background: url('/images/threads/forum_goldsource_active.png'); }
-    &.meta::before { background: url('/images/threads/forum_meta_active.png'); }
-    &.general::before { background: url('/images/threads/forum_general_active.png'); }
-    &.mods::before { background: url('/images/threads/forum_mods_active.png'); }
-    &.source::before { background: url('/images/threads/forum_source_active.png'); }
+    &::before { content: ' '; background: url('/images/threads/thread_active.svg'); }
+    &.goldsource::before { background: url('/images/threads/forum_goldsource_active.svg'); }
+    &.meta::before { background: url('/images/threads/forum_meta_active.svg'); }
+    &.general::before { background: url('/images/threads/forum_general_active.svg'); }
+    &.mods::before { background: url('/images/threads/forum_mods_active.svg'); }
+    &.source::before { background: url('/images/threads/forum_source_active.svg'); }
   }
 
   &.thread_inactive {
-    &::before { content: ' '; background: url('/images/threads/thread_inactive.png'); }
-    &.goldsource::before { background: url('/images/threads/forum_goldsource_inactive.png'); }
-    &.meta::before { background: url('/images/threads/forum_meta_inactive.png'); }
-    &.general::before { background: url('/images/threads/forum_general_inactive.png'); }
-    &.mods::before { background: url('/images/threads/forum_mods_inactive.png'); }
-    &.source::before { background: url('/images/threads/forum_source_inactive.png'); }
+    &::before { content: ' '; background: url('/images/threads/thread_inactive.svg'); }
+    &.thread::before { opacity: 0.25; }
+    &.goldsource::before { background: url('/images/threads/forum_goldsource_inactive.svg'); }
+    &.meta::before { background: url('/images/threads/forum_meta_inactive.svg'); }
+    &.general::before { background: url('/images/threads/forum_general_inactive.svg'); }
+    &.mods::before { background: url('/images/threads/forum_mods_inactive.svg'); }
+    &.source::before { background: url('/images/threads/forum_source_inactive.svg'); }
+  }
+
+  &.thread_active.sticky {
+    &::before { content: ' '; background: url('/images/threads/thread_pinned_active.svg'); }
+  }
+
+  &.thread_inactive.sticky {
+    &::before { content: ' '; background: url('/images/threads/thread_pinned_inactive.svg'); opacity: 1; }
   }
 
   &.locked::after {
     content: ' ';
     z-index: 1;
-    background: url('/images/threads/badge_locked.png');
+    background: url('/images/threads/badge_locked.svg') no-repeat 100% 100%;
   }
+  /*
   &.sticky::after {
     content: ' ';
     z-index: 1;
     background: url('/images/threads/badge_sticky.png');
   }
+  */
+  /*
   &.sticky_locked::after {
     content: ' ';
     z-index: 1;
     background: url('/images/threads/badge_sticky_locked.png');
-  }
+  }*/
 }
 
 .post-listing {

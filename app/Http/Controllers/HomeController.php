@@ -35,7 +35,7 @@ class HomeController extends Controller {
         $new_maps = VaultItem::with(['user', 'vault_screenshots'])
             ->whereIn('type_id', [1,4]) // Maps and mods
             ->orderBy('updated_at', 'desc')
-            ->limit(6)
+            ->limit(3)
             ->get();
 
         $excluded = $new_maps->map(function($m) { return $m->id; });
@@ -49,7 +49,7 @@ class HomeController extends Controller {
             ->whereRaw('(ceil(stat_average_rating * 2) / 2) >= 4.5')
             ->whereIn('id', $excluded, 'and', true) // NOT in
             ->orderByRaw('RAND()')
-            ->limit(5)
+            ->limit(2)
             ->get();
 
         // Wiki section

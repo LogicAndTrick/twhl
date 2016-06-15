@@ -147,8 +147,22 @@
 		</div>
 	</nav>
 
+    @if (!app()->environment('production'))
+        <div class="container beta-notice">
+            <div clas="">
+                This is the beta version of TWHL and is not currently active. Please go to <a href="http://twhl.info">twhl.info</a> if you are looking for resources or information.
+            </div>
+        </div>
+    @endif
+
     <div class="container{{ isset($fluid) && $fluid === true ? '-fluid' : '' }}">
 	    @yield('content')
+    </div>
+
+    <div class="footer">
+        Site and non-dynamic content copyright &copy; 2016, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
+        All member-submitted resources copyright their respective authors unless otherwise specified.<br/>
+        {{ render_time() }}
     </div>
 
     @if (app('config')->get('app.debug'))

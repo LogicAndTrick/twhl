@@ -51,7 +51,7 @@ class Forum extends Model {
 
     public function getIconClasses()
     {
-        $str = [$this->slug];
+        $str = [$this->slug, 'forum'];
 
         if ($this->hasNewPosts()) $str[] = 'thread_active';
         else $str[] = 'thread_inactive';

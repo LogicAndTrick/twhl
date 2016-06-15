@@ -28,13 +28,13 @@
                             <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-xs">Edit</span></a>
                         @endif
                         @if ($comment->user)
-                            @avatar($comment->user text) &bull;
+                            <span class="visible-xs-inline">@avatar($comment->user inline)</span><span class="hidden-xs">@avatar($comment->user text)</span> &bull;
                         @endif
                         @date($comment->created_at)
                         @if ($comment->hasRating())
                             <span class="stars">
                                 @foreach ($comment->getRatingStars() as $star)
-                                    <img src="{{ asset('images/stars/gold_'.$star.'_16.png') }}" alt="{{ $star }} star" />
+                                    <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
                                 @endforeach
                             </span>
                         @endif

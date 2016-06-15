@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 1200 1200" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"><defs><style><![CDATA[
+    .fil1 {fill:black}
+    .fil0 {fill:white}
+   ]]></style></defs><g id="Layer_x0020_1"><path class="fil0" d="M100 400h100C200 179 379 0 600 0s400 179 400 400h100v800H100V400z"/><path class="fil1" d="M200 500h100v-93c0-166 132-306 300-306s300 140 300 306v93h100v600H200V500zm218 0h364v-93c0-101-80-186-182-186s-182 84-182 186v93z"/></g></svg>

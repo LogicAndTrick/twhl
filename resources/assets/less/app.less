@@ -45,8 +45,16 @@ body > .container, body > .container-fluid {
 }
 
 body > .container-fluid {
-  margin-left: 2%;
-  margin-right: 2%;
+  @media (min-width: @screen-sm-min) {
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+}
+
+body > .footer {
+  padding: 0 15px 40px;
+  text-align: center;
+  font-size: 0.9em;
 }
 
 .container, .container-fluid, .alert, .well, .panel-body {
@@ -58,6 +66,13 @@ body > .container-fluid {
 }
 .alert-default {
   .alert-variant(@well-bg; @well-border; @text-color);
+}
+
+body > .container.beta-notice {
+  padding: 10px;
+  font-size: 1.1em;
+  background-color: @alert-danger-bg;
+  border-left: 5px solid @btn-danger-border;
 }
 
 .inactive {
@@ -212,5 +227,20 @@ textarea.form-control {
 .comment-meta-rating {
   .stars img {
     cursor: pointer;
+    height: 30px;
+    margin-right: 2px;
+
+    &:hover {
+      background: radial-gradient(circle at center, #f0f0f0 0%, rgba(0, 0, 0, 0) 50%);
+    }
+  }
+  .stars button {
+    margin-left: 5px;
+  }
+}
+.panel-title .stars {
+  padding: 0 5px;
+  img {
+    height: 1em;
   }
 }

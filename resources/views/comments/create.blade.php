@@ -26,8 +26,8 @@
                         <option value="5" {{ $rating == 5 ? 'selected' : ''}}>5</option>
                     </select>
                     <div class="stars"
-                         data-empty-star="{{ asset('images/stars/gold_empty_32.png') }}"
-                         data-full-star="{{ asset('images/stars/gold_full_32.png') }}"
+                         data-empty-star="{{ asset('images/stars/rating_empty.svg') }}"
+                         data-full-star="{{ asset('images/stars/rating_full.svg') }}"
                     >
 
                     </div>

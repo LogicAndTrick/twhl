@@ -123,14 +123,13 @@ class ForumThread extends Model {
 
     public function getIconClasses()
     {
-        $str = [];
+        $str = ['thread'];
 
         if ($this->hasNewPosts()) $str[] = 'thread_active';
         else $str[] = 'thread_inactive';
 
-        if (!$this->is_open && $this->is_sticky) $str[] = 'sticky_locked';
-        else if (!$this->is_open) $str[] = 'locked';
-        else if ($this->is_sticky) $str[] = 'sticky';
+        if (!$this->is_open) $str[] = 'locked';
+        if ($this->is_sticky) $str[] = 'sticky';
 
         return implode(' ', $str);
     }

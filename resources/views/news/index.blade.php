@@ -24,7 +24,7 @@
                         <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                     @endif
                     <h2><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></h2>
-                    @avatar($news->user text) &bull;
+                    <span class="visible-xs-inline">@avatar($news->user inline)</span><span class="hidden-xs">@avatar($news->user text)</span> &bull;
                     @date($news->created_at)
                 </div>
                 <div class="bbcode">{!! $news->content_html !!}</div>

@@ -22,7 +22,7 @@
             </div>
             <div class="media-body">
                 <div class="media-heading">
-                    @avatar($journal->user text) &bull;
+                    <span class="visible-xs-inline">@avatar($journal->user inline)</span><span class="hidden-xs">@avatar($journal->user text)</span> &bull;
                     @date($journal->created_at)
                 </div>
                 <div class="bbcode">

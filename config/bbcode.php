@@ -11,6 +11,7 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'green',  'element' => 'span', 'element_class' => 'green'         ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
 
         // Standard block
         [ 'class' => 'App\Helpers\BBCode\Tags\PreTag',   'scopes' => [ ] ],

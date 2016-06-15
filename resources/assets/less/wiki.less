@@ -6,6 +6,7 @@
 
   .btn {
     padding: 2px 8px;
+    overflow: hidden;
   }
 
   .btn-group {
@@ -53,5 +54,14 @@ ul.wiki-categories {
     display: block;
     max-width: 95%;
     margin: 10px auto;
+  }
+}
+
+// Responsive
+@media (max-width: @screen-xs-max) {
+  .wiki-navigation {
+    .btn-group {
+      .btn-group-justified;
+    }
   }
 }

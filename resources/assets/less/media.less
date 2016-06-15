@@ -44,6 +44,12 @@
   .btn.link {
     padding: 0;
   }
+  .stars {
+    margin-left: 5px;
+    img {
+      height: 1em;
+    }
+  }
 }
 
 
@@ -158,6 +164,26 @@
 
     .media-right::after {
       background: #e6e6e6;
+    }
+  }
+}
+
+
+// Responsive
+@media (max-width: @screen-xs-max) {
+  .media-heading {
+    .btn {
+      font-size: 0;
+
+      .glyphicon {
+        font-size: 12px;
+        line-height: 15px;
+      }
+    }
+  }
+  .media-panel, .media-list {
+    .media-left {
+      display: none;
     }
   }
 }

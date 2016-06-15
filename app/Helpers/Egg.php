@@ -67,4 +67,78 @@ class Egg
             'leet' => 1
         ]
     ];
+
+    static function GetRenderTime()
+    {
+        $adv = Egg::$words['adverbs'];
+        $adj = Egg::$words['adjectives'];
+        $uni = Egg::$words['units'];
+        $time = floor(2 + pow(mt_rand() / mt_getrandmax(), 2.5) * 1998);
+        return 'Processed in ' . $adv[array_rand($adv)] . ' ' . $adj[array_rand($adj)] . ' ' . $time . ' ' . $uni[array_rand($uni)] . '.';
+    }
+
+    static $words = [
+        'adverbs' => [
+            'a blindingly',
+            'a reasonably',
+            'a decently',
+            'a ploddingly',
+            'a horribly',
+            'an awfully',
+            'an astoundingly',
+            'a painfully',
+            'a frustratingly',
+            'an excessively',
+            'an annoyingly',
+            'an excessively',
+            'a uniquely',
+            'a terrifyingly',
+            'a seductively',
+            'a begrudgingly'
+        ],
+        'adjectives' => [
+            'fast',
+            'speedy',
+            'quick',
+            'decent',
+            'slow',
+            'lousy',
+            'dire',
+            'hungry',
+            'cloistered',
+            'forgetful',
+            'massive',
+            'tiny',
+            'tragic',
+            'luxurious',
+            'tantalising',
+            'extravagant',
+            'reticent',
+            'ambiguous',
+            'mesmerising',
+            'opaque',
+            'terrific',
+            'ominous',
+            'unfortunate',
+            'delicious',
+            'relevant'
+        ],
+        'units' => [
+            // Heavy milliseconds stacking
+            'milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds',
+            'milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds',
+            'milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds',
+            'milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds','milliseconds',
+            'nanoseconds',
+            'seconds',
+            'hours',
+            'cubits',
+            'leap years',
+            'parsecs',
+            'ticks',
+            'generations',
+            'Planck units',
+            'half-lives'
+        ]
+    ];
 }

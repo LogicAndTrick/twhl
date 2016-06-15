@@ -11,7 +11,7 @@
             <a class="btn btn-xs btn-primary" href="{{ act('vault', 'edit', $item->id) }}"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
         @endif
         <h1>
-            <img src="{{ asset('images/games/' . $item->game->abbreviation . '_32.png') }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
+            <img src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
             {{ $item->name }} by @avatar($item->user inline)
         </h1>
         <ol class="breadcrumb">
@@ -76,7 +76,7 @@
             @if ($item->flag_ratings && $item->stat_ratings > 0)
                 <span class="stars">
                     @foreach ($item->getRatingStars() as $star)
-                        <img src="{{ asset('images/stars/gold_'.$star.'_32.png') }}" alt="{{ $star }} star" />
+                        <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
                     @endforeach
                 </span>
             @endif

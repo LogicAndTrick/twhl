@@ -76,3 +76,11 @@ if (!function_exists('egg'))
         return \App\Helpers\Egg::GetEggClass();
     }
 }
+
+if (!function_exists('render_time'))
+{
+    function render_time()
+    {
+        return \App\Helpers\Egg::GetRenderTime();
+    }
+}
