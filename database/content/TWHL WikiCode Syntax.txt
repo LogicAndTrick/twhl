@@ -266,6 +266,36 @@ If indenting lines of code is too annoying, the BBCode tag you want is [code][pr
 
 	[pre]All the text inside this tag will be a code block. There's no need to add extra indents.[/pre]
 
+== Columns
+
+For complex stuff you might want to present some content in columns, side by side. You can do that by using the columns directive. It looks like this:
+
+    %%columns=6:3:3
+    Column 1
+    %%
+    Column 2
+    %%
+    Column 3
+    %%
+
+Which looks like this:
+
+~~~
+%%columns=6:3:3
+Column 1
+%%
+Column 2
+%%
+Column 3
+%%
+~~~
+
+Some things to note:
+
+* The column widths are specified in the first line, in this case, `6:3:3`. These numbers are in respect to the page being 12 units wide. The column widths *must* add up to a total of 12 or the columns will not work.
+* You need to specify the same number of content sections as columns in the first line, or the columns will not work.
+* On small resolution screens (phones, tablets), the columns will show underneath each other instead of side by side.
+
 ---
 
 Phew! That's everything! I know there's a lot of stuff here, but don't worry too much about it. If you need to do a particular thing, just come back to this page later so you can refresh your memory.

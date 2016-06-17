@@ -48,6 +48,7 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Elements\MdListElement',    'scopes' => [ ] ],
         [ 'class' => 'App\Helpers\BBCode\Elements\MdTableElement',   'scopes' => [ ] ],
         [ 'class' => 'App\Helpers\BBCode\Elements\MdPanelElement',   'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Elements\MdColumnsElement', 'scopes' => [ ] ],
     ],
     'text_processors' => [
         [ 'class' => 'App\Helpers\BBCode\Processors\MarkdownTextProcessor', 'scopes' => [ 'excerpt' ] ],
