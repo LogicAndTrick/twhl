@@ -674,6 +674,11 @@ class ApiController extends Controller {
             }
         }
 
+        if (count($items) == 1 && count($items["/$key"]) == 0)
+        {
+            $items = [];
+        }
+
         return $items;
     }
 
@@ -706,8 +711,6 @@ class ApiController extends Controller {
             'host' => preg_replace('%https?://([^/]*)/.*%', '\1', asset('/')),
             'basePath' => '/api',
             'definitions' => $this->getDefinitions(),
-            'parameters' => [],
-            'responses' => [],
             'securityDefinitions' => [
                 'api_key' => [
                     'type' => 'apiKey',
