@@ -182,7 +182,7 @@
                 if (timeout) clearTimeout(timeout);
                 timeout = setTimeout(function() {
                     clearTimeout(timeout);
-                    $.get('{{ url("api/users") }}', { filter: $t.val(), plain: true }, function(data) {
+                    $.get('{{ url("api/users") }}', { filter: $t.val() }, function(data) {
                         $t.siblings('.search-results').empty().append(data.map(function(u) {
                             return template('<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="glyphicon glyphicon-remove filter-action"></span></li>', u);
                         }));
@@ -209,24 +209,24 @@
 
             // Load dynamic content
 
-            $.get('{{ url("api/games") }}', { all: true }, function(data) {
+            $.get('{{ url("api/games") }}', { count: 100 }, function(data) {
                 var templ = '<li class="stop-close filter-action" data-filter-value="{id}" data-text="{abbreviation}"><img src="{{ asset("images/games/{abbreviation}_{size}.svg") }}" alt="{name}" /> {name}</li>';
                 populate_filter('filter-games', data, templ, { size: 32 });
             });
-            $.get('{{ url("api/vault-categories") }}', { all: true }, function(data) {
+            $.get('{{ url("api/vault-categories") }}', { count: 100 }, function(data) {
                 populate_filter('filter-categories', data, '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>');
             });
-            $.get('{{ url("api/vault-types") }}', { all: true }, function(data) {
+            $.get('{{ url("api/vault-types") }}', { count: 100 }, function(data) {
                 populate_filter('filter-types', data, '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>');
             });
-            $.get('{{ url("api/vault-includes") }}', { all: true }, function(data) {
+            $.get('{{ url("api/vault-includes") }}', { count: 100 }, function(data) {
                 populate_filter('filter-includes', data, '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>');
             });
 
             var user_search_template = '<li class="static-control search-form user-search stop-close"><input class="form-control" type="text" placeholder="Search users..." /><ul class="search-results"></ul></li>';
             var users = ($('[name=users]').val() || '').split('-').join(',');
             if (users) {
-                $.get('{{ url("api/users") }}', { id: users, all: true }, function(data) {
+                $.get('{{ url("api/users") }}', { id: users, count: 100 }, function(data) {
                     populate_filter(
                         'filter-users', data,
                         '<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="glyphicon glyphicon-remove filter-action"></span></li>',

@@ -33,8 +33,11 @@ $.fn.select2.amd.define('select2/data-api', [
         if (typeof options.url === 'function') options.url = options.url({});
         if (typeof options.data === 'function') options.data = options.data({});
 
+        if (typeof options.unpagedUrl === 'function') options.url = options.unpagedUrl({});
+        else if (!!options.unpagedUrl) options.url = options.unpagedUrl;
+
         options.data.id = ids.join(',');
-        options.data.all = true;
+        options.data.count = 100;
 
         options.transport(options, function (data) {
             var results = self.processResults({items:data}, {});

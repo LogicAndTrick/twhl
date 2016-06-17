@@ -12,7 +12,7 @@
     </hc>
     @form(competition-restriction/edit)
         @hidden(id $restriction)
-        @autocomplete(group_id api/competition-groups $restriction text=title) = Restriction Group
+        @autocomplete(group_id api/competition-restriction-groups $restriction text=title) = Restriction Group
         @textarea(content_text $restriction) = Restriction Content
         @submit = Edit Restriction
     @endform

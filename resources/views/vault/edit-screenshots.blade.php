@@ -81,7 +81,7 @@
 
         function update_screenshot_list() {
             $('.screenshot-list').addClass('loading');
-            $.get('{{ url("api/vault-screenshots/{$item->id}") }}', { all: true }, function(data) {
+            $.get('{{ url("api/vault-screenshots") }}', { count: 100, item_id: "{{ $item->id }}" }, function(data) {
                 var list = $('.screenshot-list').empty();
                 if (list.data('ui-sortable')) list.sortable('destroy');
                 for (var i = 0; i < data.length; i++) {

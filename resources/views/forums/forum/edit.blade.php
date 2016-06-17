@@ -13,7 +13,7 @@
         @hidden(id $forum)
         @text(name:forum_name $forum) = Name
         @text(slug $forum) = URL Slug
-        @text(description $forum) = Description
+        @textarea(description $forum) = Description
         @autocomplete(permission_id api/permissions $forum clearable=true) = Required Permission
         @submit
     @endform

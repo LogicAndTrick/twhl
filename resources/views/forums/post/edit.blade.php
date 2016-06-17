@@ -32,7 +32,7 @@
     <script type="text/javascript">
         $('#update-preview').click(function() {
             $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/format") }}?field=content_text', $('form').serializeArray(), function(data) {
+            $.post('{{ url("api/posts/format") }}?field=content_text', $('form').serializeArray(), function(data) {
                 $('#preview-panel').html(data);
             });
         });

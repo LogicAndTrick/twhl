@@ -412,7 +412,7 @@ class BladeServiceProvider extends ServiceProvider {
 
     public static function ErrorMessageIfExists($errors, $names) {
         $message = BladeServiceProvider::FirstErrorMessage($errors, $names);
-        return $message ? '<p class="help-block">' . $message . "</p>" : '';
+        return $message ? '<p class="help-block">' . BladeServiceProvider::esc($message) . "</p>" : '';
     }
 
     public static function ErrorClass($errors, $names) {
@@ -435,10 +435,11 @@ class BladeServiceProvider extends ServiceProvider {
             $val = $val->format($format);
         }
 
-        return $val;
+        return BladeServiceProvider::esc($val);
     }
 
     public static function esc($value) {
+        if (!$value) return $value;
         return str_replace("'", '&#39;', htmlspecialchars($value));
     }
 

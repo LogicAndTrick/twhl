@@ -62,10 +62,10 @@
     <script type="text/javascript">
 
         function get_revision(id) {
-            return $.getJSON('{{ url("api/wiki-revisions") }}', { id: id, plain: true });
+            return $.getJSON('{{ url("api/wiki-revisions") }}', { id: id });
         }
         function get_revision_meta(id) {
-            return $.getJSON('{{ url("api/wiki-revision-metas") }}/'+id+'?all');
+            return $.getJSON('{{ url("api/wiki-revision-metas") }}', { revision_id: id, count: 100 });
         }
         function embed_image(container, rev) {
             container.append('<img src="{{ url("/wiki/embed/rev:") }}' + rev.id + '/current.png" alt="Image" />');

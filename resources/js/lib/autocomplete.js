@@ -23,7 +23,8 @@
             var $el = $(this);
             $el.select2({
                 ajax: {
-                    url: config.url,
+                    unpagedUrl: config.url,
+                    url: config.url + (config.paginated ? '/paged' : ''),
                     dataType: 'json',
                     delay: 250,
                     data: function (params) {

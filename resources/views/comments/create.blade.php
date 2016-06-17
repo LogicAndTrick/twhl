@@ -49,7 +49,7 @@
     <script type="text/javascript">
         $('#update-preview').click(function() {
             $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/format") }}?field=text', $('form').serializeArray(), function(data) {
+            $.post('{{ url("api/posts/format") }}?field=text', $('form').serializeArray(), function(data) {
                 $('#preview-panel').html(data);
             });
         });

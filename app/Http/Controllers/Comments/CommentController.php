@@ -79,8 +79,8 @@ class CommentController extends Controller {
         $type = Request::input('article_type');
         $id = intval(Request::input('article_id'));
 
-        if (!array_key_exists($type, $this->comment_config)) abort(404);
-        $config = $this->comment_config[$type];
+        if (!array_key_exists($type, CommentController::$comment_config)) abort(404);
+        $config = CommentController::$comment_config[$type];
 
         if (!permission($config['auth_create'])) abort(404);
 
@@ -139,8 +139,8 @@ class CommentController extends Controller {
         $type = $comment->article_type;
         $id = $comment->article_id;
 
-        if (!array_key_exists($type, $this->comment_config)) abort(404);
-        $config = $this->comment_config[$type];
+        if (!array_key_exists($type, CommentController::$comment_config)) abort(404);
+        $config = CommentController::$comment_config[$type];
 
         if (!permission($config['auth_create'])) abort(404);
 
@@ -195,8 +195,8 @@ class CommentController extends Controller {
         $type = $comment->article_type;
         $id = $comment->article_id;
 
-        if (!array_key_exists($type, $this->comment_config)) abort(404);
-        $config = $this->comment_config[$type];
+        if (!array_key_exists($type, CommentController::$comment_config)) abort(404);
+        $config = CommentController::$comment_config[$type];
 
         if (!permission($config['auth_moderate'])) abort(404);
 
@@ -222,8 +222,8 @@ class CommentController extends Controller {
         $type = $comment->article_type;
         $id = $comment->article_id;
 
-        if (!array_key_exists($type, $this->comment_config)) abort(404);
-        $config = $this->comment_config[$type];
+        if (!array_key_exists($type, CommentController::$comment_config)) abort(404);
+        $config = CommentController::$comment_config[$type];
 
         if (!permission($config['auth_moderate'])) abort(404);
 
