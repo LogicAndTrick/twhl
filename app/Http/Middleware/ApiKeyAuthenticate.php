@@ -19,7 +19,10 @@ class ApiKeyAuthenticate
     {
         if ($request->is('api/*') && !$request->user()) {
             $api_key = $request->get('api_key');
-            if (!$api_key) $api_key = $request->header('Authorization');
+            if (!$api_key) {
+                $headers = getallheaders();
+                if (isset($headers['Authorization'])) $api_key = $headers['Authorization'];
+            }
             if ($api_key) {
                 $key = ApiKey::where('key', '=', $api_key)
                     ->leftJoin('users as u', 'u.id', '=', 'api_keys.user_id')

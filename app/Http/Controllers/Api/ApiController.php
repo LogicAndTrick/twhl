@@ -108,6 +108,7 @@ class ApiController extends Controller {
             'additional_methods' => [
                 'format' => [
                     'method' => 'post',
+                    'operationId' => 'formatPost',
                     'parameters' => [
                         'field' => [ 'required' => false, 'type' => 'string', 'description' => 'If set, the specified field in the post body will be used instead of `text`' ],
                         'text' => [ 'required' => true, 'type' => 'string', 'description' => 'The TWHL WikiCode text to turn into HTML' ]
@@ -408,6 +409,7 @@ class ApiController extends Controller {
             'additional_methods' => [
                 'from' => [
                     'method' => 'get',
+                    'operationId' => 'getShoutsCreatedFrom',
                     'parameters' => [
                         'timestamp' => [ 'required' => false, 'type' => 'integer', 'description' => 'The timestamp to retrieve shouts posted after' ]
                     ],
@@ -538,6 +540,9 @@ class ApiController extends Controller {
             if ($method == 'get') {
                 $items["/$key"]['get'] = [
                     'tags' => [$key],
+                    'operationId' => "get{$name}s",
+                    'consumes' => ['application/json'],
+                    'produces' => ['application/json'],
                     'parameters' => [
                         [ 'name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return' ],
                         [ 'name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: '.$filterCols ],
@@ -558,6 +563,9 @@ class ApiController extends Controller {
                 ];
                 $items["/$key/paged"]['get'] = [
                     'tags' => [$key],
+                    'operationId' => "get{$name}sPaged",
+                    'consumes' => ['application/json'],
+                    'produces' => ['application/json'],
                     'parameters' => [
                         [ 'name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return' ],
                         [ 'name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: '.$filterCols ],
@@ -624,8 +632,15 @@ class ApiController extends Controller {
                 ];
                 if (count($reqr) > 0) $schm['required'] = $reqr;
 
+                $op = $method;
+                if ($method == 'put') $op = 'edit';
+                else if ($method == 'post') $op = 'create';
+
                 $items["/$key"][$method] = [
                     'tags' => [$key],
+                    'operationId' => "{$op}{$name}s",
+                    'consumes' => ['application/json'],
+                    'produces' => ['application/json'],
                     'parameters' => [
                         [
                             'name' => 'body',
@@ -668,6 +683,9 @@ class ApiController extends Controller {
                 if (count($reqr) > 0) $schm['required'] = $reqr;
                 $items["/$key/$n"][$add['method']] = [
                     'tags' => [$key],
+                    'operationId' => $add['operationId'],
+                    'consumes' => ['application/json'],
+                    'produces' => ['application/json'],
                     'parameters' => [
                         [
                             'name' => 'body',

@@ -1,0 +1,52 @@
+Because I like to create work for myself, TWHL has a pretty cool REST API.
+
+Using it is basically the same as any other JSON API. The API definition is available at [url]http://twhl.info/api[/url] and uses the [http://swagger.io/|Swagger] API definition format. Visit the "tools" section of the Swagger website to see client libraries for your programming language of choice. There are many tools that can automatically inspect a Swagger specification and generate a REST client based on the definition. One such tool for C# is Microsoft's AutoRest library.
+
+I'll be using jQuery syntax for the examples provided here, but you can use any client library you want, or you can write your own client from scratch. Because we're using jQuery, you can copy and paste any of these queries into the browser console (you have to be on TWHL first) and you will be able to see a result. If you want to test an API key, you should log out first, as your browser session will be used instead of the API key.
+
+== Generating an API key
+
+The first thing you need to do is generate an API key to make it easier to access the API. This can be done two ways:
+
+- Manually, via the "[https://twhl.info/panel/edit-keys|Manage API Keys]" link in your TWHL control panel
+- Via the API, using the `api-key` endpoint
+
+Because the manual way is straight forward, I'll skip straight to generating a key using the API. Generating a key is something that should only be done once per app, do not generate API keys multiple times. Save the key and re-use it.
+
+    $.post("/api/api-key", { "username": "my_username", "password": "my_password", "app": "My API Client Name" });
+
+The result will be in this form:
+
+    { "user_id": 0, "key": "<api key>", "app": "My API Client Name", "created_at": "2016-01-01T00:00:00.000Z" }
+
+Be sure to take the value of the `key` from this result and *save it for future use*. Put it in persistent storage so that your application can re-use the API key across multiple sessions.
+
+== Using the API key
+
+Now that you have an API key, you need to use it. The API key is required for any POST, PUT, or DELETE operations on the API (aside, of course, from the POST operation to generate an API key).
+
+Let's say you want to create a shout in the shoutbox. If you're not authenticated and you try to create a shout:
+
+    $.post("/api/shouts", { "text": "I am posting a shout from the API!" });
+
+You will get a `401 Unauthorised` response back from the server. You can't shout you don't tell the server who you are!
+
+To fix this, there are several options. The easiest is to simply include the API key in your request body:
+
+    $.post("/api/shouts", { "text": "I am posting a shout from the API!", "api_key": "<api key>"  });
+
+The query string works just as well:
+
+    $.post("/api/shouts?api_key=<api key>", { "text": "I am posting a shout from the API!"  });
+
+The third option that you might use in a less dynamic language is the value of the `Authorization` header, which you simply set to the value of your API key. Notice the Authorisation header has been added to this request.
+
+    $.ajax({
+        method: "POST",
+        url: "/api/shouts",
+        data: JSON.stringify({ "text": "I am posting a shout from the API!"  }),
+        contentType: 'application/json',
+        dataType: 'json',
+        headers: { "Authorization": "<api key>" }
+    });
+
