@@ -23,6 +23,7 @@ use App\Models\License;
 use App\Models\Shout;
 use App\Models\Vault\VaultCategory;
 use App\Models\Vault\VaultInclude;
+use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultScreenshot;
 use App\Models\Vault\VaultType;
 use App\Models\Wiki\WikiObject;
@@ -305,6 +306,12 @@ class ApiController extends Controller {
             'allowed_sort_columns' => [],
             'default_filters' => []
         ],
+        'vault-items' => [
+            'description' => 'Vault Items',
+            'methods' => [],
+            'object' => VaultItem::class,
+            'filter_columns' => [],
+        ],
         'competition-restriction-groups' => [
             'description' => 'Competition Restriction Groups',
             'expand' => [],
@@ -520,7 +527,14 @@ class ApiController extends Controller {
 
         foreach ($desc['methods'] as $method) {
             $auth = isset($desc['auth'][$method]) ? $desc['auth'][$method] : null;
-            $pars = isset($desc['parameters'][$method]) ? $desc['parameters'][$method] : [];
+            $params = isset($desc['parameters'][$method]) ? $desc['parameters'][$method] : [];
+            $pars = [];
+            $reqr = [];
+            foreach ($params as $k => $v) {
+                if (isset($v['required']) && $v['required'] === true) $reqr[] = $k;
+                unset($v['required']);
+                $pars[$k] = $v;
+            }
             if ($method == 'get') {
                 $items["/$key"]['get'] = [
                     'tags' => [$key],
@@ -603,23 +617,21 @@ class ApiController extends Controller {
                     $items["/$key/paged"]['get']['x-requires-permission'] = $auth;
                 }
             } else {
-                $reqr = [];
-                foreach ($pars as $k => $v) {
-                    if (isset($v['required']) && $v['required'] === true) $reqr[] = $k;
-                }
+
+                $schm = [
+                    'type' => 'object',
+                    'properties' => $pars
+                ];
+                if (count($reqr) > 0) $schm['required'] = $reqr;
+
                 $items["/$key"][$method] = [
                     'tags' => [$key],
                     'parameters' => [
                         [
                             'name' => 'body',
                             'in' => 'body',
-                            'type' => 'object',
                             'description' => 'Posted data',
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => $pars,
-                                'required' => $reqr
-                            ]
+                            'schema' => $schm
                         ]
                     ],
                     'responses' => [
@@ -641,24 +653,27 @@ class ApiController extends Controller {
         }
         if (isset($desc['additional_methods'])) {
             foreach ($desc['additional_methods'] as $n => $add) {
-                $pars = isset($add['parameters']) ? $add['parameters'] : [];
+                $params = isset($add['parameters']) ? $add['parameters'] : [];
+                $pars = [];
                 $reqr = [];
-                foreach ($pars as $k => $v) {
+                foreach ($params as $k => $v) {
                     if (isset($v['required']) && $v['required'] === true) $reqr[] = $k;
+                    unset($v['required']);
+                    $pars[$k] = $v;
                 }
+                $schm = [
+                    'type' => 'object',
+                    'properties' => $pars
+                ];
+                if (count($reqr) > 0) $schm['required'] = $reqr;
                 $items["/$key/$n"][$add['method']] = [
                     'tags' => [$key],
                     'parameters' => [
                         [
                             'name' => 'body',
                             'in' => 'body',
-                            'type' => 'object',
                             'description' => 'Posted data',
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => $pars,
-                                'required' => $reqr
-                            ]
+                            'schema' => $schm
                         ]
                     ],
                     'responses' => [

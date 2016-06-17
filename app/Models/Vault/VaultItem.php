@@ -21,6 +21,13 @@ class VaultItem extends Model {
         'flag_notify', 'flag_ratings',
         'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating'
     ];
+    public $visible = [
+        'id', 'user_id', 'engine_id', 'game_id', 'category_id', 'type_id', 'license_id',
+        'name', 'content_text', 'content_html',
+        'is_hosted_externally', 'file_location', 'file_size',
+        'flag_notify', 'flag_ratings',
+        'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating'
+    ];
     protected $dates = ['created_at', 'updated_at'];
 
     public function user()
