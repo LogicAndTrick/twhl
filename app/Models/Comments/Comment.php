@@ -18,6 +18,7 @@ class Comment extends Model {
 
 	protected $table = 'comments';
     protected $fillable = ['article_type', 'article_id', 'user_id', 'content_text', 'content_html'];
+    public $visible = ['id', 'user_id', 'article_id', 'article_type', 'content_text', 'content_html', 'created_at', 'updated_at', 'comment_metas', 'user'];
 
     public function user()
     {

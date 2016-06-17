@@ -9,4 +9,9 @@ class Engine extends Model {
     public $fillable = ['name', 'orderindex'];
     public $visible = ['id', 'name', 'orderindex'];
 
+    public function games()
+    {
+        return $this->hasMany('App\Models\Game');
+    }
+
 }

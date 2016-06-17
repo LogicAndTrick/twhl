@@ -8,6 +8,7 @@ class WikiObject extends Model {
 	//
     protected $table = 'wiki_objects';
     protected $fillable = ['type_id', 'permission_id'];
+    public $visible = ['id','type_id','current_revision_id', 'permission_id','stat_comments', 'flag_locked','created_at','updated_at','current_revision','permission'];
 
     use SoftDeletes;
 

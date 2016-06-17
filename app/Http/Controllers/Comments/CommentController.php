@@ -9,7 +9,7 @@ use DB;
 
 class CommentController extends Controller {
 
-    private $comment_config = [
+    public static $comment_config = [
         Comment::NEWS => array(
             'model' => '\App\Models\News',
             'redirect' => 'news/view/{id}{bookmark}',

@@ -14,6 +14,7 @@ class WikiRevisionMeta extends Model {
 	//
     protected $table = 'wiki_revision_metas';
     protected $fillable = ['revision_id', 'key', 'value'];
+    public $visible = ['id', 'revision_id','key', 'value'];
     public $timestamps = false;
 
 }

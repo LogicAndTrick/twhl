@@ -13,9 +13,9 @@ class Forum extends Model {
     use SoftDeletes;
     use ForumPermission;
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $fillable = ['name', 'description', 'slug', 'permission_id'];
-    protected $visible = [ 'id', 'slug', 'name', 'description' ];
+    public $visible = [ 'id', 'slug', 'name', 'description', 'stat_threads', 'stat_posts', 'last_post_id', 'order_index', 'last_post' ];
 
     protected $table = 'forums';
 

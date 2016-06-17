@@ -11,5 +11,6 @@ class CompetitionJudgeType extends Model {
     public $table = 'competition_judge_types';
     public $timestamps = false;
     public $fillable = ['name'];
+    public $visible = ['id', 'name'];
 
 }

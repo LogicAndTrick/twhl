@@ -11,6 +11,7 @@ class CommentMeta extends Model {
 
 	protected $table = 'comment_metas';
     protected $fillable = ['comment_id', 'key', 'value'];
+    public $visible = ['comment_id', 'key', 'value'];
     public $timestamps = false;
 
     public static function GetMetaFor($article_type) {

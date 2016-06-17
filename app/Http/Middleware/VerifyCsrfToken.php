@@ -8,6 +8,7 @@ class VerifyCsrfToken extends BaseVerifier {
 
     protected $except = [
         'shout/*',
-        'search/*'
+        'search/*',
+        'api/*'
     ];
 }

@@ -10,6 +10,7 @@ class ForumPost extends Model {
     use SoftDeletes;
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $fillable = ['forum_id', 'thread_id', 'user_id', 'content_text', 'content_html'];
+    public $visible = ['id', 'forum_id', 'thread_id', 'user_id', 'content_text', 'content_html', 'created_at', 'updated_at', 'forum', 'thread', 'user'];
 
     protected $table = 'forum_posts';
 

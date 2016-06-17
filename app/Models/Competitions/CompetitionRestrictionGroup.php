@@ -7,6 +7,7 @@ class CompetitionRestrictionGroup extends Model {
     public $table = 'competition_restriction_groups';
     public $timestamps = false;
     public $fillable = ['title', 'is_multiple'];
+    public $visible = ['id','title','is_multiple'];
 
     public function restrictions()
     {

@@ -11,6 +11,7 @@ class ForumThread extends Model {
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     protected $fillable = ['forum_id','user_id','title','is_open','is_sticky'];
+    public $visible = ['id', 'forum_id', 'user_id', 'title', 'stat_views', 'stat_posts', 'last_post_id', 'is_open', 'is_sticky', 'created_at', 'updated_at', 'forum', 'user', 'last_post'];
 
     protected $table = 'forum_threads';
 
