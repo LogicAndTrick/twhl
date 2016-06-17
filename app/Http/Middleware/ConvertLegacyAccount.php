@@ -30,8 +30,9 @@ class ConvertLegacyAccount
             && !$request->isXmlHttpRequest()
             && $request->method() == 'GET'
             && !$request->is('auth/*')
-            && !$request->is('shout/*')
-            && !$request->is('wiki/page/TWHL:_Site_Rules');
+            && !$request->is('api/*')
+            && !$request->is('wiki/page/TWHL:_Site_Rules')
+            && !$request->is('wiki/page/TWHL:_Site_Policies');
     }
 
     protected function isLegacyAccount(Request $request) {

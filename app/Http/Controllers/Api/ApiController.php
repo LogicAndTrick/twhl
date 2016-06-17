@@ -19,6 +19,7 @@ use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use App\Models\Game;
 use App\Models\License;
+use App\Models\Shout;
 use App\Models\Vault\VaultCategory;
 use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultScreenshot;
@@ -26,6 +27,7 @@ use App\Models\Vault\VaultType;
 use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Validation\ValidationException;
@@ -35,11 +37,6 @@ use Auth;
 use DB;
 
 class ApiController extends Controller {
-
-    public function __construct()
-    {
-        $this->permission(['format'], true);
-    }
 
     private $descriptors = [
         'engines' => [
@@ -369,6 +366,53 @@ class ApiController extends Controller {
             'sort_column' => 'id',
             'allowed_sort_columns' => [],
             'default_filters' => []
+        ],
+        'shouts' => [
+            'description' => 'Shouts',
+            'expand' => ['user'],
+            'methods' => ['get', 'post', 'put', 'delete'],
+            'auth' => [
+                'post' => '',
+                'put' => 'ForumAdmin',
+                'delete' => 'ForumAdmin'
+            ],
+            'parameters' => [
+                'get' => [
+                    'user_id' => [ 'type' => 'integer', 'description' => 'The ID of the user' ],
+                ],
+                'post' => [
+                    'text' => [ 'required' => true, 'type' => 'string', 'description' => 'The shout text' ]
+                ],
+                'put' => [
+                    'id' => [ 'required' => true, 'type' => 'integer', 'description' => 'The ID of the shout to edit' ],
+                    'text' => [ 'required' => true, 'type' => 'string', 'description' => 'The updated text of the shout']
+                ],
+                'delete' => [
+                    'id' => [ 'required' => true, 'type' => 'integer', 'description' => 'The ID of the shout to delete' ]
+                ]
+            ],
+            'object' => Shout::class,
+            'filter_columns' => ['content'],
+            'sort_column' => 'created_at',
+            'sort_descending' => true,
+            'default_filters' => [],
+            'additional_methods' => [
+                'from' => [
+                    'method' => 'get',
+                    'parameters' => [
+                        'timestamp' => [ 'required' => false, 'type' => 'integer', 'description' => 'The timestamp to retrieve shouts posted after' ]
+                    ],
+                    'response' => [
+                        'description' => 'Recent shouts',
+                        'schema' => [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/definitions/Shout'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ]
     ];
 
@@ -665,13 +709,37 @@ class ApiController extends Controller {
         if (count($parameters) > 0 && isset($this->descriptors[$parameters[0]]))
         {
             $desc = $this->descriptors[$parameters[0]];
-            if ($request->getMethod() == 'GET' && array_search('get', $desc['methods']) !== false) {
-                // Read operation
+
+            $key = strtolower(implode('_', $parameters));
+            $method = strtolower($request->getMethod());
+            $operation = "{$method}_{$key}";
+
+            if ($method != 'get' && !permission(true)) {
+                // Failure
+            }
+            else if (array_search($method, $desc['methods']) === false) {
+                // Also Failure
+            }
+            else if (method_exists($this, $operation)) {
+                try {
+                    $result = $this->$operation();
+                    return response()->json($result);
+                } catch (ValidationException $ex) {
+                    return $ex->getResponse();
+                } catch (\Exception $ex) {
+                    return response()->json([
+                        'message' => 'Object not found.'
+                    ])->setStatusCode(404);
+                }
+            }
+            else if ($method == 'get') {
                 $q = call_user_func($desc['object'] . '::query');
+
                 $exp = explode(',', Input::get('expand'));
                 foreach ($exp as $e) {
                     if (array_search($e, $desc['expand']) !== false) $q->with($e);
                 }
+
                 if (isset($desc['parameters']['get'])) {
                     foreach ($desc['parameters']['get'] as $name => $par) {
                         $req = Input::get($name);
@@ -680,31 +748,20 @@ class ApiController extends Controller {
                         }
                     }
                 }
+
                 $sort = $desc['sort_column'];
                 $s = Input::get('sort_by');
                 if ($s && isset($desc['allowed_sort_columns']) && array_search($s, $desc['allowed_sort_columns']) !== false) {
                     $sort = [$s, $desc['sort_column']];
                 }
-                $filtered = $this->filter($q, $desc['filter_columns'], $sort, Input::get('sort_descending') === 'true');
+
+                $sort_desc = isset($desc['sort_descending']) ? $desc['sort_descending'] : false;
+                if (Input::get('sort_descending') === 'true') $sort_desc = true;
+                else if (Input::get('sort_descending') === 'false') $sort_desc = false;
+
+                $filtered = $this->filter($q, $desc['filter_columns'], $sort, $sort_desc);
                 $array = $this->toArray($filtered, count($parameters) < 2 || $parameters[1] != 'paged');
                 return response()->json($array);
-            }
-            else {
-                $key = strtolower(implode('_', $parameters));
-                $method = strtolower($request->getMethod());
-                $operation = "{$method}_{$key}";
-                if (method_exists($this, $operation)) {
-                    try {
-                        $result = $this->$operation();
-                        return response()->json($result);
-                    } catch (ValidationException $ex) {
-                        return $ex->getResponse();
-                    } catch (\Exception $ex) {
-                        return response()->json([
-                            'message' => 'Object not found.'
-                        ])->setStatusCode(404);
-                    }
-                }
             }
         }
         return parent::missingMethod($parameters);
@@ -770,6 +827,8 @@ class ApiController extends Controller {
 
     private function post_posts()
     {
+        if (!permission('ForumCreate')) throw new \Exception();
+
         $id = intval(Request::input('thread_id'));
         $thread = ForumThread::findOrFail($id);
         if (!$thread->isPostable()) throw new \Exception();
@@ -788,6 +847,8 @@ class ApiController extends Controller {
     }
 
     private function put_posts() {
+        if (!permission('ForumCreate')) throw new \Exception();
+
         $id = intval(Request::input('id'));
         $post = ForumPost::findOrFail($id);
         $thread = ForumThread::findOrFail($post->thread_id);
@@ -801,11 +862,12 @@ class ApiController extends Controller {
             'content_text' => Request::input('content_text'),
             'content_html' => app('bbcode')->Parse(Request::input('content_text')),
         ]);
-        $post->save();
         return $post;
     }
 
     private function post_threads() {
+        if (!permission('ForumCreate')) throw new \Exception();
+
         $id = intval(Request::input('forum_id'));
         $forum = Forum::where('id', '=', $id)->firstOrFail();
         $this->validate(Request::instance(), [
@@ -924,6 +986,52 @@ class ApiController extends Controller {
         }
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
         return $comment;
+    }
+
+
+
+    private function get_shouts_from() {
+        $last = intval(Input::get('timestamp'));
+        $car = Carbon::createFromTimestamp($last - 10);
+        return Shout::with(['user'])
+            ->where('updated_at', '>=', $car)
+            ->orderBy('created_at', 'desc')
+            ->take(50)
+            ->get()
+            ->reverse()
+            ->values();
+   	}
+
+    private function post_shouts() {
+        $this->validate(Request::instance(), [
+            'text' => 'required|max:250'
+        ]);
+        return Shout::Create([
+            'user_id' => Auth::user()->id,
+            'content' => Request::input('text')
+        ]);
+    }
+
+    private function put_shouts() {
+        if (!permission('ForumAdmin')) throw new \Exception();
+
+        $this->validate(Request::instance(), [
+            'id' => 'required|numeric',
+            'text' => 'required|max:250'
+        ]);
+        $shout = Shout::findOrFail(Request::input('id'));
+        $shout->update([
+            'content' => Request::input('text')
+        ]);
+        return $shout;
+    }
+
+    private function delete_shouts() {
+        if (!permission('ForumAdmin')) throw new \Exception();
+
+        $shout = Shout::findOrFail(Request::input('id'));
+        $shout->delete();
+        return ['success' => true];
     }
 
     // Non-standard

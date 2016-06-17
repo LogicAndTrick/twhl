@@ -210,7 +210,7 @@
             }
         };
         $('body').shoutbox({
-            url:'{{ url("shout/{action}") }}',
+            url:'{{ url("api/shouts{action}") }}',
             userUrl:'{{ url("user/view/{id}") }}',
             active: '{{ Auth::user() != null ? "true" : "false" }}',
             moderator: '{{ permission("ForumAdmin") ? "true" : "false" }}'

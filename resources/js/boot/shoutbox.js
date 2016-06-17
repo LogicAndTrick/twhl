@@ -8,10 +8,10 @@
         userUrl: '',
         active: 'false',
         moderator: 'false',
-        getAction: 'shouts/{id}',
-        postAction: 'add',
-        editAction: 'edit',
-        deleteAction: 'delete'
+        getAction: '/from',
+        postAction: '',
+        editAction: '',
+        deleteAction: ''
     };
 
     var window_template =
@@ -159,6 +159,7 @@
             for (i = 0; i < this.store.length; i++) {
                 obj = this.store[i];
                 if (!obj.updated) obj.updated = Date.parse(obj.updated_at.replace(/ /ig, 'T') + 'Z');
+                if (!obj.created) obj.created = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
                 if (ids[obj.id] !== undefined) {
                     var orig = newStore[ids[obj.id]];
                     if (orig.updated < obj.updated) newStore[ids[obj.id]] = obj;
@@ -167,6 +168,11 @@
                     newStore.push(obj);
                 }
             }
+            newStore.sort(function (a, b) {
+                if (a.created > b.created) return 1;
+                if (a.created < b.created) return -1;
+                return 0;
+            });
             this.store = newStore;
 
             if (this.store.length > 50) this.store.splice(0, 50 - this.store.length);
@@ -213,9 +219,9 @@
         };
 
         this.refresh = function(full) {
-            var url = template(this.options.get, { id: full === true ? 0 : Math.floor(this.lastUpdate / 1000) });
+            var timestamp = full === true ? 0 : Math.floor(this.lastUpdate / 1000);
             this.container.addClass('refreshing');
-            $.get(url, function(data) {
+            $.get(this.options.get, { timestamp: timestamp }, function(data) {
                 self.container.removeClass('refreshing');
                 self.updateStore(data, full);
                 self.render();
@@ -242,9 +248,19 @@
             var url = this.editing ? this.options.edit
                     : this.deleting ? this.options.delete
                     : this.options.post;
+            var method = this.editing ? 'PUT'
+                    : this.deleting ? 'DELETE'
+                    : 'POST';
             var full = this.deleting;
 
-            $.post(url, { text: content, id: this.editing || this.deleting || null }).fail(function(req) {
+            // $.post(url, { text: content, id: this.editing || this.deleting || null })
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({ text: content, id: this.editing || this.deleting || null })
+            }).fail(function(req) {
                 self.container.find('form').removeClass('loading');
                 self.container.find('input,button').prop('disabled', false);
                 self.container.removeClass('refreshing');
