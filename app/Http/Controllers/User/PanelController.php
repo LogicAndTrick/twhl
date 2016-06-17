@@ -2,6 +2,7 @@
 
 use App\Helpers\Image;
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\ApiKey;
 use App\Models\Accounts\Ban;
 use App\Models\Accounts\User;
 use App\Models\Accounts\UserNameHistory;
@@ -201,6 +202,39 @@ class PanelController extends Controller {
             }
         }
         return redirect('panel/index/'.$id);
+    }
+
+    public function getEditKeys($id = 0) {
+        $user = PanelController::GetUser($id);
+        return view('user/panel/edit-keys', [
+            'user' => $user
+        ]);
+    }
+
+    public function postAddKey() {
+        $id = Request::input('id');
+        $user = PanelController::GetUser($id);
+
+        $this->validate(Request::instance(), [
+            'app' => 'required|max:255'
+        ]);
+
+        $key = ApiKey::create([
+            'user_id' => $user->id,
+            'key' => ApiKey::GenerateKey($id),
+            'app' => Request::input('app'),
+            'ip' => Request::ip(),
+        ]);
+
+        return redirect('panel/edit-keys/'.$id);
+    }
+
+    public function postDeleteKey() {
+        $id = Request::input('id');
+        $key = ApiKey::findOrFail($id);
+        $user = PanelController::GetUser($key->user_id);
+        $key->delete();
+        return redirect('panel/edit-keys/'.$key->user_id);
     }
 
     public function getEditName($id = 0) {

@@ -44,6 +44,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasMany('App\Models\Accounts\UserNameHistory');
     }
 
+    public function api_keys()
+    {
+        return $this->hasMany('App\Models\Accounts\ApiKey');
+    }
+
     public function getPreviousAliases()
     {
         $ret = [];

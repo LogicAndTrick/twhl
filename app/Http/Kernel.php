@@ -17,6 +17,7 @@ class Kernel extends HttpKernel {
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
 		'App\Http\Middleware\VerifyCsrfToken',
         'App\Http\Middleware\UpdateUserAccessDetails',
+		'App\Http\Middleware\ApiKeyAuthenticate',
 		'App\Http\Middleware\CheckForBan',
 		'App\Http\Middleware\ConvertLegacyAccount',
 	];

@@ -31,6 +31,7 @@ class ConvertLegacyAccount
             && $request->method() == 'GET'
             && !$request->is('auth/*')
             && !$request->is('api/*')
+            && !$request->is('ban/*')
             && !$request->is('wiki/page/TWHL:_Site_Rules')
             && !$request->is('wiki/page/TWHL:_Site_Policies');
     }

@@ -34,6 +34,7 @@
                         <li><a href="{{ act('panel', 'edit-avatar', $user->id) }}"><span class="glyphicon glyphicon-picture"></span> Change Avatar</a></li>
                         <li><a href="{{ act('panel', 'edit-password', $user->id) }}"><span class="glyphicon glyphicon-lock"></span> Update Password</a></li>
                         <li><a href="{{ act('panel', 'edit-settings', $user->id) }}"><span class="glyphicon glyphicon-cog"></span> Edit Site Settings</a></li>
+                        <li><a href="{{ act('panel', 'edit-keys', $user->id) }}"><span class="glyphicon glyphicon-certificate"></span> Manage Api Keys</a></li>
                     </ul>
                     @if (permission('Admin'))
                         <hr title="Admin Actions"/>

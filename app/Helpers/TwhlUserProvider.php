@@ -14,6 +14,9 @@ class TwhlUserProvider extends EloquentUserProvider {
    	 */
    	public function retrieveByCredentials(array $credentials)
    	{
+		if (empty($credentials)) {
+			return null;
+		}
         // Allow username as an acceptable login key - try it first, otherwise fall back to email address
         $query = $this->createModel()->newQuery();
 

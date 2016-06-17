@@ -18,6 +18,11 @@ class CheckForBan {
 	{
         if ($this->shouldCheckForBan($request)) {
             if ($this->isBanned($request)) {
+                if (($request->ajax() && ! $request->pjax()) || $request->wantsJson()) {
+                    return response()->json([
+                        'message' => 'This account is banned.'
+                    ])->setStatusCode(422);
+                }
                 return redirect('/ban/index');
             }
         }

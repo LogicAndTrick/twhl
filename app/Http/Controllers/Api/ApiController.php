@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
  
 use App\Http\Controllers\Comments\CommentController;
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\ApiKey;
 use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
 use App\Models\Comments\Comment;
@@ -28,6 +29,7 @@ use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Validation\ValidationException;
@@ -413,6 +415,25 @@ class ApiController extends Controller {
                     ]
                 ]
             ]
+        ],
+        'api-key' => [
+            'description' => 'Api Keys',
+            'expand' => [],
+            'methods' => ['post'],
+            'auth' => [],
+            'parameters' => [
+                'post' => [
+                    'username' => [ 'required' => true, 'type' => 'string', 'description' => 'The username to log in with' ],
+                    'password' => [ 'required' => true, 'type' => 'string', 'format' => 'password', 'description' => 'The password to log in with' ],
+                    'app' => [ 'required' => true, 'type' => 'string', 'description' => 'The key context (what application is using this key?)' ],
+                ]
+            ],
+            'allow_unauthenticated' => true,
+            'object' => ApiKey::class,
+            'filter_columns' => ['app'],
+            'sort_column' => 'id',
+            'allowed_sort_columns' => [],
+            'default_filters' => []
         ]
     ];
 
@@ -690,7 +711,7 @@ class ApiController extends Controller {
             'securityDefinitions' => [
                 'api_key' => [
                     'type' => 'apiKey',
-                    'name' => 'api_key',
+                    'name' => 'Authorization',
                     'in' => 'header'
                 ]
             ],
@@ -710,12 +731,14 @@ class ApiController extends Controller {
         {
             $desc = $this->descriptors[$parameters[0]];
 
-            $key = strtolower(implode('_', $parameters));
+            $key = str_replace('-', '_', strtolower(implode('_', $parameters)));
             $method = strtolower($request->getMethod());
             $operation = "{$method}_{$key}";
 
-            if ($method != 'get' && !permission(true)) {
-                // Failure
+            if ($method != 'get' && !permission(true) && (!isset($desc['allow_unauthenticated']) || $desc['allow_unauthenticated'] !== true)) {
+                return response()->json([
+                    'message' => 'Unauthorised'
+                ])->setStatusCode(401);
             }
             else if (array_search($method, $desc['methods']) === false) {
                 // Also Failure
@@ -764,7 +787,9 @@ class ApiController extends Controller {
                 return response()->json($array);
             }
         }
-        return parent::missingMethod($parameters);
+        return response()->json([
+            'message' => 'Method not found.'
+        ])->setStatusCode(404);
     }
 
     private function filter($query, $filter_cols, $sort_cols = [], $sort_desc = false) {
@@ -863,6 +888,12 @@ class ApiController extends Controller {
             'content_html' => app('bbcode')->Parse(Request::input('content_text')),
         ]);
         return $post;
+    }
+
+    private function post_posts_format() {
+        $field = Input::get('field') ?: 'text';
+        $text = Input::input($field) ?: '';
+        return app('bbcode')->Parse($text);
     }
 
     private function post_threads() {
@@ -988,8 +1019,6 @@ class ApiController extends Controller {
         return $comment;
     }
 
-
-
     private function get_shouts_from() {
         $last = intval(Input::get('timestamp'));
         $car = Carbon::createFromTimestamp($last - 10);
@@ -1034,11 +1063,29 @@ class ApiController extends Controller {
         return ['success' => true];
     }
 
-    // Non-standard
+    private function post_api_key() {
 
-    private function post_posts_format() {
-        $field = Input::get('field') ?: 'text';
-        $text = Input::input($field) ?: '';
-        return app('bbcode')->Parse($text);
+        $this->validate(Request::instance(), [
+            'app' => 'required|max:255',
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        $user = Auth::getProvider()->retrieveByCredentials([
+            'name' => Request::input('username'),
+            'password' => Request::input('password')
+        ]);
+        if (!$user) throw new ModelNotFoundException();
+
+        $id = $user->id;
+
+        $key = ApiKey::create([
+            'user_id' => $user->id,
+            'key' => ApiKey::GenerateKey($id),
+            'app' => Request::input('app'),
+            'ip' => Request::ip(),
+        ]);
+
+        return $key;
     }
 }
