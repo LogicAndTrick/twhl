@@ -58,6 +58,7 @@ class CompetitionAdminController extends Controller {
         $attachment = Request::file('brief_attachment');
         if ($attachment) {
             $dir = public_path('uploads/competition/attachments');
+            if (!is_dir($dir)) mkdir($dir, 0777, true);
             $name = 'twhl-competition-' . $competition->id . '.' . strtolower($attachment->getClientOriginalExtension());
             $attachment->move($dir, $name);
             $competition->brief_attachment = $name;
@@ -100,6 +101,7 @@ class CompetitionAdminController extends Controller {
 
         $brief_attachment = $comp->brief_attachment;
         $dir = public_path('uploads/competition/attachments');
+        if (!is_dir($dir)) mkdir($dir, 0777, true);
         $path = strlen($comp->brief_attachment) == 0 ? null : $dir . '/' . $comp->brief_attachment;
 
         $attachment = Request::file('brief_attachment');

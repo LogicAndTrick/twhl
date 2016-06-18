@@ -440,6 +440,12 @@ class BladeServiceProvider extends ServiceProvider {
 
     public static function esc($value) {
         if (!$value) return $value;
+        if (is_array($value)) {
+            $esc = [];
+            foreach ($value as $v) $esc[] = BladeServiceProvider::esc($v);
+            return $esc;
+        }
+        if (!is_string($value)) return $value;
         return str_replace("'", '&#39;', htmlspecialchars($value));
     }
 

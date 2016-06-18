@@ -1113,11 +1113,14 @@ class ApiController extends Controller {
         ]);
         if (!$user) throw new ModelNotFoundException();
 
-        $id = $user->id;
+        // Stop API key spam and see if this app already has a key
+
+        $key = ApiKey::whereUserId($user->id)->whereApp(Request::input('app'))->first();
+        if ($key) return $key;
 
         $key = ApiKey::create([
             'user_id' => $user->id,
-            'key' => ApiKey::GenerateKey($id),
+            'key' => ApiKey::GenerateKey($user->id),
             'app' => Request::input('app'),
             'ip' => Request::ip(),
         ]);
