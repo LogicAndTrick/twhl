@@ -29,7 +29,7 @@ Let's say you want to create a shout in the shoutbox. If you're not authenticate
 
     $.post("/api/shouts", { "text": "I am posting a shout from the API!" });
 
-You will get a `401 Unauthorised` response back from the server. You can't shout you don't tell the server who you are!
+You will get a `401 Unauthorised` response back from the server. You can't shout if you don't tell the server who you are!
 
 To fix this, there are several options. The easiest is to simply include the API key in your request body:
 
@@ -39,7 +39,7 @@ The query string works just as well:
 
     $.post("/api/shouts?api_key=<api key>", { "text": "I am posting a shout from the API!"  });
 
-The third option that you might use in a less dynamic language is the value of the `Authorization` header, which you simply set to the value of your API key. Notice the Authorisation header has been added to this request.
+The third option that you might use in a less dynamic language is the value of the `Authorization` header, which you simply set to the value of your API key. Notice the Authorization header has been added to this request.
 
     $.ajax({
         method: "POST",
