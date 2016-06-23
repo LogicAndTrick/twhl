@@ -48,7 +48,7 @@ On the web, linking is one of the more useful things you can do. So, of course t
 
 == Images
 
-Embedding images another useful thing to do, especially on a wiki. Because it's important, there's a few different ways that images can be added to a post. The output isn't shown in this case because images can take a fair amount of space, but you can experiment by using the preview button when typing a post.
+Embedding images is another useful thing to do, especially on a wiki. Because it's important, there's a few different ways that images can be added to a post. The output isn't shown in this case because images can take a fair amount of space, but you can experiment by using the preview button when typing a post.
 
 |= Format | Markup | Notes
 |- Normal image | [code][img]http://example.com/example.jpg[/img][/code] | Embed a normal image (breaks text top and bottom)

@@ -32,7 +32,7 @@ Please use common sense here, but in case you would like some examples, here's a
 -- If you absolutely have to, put a big "NSFW" warning on any links that might contain inappropriate content.
 - Discrimination-based insults (race, gender, religion, political views) are absolutely not allowed. Honestly, just don't talk about those subjects entirely.
 - When posting a question or asking for help, be sure to explain everything that you did so other users don't have to ask you for extra information.
-- When answering somebody else's questions, post enough information to be helpful, rather than insulting them for now knowing the answer.
+- When answering somebody else's questions, post enough information to be helpful, rather than insulting them for not knowing the answer.
 - Treat newbies well - remember, you were a newbie once too! New members help keep the community alive. Be patient and help them out.
 - When creating a post (forum, vault, etc) - pick the appropriate category related to your post. The category is often important for context of the post.
 - Before posting a question on the forums, use the search function to see if your question has already been asked before.
