@@ -47,3 +47,6 @@ Route::controllers([
     'api' => 'Api\ApiController',
     'search' => 'Search\SearchController'
 ]);
+
+// Swagger convention suggests that the api definition should be available at /swagger.json
+Route::get('/swagger.json', 'Api\ApiController@getIndex');

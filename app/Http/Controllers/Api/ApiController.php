@@ -264,7 +264,8 @@ class ApiController extends Controller {
             'filter_columns' => ['name'],
             'sort_column' => 'orderindex',
             'allowed_sort_columns' => [],
-            'default_filters' => []
+            'default_filters' => [],
+            'object_names' => ['VaultCategory','VaultCategories']
         ],
         'vault-types' => [
             'description' => 'Vault Types',
@@ -351,7 +352,8 @@ class ApiController extends Controller {
             'filter_columns' => ['name'],
             'sort_column' => 'id',
             'allowed_sort_columns' => [],
-            'default_filters' => []
+            'default_filters' => [],
+            'object_names' => ['CompetitionStatus','CompetitionStatuses']
         ],
         'competition-types' => [
             'description' => 'Competition Types',
@@ -525,7 +527,14 @@ class ApiController extends Controller {
 
         $expl = explode('\\', $desc['object']);
         $name = $expl[count($expl) - 1];
+        $single_name = $name;
+        $plural_name = $name . 's';
         $filterCols = implode(', ', $desc['filter_columns']);
+
+        if (isset($desc['object_names'])) {
+            $name = $desc['object_names'][0];
+            $plural_name = $desc['object_names'][1];
+        }
 
         foreach ($desc['methods'] as $method) {
             $auth = isset($desc['auth'][$method]) ? $desc['auth'][$method] : null;
@@ -540,7 +549,7 @@ class ApiController extends Controller {
             if ($method == 'get') {
                 $items["/$key"]['get'] = [
                     'tags' => [$key],
-                    'operationId' => "get{$name}s",
+                    'operationId' => "get{$plural_name}",
                     'consumes' => ['application/json'],
                     'produces' => ['application/json'],
                     'parameters' => [
@@ -563,7 +572,7 @@ class ApiController extends Controller {
                 ];
                 $items["/$key/paged"]['get'] = [
                     'tags' => [$key],
-                    'operationId' => "get{$name}sPaged",
+                    'operationId' => "get{$plural_name}Paged",
                     'consumes' => ['application/json'],
                     'produces' => ['application/json'],
                     'parameters' => [
@@ -638,12 +647,12 @@ class ApiController extends Controller {
 
                 $items["/$key"][$method] = [
                     'tags' => [$key],
-                    'operationId' => "{$op}{$name}s",
+                    'operationId' => "{$op}{$single_name}",
                     'consumes' => ['application/json'],
                     'produces' => ['application/json'],
                     'parameters' => [
                         [
-                            'name' => 'body',
+                            'name' => "{$op}{$name}Body",
                             'in' => 'body',
                             'description' => 'Posted data',
                             'schema' => $schm
