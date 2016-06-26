@@ -9,26 +9,42 @@
         @endif
         <h1>Competitions</h1>
     </hc>
-    <ul class="media-list">
+    <ul class="media-list competition-list">
         @foreach ($comps->sortByDesc('close_date') as $comp)
         <li class="media media-panel">
             <div class="media-body">
                 <div class="media-heading">
-                    <h2><a href="{{ act('competition', $comp->isClosed() ? 'results' : 'brief', $comp->id) }}">{{ $comp->name }}</a></h2>
-                    <strong>{{ $comp->getStatusText() }}</strong> &bull;
-                    {{ $comp->type->name }} &bull;
-                    {{ $comp->judge_type->name }}
+                    <h2>
+                        <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>
+                        <small class="pull-right">{{ $comp->type->name }} &bull; {{ $comp->judge_type->name }}</small>
+                    </h2>
                 </div>
-                {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->close_date) ({{ $comp->close_date->format('jS F Y') }})
-                @if ($comp->isClosed())
-                    <div class="competition-winners">
-                        <h4>Winners</h4>
-                        @foreach ($comp->getEntriesForWinners() as $entry)
-                            {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
-                            @avatar($entry->user small show_border=true show_name=false)
-                        @endforeach
+                <div class="row">
+                    <div class="col-lg-4 col-lg-push-8 col-md-5 col-md-push-7 info-column">
+                        <div class="text-center">
+                            <h2>{{ $comp->getStatusText() }}</h2>
+
+                            @if ($comp->isVotingOpen())
+                                <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
+                            @elseif ($comp->isJudging() && $comp->canJudge())
+                                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse"><span class="glyphicon glyphicon-eye-open"></span> Go to Judging Panel</a>
+                            @elseif ($comp->isClosed())
+                                <div class="competition-winners">
+                                    <h5>Winners</h5>
+                                    @foreach ($comp->getEntriesForWinners() as $entry)
+                                        {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
+                                        @avatar($entry->user small show_border=true show_name=false)
+                                    @endforeach
+                                </div>
+                            @else
+                                {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->close_date) ({{ $comp->close_date->format('jS F Y') }})
+                            @endif
+                        </div>
                     </div>
-                @endif
+                    <div class="col-lg-8 col-lg-pull-4 col-md-7 col-md-pull-5 brief-column">
+                        <div class="bbcode">{!! $comp->brief_html !!}</div>
+                    </div>
+                </div>
             </div>
         </li>
         @endforeach

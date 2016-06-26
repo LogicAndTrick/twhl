@@ -20,56 +20,39 @@
         </ol>
     </hc>
 
-    <div id="vault-slider" class="slider">
-        <div class="loading" data-u="loading">
-            Loading...
-        </div>
-        <div class="slides" data-u="slides">
-            @if (count($item->vault_screenshots) > 0)
-                @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
-                <div>
-                    <img data-u="image" data-src2="{{ asset('uploads/vault/'.$sshot->image_large) }}" alt="Screenshot" />
-                    <img data-u="thumb" data-src2="{{ asset('uploads/vault/'.$sshot->image_thumb) }}" alt="Thumbnail" />
+    <div class="row">
+        <div class="col-sm-8 vault-slider-container">
+            <div id="vault-slider" class="slider">
+                <div class="loading" data-u="loading">
+                    Loading...
                 </div>
-                @endforeach
-            @else
-                <div>
-                    <img data-u="image" data-src2="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
-                    <img data-u="thumb" data-src2="{{ asset('images/no-screenshot-320.png') }}" alt="Thumbnail" />
+                <div class="slides" data-u="slides">
+                    @if (count($item->vault_screenshots) > 0)
+                        @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
+                        <div>
+                            <img data-u="image" data-src2="{{ asset('uploads/vault/'.$sshot->image_large) }}" alt="Screenshot" />
+                            <img data-u="thumb" data-src2="{{ asset('uploads/vault/'.$sshot->image_thumb) }}" alt="Thumbnail" />
+                        </div>
+                        @endforeach
+                    @else
+                        <div>
+                            <img data-u="image" data-src2="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
+                            <img data-u="thumb" data-src2="{{ asset('images/no-screenshot-320.png') }}" alt="Thumbnail" />
+                        </div>
+                    @endif
                 </div>
-            @endif
-        </div>
-        <div data-u="thumbnavigator" class="thumbs">
-            <div data-u="slides">
-                <div data-u="prototype" class="p">
-                    <div data-u="thumbnailtemplate" class="i"></div>
+                <div data-u="thumbnavigator" class="thumbs">
+                    <div data-u="slides">
+                        <div data-u="prototype" class="p">
+                            <div data-u="thumbnailtemplate" class="i"></div>
+                        </div>
+                    </div>
                 </div>
+                <span data-u="arrowleft" class="arrow left" style="top: 123px; left: 8px;"></span>
+                <span data-u="arrowright" class="arrow right" style="top: 123px; right: 8px;"></span>
             </div>
         </div>
-        <span data-u="arrowleft" class="arrow left" style="top: 123px; left: 8px;"></span>
-        <span data-u="arrowright" class="arrow right" style="top: 123px; right: 8px;"></span>
-    </div>
-
-    @foreach ($item->motms as $motm)
-        <div class="alert alert-success">
-            <h3>
-                <span class="glyphicon glyphicon-certificate"></span>
-                Map of the Month winner for {{ $motm->getDateString() }}!
-            </h3>
-        </div>
-    @endforeach
-
-    <div class="row">
-        <div class="col-sm-8">
-            <hc>
-                <h2>Item Description</h2>
-            </hc>
-            <div class="bbcode">{!! $item->content_html !!}</div>
-        </div>
         <div class="col-sm-4 vault-key-info">
-            <hc class="text-right hidden-xs">
-                <h2>Key Information</h2>
-            </hc>
             <hc class="visible-xs-block">
                 <h2>Key Information</h2>
             </hc>
@@ -147,6 +130,19 @@
             @endif
         </div>
     </div>
+
+    @foreach ($item->motms as $motm)
+        <div class="alert alert-success">
+            <h3>
+                <span class="glyphicon glyphicon-certificate"></span>
+                Map of the Month winner for {{ $motm->getDateString() }}!
+            </h3>
+        </div>
+    @endforeach
+    <hc>
+        <h2>Item Description</h2>
+    </hc>
+    <div class="bbcode">{!! $item->content_html !!}</div>
 
     @include('comments.list', [ 'article' => $item, 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::VAULT, 'article_id' => $item->id, 'inject_add' => ['vault.review-info' => ['item' => $item, 'user_review' => $user_review]] ])
 @endsection

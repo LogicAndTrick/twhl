@@ -195,16 +195,17 @@ textarea.form-control {
 
 .nice-date {
   //border-radius: 4px;
-  cursor: default;
   transition: background 0.2s ease;
+  border-bottom: 1px dotted #ccc;
+  cursor: pointer;
 
   .raw {
     display: none;
   }
 
   &:hover {
-    //background: hsla(0, 0%, 95%, 0.5);
-    border-bottom: 1px dotted #aaa;
+    background: hsla(0, 0%, 95%, 0.5);
+    border-bottom: 1px dashed @gray-light;
   }
 
   &.on {

@@ -38,39 +38,52 @@
                 <h3>Other Entries</h3>
                 <ul class="media-list">
             @endif
+            {? $shot = $entry->screenshots->first(); ?}
             {? $prev_rank = $result->rank; ?}
-            <li class="media" data-id="{{ $entry->id }}">
-                <div class="media-body">
-                    <h3>
-                        {{ $entry->title }} &mdash; By @avatar($entry->user inline)
+            <li class="media media-panel" data-id="{{ $entry->id }}">
+                <div class="media-heading">
+                    {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
+                    @if ($result->rank == 1)
+                        <h2>1st Place</h2>
+                    @elseif ($result->rank == 2)
+                        <h2>2nd Place</h2>
+                    @elseif ($result->rank == 3)
+                        <h2>3rd Place</h2>
+                    @endif
+                    <h3>{{ $entry->title }}</h3>
+                    <h5>
+                        By @avatar($entry->user inline)
                         @if ($entry->file_location)
                             <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
                         @endif
-                    </h3>
-                    {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
-                    @if ($result->rank == 1)
-                        <h4>1st Place</h4>
-                    @elseif ($result->rank == 2)
-                        <h4>2nd Place</h4>
-                    @elseif ($result->rank == 3)
-                        <h4>3rd Place</h4>
-                    @endif
+                    </h5>
+                </div>
+                <div class="media-body">
+                    <div class="visible-sm-block visible-xs-block text-center">
+                        <div style="display: inline-block;">
+                            <a href="#" class="gallery-button img-thumbnail">
+                                @if ($shot)
+                                    <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
+                                @else
+                                    <img class="media-object" src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                                @endif
+                            </a>
+                            @if ($entry->screenshots->count() > 1)
+                                <button class="btn btn-info btn-block gallery-button" type="button">
+                                    <span class="glyphicon glyphicon-picture"></span>
+                                    + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
+                                </button>
+                            @endif
+                        </div>
+                    </div>
                     <div class="bbcode">{!! $result->content_html !!}</div>
                 </div>
-                <div class="media-right">
-                    {? $shot = $entry->screenshots->first(); ?}
-                    <a href="#" class="gallery-button img-thumbnail tagged">
+                <div class="media-right hidden-xs hidden-sm">
+                    <a href="#" class="gallery-button img-thumbnail">
                         @if ($shot)
                             <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
                         @else
                             <img class="media-object" src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
-                        @endif
-                        @if ($result->rank == 1)
-                            <span class="tag"><span class="glyphicon glyphicon-star"></span> 1st Place</span>
-                        @elseif ($result->rank == 2)
-                            <span class="tag"><span class="glyphicon glyphicon-star"></span> 2nd Place</span>
-                        @elseif ($result->rank == 3)
-                            <span class="tag"><span class="glyphicon glyphicon-star"></span> 3rd Place</span>
                         @endif
                     </a>
                     @if ($entry->screenshots->count() > 1)

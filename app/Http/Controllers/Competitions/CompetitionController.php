@@ -24,7 +24,7 @@ class CompetitionController extends Controller {
 	}
 
     public function getBrief($id) {
-        $comp = Competition::with(['engines', 'judges', 'restrictions', 'restrictions.group', 'status', 'type', 'judge_type'])->findOrFail($id);
+        $comp = Competition::with(['engines', 'judges', 'restrictions', 'restrictions.group', 'status', 'type', 'judge_type', 'results', 'entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
         $rule_groups = [];
         foreach ($comp->restrictions as $r) {
             $t = $r->group->title;

@@ -43,7 +43,7 @@ class CompetitionJudgingController extends Controller {
         if (!$entry->competition->canJudge()) abort(404);
         $this->validate(Request::instance(), [
             'rank' => 'numeric',
-            'content_text' => 'max:2000'
+            'content_text' => 'max:10000'
         ]);
         $text = Request::input('content_text');
         $rank = intval(Request::input('rank'));

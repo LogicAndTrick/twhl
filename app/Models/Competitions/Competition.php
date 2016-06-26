@@ -88,7 +88,7 @@ class Competition extends Model {
      */
     public function getVotingOpenTime()
     {
-        return $this->getEntryCloseTime()->addMinute();
+        return $this->getEntryCloseTime()->addMinute()->second(0);
     }
 
     /**

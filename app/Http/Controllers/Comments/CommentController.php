@@ -103,7 +103,7 @@ class CommentController extends Controller {
             foreach ($config['meta'] as $key => $meta) {
                 if (!$article->commentsCanAddMeta($key)) continue;
                 $val = strval(Request::input($meta['key']));
-                if ($val && preg_match('/^(1|2|3|4|5)$/i', $val)) {
+                if ($val && preg_match($meta['valid'], $val)) {
                     $metas[] = new CommentMeta([ 'key' => $key, 'value' => $val]);
                     if (isset($meta['one_per_user']) && $meta['one_per_user']) {
                         DB::statement(
@@ -160,7 +160,7 @@ class CommentController extends Controller {
             foreach ($config['meta'] as $key => $meta) {
                 if (!$article->commentsCanAddMeta($key)) continue;
                 $val = strval(Request::input($meta['key']));
-                if ($val && preg_match('/^(1|2|3|4|5)$/i', $val)) {
+                if ($val && preg_match($meta['valid'], $val)) {
                     $metas[] = new CommentMeta([ 'key' => $key, 'value' => $val]);
                     if (isset($meta['one_per_user']) && $meta['one_per_user']) {
                         DB::statement(

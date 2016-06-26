@@ -36,29 +36,31 @@
     @endif
     <div class="row">
         @foreach ($comp->entries->shuffle() as $entry)
-            <div data-id="{{ $entry->id }}" class="col-md-4 thumbnail competition-vote-entry {{ $votes->contains($entry->id) ? 'voted' : '' }}">
-                <h3>{{ $entry->title }}</h3>
-                <h4>By @avatar($entry->user inline)</h4>
-                {? $shot = $entry->screenshots->first(); ?}
-                <a href="#" class="gallery-button">
-                @if ($shot)
-                    <img src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
-                @else
-                    <img src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
-                @endif
-                </a>
-                @if ($entry->screenshots->count() > 1)
-                    <button class="btn btn-info btn-block gallery-button" type="button">
-                        <span class="glyphicon glyphicon-picture"></span>
-                        + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
+            <div data-id="{{ $entry->id }}" class="col-md-4 competition-vote-entry {{ $votes->contains($entry->id) ? 'voted' : '' }}">
+                <div class="thumbnail">
+                    <h3>{{ $entry->title }}</h3>
+                    <h4>By @avatar($entry->user inline)</h4>
+                    {? $shot = $entry->screenshots->first(); ?}
+                    <a href="#" class="gallery-button">
+                    @if ($shot)
+                        <img src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
+                    @else
+                        <img src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                    @endif
+                    </a>
+                    @if ($entry->screenshots->count() > 1)
+                        <button class="btn btn-info btn-block gallery-button" type="button">
+                            <span class="glyphicon glyphicon-picture"></span>
+                            + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
+                        </button>
+                    @endif
+                    @if ($comp->canVote())
+                    <button class="btn btn-success btn-block btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
                     </button>
-                @endif
-                @if ($comp->canVote())
-                <button class="btn btn-success btn-block btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
-                    <span class="glyphicon glyphicon-ok"></span>
-                    <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
-                </button>
-                @endif
+                    @endif
+                </div>
             </div>
         @endforeach
     </div>

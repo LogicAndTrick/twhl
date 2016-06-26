@@ -1,3 +1,40 @@
+.competition-list {
+  .bbcode {
+
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+    margin-top: 5px;
+
+    &::after {
+      content: ' ';
+      position: absolute;
+      top: auto;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to top, #ffffff 25%, rgba(255, 255, 255, 0) 100%);
+      height: 40%;
+    }
+
+    .embedded {
+      display: none;
+    }
+  }
+
+  .media-panel:nth-child(2n) {
+    .bbcode::after {
+      background: linear-gradient(to top, @table-bg-accent 25%, rgba(255, 255, 255, 0) 100%);
+    }
+  }
+
+  .info-column {
+    h2 {
+      margin-top: 5px;
+    }
+  }
+}
+
 .competition-winners {
   h4 {
     margin-bottom: 5px;
@@ -21,15 +58,48 @@
 }
 
 .countdown.is-countdown {
+  .panel;
+  .panel-default;
+  .panel-body;
   width: 300px;
   margin: 0 auto;
-  border-radius: 4px;
   background-color: #fafafa;
-  border: 1px solid @gray-light;
   padding: 5px 0;
 
   .countdown-row {
     display: inline-block;
+  }
+}
+
+.countdown {
+  position: relative;
+
+  .countdown-descr {
+    position: relative;
+    top: -3.8em;
+  }
+  .countdown-show4 {
+    position: relative;
+    top: 1.8em;
+  }
+}
+
+.competition-brief {
+  .competition-status {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  @media (min-width: @screen-md-min) {
+    .brief-column {
+      border-right: 1px solid @gray-lighter;
+    }
+  }
+}
+
+.competition-rules {
+  li > .bbcode {
+    margin-bottom: 0;
   }
 }
 

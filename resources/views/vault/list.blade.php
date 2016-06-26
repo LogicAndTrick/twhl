@@ -94,28 +94,37 @@
 
     <ul class="row vault-list">
         @foreach ($items as $item)
-            <li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+            <li class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
                 <div class="vault-item">
-                    <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
-                    <a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a>
-                    <a class="screenshot" href="{{ act('vault', 'view', $item->id) }}">
-                        <img src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" />
+                    <div class="top">
+                        <h2>
+                            <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
+                            <a href="{{ act('vault', 'view', $item->id) }}" title="{{ $item->name }}">
+                                {{ $item->name }}
+                            </a>
+                        </h2>
+                    </div>
+                    <a class="screenshot" href="{{ act('vault', 'view', $item->id) }}"
+                        style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');"
+                    >
+                        <!--img src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" /-->
                     </a>
-                    @if ($item->flag_ratings && $item->stat_ratings > 0)
+                    <div class="bottom">
                         <span class="stars">
-                            @foreach ($item->getRatingStars() as $star)
-                                <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
-                            @endforeach
-                            ({{$item->stat_ratings}})
+                            @if ($item->flag_ratings && $item->stat_ratings > 0)
+                                @foreach ($item->getRatingStars() as $star)
+                                    <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
+                                @endforeach
+                                ({{$item->stat_ratings}})
+                            @elseif ($item->flag_ratings)
+                                No Ratings Yet
+                            @else
+                                Ratings Disabled
+                            @endif
                         </span>
-                    @elseif ($item->flag_ratings)
-                        No Ratings Yet
-                    @else
-                        Ratings Disabled
-                    @endif
-                    <br/>
-                    By @avatar($item->user inline)<br/>
-                    @date($item->created_at)
+                        <span>By @avatar($item->user inline)</span>
+                        <span>@date($item->created_at)</span>
+                    </div>
                 </div>
             </li>
         @endforeach

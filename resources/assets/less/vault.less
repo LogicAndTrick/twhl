@@ -157,7 +157,7 @@
     }
 
     @media (min-width: @screen-lg-min) {
-      &:nth-child(4n+1) {
+      &:nth-child(3n+1) {
         clear: both;
       }
     }
@@ -170,34 +170,62 @@
 
   margin: 2px;
   padding: 5px;
-  text-align: center;
+
   line-height: 1.6em;
-  min-height: 310px;
 
-  .game-icon {
-    float: left;
-    position: relative;
-  }
+  .top {
 
-  a {
-
+    .game-icon {
+      height: 1.4em;
+    }
+    h2 {
+      font-size: 1.3em;
+      margin: 0;
+      padding: 3px 3px 8px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 
   .screenshot {
     display: block;
-    margin: 0 auto 5px;
+    margin: 0;
     clear: both;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
 
     img {
       max-width: 100%;
     }
+
+    &::before {
+      content: ' ';
+      padding-top: calc(100%*9/16);
+      display: inline-block;
+      position: relative;
+      background: none;
+    }
   }
 
-  .stars {
-    padding-bottom: 3px;
-    display: inline-block;
-    img {
-      height: 1.2em;
+  .bottom {
+    text-align: center;
+    margin-top: 3px;
+
+    & > span {
+      display: block;
+      line-height: 1.6em;
+      height: 1.6em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: clip;
+      margin-bottom: 3px;
+
+      & > img {
+        height: 1em;
+      }
     }
   }
 }
@@ -222,6 +250,11 @@
     .slider, &.slider { height: 660px; }
     .slides { height: 570px; }
   }
+}
+
+.vault-slider-container {
+  background: #333;
+  color: #fcfcfc;
 }
 
 .vault-key-info {

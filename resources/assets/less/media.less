@@ -166,6 +166,72 @@
       background: #e6e6e6;
     }
   }
+
+  .ribbon {
+    padding: 10px;
+    margin: -15px -15px 15px;
+
+    background: @panel-default-heading-bg;
+    border-bottom: 1px solid @panel-default-border;
+    color: @panel-default-text;
+
+    &.primary {
+      background: @panel-primary-heading-bg;
+      border-bottom: 1px solid @panel-primary-border;
+      color: @panel-primary-text;
+    }
+
+    &.info {
+      background: @panel-info-heading-bg;
+      border-bottom: 1px solid @panel-info-border;
+      color: @panel-info-text;
+    }
+
+    &.success {
+      background: @panel-success-heading-bg;
+      border-bottom: 1px solid @panel-success-border;
+      color: @panel-success-text;
+    }
+
+    &.warning {
+      background: @panel-warning-heading-bg;
+      border-bottom: 1px solid @panel-warning-border;
+      color: @panel-warning-text;
+    }
+
+    &.danger {
+      background: @panel-danger-heading-bg;
+      border-bottom: 1px solid @panel-danger-border;
+      color: @panel-danger-text;
+    }
+
+    .left {
+      float: left;
+      .avatar.small {
+        margin: 0;
+        padding: 0;
+        padding-right: 10px;
+      }
+    }
+    .right {
+      float: right;
+
+      .btn {
+        margin-top: 12px;
+      }
+    }
+    h2, h3 {
+      margin: 0;
+
+      a {
+        color: inherit;
+        opacity: 0.85;
+      }
+    }
+    h2 {
+      margin-bottom: 7px;
+    }
+  }
 }
 
 

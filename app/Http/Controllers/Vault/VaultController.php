@@ -59,8 +59,7 @@ class VaultController extends Controller {
         $items = $item_query->paginate(24);
         return view('vault/list', [
             'items' => $items->appends(Request::except('page')),
-            'filtering' => strlen($search) > 0 || count($games) > 0 || count($cats) > 0 || count($types) > 0 || count($incs) > 0 || is_numeric($rating) || count($users) > 0 || $search_sort > 0,
-            'fluid' => true
+            'filtering' => strlen($search) > 0 || count($games) > 0 || count($cats) > 0 || count($types) > 0 || count($incs) > 0 || is_numeric($rating) || count($users) > 0 || $search_sort > 0
         ]);
 	}
 
