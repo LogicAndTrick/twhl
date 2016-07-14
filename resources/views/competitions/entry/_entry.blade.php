@@ -1,15 +1,16 @@
 {? $shot = $entry->screenshots->first(); ?}
 <div class="media" data-id="{{ $entry->id }}">
     <div class="media-left">
-        <a href="#" class="gallery-button img-thumbnail">
-            <img class="media-object" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
+        <a href="#" class="gallery-button img-thumbnail media-object">
+            <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
+            @foreach($entry->screenshots->slice(1, 3) as $sh)
+                <span class="preview" style="background-image: url('{{asset( $shot ? 'uploads/competition/'.$sh->image_thumb : 'images/no-screenshot-320.png' ) }}');">
+                </span>
+            @endforeach
+            @if ($entry->screenshots->count() > 4)
+                <span class="more">+{{ $entry->screenshots->count() - 4 }}</span>
+            @endif
         </a>
-        @if ($entry->screenshots->count() > 1)
-            <button class="btn btn-info btn-block gallery-button" type="button">
-                <span class="glyphicon glyphicon-picture"></span>
-                + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
-            </button>
-        @endif
     </div>
     <div class="media-body">
         <h3 class="media-heading">

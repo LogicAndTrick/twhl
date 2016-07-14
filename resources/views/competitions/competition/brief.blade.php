@@ -117,7 +117,6 @@
         <hr>
         <h3>Your Entry</h3>
         @include('competitions.entry._entry', [ 'comp' => $comp, 'entry' => $user_entry ])
-        @include('competitions._gallery_javascript')
     @endif
     @if ($comp->isOpen() && permission('CompetitionEnter'))
         <hr>
@@ -179,42 +178,36 @@
                             @elseif ($result->rank == 3)
                                 <h2>3rd Place - @avatar($entry->user text)</h2>
                             @endif
-                            <h3>{{ $entry->title }}</h3>
+                            <h3>{{ $entry->title ? $entry->title : 'Unnamed entry' }}</h3>
                         </div>
                         <div class="media-body">
                             <div class="visible-sm-block visible-xs-block text-center">
                                 <div style="display: inline-block;">
-                                    <a href="#" class="gallery-button img-thumbnail">
-                                        @if ($shot)
-                                            <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
-                                        @else
-                                            <img class="media-object" src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                                    <a href="#" class="gallery-button img-thumbnail media-object">
+                                        <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
+                                        @foreach($entry->screenshots->slice(1, 3) as $sh)
+                                            <span class="preview" style="background-image: url('{{asset( $shot ? 'uploads/competition/'.$sh->image_thumb : 'images/no-screenshot-320.png' ) }}');">
+                                            </span>
+                                        @endforeach
+                                        @if ($entry->screenshots->count() > 4)
+                                            <span class="more">+{{ $entry->screenshots->count() - 4 }}</span>
                                         @endif
                                     </a>
-                                    @if ($entry->screenshots->count() > 1)
-                                        <button class="btn btn-info btn-block gallery-button" type="button">
-                                            <span class="glyphicon glyphicon-picture"></span>
-                                            + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
-                                        </button>
-                                    @endif
                                 </div>
                             </div>
                             <div class="bbcode">{!! $result->content_html !!}</div>
                         </div>
                         <div class="media-right hidden-xs hidden-sm">
-                            <a href="#" class="gallery-button img-thumbnail">
-                                @if ($shot)
-                                    <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
-                                @else
-                                    <img class="media-object" src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                            <a href="#" class="gallery-button img-thumbnail media-object">
+                                <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
+                                @foreach($entry->screenshots->slice(1, 3) as $sh)
+                                    <span class="preview" style="background-image: url('{{asset( $shot ? 'uploads/competition/'.$sh->image_thumb : 'images/no-screenshot-320.png' ) }}');">
+                                    </span>
+                                @endforeach
+                                @if ($entry->screenshots->count() > 4)
+                                    <span class="more">+{{ $entry->screenshots->count() - 4 }}</span>
                                 @endif
                             </a>
-                            @if ($entry->screenshots->count() > 1)
-                                <button class="btn btn-info btn-block gallery-button" type="button">
-                                    <span class="glyphicon glyphicon-picture"></span>
-                                    + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
-                                </button>
-                            @endif
                         </div>
                     </li>
                 @endforeach
