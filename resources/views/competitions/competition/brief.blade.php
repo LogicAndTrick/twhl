@@ -161,7 +161,7 @@
                     {? $shot = $entry->screenshots->first(); ?}
                     {? $prev_rank = $result->rank; ?}
                     {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
-                    <li class="media media-panel" data-id="{{ $entry->id }}">
+                    <li class="media media-panel" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
                         <div class="ribbon {{ $result->rank > 0 ? 'info' : '' }}">
                             <div class="right">
                                 @if ($entry->file_location)

@@ -35,7 +35,7 @@
                 <ul class="media-list">
             @endif
             {? $prev_rank = $result->rank; ?}
-            <li class="media" data-id="{{ $entry->id }}">
+            <li class="media" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
                 <div class="media-body">
                     <h3>
                         {{ $entry->title }} &mdash; By @avatar($entry->user inline)

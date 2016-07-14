@@ -36,7 +36,7 @@
     @endif
     <div class="row">
         @foreach ($comp->entries->shuffle() as $entry)
-            <div data-id="{{ $entry->id }}" class="col-md-4 competition-vote-entry {{ $votes->contains($entry->id) ? 'voted' : '' }}">
+            <div data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}" class="col-md-4 competition-vote-entry {{ $votes->contains($entry->id) ? 'voted' : '' }}">
                 <div class="thumbnail">
                     <h3>{{ $entry->title }}</h3>
                     <h4>By @avatar($entry->user inline)</h4>

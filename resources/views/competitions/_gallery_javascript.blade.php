@@ -6,10 +6,11 @@
             var $t = $(this),
                 par = $t.closest('[data-id]'),
                 id = par.data('id'),
+                title = par.data('title'),
                 obj = ({id}),
                 gallery_query;
             var bb = bootbox.alert({
-                title: 'View Entry Screenshots',
+                title: title || 'View Entry Screenshots',
                 message: '<div class="text-center"><img src="{{ asset("images/loading.gif") }}" alt="Loading..." /> Loading...</div>',
                 size: 'large',
                 buttons: {

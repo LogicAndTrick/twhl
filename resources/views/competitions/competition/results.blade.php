@@ -40,7 +40,7 @@
             @endif
             {? $shot = $entry->screenshots->first(); ?}
             {? $prev_rank = $result->rank; ?}
-            <li class="media media-panel" data-id="{{ $entry->id }}">
+            <li class="media media-panel" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
                 <div class="media-heading">
                     {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
                     @if ($result->rank == 1)

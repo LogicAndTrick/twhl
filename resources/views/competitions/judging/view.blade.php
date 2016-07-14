@@ -21,7 +21,7 @@
     {? $rank_values = [0 => 'No Rank', 1 => '1st Place', 2 => '2nd Place', 3 => '3rd Place']; ?}
     <ul class="media-list">
         @foreach ($comp->getEntriesForJudging() as $entry)
-            <li class="media" data-id="{{ $entry->id }}">
+            <li class="media" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
                 <div class="media-left">
                     {? $shot = $entry->screenshots->first(); ?}
                     <a href="#" class="gallery-button img-thumbnail media-object">

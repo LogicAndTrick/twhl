@@ -1,5 +1,5 @@
 {? $shot = $entry->screenshots->first(); ?}
-<div class="media" data-id="{{ $entry->id }}">
+<div class="media" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
     <div class="media-left">
         <a href="#" class="gallery-button img-thumbnail media-object">
             <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
