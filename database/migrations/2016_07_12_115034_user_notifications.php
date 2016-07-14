@@ -40,7 +40,7 @@ class UserNotifications extends Migration
             LEFT JOIN wiki_objects WO ON UN.article_type = 'wo' AND UN.article_id = WO.id
               LEFT JOIN wiki_revisions WOWR ON WO.current_revision_id = WOWR.id
             LEFT JOIN wiki_revisions WR ON UN.article_type = 'wr' AND UN.article_id = WR.id
-            LEFT JOIN forum_threads ft ON UN.article_type = 'ft' AND UN.article_id = FT.id
+            LEFT JOIN forum_threads FT ON UN.article_type = 'ft' AND UN.article_id = FT.id
             LEFT JOIN vault_categories VC ON UN.article_type = 'vc' AND UN.article_id = VC.id
             LEFT JOIN vault_items VI ON UN.article_type = 'vi' AND UN.article_id = VI.id
             LEFT JOIN news NS ON UN.article_type = 'ns' AND UN.article_id = NS.id
