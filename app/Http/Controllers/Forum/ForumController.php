@@ -45,7 +45,6 @@ class ForumController extends Controller {
 
     public function getView($slug)
     {
-        // TODO Forums: thread listing - open/sticky icons, user avatars
         $page = intval(Input::get('page')) ?: 1;
         $forum = Forum::where('slug', '=', $slug)->firstOrFail();
         $thread_query = ForumThread::where('forum_id', '=', $forum->id)
