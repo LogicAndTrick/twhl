@@ -103,7 +103,7 @@ class ApiController extends Controller {
             ],
             'object' => ForumPost::class,
             'filter_columns' => ['content_text'],
-            'sort_column' => 'updated_at',
+            'sort_column' => 'created_at',
             'default_filters' => [],
             'additional_methods' => [
                 'format' => [
@@ -142,7 +142,7 @@ class ApiController extends Controller {
             ],
             'object' => ForumThread::class,
             'filter_columns' => ['title'],
-            'sort_column' => 'updated_at',
+            'sort_column' => ['is_sticky','updated_at'],
             'default_filters' => []
         ],
         'forums' => [
@@ -818,9 +818,10 @@ class ApiController extends Controller {
                 }
 
                 $sort = $desc['sort_column'];
+                if (!is_array($sort)) $sort = [$sort];
                 $s = Input::get('sort_by');
                 if ($s && isset($desc['allowed_sort_columns']) && array_search($s, $desc['allowed_sort_columns']) !== false) {
-                    $sort = [$s, $desc['sort_column']];
+                    $sort = array_merge($s, $sort);
                 }
 
                 $sort_desc = isset($desc['sort_descending']) ? $desc['sort_descending'] : false;
@@ -1116,11 +1117,14 @@ class ApiController extends Controller {
             'password' => 'required'
         ]);
 
-        $user = Auth::getProvider()->retrieveByCredentials([
+        $prov = Auth::getProvider();
+        $creds = [
             'name' => Request::input('username'),
             'password' => Request::input('password')
-        ]);
+        ];
+        $user = $prov->retrieveByCredentials($creds);
         if (!$user) throw new ModelNotFoundException();
+        if (!Auth::getProvider()->validateCredentials($user, $creds)) throw new ModelNotFoundException();
 
         // Stop API key spam and see if this app already has a key
 
