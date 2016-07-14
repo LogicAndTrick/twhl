@@ -122,7 +122,8 @@
 						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
                         {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
-						<li class="dropdown {{ $unread_count > 0 ? 'has-notification' : '' }}">
+                        {? $notify_count = Auth::user()->unreadNotificationCount(); ?}
+						<li class="dropdown {{ $unread_count + $notify_count > 0 ? 'has-notification' : '' }}">
 							<a href="{{ act('panel', 'index') }}" class="dropdown-toggle navbar-user-info" data-toggle="dropdown">
                                 <img src="{{ Auth::user()->getAvatarUrl('small') }}" alt="{{ Auth::user()->name }}"/>
                                 @if ($unread_count > 0)
@@ -132,6 +133,11 @@
                                 <span class="caret"></span>
                             </a>
 							<ul class="dropdown-menu" role="menu">
+                                <li class="{{ $notify_count > 0 ? 'has-notification' : '' }}">
+                                    <a href="{{ act('panel', 'notifications') }}">
+                                        <span class="glyphicon glyphicon-alert"></span> {{ $notify_count != 0 ? $notify_count : '' }} Notification{{ $notify_count == 1 ? '' : 's' }}
+                                    </a>
+                                </li>
                                 <li class="{{ $unread_count > 0 ? 'has-notification' : '' }}">
                                     <a href="{{ act('message', 'index') }}">
                                         <span class="glyphicon glyphicon-envelope"></span> {{ $unread_count != 0 ? $unread_count : '' }} Private Message{{ $unread_count == 1 ? '' : 's' }}

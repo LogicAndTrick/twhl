@@ -66,6 +66,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     }
 
+    public function unreadNotificationCount()
+    {
+        return UserNotification::whereUserId($this->id)->whereIsUnread(true)->count();
+    }
+
     public function deleteAvatar() {
         if ($this->avatar_custom) {
             if (is_file(public_path('uploads/avatars/full/'.$this->avatar_file)))

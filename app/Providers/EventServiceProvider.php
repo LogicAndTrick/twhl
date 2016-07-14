@@ -11,9 +11,11 @@ class EventServiceProvider extends ServiceProvider {
 	 * @var array
 	 */
 	protected $listen = [
-		'event.name' => [
-			'EventListener',
-		],
+	    'App\Events\WikiRevisionCreated' => [ 'App\Listeners\NotifyWikiWatchers', ],
+	    'App\Events\CommentCreated' => [ 'App\Listeners\NotifyCommentWatchers', ],
+	    'App\Events\ForumPostCreated' => [ 'App\Listeners\NotifyThreadWatchers', ],
+	    'App\Events\VaultItemCreated' => [ 'App\Listeners\NotifyVaultWatchers', ],
+	    'App\Events\MessageCreated' => [ 'App\Listeners\NotifyMessageThreadUsers', ],
 	];
 
 	/**

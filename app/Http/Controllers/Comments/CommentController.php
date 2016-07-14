@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers\Comments;
 
+use App\Events\CommentCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Comments\Comment;
 use App\Models\Comments\CommentMeta;
@@ -120,6 +121,9 @@ class CommentController extends Controller {
         if (method_exists($article, 'onCommentCreated')) {
             $article->onCommentCreated($comment);
         }
+
+        event(new CommentCreated($comment));
+
         return redirect($this->replaceUrlVars($config['redirect'], $comment) );
 	}
 

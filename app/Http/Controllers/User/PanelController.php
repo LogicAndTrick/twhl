@@ -6,6 +6,9 @@ use App\Models\Accounts\ApiKey;
 use App\Models\Accounts\Ban;
 use App\Models\Accounts\User;
 use App\Models\Accounts\UserNameHistory;
+use App\Models\Accounts\UserNotification;
+use App\Models\Accounts\UserNotificationDetails;
+use App\Models\Accounts\UserSubscription;
 use Carbon\Carbon;
 use Request;
 use Input;
@@ -235,6 +238,17 @@ class PanelController extends Controller {
         $user = PanelController::GetUser($key->user_id);
         $key->delete();
         return redirect('panel/edit-keys/'.$key->user_id);
+    }
+
+    public function getNotifications($id = 0) {
+        $user = PanelController::GetUser($id);
+        $notifications = UserNotificationDetails::whereUserId($user->id)->whereIsUnread(true)->get();
+        $subscriptions = UserSubscription::whereUserId($user->id)->get();
+        return view('user/panel/notifications', [
+            'user' => $user,
+            'notifications' => $notifications,
+            'subscriptions' => $subscriptions
+        ]);
     }
 
     public function getEditName($id = 0) {

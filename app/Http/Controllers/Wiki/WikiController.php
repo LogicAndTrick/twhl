@@ -95,6 +95,11 @@ class WikiController extends Controller {
         return redirect('wiki/page/'.$rev->slug);
     }
 
+    public function getViewRevision($id) {
+        $rev = WikiRevision::findOrFail($id);
+        return redirect('wiki/page/'.$rev->slug);
+    }
+
     public function getPage($page, $revision = 0) {
         $rev = null;
         if (!$revision) {
