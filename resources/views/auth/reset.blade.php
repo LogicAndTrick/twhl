@@ -6,7 +6,7 @@
         <h1>Reset password</h1>
     </hc>
     <div class="row">
-        <div class="col-md-4 col-md-push-4 col-sm-6 col-sm-push-3">
+        <div class="col-xl-4 push-xl-4 col-md-6 push-md-3">
             @form(password/reset)
                 @hidden(token $token)
                 @text(email) = Email

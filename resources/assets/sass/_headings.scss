@@ -1,0 +1,17 @@
+h1 {
+  color: $heading-foreground-color;
+  text-align: left;
+  font-size: 1.4rem;
+  padding: 5px 0;
+  margin: 5px;
+  border-bottom: 1px solid lighten($heading-foreground-color, 25%);
+
+  small {
+    font-size: 60%;
+  }
+
+  .btn {
+    border-radius: 4px;
+    float: right;
+  }
+}

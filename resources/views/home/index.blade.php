@@ -3,198 +3,162 @@
 
 @section('content')
 <div class="home-page">
+
     <div class="row">
-        <div class="col-sm-9">
-            <hc>
-                <h1>
-                    New in the Vault
-                    <small><a href="{{ act('vault', 'index') }}">See all</a></small>
-                </h1>
-            </hc>
-            <div class="row vault-items">
-
-                @if ($motm)
-                    <div class="col-xs-6 tagged">
-                        <a href="{{ act('vault', 'view', $motm->vault_item->id) }}" class="vault-item" style="background-image: url('{{ asset($motm->vault_item->getMediumAsset()) }}');">
-                            <span class="tag"><span class="glyphicon glyphicon-star"></span> Map of the Month</span>
-                            <span class="vault-item-details">
-                                @avatar($motm->vault_item->user small link=false)<hr />
-                                <span class="large-title">{{ $motm->vault_item->name }}</span>
-                            </span>
-                        </a>
-                    </div>
-                @endif
-
-                @foreach ($new_maps->take(1) as $item)
-                    <div class="col-xs-6 tagged">
-                        <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getMediumAsset()) }}');">
-                            <span class="tag right">Latest Map <span class="glyphicon glyphicon-certificate"></span></span>
-                            <span class="vault-item-details">
-                                @avatar($item->user small link=false)<hr />
-                                <span class="large-title">{{ $item->name }}</span>
-                            </span>
-                        </a>
-                    </div>
-                @endforeach
-
-                @foreach ($top_maps->slice(0, 2) as $item)
-                <div class="col-xs-3 tagged">
-                    <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
-                        <span class="tag small">Top Map</span>
-                        <span class="vault-item-details">
-                            @avatar($item->user inline link=false)<hr />
-                            {{ $item->name }}
-                        </span>
-                    </a>
-                </div>
-                @endforeach
-
-                @foreach ($new_maps->slice(1, 2) as $item)
-                <div class="col-xs-3 tagged">
-                    <a href="{{ act('vault', 'view', $item->id) }}" class="vault-item" style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');">
-                        <span class="tag right small">New Map</span>
-                        <span class="vault-item-details">
-                            @avatar($item->user inline link=false)<hr />
-                            {{ $item->name }}
-                        </span>
-                    </a>
-                </div>
-                @endforeach
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <hc class="text-right hidden-xs">
-                <h1>
-                    <small><a href="{{ act('wiki', 'index') }}">View <span class="hidden-sm">wiki</span></a></small>
-                    Wiki Edits
-                </h1>
-            </hc>
-            <hc class="visible-xs-block">
-                <h1>
-                    Wiki Edits
-                    <small><a href="{{ act('wiki', 'index') }}">View wiki</a></small>
-                </h1>
-            </hc>
-            <ul class="wiki-edits">
-                @foreach ($wiki_edits as $obj)
-                    <li>
-                        <a class="title" href="{{ act('wiki', 'page', $obj->current_revision->slug) }}">
-                            {{ $obj->current_revision->getNiceTitle($obj) }}
-                        </a>
-                        <span class="info">
-                            @date($obj->current_revision->created_at) by @avatar($obj->current_revision->user inline)
-                        </span>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-7 col-md-8">
-            <hc>
-                <h1>
-                    From the Forums
-                    <small><a href="{{ act('forum', 'index') }}">See all</a></small>
-                </h1>
-            </hc>
-            <ul class="media-list recent-threads">
-                @foreach ($threads as $thread)
-                    <li class="media media-panel">
-                        <div class="row">
-                            <div class="col-xs-8">
-                                <div class="media-body">
-                                    <div class="media-heading">
-                                        <h3><a href="{{ act('thread', 'view', $thread->id) }}?page=last">{{ $thread->title }}</a></h3> &bull;
-                                        @date($thread->last_post->updated_at) &bull;
-                                        @avatar($thread->last_post->user inline)
-                                    </div>
-                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($thread->last_post->content_text) !!}</div>
-                                </div>
-                            </div>
-                            <div class="col-xs-4">
-                                <strong>Other users in thread</strong>
-                                <ul class="other-users">
-                                    {? $users_in_thread = $thread_users->where('thread_id', $thread->id); ?}
-                                    @if ($users_in_thread->count() > 0)
-                                        @foreach ($users_in_thread as $user)
-                                            <li>
-                                                @avatar($user inline)
-                                            </li>
-                                        @endforeach
-                                    @else
-                                        <li>Nobody else!</li>
-                                    @endif
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-            <hc>
-                <h1>
-                    News
-                    <small><a href="{{ act('news', 'index') }}">See all</a></small>
-                </h1>
-            </hc>
-            <ul class="media-list">
+        <div class="col-8">
+            <h1>
+                <span class="fa fa-newspaper-o"></span>
+                Latest News
+                <a class="btn btn-outline-primary btn-xs" href="{{ act('news', 'index') }}">See all</a>
+            </h1>
+            <div class="news">
                 @foreach ($newses as $news)
-                    <li class="media media-panel" id="news-{{ $news->id }}">
-                        <div class="media-left">
-                            <div class="media-object">
-                                @avatar($news->user small show_border=true show_name=false)
+                    <div class="slot">
+                        <div class="slot-heading">
+                            <div class="slot-avatar">
+                                @avatar($news->user small show_name=false)
                             </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="media-heading">
-                                <h2><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></h2>
+                            <div class="slot-title">
+                                <a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a>
+                            </div>
+                            <div class="slot-subtitle">
                                 @avatar($news->user text) &bull;
                                 @date($news->created_at) &bull;
-                                <a href="{{ act('news', 'view', $news->id) }}" class="btn btn-xs btn-link link">
-                                    <span class="glyphicon glyphicon-comment"></span>
+                                <a href="{{ act('news', 'view', $news->id) }}">
+                                    <span class="fa fa-comment"></span>
                                     {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
                                 </a>
                             </div>
-                          <div class="bbcode">{!! $news->content_html !!}</div>
                         </div>
-                    </li>
+                        <div class="slot-main">
+                            <div class="bbcode">{!! $news->content_html !!}</div>
+                        </div>
+                    </div>
                 @endforeach
+            </div>
+        </div>
+        <div class="col-4">
+            <h1>Welcome back!</h1>
+            <ul>
+                <li>This is your <strong>too many</strong><sup>th</sup> login</li>
+                <li>You have no private messages</li>
+                <li>Join the competition: <strong>3 brush challenge!</strong></li>
+                <li>Say hello to <strong>Some douche</strong>, our newest member!</li>
             </ul>
         </div>
-        <div class="col-sm-5 col-md-4">
-            <hc class="text-right hidden-xs">
-                <h1>
-                    <small><a href="{{ act('journal', 'index') }}">See all</a></small>
-                    Member Journals
-                </h1>
-            </hc>
-            <hc class="visible-xs-block">
-                <h1>
-                    Member Journals
-                    <small><a href="{{ act('journal', 'index') }}">See all</a></small>
-                </h1>
-            </hc>
-            <ul class="media-list">
-                @foreach ($journals as $journal)
-                    <li class="media media-panel">
-                        <div class="media-body">
-                            <div class="media-heading">
-                                @avatar($journal->user inline) &bull;
-                                @date($journal->created_at) &bull;
-                                <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
-                                    <span class="glyphicon glyphicon-comment"></span>
-                                    {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
-                                </a>
+    </div>
+
+    <h1>
+        <span class="fa fa-database"></span>
+        New in the Vault
+        <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'index') }}">See all</a>
+    </h1>
+    <div class="horizontal-scroll">
+        @foreach ($new_maps as $item)
+            <a href="{{ act('vault', 'view', $item->id) }}" class="tile">
+                <span class="tile-main">
+                    <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
+                </span>
+                <span class="tile-title">{{ $item->name }}</span>
+                <span class="tile-subtitle">@avatar($item->user inline link=false)</span>
+            </a>
+        @endforeach
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-md-8">
+            <h1>
+                <span class="fa fa-comments"></span>
+                From the Forums
+                <a class="btn btn-outline-primary btn-xs" href="{{ act('forum', 'index') }}">See all</a>
+            </h1>
+            <div class="forum">
+                @foreach ($threads as $thread)
+                    <div class="slot">
+                        <div class="slot-heading">
+                            <div class="slot-avatar">
+                                @avatar($thread->last_post->user small show_name=false)
                             </div>
-                            <div class="bbcode">{!! app('bbcode')->ParseExcerpt($journal->content_text) !!}</div>
-                            <div class="text-right">
-                                <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
-                                    Read full journal <span class="glyphicon glyphicon-chevron-right"></span>
+                            <div class="slot-title">
+                                <a href="{{ act('thread', 'view', $thread->id) }}?page=last">{{ $thread->title }}</a>
+                            </div>
+                            <div class="slot-subtitle">
+                                @avatar($thread->last_post->user text) &bull;
+                                @date($thread->last_post->updated_at) &bull;
+                                <a href="{{ act('thread', 'view', $thread->id) }}?page=last">
+                                    <span class="fa fa-reply"></span>
+                                    {{ $thread->stat_posts-1 }} repl{{$news->stat_comments==1?'y':'ies'}}
                                 </a>
                             </div>
                         </div>
-                    </li>
+                        <div class="slot-main">
+                            <div class="bbcode">{!! app('bbcode')->ParseExcerpt($thread->last_post->content_text) !!}</div>
+                        </div>
+
+                    </div>
                 @endforeach
-            </ul>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <h1>
+                <span class="fa fa-quote-left"></span>
+                Member Journals
+                <a class="btn btn-outline-primary btn-xs" href="{{ act('journal', 'index') }}">See all</a>
+            </h1>
+            <div class="journals">
+                @foreach ($journals as $journal)
+                    <a href="{{ act('journal', 'view', $journal->id) }}" class="slip">
+                        <span class="slip-avatar">
+                            @avatar($journal->user small link=false show_name=false)
+                        </span>
+                        <span class="slip-content">
+                            <span class="slip-title">
+                                {{ $journal->title }}
+                            </span>
+                            <span class="slip-subtitle">
+                                @avatar($journal->user text link=false) &bull;
+                                @date($journal->created_at)
+                            </span>
+                        </span>
+                    </a>
+                @endforeach
+            </div>
+
+
+            <h1>
+                <span class="fa fa-edit"></span>
+                Wiki Edits
+                <a class="btn btn-outline-primary btn-xs" href="{{ act('wiki', 'index') }}">View wiki</a>
+            </h1>
+            <div class="wiki-edits">
+                @foreach ($wiki_edits as $obj)
+                    <a href="{{ act('wiki', 'page', $obj->current_revision->slug) }}" class="slip">
+                        <span class="slip-avatar">
+                            @avatar($obj->current_revision->user small link=false show_name=false)
+                        </span>
+                        <span class="slip-content">
+                            <span class="slip-title">
+                                {{ $obj->current_revision->getNiceTitle($obj) }}
+                            </span>
+                            <span class="slip-subtitle">
+                                @avatar($obj->current_revision->user text link=false) &bull;
+                                @date($obj->current_revision->updated_at)
+                            </span>
+                        </span>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-sm-5 col-md-4">
+
             <hc class="text-right hidden-xs">
                 <h1>
                     <small><a href="{{ act('poll', 'index') }}">See all</a></small>

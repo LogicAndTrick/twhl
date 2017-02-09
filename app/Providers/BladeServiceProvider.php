@@ -127,7 +127,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('text');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'placeholder' => ''], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
@@ -139,13 +139,15 @@ class BladeServiceProvider extends ServiceProvider {
                 $id = $this->generateHtmlId($name);
                 $var = array_get($parameters, '$', 'null');
                 $var = array_get($parameters, 'value', $var);
+                $placeholder = BladeServiceProvider::esc( $parameters['placeholder'] );
+                if (!$placeholder) $placeholder = $label;
 
                 $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name', '$format'); ?>";
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='text' class='form-control' id='$id' name='$mapped_name' value='$collect' />" .
+                "<input type='text' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='$placeholder' />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -154,7 +156,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('password');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'placeholder' => 'Password'], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
@@ -172,7 +174,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='password' class='form-control' id='$id' name='$mapped_name' value='$collect' />" .
+                "<input type='password' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='${parameters['placeholder']}' />" .
                 "$error_message</div>";
             }, $view);
         });

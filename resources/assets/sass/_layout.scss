@@ -1,0 +1,16 @@
+// Stuff that's everywhere
+
+body {
+    background: url(../images/body-background.png) #f4f4f4;
+}
+
+body > .container {
+  background: $content-background-color;
+  padding-bottom: 1rem;
+}
+
+body > footer {
+  padding: 40px 15px;
+  text-align: center;
+  font-size: .9em;
+}

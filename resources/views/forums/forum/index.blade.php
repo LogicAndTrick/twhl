@@ -11,7 +11,7 @@
             @endif
             <a class="btn btn-primary btn-xs" href="{{ act('forum', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new forum</a>
         @endif
-        <h1>Forum listing</h1>
+        <h1><span class="fa fa-comments"></span> Forum listing</h1>
     </hc>
     <ul class="media-list forum-listing">
         @foreach ($forums as $forum)

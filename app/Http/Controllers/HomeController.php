@@ -35,7 +35,7 @@ class HomeController extends Controller {
         $new_maps = VaultItem::with(['user', 'vault_screenshots'])
             ->whereIn('type_id', [1,4]) // Maps and mods
             ->orderBy('updated_at', 'desc')
-            ->limit(3)
+            ->limit(4)
             ->get();
 
         $excluded = $new_maps->map(function($m) { return $m->id; });
@@ -55,7 +55,7 @@ class HomeController extends Controller {
         // Wiki section
         $wiki_edits = WikiObject::with(['current_revision', 'current_revision.user'])
             ->orderBy('updated_at', 'desc')
-            ->limit(12)
+            ->limit(6)
             ->get();
 
         // Forums section
@@ -93,7 +93,7 @@ class HomeController extends Controller {
         // Journals section
         $journals = Journal::with(['user'])
             ->orderBy('created_at', 'desc')
-            ->take(5)
+            ->take(6)
             ->get();
 
         // News section

@@ -1,0 +1,9 @@
+
+// hidden-*-only classes
+@each $bp in map-keys($grid-breakpoints) {
+  .hidden-#{$bp}-only {
+    @include media-breakpoint-only($bp) {
+      display: none !important;
+    }
+  }
+}

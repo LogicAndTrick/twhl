@@ -50,3 +50,8 @@ Route::controllers([
 
 // Swagger convention suggests that the api definition should be available at /swagger.json
 Route::get('/swagger.json', 'Api\ApiController@getIndex');
+
+
+header('Access-Control-Allow-Origin:  *');
+header('Access-Control-Allow-Methods:  POST, GET, OPTIONS, PUT, DELETE');
+header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Origin, Authorization, X-XSRF-TOKEN');
