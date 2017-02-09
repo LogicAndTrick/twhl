@@ -39,7 +39,7 @@
                 <div class="media-body">
                     <h3>
                         {{ $entry->title }} &mdash; By @avatar($entry->user inline)
-                        <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
+                        <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
                     </h3>
                     @if ($result->rank == 1)
                         <h4>1st Place</h4>
@@ -59,16 +59,16 @@
                             <img class="media-object" src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
                         @endif
                         @if ($result->rank == 1)
-                            <span class="tag"><span class="glyphicon glyphicon-star"></span> 1st Place</span>
+                            <span class="tag"><span class="fa fa-star"></span> 1st Place</span>
                         @elseif ($result->rank == 2)
-                            <span class="tag"><span class="glyphicon glyphicon-star"></span> 2nd Place</span>
+                            <span class="tag"><span class="fa fa-star"></span> 2nd Place</span>
                         @elseif ($result->rank == 3)
-                            <span class="tag"><span class="glyphicon glyphicon-star"></span> 3rd Place</span>
+                            <span class="tag"><span class="fa fa-star"></span> 3rd Place</span>
                         @endif
                     </a>
                     @if ($entry->screenshots->count() > 1)
                         <button class="btn btn-info btn-block gallery-button" type="button">
-                            <span class="glyphicon glyphicon-picture"></span>
+                            <span class="fa fa-picture-o"></span>
                             + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
                         </button>
                     @endif

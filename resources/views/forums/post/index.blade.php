@@ -25,13 +25,13 @@
                             @avatar($post->user inline)
                             @if ($post->isEditable($post->thread))
                                 <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
-                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="fa fa-pencil"></span>
                                     <span class="hidden-xs">Edit</span>
                                 </a>
                             @endif
                             @if (permission('ForumAdmin'))
                                 <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="fa fa-remove"></span>
                                     <span class="hidden-xs">Delete</span>
                                 </a>
                             @endif
@@ -48,13 +48,13 @@
                         @avatar($post->user full show_border=false)
                         @if ($post->isEditable($post->thread))
                             <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
-                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="fa fa-pencil"></span>
                                 <span class="hidden-xs">Edit</span>
                             </a>
                         @endif
                         @if (permission('ForumAdmin'))
                             <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
-                                <span class="glyphicon glyphicon-remove"></span>
+                                <span class="fa fa-remove"></span>
                                 <span class="hidden-xs">Delete</span>
                             </a>
                         @endif

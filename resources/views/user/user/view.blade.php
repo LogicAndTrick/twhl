@@ -5,7 +5,7 @@
     <hc>
         @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
             <a href="{{ act('panel', 'index', $user->id) }}" class="btn btn-xs btn-info">
-                <span class="glyphicon glyphicon-cog"></span>
+                <span class="fa fa-cog"></span>
                 {{ (Auth::user() && Auth::user()->id == $user->id) ? 'My' : $user->name."'s" }} Control Panel
             </a>
         @endif
@@ -71,7 +71,7 @@
                             <div class="media-heading">
                                 @date($journal->created_at) &bull;
                                 <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
-                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <span class="fa fa-comment"></span>
                                     {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
                                 </a>
                             </div>

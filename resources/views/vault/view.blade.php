@@ -4,11 +4,11 @@
 @section('content')
     <hc>
         @if (permission('VaultAdmin'))
-            <a class="btn btn-xs btn-danger" href="{{ act('vault', 'delete', $item->id) }}"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+            <a class="btn btn-xs btn-danger" href="{{ act('vault', 'delete', $item->id) }}"><span class="fa fa-remove"></span> Delete</a>
         @endif
         @if ($item->isEditable())
-            <a class="btn btn-xs btn-info" href="{{ act('vault', 'edit-screenshots', $item->id) }}"><span class="glyphicon glyphicon-picture"></span> Edit Screenshots</a>
-            <a class="btn btn-xs btn-primary" href="{{ act('vault', 'edit', $item->id) }}"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+            <a class="btn btn-xs btn-info" href="{{ act('vault', 'edit-screenshots', $item->id) }}"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
+            <a class="btn btn-xs btn-primary" href="{{ act('vault', 'edit', $item->id) }}"><span class="fa fa-pencil"></span> Edit</a>
         @endif
         <h1>
             <img src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
@@ -87,19 +87,19 @@
             </dl>
             @if ($item->license_id == 1)
                 <button type="button" class="btn btn-default btn-block license-button" data-toggle="tooltip" data-placement="top" title="{{ $item->license->description }}">
-                    <span class="glyphicon glyphicon-copyright-mark"></span>
+                    <span class="fa fa-copyright"></span>
                     License: {{ $item->license->name }}
                 </button>
             @else
                 <a href="{{ preg_replace('%.*(http://[^ ]*).*%i', '$1', $item->license->description) }}" target="_blank" class="btn btn-default btn-block license-button" data-toggle="tooltip" data-placement="top" title="{{
                     preg_replace('%\s*(http://[^ ]*)\s*%i', '', $item->license->description)
                 }}">
-                    <span class="glyphicon glyphicon-copyright-mark"></span>
+                    <span class="fa fa-copyright"></span>
                     License: {{ $item->license->name }}
                 </a>
             @endif
             <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn btn-success btn-block" style="margin-top: 5px;">
-                <span class="glyphicon glyphicon-download-alt"></span>
+                <span class="fa fa-download"></span>
                 Download
                 @if ($item->file_size > 0)
                     ({{ format_filesize($item->file_size) }})
@@ -117,12 +117,12 @@
                     <br/>
                     @if ($user_review)
                         <a class="btn btn-primary" href="#comment-{{ $user_review->comment_id }}">
-                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="fa fa-star"></span>
                             Your review score: <strong class="rating-{{ $user_review->getStarRating() }}">{{ number_format(round($user_review->getRating() * 10) / 10, 1) }}</strong>
                         </a>
                     @elseif ($item->canReview())
                         <a class="btn btn-primary" href="{{ act('vault-review', 'create', $item->id) }}">
-                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="fa fa-star"></span>
                             Post a review
                         </a>
                     @endif
@@ -134,7 +134,7 @@
     @foreach ($item->motms as $motm)
         <div class="alert alert-success">
             <h3>
-                <span class="glyphicon glyphicon-certificate"></span>
+                <span class="fa fa-certificate"></span>
                 Map of the Month winner for {{ $motm->getDateString() }}!
             </h3>
         </div>

@@ -4,8 +4,8 @@
 @section('content')
     <hc>
         @if (permission('NewsAdmin'))
-            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
         @endif
         <h1>{{ $news->title }}</h1>
         <ol class="breadcrumb">

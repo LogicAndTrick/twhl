@@ -4,7 +4,7 @@
 @section('content')
     <hc>
         @if (permission('PollAdmin'))
-            <a class="btn btn-primary btn-xs" href="{{ act('poll', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new poll</a>
+            <a class="btn btn-primary btn-xs" href="{{ act('poll', 'create') }}"><span class="fa fa-plus"></span> Create new poll</a>
         @endif
         <h1>Polls</h1>
         {!! $polls->render() !!}
@@ -15,8 +15,8 @@
                 <div class="media-body">
                     <div class="media-heading">
                         @if (permission('PollAdmin'))
-                            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-                            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+                            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
                         @endif
                         <h2>
                             <a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a>
@@ -33,7 +33,7 @@
                     </div>
                     <div class="media-footer">
                         <a href="{{ act('poll', 'view', $poll->id) }}" class="btn btn-xs btn-link link">
-                            <span class="glyphicon glyphicon-comment"></span>
+                            <span class="fa fa-comment"></span>
                             {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
                         </a>
                     </div>

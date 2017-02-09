@@ -5,10 +5,10 @@
     <hc>
         @if (permission('ForumAdmin'))
             @if ($thread->deleted_at)
-                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-repeat"></span></a>
+                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-info"><span class="fa fa-repeat"></span></a>
             @else
-                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
-                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-danger"><span class="fa fa-remove"></span></a>
+                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-primary"><span class="fa fa-pencil"></span></a>
             @endif
         @endif
 
@@ -35,13 +35,13 @@
                             @avatar($post->user inline)
                             @if ($post->isEditable($thread))
                                 <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
-                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    <span class="fa fa-pencil"></span>
                                     <span class="hidden-xs">Edit</span>
                                 </a>
                             @endif
                             @if (permission('ForumAdmin'))
                                 <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
-                                    <span class="glyphicon glyphicon-remove"></span>
+                                    <span class="fa fa-remove"></span>
                                     <span class="hidden-xs">Delete</span>
                                 </a>
                             @endif
@@ -56,13 +56,13 @@
                         @avatar($post->user full)
                         @if ($post->isEditable($thread))
                             <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
-                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="fa fa-pencil"></span>
                                 <span class="hidden-xs">Edit</span>
                             </a>
                         @endif
                         @if (permission('ForumAdmin'))
                             <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
-                                <span class="glyphicon glyphicon-remove"></span>
+                                <span class="fa fa-remove"></span>
                                 <span class="hidden-xs">Delete</span>
                             </a>
                         @endif

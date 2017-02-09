@@ -22,10 +22,10 @@
                 @else
                     <div class="media-heading">
                         @if($comment->isDeletable())
-                            <a href="{{ act('comment', 'delete', $comment->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs">Delete</span></a>
+                            <a href="{{ act('comment', 'delete', $comment->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> <span class="hidden-xs">Delete</span></a>
                         @endif
                         @if($comment->isEditable($comments))
-                            <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-xs">Edit</span></a>
+                            <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
                         @endif
                         @if ($comment->user)
                             <span class="visible-xs-inline">@avatar($comment->user inline)</span><span class="hidden-xs">@avatar($comment->user text)</span> &bull;

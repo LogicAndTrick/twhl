@@ -4,9 +4,9 @@
 @section('content')
     <hc>
         @if (permission('CompetitionAdmin'))
-            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-list-alt"></span> Edit Rules</a>
-            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-info btn-xs"><span class="fa fa-list"></span> Edit Rules</a>
+            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
         @endif
         <h1>Competition results: {{ $comp->name }}</h1>
         <ol class="breadcrumb">
@@ -54,7 +54,7 @@
                     <h5>
                         By @avatar($entry->user inline)
                         @if ($entry->file_location)
-                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
+                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
                         @endif
                     </h5>
                 </div>
@@ -70,7 +70,7 @@
                             </a>
                             @if ($entry->screenshots->count() > 1)
                                 <button class="btn btn-info btn-block gallery-button" type="button">
-                                    <span class="glyphicon glyphicon-picture"></span>
+                                    <span class="fa fa-picture-o"></span>
                                     + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
                                 </button>
                             @endif
@@ -88,7 +88,7 @@
                     </a>
                     @if ($entry->screenshots->count() > 1)
                         <button class="btn btn-info btn-block gallery-button" type="button">
-                            <span class="glyphicon glyphicon-picture"></span>
+                            <span class="fa fa-picture-o"></span>
                             + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
                         </button>
                     @endif

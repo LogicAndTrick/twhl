@@ -4,7 +4,7 @@
 @section('content')
     <hc>
         @if (permission('NewsAdmin'))
-            <a class="btn btn-primary btn-xs" href="{{ act('news', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new news post</a>
+            <a class="btn btn-primary btn-xs" href="{{ act('news', 'create') }}"><span class="fa fa-plus"></span> Create new news post</a>
         @endif
         <h1>News posts</h1>
         {!! $newses->render() !!}
@@ -20,8 +20,8 @@
               <div class="media-body">
                 <div class="media-heading">
                     @if (permission('NewsAdmin'))
-                        <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-                        <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                        <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+                        <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
                     @endif
                     <h2><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></h2>
                     <span class="visible-xs-inline">@avatar($news->user inline)</span><span class="hidden-xs">@avatar($news->user text)</span> &bull;
@@ -30,7 +30,7 @@
                 <div class="bbcode">{!! $news->content_html !!}</div>
                 <div class="media-footer">
                     <a href="{{ act('news', 'view', $news->id) }}" class="btn btn-xs btn-link link">
-                        <span class="glyphicon glyphicon-comment"></span>
+                        <span class="fa fa-comment"></span>
                         {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
                     </a>
                 </div>

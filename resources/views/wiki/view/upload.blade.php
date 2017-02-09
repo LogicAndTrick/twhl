@@ -2,9 +2,9 @@
 
     <span class="pull-right">
         @if (!$revision->wiki_object->canEdit())
-            <span class="glyphicon glyphicon-lock" title="You do not have access to edit this page."></span>
+            <span class="fa fa-lock" title="You do not have access to edit this page."></span>
         @elseif ($revision->wiki_object->isProtected())
-            <span class="glyphicon glyphicon-lock faded" title="This page is protected."></span>
+            <span class="fa fa-lock faded" title="This page is protected."></span>
         @endif
         Last edited @date($revision->created_at) by @avatar($revision->user inline)
     </span>
@@ -38,7 +38,7 @@
 
 <div class="text-center">
     <a class="btn btn-success btn-lg" href="{{ $upload->getEmbeddableFileName() }}">
-        <span class="glyphicon glyphicon-download-alt"></span> Download
+        <span class="fa fa-download"></span> Download
     </a>
 </div>
 

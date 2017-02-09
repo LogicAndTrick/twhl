@@ -4,8 +4,8 @@
 @section('content')
     <hc>
         @if (permission('CompetitionAdmin'))
-            <a class="btn btn-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="glyphicon glyphicon-pencil"></span> Modify Competition Restrictions</a>
-            <a class="btn btn-primary btn-xs" href="{{ act('competition-admin', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new Competition</a>
+            <a class="btn btn-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="fa fa-pencil"></span> Modify Competition Restrictions</a>
+            <a class="btn btn-primary btn-xs" href="{{ act('competition-admin', 'create') }}"><span class="fa fa-plus"></span> Create new Competition</a>
         @endif
         <h1>Competitions</h1>
     </hc>
@@ -27,7 +27,7 @@
                             @if ($comp->isVotingOpen())
                                 <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
                             @elseif ($comp->isJudging() && $comp->canJudge())
-                                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse"><span class="glyphicon glyphicon-eye-open"></span> Go to Judging Panel</a>
+                                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse"><span class="fa fa-eye"></span> Go to Judging Panel</a>
                             @elseif ($comp->isClosed())
                                 <div class="competition-winners">
                                     <h5>Winners</h5>

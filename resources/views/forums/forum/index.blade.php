@@ -5,11 +5,11 @@
     <hc>
         @if (permission('ForumAdmin'))
             @if ($show_deleted)
-                <a class="btn btn-info btn-xs" href="{{ act('forum', 'index') }}"><span class="glyphicon glyphicon-eye-close"></span> Hide deleted forums</a>
+                <a class="btn btn-info btn-xs" href="{{ act('forum', 'index') }}"><span class="fa fa-eye-slash"></span> Hide deleted forums</a>
             @else
-                <a class="btn btn-warning btn-xs" href="{{ act('forum', 'index') }}?deleted"><span class="glyphicon glyphicon-eye-open"></span> Show deleted forums</a>
+                <a class="btn btn-warning btn-xs" href="{{ act('forum', 'index') }}?deleted"><span class="fa fa-eye"></span> Show deleted forums</a>
             @endif
-            <a class="btn btn-primary btn-xs" href="{{ act('forum', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Create new forum</a>
+            <a class="btn btn-primary btn-xs" href="{{ act('forum', 'create') }}"><span class="fa fa-plus"></span> Create new forum</a>
         @endif
         <h1><span class="fa fa-comments"></span> Forum listing</h1>
     </hc>
@@ -20,10 +20,10 @@
                     <div class="media-heading">
                         @if (permission('ForumAdmin'))
                             @if ($forum->deleted_at)
-                                <a href="{{ act('forum', 'restore', $forum->id) }}" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-repeat"></span></a>
+                                <a href="{{ act('forum', 'restore', $forum->id) }}" class="btn btn-xs btn-info"><span class="fa fa-repeat"></span></a>
                             @else
-                                <a href="{{ act('forum', 'delete', $forum->id) }}" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-remove"></span></a>
-                                <a href="{{ act('forum', 'edit', $forum->id) }}" class="btn btn-xs btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+                                <a href="{{ act('forum', 'delete', $forum->id) }}" class="btn btn-xs btn-danger"><span class="fa fa-remove"></span></a>
+                                <a href="{{ act('forum', 'edit', $forum->id) }}" class="btn btn-xs btn-primary"><span class="fa fa-pencil"></span></a>
                             @endif
                         @endif
                         <h2>

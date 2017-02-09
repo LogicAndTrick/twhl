@@ -4,11 +4,11 @@
 @section('content')
     <hc>
         @if (permission('CompetitionAdmin'))
-            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-list-alt"></span> Edit Rules</a>
-            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-info btn-xs"><span class="fa fa-list"></span> Edit Rules</a>
+            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
             @if ($comp->canJudge())
-                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Manage Entries</a>
+                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-xs"><span class="fa fa-eye"></span> Manage Entries</a>
             @endif
         @endif
         <h1>Competition: {{ $comp->name }}</h1>
@@ -32,7 +32,7 @@
         <p class="text-center">
             <button id="collapse-button" class="btn btn-default" type="button" data-toggle="collapse" data-target="#brief-container">
                 Show competition brief
-                <span class="glyphicon glyphicon-chevron-down"></span>
+                <span class="fa fa-chevron-down"></span>
             </button>
         </p>
     @endif
@@ -49,11 +49,11 @@
                     @elseif ($comp->isVotingOpen())
                         <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success btn-lg">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
                     @elseif ($comp->isJudging() && $comp->canJudge())
-                        <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-lg"><span class="glyphicon glyphicon-eye-open"></span> Go to Judging Panel</a>
+                        <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-lg"><span class="fa fa-eye"></span> Go to Judging Panel</a>
                         <hr/>
-                        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Preview Results</a>
+                        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
                     @elseif ($comp->isClosed())
-                        <a href="#results" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-eye-open"></span> View Results</a>
+                        <a href="#results" class="btn btn-success btn-lg"><span class="fa fa-eye"></span> View Results</a>
                     @endif
                 </div>
 
@@ -88,7 +88,7 @@
                     <div class="well well-sm">
                         Attached file:
                         <a href="{{ asset('uploads/competition/attachments/'.$comp->brief_attachment) }}" class="btn btn-success btn-xs">
-                            <span class="glyphicon glyphicon-download-alt"></span>
+                            <span class="fa fa-download"></span>
                             Click to download
                         </a>
                     </div>
@@ -165,7 +165,7 @@
                         <div class="ribbon {{ $result->rank > 0 ? 'info' : '' }}">
                             <div class="right">
                                 @if ($entry->file_location)
-                                    <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
+                                    <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
                                 @endif
                             </div>
                             <div class="left">

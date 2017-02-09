@@ -11,8 +11,8 @@
                 </span>
             @endif
             @if($obj->isEditable())
-                <a href="{{ act('vault-review', 'delete', $obj->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> <span class="hidden-xs">Delete</span></a>
-                <a href="{{ act('vault-review', 'edit', $obj->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-pencil"></span> <span class="hidden-xs">Edit</span></a>
+                <a href="{{ act('vault-review', 'delete', $obj->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> <span class="hidden-xs">Delete</span></a>
+                <a href="{{ act('vault-review', 'edit', $obj->id) }}" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
             @endif
         </h3>
     </div>

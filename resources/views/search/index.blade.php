@@ -7,7 +7,7 @@
     </hc>
     <form action="{{ url('search/index') }}" method="get">
         <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+            <div class="input-group-addon"><span class="fa fa-search"></span></div>
             <input type="text" class="form-control" name="search" placeholder="Search" value="{{ $search }}">
             <div class="input-group-btn">
                 <button type="submit" class="btn btn-default">Search</button>

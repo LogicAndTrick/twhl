@@ -18,7 +18,7 @@
 
     <div class="screenshots-dnd-explanation">
         Drag and drop to re-order the screenshots
-        <span class="glyphicon glyphicon-arrow-down"></span>
+        <span class="fa fa-arrow-down"></span>
     </div>
 
     <ul class="media-list screenshot-list">
@@ -45,12 +45,12 @@
             </div>
             <div class="media-body">
                 <div class="drag-handle">
-                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    <span class="fa fa-bars"></span>
                 </div>
                 <p>
                     <a href="{{ asset('uploads/vault/{image_full}') }}" target="_blank">See full image</a>
                 </p>
-                <button type="button" class="delete-button btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+                <button type="button" class="delete-button btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</button>
             </div>
         </li>
     </script>

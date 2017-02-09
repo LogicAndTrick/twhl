@@ -17,8 +17,8 @@
             {{ $entry->title }} &mdash; By @avatar($entry->user inline)</small>
             @if (!isset($deleting) || !$deleting)
                 @if (permission('CompetitionAdmin') || ( permission('CompetitionEnter') && Auth::user()->id == $entry->user_id && $comp->canEnter() ))
-                    <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete Entry</a>
-                    <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-picture"></span> Edit Screenshots</a>
+                    <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete Entry</a>
+                    <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
                 @endif
             @endif
         </h3>
@@ -27,7 +27,7 @@
         </div>
         @if ($entry->getLinkUrl())
         <p>
-            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
+            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-sm btn-success"><span class="fa fa-download"></span> Download</a>
         </p>
         @endif
     </div>

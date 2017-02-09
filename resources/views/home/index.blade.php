@@ -186,7 +186,7 @@
                                 </h2>
                                 @date($poll->created_at) &bull;
                                 <a href="{{ act('poll', 'view', $poll->id) }}" class="btn btn-xs btn-link link">
-                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <span class="fa fa-comment"></span>
                                     {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
                                 </a>
                             </div>

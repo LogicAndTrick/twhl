@@ -17,22 +17,22 @@
     var window_template =
             '<div class="shoutbox">' +
                 '<h1>' +
-                    'Shoutbox <span class="refresh-icon glyphicon glyphicon-refresh"></span>' +
-                    '<a href="#" class="pin-button"><span class="glyphicon glyphicon-pushpin"></span></a>' +
-                    '<a href="#" class="close-button"><span class="glyphicon glyphicon-remove"></span></a>' +
-                    '<a href="#" class="minimise-button"><span class="glyphicon glyphicon-triangle-top"></span></a>' +
+                    'Shoutbox <span class="refresh-icon fa fa-refresh"></span>' +
+                    '<a href="#" class="pin-button"><span class="fa fa-thumb-tack"></span></a>' +
+                    '<a href="#" class="close-button"><span class="fa fa-remove"></span></a>' +
+                    '<a href="#" class="minimise-button"><span class="fa fa-caret-up"></span></a>' +
                 '</h1>' +
                 '<ul class="shouts">' +
                     '<li class="shout inactive">Loading...</li>' +
                 '</ul>' +
-                '<div class="error"><span class="glyphicon glyphicon-remove"></span><span class="message"></span></div>' +
+                '<div class="error"><span class="fa fa-remove"></span><span class="message"></span></div>' +
                 '<form method="get">' +
                     '<div class="input-group">' +
                         '<input type="text" maxlength="250" class="form-control input-sm" placeholder="Type here">' +
                         '<span class="input-group-btn">' +
                             '<button class="btn btn-info btn-sm edit-button" type="submit">Edit</button>' +
                             '<button class="btn btn-danger btn-sm delete-button" type="submit">Delete</button>' +
-                            '<button class="btn btn-default btn-sm cancel-button" type="button"><span class="glyphicon glyphicon-remove"></span></button>' +
+                            '<button class="btn btn-default btn-sm cancel-button" type="button"><span class="fa fa-remove"></span></button>' +
                             '<button class="btn btn-primary btn-sm shout-button" type="submit">Shout!</button>' +
                         '</span>' +
                     '</div>' +
@@ -326,7 +326,7 @@
                 event.preventDefault();
                 self.post();
             });
-            this.container.find('.error .glyphicon').on('click', function(event) {
+            this.container.find('.error .fa').on('click', function(event) {
                 self.container.find('.error').removeClass('show');
             });
             this.container.on('click', '.shout .edit', function(event) {

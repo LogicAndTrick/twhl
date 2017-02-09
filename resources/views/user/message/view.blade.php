@@ -3,7 +3,7 @@
 
 @section('content')
     <hc>
-        <a href="{{ act('message', 'delete', $thread->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+        <a href="{{ act('message', 'delete', $thread->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
         <h1>Message thread: {{ $thread->subject }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('panel', 'index') }}">Control Panel</a></li>

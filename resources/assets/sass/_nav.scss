@@ -32,6 +32,11 @@ body > nav {
     }
   }
 
+  .dropdown-item .fa {
+      width: 24px;
+      text-align: center;
+  }
+
   &.bg-inverse .dropdown-menu {
     background: $inverse-bg;
     color: $navbar-inverse-color;

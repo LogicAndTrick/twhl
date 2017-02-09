@@ -19,8 +19,8 @@
     height: 450px;
     transition: all 0.3s ease;
 
-    h1 a .glyphicon-triangle-top::before {
-      content: "\e252";
+    h1 a .fa-caret-up::before {
+      content: "\f0d7";
     }
   }
 
@@ -42,8 +42,8 @@
         background-color: rgb(203, 93, 0);
       }
 
-      .glyphicon-triangle-top {
-        transform: scale(0.7);
+      .fa-caret-up {
+        //transform: scale(0.7);
       }
     }
   }
@@ -134,7 +134,7 @@
     display: none;
     padding: 3px 5px;
 
-    .glyphicon {
+    .fa {
       float: right;
       cursor: pointer;
     }
@@ -200,7 +200,7 @@
 
   &.pinned {
     .pin-button {
-      .glyphicon { transform: rotate(-45deg) scale(0.8); }
+      .fa { transform: rotate(45deg) scale(0.8); }
       color: black;
     }
   }

@@ -4,8 +4,8 @@
 @section('content')
     <hc>
         @if (permission('PollAdmin'))
-            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
         @endif
         <h1>{{ $poll->title }}</h1>
         <ol class="breadcrumb">

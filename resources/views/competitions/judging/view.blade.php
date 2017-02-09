@@ -4,10 +4,10 @@
 @section('content')
     <hc>
         @if (permission('CompetitionAdmin') && $comp->isJudging())
-            <a href="{{ act('competition-judging', 'publish', $comp->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-arrow-right"></span> Publish Results</a>
+            <a href="{{ act('competition-judging', 'publish', $comp->id) }}" class="btn btn-info btn-xs"><span class="fa fa-arrow-right"></span> Publish Results</a>
         @endif
-        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-eye-open"></span> Preview Results</a>
-        <a href="{{ act('competition-judging', 'create-entry', $comp->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Add Entry</a>
+        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
+        <a href="{{ act('competition-judging', 'create-entry', $comp->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-plus"></span> Add Entry</a>
         <h1>Competition judging: {{ $comp->name }}</h1>
         <ol class="breadcrumb">
             <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
@@ -44,11 +44,11 @@
                     <h3>
                         {{ $entry->title }} &mdash; By @avatar($entry->user inline)
                         @if (permission('CompetitionAdmin'))
-                            <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete Entry</a>
+                            <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete Entry</a>
                         @endif
-                        <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-picture"></span> Edit Screenshots</a>
-                        <a href="{{ act('competition-judging', 'edit-entry', $entry->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
-                        <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-download-alt"></span> Download</a>
+                        <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
+                        <a href="{{ act('competition-judging', 'edit-entry', $entry->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+                        <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
                     </h3>
                     <div class="panel panel-default">
                         <div class="panel-body">

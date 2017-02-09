@@ -4,7 +4,7 @@
 @section('content')
     <hc>
         @if (permission('JournalCreate'))
-            <a href="{{ act('journal', 'create') }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Create new journal</a>
+            <a href="{{ act('journal', 'create') }}" class="btn btn-primary btn-xs"><span class="fa fa-plus"></span> Create new journal</a>
         @endif
         <h1>Journals</h1>
         @if ($user)
@@ -26,8 +26,8 @@
               <div class="media-body">
                 <div class="media-heading">
                     @if ($journal->isEditable())
-                        <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</a>
-                        <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                        <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+                        <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
                     @endif
                     <h2><a href="{{ act('journal', 'view', $journal->id) }}">{{ $journal->getTitle() }}</a></h2>
                     <span class="visible-xs-inline">@avatar($journal->user inline)</span><span class="hidden-xs">@avatar($journal->user text)</span> &bull;
@@ -36,7 +36,7 @@
                 <div class="bbcode">{!! $journal->content_html !!}</div>
                 <div class="media-footer">
                     <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
-                        <span class="glyphicon glyphicon-comment"></span>
+                        <span class="fa fa-comment"></span>
                         {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
                     </a>
                 </div>

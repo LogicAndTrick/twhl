@@ -3,7 +3,7 @@
 
 @section('content')
     <hc>
-        <a class="btn btn-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="glyphicon glyphicon-plus"></span> Upload to the Vault</a>
+        <a class="btn btn-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
         <h1>Vault items</h1>
         <ol class="breadcrumb">
             @if ($filtering)
@@ -25,35 +25,35 @@
         <input type="hidden" data-filter="filter-rating" name="rate" value="{{ Request::get('rate') }}"/>
         <input type="hidden" data-filter="filter-sort" name="sort" value="{{ Request::get('sort') }}"/>
         <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <span class="input-group-addon"><span class="fa fa-search"></span></span>
             <input name="search" type="text" value="{{ Request::get('search') }}" placeholder="Type here to search" class="form-control">
             <div class="input-group-btn vault-filter-container">
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="glyphicon glyphicon-refresh"></span> Games</span> <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu vault-filter filter-games">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="glyphicon glyphicon-refresh"></span> Categories</span> <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu vault-filter filter-categories">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="glyphicon glyphicon-refresh"></span> Types</span> <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu vault-filter filter-types">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="glyphicon glyphicon-refresh"></span> Users</span> <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu vault-filter remove-item filter-users">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="glyphicon glyphicon-refresh"></span> Includes</span> <span class="caret"></span></button>
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span> <span class="caret"></span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-includes">
                         <li class="loading">Loading...</li>
                     </ul>
@@ -145,7 +145,7 @@
                 var html = template(templ, data);
                 el.append(html);
             }
-            el.append('<li class="clear-filter static-control filter-action"><span class="glyphicon glyphicon-remove"></span> Clear Filter</li>');
+            el.append('<li class="clear-filter static-control filter-action"><span class="fa fa-remove"></span> Clear Filter</li>');
             if (append) el.append(append);
             var selected = ($('[data-filter=' + cls + ']').val() || '').split('-');
             for (var j = 0; j < selected.length; j++) {
@@ -193,7 +193,7 @@
                     clearTimeout(timeout);
                     $.get('{{ url("api/users") }}', { filter: $t.val() }, function(data) {
                         $t.siblings('.search-results').empty().append(data.map(function(u) {
-                            return template('<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="glyphicon glyphicon-remove filter-action"></span></li>', u);
+                            return template('<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>', u);
                         }));
                     });
                 }, 500);
@@ -238,7 +238,7 @@
                 $.get('{{ url("api/users") }}', { id: users, count: 100 }, function(data) {
                     populate_filter(
                         'filter-users', data,
-                        '<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="glyphicon glyphicon-remove filter-action"></span></li>',
+                        '<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>',
                         null,
                         user_search_template
                     );
