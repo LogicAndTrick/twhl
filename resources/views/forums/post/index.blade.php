@@ -16,53 +16,60 @@
         {!! $posts->render() !!}
     </hc>
 
-    <ul class="media-list post-listing">
+    <div class="post-listing">
         @foreach ($posts as $post)
-            <li class="media media-panel post" id="post-{{ $post->id }}">
-                <div class="media-body">
-                    <div class="media-heading">
-                        <h3 class="visible-xs-block">
-                            @avatar($post->user inline)
+            <div class="slot post" id="post-{{ $post->id }}">
+                <div class="slot-heading">
+                    <div class="slot-avatar hidden-md-up">
+                        @avatar($post->user small show_name=false)
+                    </div>
+                    <div class="slot-title hidden-md-up">
+                        @avatar($post->user text)
+                        <div class="pull-right">
                             @if ($post->isEditable($post->thread))
-                                <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
+                                <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
                                     <span class="fa fa-pencil"></span>
-                                    <span class="hidden-xs">Edit</span>
+                                    <span class="hidden-xs-down">Edit</span>
                                 </a>
                             @endif
                             @if (permission('ForumAdmin'))
-                                <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
+                                <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
                                     <span class="fa fa-remove"></span>
-                                    <span class="hidden-xs">Delete</span>
+                                    <span class="hidden-xs-down">Delete</span>
                                 </a>
                             @endif
-                        </h3>
-                        <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
-                        Posted @date($post->created_at)
-                        <br class="visible-xs-block"/>
-                        in <a href="{{ act('thread', 'view', $post->thread_id) }}">{{ $post->thread->title }}</a>
+                        </div>
                     </div>
-                    <div class="bbcode post-content">{!! $post->content_html !!}</div>
+                    <div class="slot-subtitle">
+                        Posted @date($post->created_at)
+                        <br class="hidden-md-up" />
+                        in <a href="{{ act('thread', 'view', $post->thread_id) }}">{{ $post->thread->title }}</a>
+                        <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
+                    </div>
                 </div>
-                <div class="media-right">
-                    <div class="media-object post-info">
-                        @avatar($post->user full show_border=false)
+                <div class="slot-row">
+                    <div class="slot-main">
+                        <div class="bbcode post-content">{!! $post->content_html !!}</div>
+                    </div>
+                    <div class="slot-right hidden-sm-down">
+                        @avatar($post->user full)
                         @if ($post->isEditable($post->thread))
-                            <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
+                            <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
                                 <span class="fa fa-pencil"></span>
-                                <span class="hidden-xs">Edit</span>
+                                Edit
                             </a>
                         @endif
                         @if (permission('ForumAdmin'))
-                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
+                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
                                 <span class="fa fa-remove"></span>
-                                <span class="hidden-xs">Delete</span>
+                                Delete
                             </a>
                         @endif
                     </div>
                 </div>
-            </li>
+            </div>
         @endforeach
-    </ul>
+    </div>
     <div class="footer-container">
         {!! $posts->render() !!}
     </div>

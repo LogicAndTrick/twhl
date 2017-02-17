@@ -13,7 +13,7 @@
     @form(competition-entry/delete)
         @hidden(id $entry)
         <p>Are you sure you want to delete this competition entry?</p>
-        <div class="well">
+        <div class="card card-block">
             @include('competitions.entry._entry', [ 'comp' => $comp, 'entry' => $entry, 'deleting' => true ])
             @include('competitions._gallery_javascript')
         </div>

@@ -14,8 +14,10 @@
     @form(post/delete)
         @hidden(id $post)
         <p>Are you sure you want to delete this post?</p>
-        <div class="well">
-            <div class="bbcode">{!! $post->content_html !!}</div>
+        <div class="form-group">
+            <div class="card card-block">
+                <div class="bbcode">{!! $post->content_html !!}</div>
+            </div>
         </div>
         @submit = Delete Post
     @endform

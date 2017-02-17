@@ -14,7 +14,7 @@
     @form(post/restore)
         @hidden(id $post)
         <p>Restoring this post will make it visible again. Are you sure?</p>
-        <div class="well">
+        <div class="card card-block">
             <div class="bbcode">{!! $post->content_html !!}</div>
         </div>
         @submit = Restore Post

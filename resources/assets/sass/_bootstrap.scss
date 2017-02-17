@@ -6,6 +6,8 @@
 
 // Overrides
 
+$font-size-base: 0.9rem;
+
 // No rounded corners
 $enable-rounded: false;
 
@@ -15,6 +17,8 @@ $navbar-padding-y: ($spacer / 8);
 // Inverse navbar lighter text
 $navbar-inverse-color: rgba($white, .75);
 
+$table-cell-padding: 0.5rem;
+$breadcrumb-bg: transparent;
 
 
 // Bootstrap scss
@@ -27,6 +31,10 @@ $btn-border-radius-xs: .15rem;
 
 .btn-xs {
   @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $btn-border-radius-xs);
+}
+
+.btn {
+  border-radius: 4px;
 }
 
 // Another option: pick and choose

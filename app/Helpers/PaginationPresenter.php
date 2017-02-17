@@ -2,9 +2,9 @@
 
 namespace App\Helpers;
  
-use Illuminate\Pagination\BootstrapThreePresenter;
+use Illuminate\Pagination\BootstrapFourPresenter;
 
-class PaginationPresenter extends BootstrapThreePresenter {
+class PaginationPresenter extends BootstrapFourPresenter {
 
     public function hasPages()
     {

@@ -71,7 +71,7 @@
                         Formatted preview
                         <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
                     </h4>
-                    <div id="preview-panel" class="well bbcode"></div>
+                    <div id="preview-panel" class="card card-block bbcode"></div>
                 </div>
             </div>
         </div>

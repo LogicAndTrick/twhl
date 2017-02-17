@@ -2,24 +2,29 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        {{ $poll->title }}
         @if (permission('PollAdmin'))
-            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
         @endif
-        <h1>{{ $poll->title }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('poll', 'index') }}">Polls</a></li>
-            <li class="active">View Poll</li>
-        </ol>
-    </hc>
-    <div>
-        <div class="media media-panel">
-            <div class="media-body">
-                <div class="media-heading">
-                    @date($poll->created_at) &bull; {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }}
-                </div>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('poll', 'index') }}">Polls</a></li>
+        <li class="active">View Poll</li>
+    </ol>
+
+    <div class="slot">
+        <div class="slot-heading">
+            <div class="slot-subtitle">
+                Posted @date($poll->created_at) &bull; {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }}
+            </div>
+        </div>
+        <div class="slot-row">
+            <div class="slot-main">
                 <div class="bbcode">{!! $poll->content_html !!}</div>
+                <hr/>
                 <div class="well well-sm">
                     @if ($poll->isOpen() && !$user_vote && Auth::user())
                         @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])

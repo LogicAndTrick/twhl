@@ -12,7 +12,7 @@
             <li class="active">Revert Page</li>
         </ol>
     </hc>
-    <div class="well">
+    <div class="card card-block">
         @form(wiki/revert)
             @hidden(id $revision)
             <p>Continuing will revert this page to the revision displayed below. Are you sure you want to continue?</p>

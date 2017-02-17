@@ -2,48 +2,57 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        Journals
         @if (permission('JournalCreate'))
             <a href="{{ act('journal', 'create') }}" class="btn btn-primary btn-xs"><span class="fa fa-plus"></span> Create new journal</a>
         @endif
-        <h1>Journals</h1>
-        @if ($user)
-            <ol class="breadcrumb">
-                <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
-                <li class="active">Posted by @avatar($user inline)</li>
-            </ol>
-        @endif
-        {!! $journals->render() !!}
-    </hc>
-    <ul class="media-list">
+    </h1>
+
+    @if ($user)
+        <ol class="breadcrumb">
+            <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
+            <li class="active">Posted by @avatar($user inline)</li>
+        </ol>
+    @endif
+
+    {!! $journals->render() !!}
+
+    <div class="journal-list">
         @foreach ($journals as $journal)
-            <li class="media media-panel" id="journal-{{ $journal->id }}">
-              <div class="media-left">
-                <div class="media-object">
-                    @avatar($journal->user small show_border=false show_name=false)
+            <div class="slot" id="journal-{{ $journal->id }}">
+                <div class="slot-heading">
+                    <div class="slot-avatar">
+                        @avatar($journal->user small show_name=false)
+                    </div>
+                    <div class="slot-title">
+                        <a href="{{ act('journal', 'view', $journal->id) }}">{{ $journal->getTitle() }}</a>
+                        @if ($journal->isEditable())
+                            <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-outline-danger btn-xs">
+                                <span class="fa fa-remove"></span>
+                                <span class="hidden-xs-down">Delete</span>
+                            </a>
+                            <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-outline-primary btn-xs">
+                                <span class="fa fa-pencil"></span>
+                                <span class="hidden-xs-down">Edit</span>
+                            </a>
+                        @endif
+                    </div>
+                    <div class="slot-subtitle">
+                        @avatar($journal->user text) &bull;
+                        @date($journal->created_at) &bull;
+                        <a href="{{ act('journal', 'view', $journal->id) }}">
+                            <span class="fa fa-comment"></span>
+                            {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
+                        </a>
+                    </div>
                 </div>
-              </div>
-              <div class="media-body">
-                <div class="media-heading">
-                    @if ($journal->isEditable())
-                        <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-                        <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
-                    @endif
-                    <h2><a href="{{ act('journal', 'view', $journal->id) }}">{{ $journal->getTitle() }}</a></h2>
-                    <span class="visible-xs-inline">@avatar($journal->user inline)</span><span class="hidden-xs">@avatar($journal->user text)</span> &bull;
-                    @date($journal->created_at)
+                <div class="slot-main">
+                    <div class="bbcode">{!! $journal->content_html !!}</div>
                 </div>
-                <div class="bbcode">{!! $journal->content_html !!}</div>
-                <div class="media-footer">
-                    <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
-                        <span class="fa fa-comment"></span>
-                        {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
-                    </a>
-                </div>
-              </div>
-            </li>
+            </div>
         @endforeach
-    </ul>
+    </div>
     <div class="footer-container">
         {!! $journals->render() !!}
     </div>

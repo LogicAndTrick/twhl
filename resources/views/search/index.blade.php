@@ -31,7 +31,7 @@
             <h2>Wiki articles</h2>
             @if ($results_wikis && $results_wikis->count() > 0)
                 {!! $results_wikis->render() !!}
-                <table class="table table-condensed table-striped table-bordered search-wikis">
+                <table class="table table-sm table-striped table-bordered search-wikis">
                     <thead>
                         <tr>
                             <th>Article</th>
@@ -65,7 +65,7 @@
             <h2>Thread titles</h2>
             @if ($results_threads && $results_threads->count() > 0)
                 {!! $results_threads->render() !!}
-                <table class="table table-condensed table-striped table-bordered search-threads">
+                <table class="table table-sm table-striped table-bordered search-threads">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -99,7 +99,7 @@
             <h2>Forum posts</h2>
             @if ($results_posts && $results_posts->count() > 0)
                 {!! $results_posts->render() !!}
-                <table class="table table-condensed table-striped table-bordered search-posts">
+                <table class="table table-sm table-striped table-bordered search-posts">
                     <thead>
                         <tr>
                             <th>In Thread</th>
@@ -135,7 +135,7 @@
             @if ($results_vaults && $results_vaults->count() > 0)
                 {!! $results_vaults->render() !!}
                 <p>For a more refined vault search, go to the <a href="{{ act('vault', 'index') }}">vault listings page</a>.</p>
-                <table class="table table-condensed table-striped table-bordered search-wikis">
+                <table class="table table-sm table-striped table-bordered search-wikis">
                     <thead>
                         <tr>
                             <th>Vault Item</th>
@@ -174,7 +174,7 @@
             <h2>Users</h2>
             @if ($results_users && $results_users->count() > 0)
                 {!! $results_users->render() !!}
-                <table class="table table-condensed table-striped table-bordered search-users">
+                <table class="table table-sm table-striped table-bordered search-users">
                     <thead>
                         <tr>
                             <th>User</th>

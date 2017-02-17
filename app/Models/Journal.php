@@ -31,5 +31,4 @@ class Journal extends Model {
     public function commentsCanAddMeta($meta) {
         return true;
     }
-
 }

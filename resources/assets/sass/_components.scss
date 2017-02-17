@@ -159,7 +159,7 @@ a.tile {
   color: $tile-foreground-color;
   background-color: $tile-background-color;
   border: $tile-border;
-  margin: 5px;
+  margin: 5px 0;
   padding: 5px;
 
   display: flex;
@@ -184,18 +184,59 @@ a.tile {
       font-size: 1.1rem;
       line-height: 1em;
       text-align: left;
-      padding: 0.3rem;
+      padding: 0.2rem;
+
+      .btn {
+        float: right;
+        font-size: 0.6rem;
+        margin-left: 0.3rem;
+      }
     }
 
     .slot-subtitle {
       color: lighten($tile-foreground-color, 20%);
       font-size: 80%;
+      margin: 0.2rem 0.3rem;
+    }
+  }
+
+  .slot-row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .slot-left {
+    order: 0;
+    margin-right: 1rem;
+  }
+
+  .slot-right {
+    order: 10;
+    margin-left: 1rem;
+  }
+
+  .slot-left, .slot-right {
+    text-align: center;
+
+    .avatar.full {
+      width: 150px;
+      margin-bottom: 10px;
+
+      @media (max-width: map_get($grid-breakpoints, 'lg') - 1px) {
+        width: 120px;
+      }
+
+      @media (max-width: map_get($grid-breakpoints, 'md') - 1px) {
+        width: 100px;
+      }
     }
   }
 
   .slot-main {
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     margin: 0.5rem 1rem;
+    order: 5;
+    overflow: hidden;
   }
 
   &:nth-child(2n) {
@@ -208,7 +249,7 @@ a.tile {
   color: $tile-foreground-color;
   background-color: $tile-background-color;
   border: $tile-border;
-  margin: 5px;
+  margin: 5px 0;
   padding: 5px;
 
   display: flex;
@@ -265,7 +306,7 @@ a.slip {
     background-color: darken($tile-background-color, 5%);
     text-decoration: none;
 
-    margin-left: 2px;
+    padding-left: 2px;
     border-left: 4px solid $twhl-brand;
   }
 }

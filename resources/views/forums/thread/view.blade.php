@@ -2,92 +2,100 @@
 @extends('app')
 
 @section('content')
-    <hc>
+
+    <h1>
+        {{ $thread->title }}
+
         @if (permission('ForumAdmin'))
             @if ($thread->deleted_at)
-                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-info"><span class="fa fa-repeat"></span></a>
+                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fa fa-repeat"></span></a>
             @else
-                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-danger"><span class="fa fa-remove"></span></a>
-                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-primary"><span class="fa fa-pencil"></span></a>
+                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span></a>
+                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-pencil"></span></a>
             @endif
         @endif
+        <small class="pull-right hidden-sm-down">Created @date($thread->created_at) by @avatar($thread->user inline)</small>
+    </h1>
 
-        <h1>
-            {{ $thread->title }}
-            <small class="pull-right">Created @date($thread->created_at) by @avatar($thread->user inline)</small>
-        </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+        <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+        <li class="active">View Thread</li>
+    </ol>
 
-        <ol class="breadcrumb">
-            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
-            <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
-            <li class="active">View Thread</li>
-        </ol>
+    {!! $posts->render() !!}
 
-        {!! $posts->render() !!}
-    </hc>
+    <p class="hidden-md-up">Created @date($thread->created_at) by @avatar($thread->user inline)</p>
 
-    <ul class="media-list post-listing">
+    <div class="post-listing">
         @foreach ($posts as $post)
-            <li class="media media-panel post" id="post-{{ $post->id }}">
-                <div class="media-body">
-                    <div class="media-heading">
-                        <h3 class="visible-xs-block">
-                            @avatar($post->user inline)
+            <div class="slot post" id="post-{{ $post->id }}">
+                <div class="slot-heading">
+                    <div class="slot-avatar hidden-md-up">
+                        @avatar($post->user small show_name=false)
+                    </div>
+                    <div class="slot-title hidden-md-up">
+                        @avatar($post->user text)
+                        <div class="pull-right">
                             @if ($post->isEditable($thread))
-                                <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
+                                <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
                                     <span class="fa fa-pencil"></span>
-                                    <span class="hidden-xs">Edit</span>
+                                    <span class="hidden-xs-down">Edit</span>
                                 </a>
                             @endif
                             @if (permission('ForumAdmin'))
-                                <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
+                                <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
                                     <span class="fa fa-remove"></span>
-                                    <span class="hidden-xs">Delete</span>
+                                    <span class="hidden-xs-down">Delete</span>
                                 </a>
                             @endif
-                        </h3>
+                        </div>
+                    </div>
+                    <div class="slot-subtitle">
                         Posted @date($post->created_at)
                         <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
                     </div>
-                    <div class="bbcode post-content">{!! $post->content_html !!}</div>
                 </div>
-                <div class="media-right">
-                    <div class="media-object post-info">
+                <div class="slot-row">
+                    <div class="slot-main">
+                        <div class="bbcode post-content">{!! $post->content_html !!}</div>
+                    </div>
+                    <div class="slot-right hidden-sm-down">
                         @avatar($post->user full)
                         @if ($post->isEditable($thread))
-                            <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-primary">
+                            <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
                                 <span class="fa fa-pencil"></span>
-                                <span class="hidden-xs">Edit</span>
+                                Edit
                             </a>
                         @endif
                         @if (permission('ForumAdmin'))
-                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-danger">
+                            <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
                                 <span class="fa fa-remove"></span>
-                                <span class="hidden-xs">Delete</span>
+                                Delete
                             </a>
                         @endif
                     </div>
                 </div>
-            </li>
+            </div>
         @endforeach
-    </ul>
+    </div>
     <div class="footer-container">
         {!! $posts->render() !!}
     </div>
 
     @if (!$thread->isPostable())
-        <div class="well">
+        <div class="card card-block">
             {{ $thread->getUnpostableReason() }}
         </div>
     @else
         @if (Date::DiffDays(Date::Now(), $thread->last_post->updated_at) > 90)
             <div class="alert alert-warning">
-                <p>Careful! This thread is over 90 days old, and bumping it will cause it to become postable again.</p>
+                Careful! This thread is over 90 days old, and bumping it will cause it to become postable again.
             </div>
         @endif
         @if (!$thread->is_open)
             <div class="alert alert-warning">
-                <p>This thread is closed, regular users are not able to post in it.</p>
+                This thread is closed, regular users are not able to post in it.
             </div>
         @endif
         @form(post/create)
@@ -99,7 +107,7 @@
                     Post preview
                     <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
                 </h4>
-                <div id="preview-panel" class="well bbcode"></div>
+                <div id="preview-panel" class="card card-block bbcode"></div>
             </div>
             @submit
         @endform

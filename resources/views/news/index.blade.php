@@ -2,42 +2,45 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        News posts
         @if (permission('NewsAdmin'))
             <a class="btn btn-primary btn-xs" href="{{ act('news', 'create') }}"><span class="fa fa-plus"></span> Create new news post</a>
         @endif
-        <h1>News posts</h1>
-        {!! $newses->render() !!}
-    </hc>
-    <ul class="media-list">
+    </h1>
+
+    {!! $newses->render() !!}
+
+    <div class="news-list">
         @foreach ($newses as $news)
-            <li class="media media-panel" id="news-{{ $news->id }}">
-              <div class="media-left">
-                <div class="media-object">
-                    @avatar($news->user small show_border=false show_name=false)
+            <div class="slot" id="news-{{ $news->id }}">
+                <div class="slot-heading">
+                    <div class="slot-avatar">
+                        @avatar($news->user small show_name=false)
+                    </div>
+                    <div class="slot-title">
+                        <a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a>
+                        @if (permission('NewsAdmin'))
+                            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+                            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+                        @endif
+                    </div>
+                    <div class="slot-subtitle">
+                        @avatar($news->user text) &bull;
+                        @date($news->created_at) &bull;
+                        <a href="{{ act('news', 'view', $news->id) }}">
+                            <span class="fa fa-comment"></span>
+                            {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
+                        </a>
+                    </div>
                 </div>
-              </div>
-              <div class="media-body">
-                <div class="media-heading">
-                    @if (permission('NewsAdmin'))
-                        <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-                        <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
-                    @endif
-                    <h2><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></h2>
-                    <span class="visible-xs-inline">@avatar($news->user inline)</span><span class="hidden-xs">@avatar($news->user text)</span> &bull;
-                    @date($news->created_at)
+                <div class="slot-main">
+                    <div class="bbcode">{!! $news->content_html !!}</div>
                 </div>
-                <div class="bbcode">{!! $news->content_html !!}</div>
-                <div class="media-footer">
-                    <a href="{{ act('news', 'view', $news->id) }}" class="btn btn-xs btn-link link">
-                        <span class="fa fa-comment"></span>
-                        {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
-                    </a>
-                </div>
-              </div>
-            </li>
+            </div>
         @endforeach
-    </ul>
+    </div>
+
     <div class="footer-container">
         {!! $newses->render() !!}
     </div>

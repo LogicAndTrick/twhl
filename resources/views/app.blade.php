@@ -48,7 +48,7 @@
 
     @if (app('config')->get('app.debug'))
         <div class="container hidden-xs hidden-sm" style="padding-top: 20px;">
-            <table class="table table-bordered table-condensed">
+            <table class="table table-bordered table-sm">
                 <thead>
                     <tr>
                         <th>Query</th>

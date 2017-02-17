@@ -14,3 +14,28 @@ body > footer {
   text-align: center;
   font-size: .9em;
 }
+
+.table {
+  .td, .th {
+
+  }
+  > thead > tr > th {
+    border-bottom-color: $twhl-brand;
+  }
+}
+
+.breadcrumb {
+  margin-bottom: 0.5rem;
+  padding: 0;
+
+  li {
+    @extend .breadcrumb-item;
+  }
+}
+
+.bbcode {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

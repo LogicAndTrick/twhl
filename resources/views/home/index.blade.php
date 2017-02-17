@@ -89,14 +89,13 @@
                                 @date($thread->last_post->updated_at) &bull;
                                 <a href="{{ act('thread', 'view', $thread->id) }}?page=last">
                                     <span class="fa fa-reply"></span>
-                                    {{ $thread->stat_posts-1 }} repl{{$news->stat_comments==1?'y':'ies'}}
+                                    {{ $thread->stat_posts-1 }} repl{{$thread->stat_posts-1==1?'y':'ies'}}
                                 </a>
                             </div>
                         </div>
                         <div class="slot-main">
                             <div class="bbcode">{!! app('bbcode')->ParseExcerpt($thread->last_post->content_text) !!}</div>
                         </div>
-
                     </div>
                 @endforeach
             </div>
@@ -107,7 +106,7 @@
 
             <h1>
                 <span class="fa fa-quote-left"></span>
-                Member Journals
+                Journals
                 <a class="btn btn-outline-primary btn-xs" href="{{ act('journal', 'index') }}">See all</a>
             </h1>
             <div class="journals">
@@ -118,7 +117,7 @@
                         </span>
                         <span class="slip-content">
                             <span class="slip-title">
-                                {{ $journal->title }}
+                                {{ $journal->getTitle() }}
                             </span>
                             <span class="slip-subtitle">
                                 @avatar($journal->user text link=false) &bull;

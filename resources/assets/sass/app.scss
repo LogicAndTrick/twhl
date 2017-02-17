@@ -8,6 +8,14 @@
 @fa-font-path:   "../fonts";
 @import "node_modules/font-awesome/scss/font-awesome.scss";
 
+// Third party
+
+@import "select2";
+@import "diffview";
+@import "slider";
+@import "../css/jquery.countdown";
+@import "../css/dropzone";
+
 // Utils
 @import "responsive";
 
@@ -21,3 +29,4 @@
 
 @import "home";
 @import "shoutbox";
+@import "forums";

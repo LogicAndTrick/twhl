@@ -1,0 +1,56 @@
+@import "../css/select2";
+
+// Pagination Plugin
+
+.select2-pagination {
+  text-align: center;
+}
+.select2-pagination-prev {
+  float: left;
+  @extend .btn;
+  @extend .btn-xs;
+  @extend .btn-secondary;
+}
+.select2-pagination-next {
+  float: right;
+  @extend .btn;
+  @extend .btn-xs;
+  @extend .btn-secondary;
+}
+.select2-pagination-info {}
+
+
+// TWHL Styles
+
+.select2-container .select2-results > .select2-results__options {
+    max-height: 300px;
+}
+
+.select2-results__option {
+    padding: 0 6px;
+}
+
+.select2-results__option.select2-pagination {
+  padding: 6px;
+}
+
+.autocomplete {
+  width: 50%;
+}
+
+.autocomplete-clear {
+  margin-left: 5px;
+  padding: 3px 5px 1px;
+}
+
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  border: $input-btn-border-width solid $input-border-color;
+  border-radius: 0;
+  height: 2rem;
+}
+
+.select2-container--open .select2-dropdown--below {
+  border-radius: 0;
+  box-shadow: 0 0 10px #ccc;
+}

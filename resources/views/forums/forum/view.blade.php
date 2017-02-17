@@ -3,17 +3,18 @@
 
 @section('content')
 
-    <hc>
+    <h1>
+        <span class="forum-icon {{ $forum->getIconClasses() }}"></span>
+        {{ $forum->name }}
         @if (permission('ForumCreate'))
             <a class="btn btn-primary btn-xs" href="{{ act('thread', 'create', $forum->id) }}"><span class="fa fa-plus"></span> Create new thread</a>
         @endif
-        <h1>{{ $forum->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
-            <li class="active">Thread Listing</li>
-        </ol>
-        {!! $threads->render() !!}
-    </hc>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+        <li class="active">Thread Listing</li>
+    </ol>
+    {!! $threads->render() !!}
 
     <table class="table table-striped thread-listing">
         <thead>
@@ -36,14 +37,14 @@
                         </a>
                     </td>
                     <td class="col-topic">
-                        <div class="visible-xs-inline-block">
+                        <span class="hidden-md-up">
                             <a class="thread-title" href="{{ act('thread', 'view', $thread->id) }}?page=last">
                                 <span class="forum-icon {{ $thread->getIconClasses() }}"></span>
                             </a>
-                        </div>
+                        </span>
                         <a class="thread-title" href="{{ act('thread', 'view', $thread->id) }}">{{ $thread->title }}</a><br/>
                         @avatar($thread->user text), @date($thread->created_at)
-                        <div class="visible-xs-block">
+                        <div class="hidden-md-up">
                             <span class="posts">{{ $thread->stat_posts }} {{ ($thread->stat_posts == 1 ? 'reply' : 'replies') }}</span> &bull;
                             <span class="views">{{ $thread->stat_views }} {{ ($thread->stat_views == 1 ? 'view' : 'views') }}</span>
                         </div>
@@ -62,10 +63,10 @@
                     @if (permission('ForumAdmin'))
                         <td class="col-mod">
                             @if ($thread->deleted_at)
-                                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-info"><span class="fa fa-repeat"></span></a>
+                                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fa fa-repeat"></span></a>
                             @else
-                                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-primary"><span class="fa fa-pencil"></span></a>
-                                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-danger"><span class="fa fa-remove"></span></a>
+                                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-pencil"></span></a>
+                                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span></a>
                             @endif
                         </td>
                     @endif

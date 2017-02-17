@@ -2,34 +2,40 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        {{ $news->title }}
         @if (permission('NewsAdmin'))
-            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span></a>
+            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span></a>
         @endif
-        <h1>{{ $news->title }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('news', 'index') }}">News</a></li>
-            <li class="active">View News Post</li>
-        </ol>
-    </hc>
-    <div>
-        <div class="media media-panel">
-            <div class="media-left">
-                <div class="media-object">
-                    @avatar($news->user small show_border=false show_name=false)
-                </div>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('news', 'index') }}">News</a></li>
+        <li class="active">View News Post</li>
+    </ol>
+
+    <div class="slot">
+        <div class="slot-heading">
+            <div class="slot-avatar hidden-md-up">
+                @avatar($news->user small show_name=false)
             </div>
-            <div class="media-body">
-                <div class="media-heading">
-                    <span class="visible-xs-inline">@avatar($news->user inline)</span><span class="hidden-xs">@avatar($news->user text)</span> &bull;
-                    @date($news->created_at)
-                </div>
-                <div class="bbcode">
-                    {!! $news->content_html !!}
-                </div>
+            <div class="slot-title hidden-md-up">
+                @avatar($news->user text)
+            </div>
+            <div class="slot-subtitle">
+                Posted @date($news->created_at)
+            </div>
+        </div>
+        <div class="slot-row">
+            <div class="slot-left hidden-sm-down">
+                @avatar($news->user full)
+            </div>
+            <div class="slot-main">
+                <div class="bbcode">{!! $news->content_html !!}</div>
             </div>
         </div>
     </div>
+
     @include('comments.list', [ 'article' => $news, 'comments' => $comments, 'article_type' => \App\Models\Comments\Comment::NEWS, 'article_id' => $news->id ])
 @endsection

@@ -1,5 +1,10 @@
 body > nav {
 
+  .nav-item {
+    display: flex;
+    align-items: center;
+  }
+
   .nav-avatar {
     padding-top: 0;
     padding-bottom: 0;
