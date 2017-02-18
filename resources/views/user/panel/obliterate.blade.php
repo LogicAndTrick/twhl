@@ -2,16 +2,15 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Obliterate user: @avatar($user inline)</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
-            <li class="active">Obliterate</li>
-        </ol>
-    </hc>
+    <h1>Obliterate user: @avatar($user inline)</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+        <li class="active">Obliterate</li>
+    </ol>
 
     <div class="alert alert-danger">
-        <h2 style="font-size: 2em;">Obliteration cannot be reversed!</h2>
+        <h2 style="font-size: 2em; color: #000;">Obliteration cannot be reversed!</h2>
         <p>
             Obliterating users should be reserved exclusively for spammers!
             It will delete all content that the user has ever posted,

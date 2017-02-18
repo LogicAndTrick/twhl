@@ -2,35 +2,34 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Update profile: {{ $user->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
-            <li class="active">Update Profile</li>
-        </ol>
-    </hc>
+    <h1>Update profile: {{ $user->name }}</h1>
+    
+    <ol class="breadcrumb">
+        <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+        <li class="active">Update Profile</li>
+    </ol>
 
     @form(panel/edit-profile)
         @hidden(id $user)
         <div class="row">
             <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Custom Title</h3>
+                <div class="card">
+                    <div class="card-header">
+                        Custom Title
                     </div>
-                    <div class="panel-body">
+                    <div class="card-block">
                         <div class="alert alert-info">If enabled, the custom title appears underneath your avatar on your profile and forum posts.</div>
                         @checkbox(title_custom $user) = Enable Custom Title
                         @text(title_text $user) = Custom Title Text
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Skills</h3>
+            <div class="col-md-6 mt-3 mt-md-0">
+                <div class="card">
+                    <div class="card-header">
+                        Skills
                     </div>
-                    <div class="panel-body">
+                    <div class="card-block">
                         <div class="alert alert-info">Which of these skills are you experienced with?</div>
                         @checkbox(skill_map $user) = Mapping
                         @checkbox(skill_model $user) = Modelling
@@ -43,11 +42,11 @@
                 </div>
             </div>
         </div>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Information</h3>
+        <div class="card mt-3">
+            <div class="card-header">
+                Information
             </div>
-            <div class="panel-body">
+            <div class="card-block">
                 <div class="alert alert-info">Tell everyone a little bit about yourself. If you don't want to fill something in, just leave it blank!</div>
                 <div class="row">
                     <div class="col-md-6">
@@ -75,7 +74,9 @@
                 </div>
             </div>
         </div>
-        @submit = Save Profile
+        <div class="text-center m-3">
+            @submit = Save Profile
+        </div>
     @endform
 @endsection
 

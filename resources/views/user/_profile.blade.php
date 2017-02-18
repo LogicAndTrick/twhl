@@ -3,27 +3,28 @@
         @avatar($user full show_border=true)
         <a href="{{ act('message', 'send', $user->id) }}" class="btn btn-xs btn-info"><span class="fa fa-envelope"></span> Send Message</a>
         <hr title="Stats"/>
-        <dl class="dl-horizontal dl-small">
+        <dl class="row">
             {? $age = $user->created_at->diffInDays(); if ($age == 0) $age = 1; ?}
-            <dt>Logins</dt>
-            <dd>{{ $user->stat_logins }} ({{ round($user->stat_logins / $age, 2) }} per day)</dd>
-            <dt>Profile Hits</dt>
-            <dd>{{ $user->stat_profile_hits }} ({{ round($user->stat_profile_hits / $age, 2) }})</dd>
-            <dt>Forum Posts</dt>
-            <dd><a href="{{ act('post', 'index').'?user='.$user->id }}">{{ $user->stat_forum_posts }} ({{ round($user->stat_forum_posts / $age, 2) }})</a></dd>
-            <dt>Vault Items</dt>
-            <dd><a href="{{ act('vault', 'index').'?users='.$user->id }}">{{ $user->stat_vault_items }} ({{ round($user->stat_vault_items / $age, 2) }})</a></dd>
-            <dt>Journals</dt>
-            <dd><a href="{{ act('journal', 'index').'?user='.$user->id }}">{{ $user->stat_journals }} ({{ round($user->stat_journals / $age, 2) }})</a></dd>
-            <dt>Wiki Edits</dt>
-            <dd>{{ $user->stat_wiki_edits }} ({{ round($user->stat_wiki_edits / $age, 2) }})</dd>
-            <dt>Comments</dt>
-            <dd>{{ $user->stat_comments }} ({{ round($user->stat_comments / $age, 2) }})</dd>
-            <dt>Shouts</dt>
-            <dd>{{ $user->stat_shouts }} ({{ round($user->stat_shouts / $age, 2) }})</dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Logins</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7">{{ $user->stat_logins }} <br class="hidden-sm-down hidden-lg-up"/>({{ round($user->stat_logins / $age, 2) }} per day)</dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Profile Hits</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7">{{ $user->stat_profile_hits }} ({{ round($user->stat_profile_hits / $age, 2) }})</dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Forum Posts</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7"><a href="{{ act('post', 'index').'?user='.$user->id }}">{{ $user->stat_forum_posts }} ({{ round($user->stat_forum_posts / $age, 2) }})</a></dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Vault Items</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7"><a href="{{ act('vault', 'index').'?users='.$user->id }}">{{ $user->stat_vault_items }} ({{ round($user->stat_vault_items / $age, 2) }})</a></dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Journals</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7"><a href="{{ act('journal', 'index').'?user='.$user->id }}">{{ $user->stat_journals }} ({{ round($user->stat_journals / $age, 2) }})</a></dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Wiki Edits</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7">{{ $user->stat_wiki_edits }} ({{ round($user->stat_wiki_edits / $age, 2) }})</dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Comments</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7">{{ $user->stat_comments }} ({{ round($user->stat_comments / $age, 2) }})</dd>
+            <dt class="text-right col-3 col-md-6 col-lg-5">Shouts</dt>
+            <dd class="text-left col-9 col-md-6 col-lg-7">{{ $user->stat_shouts }} ({{ round($user->stat_shouts / $age, 2) }})</dd>
         </dl>
     </div>
     <div class="col-md-8">
+        <hr title="Details"/>
         <dl class="dl-horizontal">
             @if ($user->info_name)
                 <dt>Name</dt><dd>{{ $user->info_name }}</dd>
@@ -35,7 +36,7 @@
                 <dd>
                     <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
                     @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
-                        <span class="label label-default">
+                        <span class="badge badge-default">
                             @if ($user->show_email)
                                 <span class="fa fa-check"></span> Visible on public profile
                             @else

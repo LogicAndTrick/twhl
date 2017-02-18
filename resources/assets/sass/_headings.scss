@@ -37,3 +37,19 @@ h1 {
 h2 {
   font-size: 1.3rem;
 }
+
+
+
+/* HR headings (kinda hacky) */
+hr[title] {
+  position: relative;
+  text-align: center;
+
+  &::before {
+    content: attr(title);
+    position: relative;
+    top: -0.7em;
+    background: white;
+    padding: 0 15px;
+  }
+}

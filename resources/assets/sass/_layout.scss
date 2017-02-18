@@ -39,3 +39,55 @@ body > footer {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+dl.dl-horizontal {
+  @extend .row;
+  dt {
+    @extend .col-3;
+    text-align: right;
+  }
+  dd {
+    @extend .col-9;
+    text-align: left;
+  }
+
+  &.dl-small {
+    text-align: left;
+    dt { @extend .col-2; }
+    dd { @extend .col-10; }
+  }
+
+  &.dl-wide {
+    dt { @extend .col-4; }
+    dd { @extend .col-8; }
+  }
+
+  &.dl-wider {
+    dt { @extend .col-5; }
+    dd { @extend .col-7; }
+  }
+
+  &.dl-half {
+    dt { @extend .col-6; }
+    dd { @extend .col-6; }
+  }
+}
+
+ul.inline-bullet {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: inline-block;
+
+    &::before {
+      content: "\2022";
+      padding: 0 2px;
+    }
+
+    &:first-child::before {
+      content: '';
+    }
+  }
+}

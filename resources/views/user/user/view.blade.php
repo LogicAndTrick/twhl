@@ -2,24 +2,27 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        User: {{ $user->name }}
         @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
             <a href="{{ act('panel', 'index', $user->id) }}" class="btn btn-xs btn-info">
                 <span class="fa fa-cog"></span>
                 {{ (Auth::user() && Auth::user()->id == $user->id) ? 'My' : $user->name."'s" }} Control Panel
             </a>
         @endif
-        <h1>User: {{ $user->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('user', 'index') }}">Users</a></li>
-            <li class="active">View Profile</li>
-        </ol>
-    </hc>
-    <div class="panel panel-default">
-        <div class="panel-body">
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('user', 'index') }}">Users</a></li>
+        <li class="active">View Profile</li>
+    </ol>
+
+    <div class="card">
+        <div class="card-block">
             @include('user._profile', [ 'user' => $user ])
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-6">
             <hc>

@@ -2,14 +2,14 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>TWHL members</h1>
-        {!! $users->render() !!}
-    </hc>
+    <h1>TWHL members</h1>
+
+    {!! $users->render() !!}
+
     <div class="row">
         @foreach ($users as $user)
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="media media-panel media-panel-small">
+                <div class="media">
                     <div class="media-left">
                         <div class="media-object">
                             @avatar($user small show_name=false)

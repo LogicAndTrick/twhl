@@ -1,0 +1,53 @@
+.message-list {
+  tr.unread {
+    background-color: lighten($alert-success-bg, 6%) !important;
+  }
+  .col-mod {
+    width: 30px;
+  }
+}
+
+
+.message-thread {
+  .message {
+    border: 1px solid #ccc;
+    margin: 10px 0;
+
+    .sender-info {
+      padding: 5px;
+      cursor: pointer;
+      background-color: #fcfcfc;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #fafafa;
+      }
+      .collapsed-only {
+        display: none;
+        padding-left: 20px;
+        opacity: 0.6;
+        max-width: 50%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: bottom;
+      }
+      &.collapsed .collapsed-only {
+        display: inline-block;
+      }
+    }
+    .message-content {
+      border-top: 1px solid #ccc;
+
+      .bbcode {
+        margin: 10px;
+      }
+    }
+  }
+}
+
+.message-thread-participants {
+  border: 1px solid #ccc;
+  padding: 5px !important;
+  margin-bottom: 8px !important;
+}

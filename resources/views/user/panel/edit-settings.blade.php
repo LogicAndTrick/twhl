@@ -13,11 +13,11 @@
         @hidden(id $user)
         <div class="row">
             <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Email</h3>
+                <div class="card">
+                    <div class="card-header">
+                        Email
                     </div>
-                    <div class="panel-body">
+                    <div class="card-block">
                         <div class="alert alert-warning">
                             This email is what TWHL will use to communicate with you, including password resets.
                             Be very careful that it's valid! If it's not, your account may not be recoverable.
@@ -32,11 +32,11 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Time Zone</h3>
+                <div class="card">
+                    <div class="card-header">
+                        Time Zone
                     </div>
-                    <div class="panel-body">
+                    <div class="card-block">
                         <div class="alert alert-info">
                             Dates and times on the site will use the time zone you select.
                             If you're not sure what time zone you live in, <a href="https://www.timeanddate.com/time/map/" target="_blank"><strong>use this map</strong></a> to find out.
@@ -47,6 +47,8 @@
                 </div>
             </div>
         </div>
-        @submit = Update Settings
+        <div class="text-center m-3">
+            @submit = Update Settings
+        </div>
     @endform
 @endsection
