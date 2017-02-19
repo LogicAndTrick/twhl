@@ -1,25 +1,28 @@
-<hc>
 
-    <span class="pull-right">
+<h1>
+    {{ $revision->getNiceTitle() }}
+    <small class="pull-right">
         @if (!$revision->wiki_object->canEdit())
             <span class="fa fa-lock" title="You do not have access to edit this page."></span>
         @elseif ($revision->wiki_object->isProtected())
             <span class="fa fa-lock faded" title="This page is protected."></span>
         @endif
         Last edited @date($revision->created_at) by @avatar($revision->user inline)
-    </span>
-    <h1>{{ $revision->getNiceTitle() }}</h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-        <li class="active">View Upload</li>
-    </ol>
-</hc>
+    </small>
+</h1>
+
+<ol class="breadcrumb">
+    <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+    <li class="active">View Upload</li>
+</ol>
+
 @if (!$revision->is_active)
     <div class="alert alert-warning">
         You are viewing an older revision of this image. Only the current revision is embedded on other pages.
         <a href="{{ act('wiki', 'page', $revision->slug) }}">Click here</a> to see the current revision of this image.
     </div>
 @endif
+
 @if ($upload->isEmbeddable())
     <div class="wiki-image">
         @if ($upload->isImage())

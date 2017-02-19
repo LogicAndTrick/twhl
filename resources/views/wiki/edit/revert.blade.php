@@ -25,11 +25,11 @@
             <img src="{{ $revision->getUpload()->getResourceFileName() }}" alt="{{ $revision->getNiceTitle() }}">
         </div>
     @endif
-    <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Page appearance after reverting</h3>
+    <div class="card mt-3">
+        <div class="card-header">
+          Page appearance after reverting
         </div>
-        <div class="panel-body">
+        <div class="card-block">
             <div class="bbcode">{!! $revision->content_html !!}</div>
             @include('wiki.view.revision-categories', ['revision' => $revision])
         </div>

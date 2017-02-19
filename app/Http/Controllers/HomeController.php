@@ -27,29 +27,10 @@ class HomeController extends Controller {
         $user_id = $user ? $user->id : 0;
 
         // Vault section
-        $motm = Motm::with(['vault_item', 'vault_item.user', 'vault_item.vault_screenshots'])
-            ->whereNotNull('item_id')
-            ->orderByRaw('(year * 10) + month DESC')
-            ->first();
-
         $new_maps = VaultItem::with(['user', 'vault_screenshots'])
             ->whereIn('type_id', [1,4]) // Maps and mods
             ->orderBy('updated_at', 'desc')
             ->limit(4)
-            ->get();
-
-        $excluded = $new_maps->map(function($m) { return $m->id; });
-        if ($motm) $excluded[] = $motm->item_id;
-
-        $top_maps = VaultItem::with(['user', 'vault_screenshots'])
-            ->whereIn('type_id', [1,4]) // Maps and mods
-            ->whereCategoryId(2) // Completed
-            ->whereFlagRatings(true)
-            ->where('stat_ratings', '>=', 5)
-            ->whereRaw('(ceil(stat_average_rating * 2) / 2) >= 4.5')
-            ->whereIn('id', $excluded, 'and', true) // NOT in
-            ->orderByRaw('RAND()')
-            ->limit(2)
             ->get();
 
         // Wiki section
@@ -72,23 +53,6 @@ class HomeController extends Controller {
             ->take(5)
             ->select('forum_threads.*')
             ->get();
-
-        if ($threads->count() > 0) {
-            $thread_users = User::with([])
-            ->from(DB::raw(
-                '(' . implode(' union all ', $threads->map(function ($t) {
-                    return "(select distinct p.thread_id, p.user_id
-                                    from forum_posts p
-                                    where p.thread_id = {$t->id}
-                                    and p.user_id != {$t->last_post->user_id}
-                                    and p.deleted_at is null
-                                    order by p.updated_at desc
-                                    limit 5)";
-                })->toArray()) . ') thread_users left join users on users.id = thread_users.user_id'
-            ))->get();
-        } else {
-            $thread_users = new Collection();
-        }
 
         // Journals section
         $journals = Journal::with(['user'])
@@ -119,12 +83,9 @@ class HomeController extends Controller {
         }
 
 		return view('home/index', [
-            'motm' => $motm,
-            'top_maps' => $top_maps,
             'new_maps' => $new_maps,
             'wiki_edits' => $wiki_edits,
             'threads' => $threads,
-            'thread_users' => $thread_users,
             'journals' => $journals,
             'newses' => $newses,
             'polls' => $polls,

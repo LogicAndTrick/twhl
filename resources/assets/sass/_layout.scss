@@ -33,13 +33,6 @@ body > footer {
   }
 }
 
-.bbcode {
-  max-width: 100%;
-  word-wrap: break-word;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 dl.dl-horizontal {
   @extend .row;
   dt {

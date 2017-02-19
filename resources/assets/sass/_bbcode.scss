@@ -1,0 +1,299 @@
+audio[controls] {
+  min-height: 38px;
+  width: 500px;
+}
+
+pre {
+  tab-size: 4;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  border: 1px solid $pre-border-color;
+  background-color: $pre-bg;
+  padding: 1rem;
+}
+
+.bbcode {
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  margin-bottom: 10px;
+
+  // Fix some margins
+  table, ul, ol, pre, .embed-panel {
+    margin-top: 10px;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+
+    .card-header {
+      padding: 0.5rem 1rem;
+    }
+    .card-block {
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  ul ul, ul ol, ol ul, ol ol {
+    margin-top: 0;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  span.strikethrough {
+    text-decoration: line-through;
+  }
+  span.underline {
+    text-decoration: underline;
+  }
+  span.blue {
+    color: blue;
+  }
+  span.green {
+    color: green;
+  }
+  span.purple {
+    color: purple;
+  }
+  span.red {
+    color: red;
+  }
+  span.spoiler {
+    color: #333;
+    background-color: #333;
+    border: 1px solid #333;
+    padding-right: 3px;
+
+    &::before {
+      display: inline;
+      color: black;
+      background-color: white;
+      content: attr(title);
+      padding: 0 3px;
+      margin-right: 3px;
+    }
+
+    &:hover, &.on {
+      color: white;
+    }
+  }
+
+  .row {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  // Caption panel
+  .caption-panel {
+    display: inline-block;
+    max-width: 100%;
+
+    @extend .card;
+    @extend .card-block;
+
+    padding: 0px;
+    margin: 0;
+
+    .caption-body {
+      padding: 5px;
+      display: block;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .caption {
+      display: block;
+      padding: 0 5px 5px;
+      text-align: center;
+      font-size: 1.3em;
+      max-height: 6em;
+      overflow: hidden;
+    }
+  }
+
+  blockquote {
+    padding: 10px 20px;
+    border-left: 5px solid #eee;
+
+    margin: 15px 0;
+    color: #666;
+
+    .quote-name {
+      display: block;
+    }
+  }
+
+  // Embedded images / video
+  .embedded {
+    display: block;
+    text-align: center;
+    margin: 15px auto;
+
+    &.inline {
+      display: inline-block;
+      max-width: 200px;
+      vertical-align: middle;
+      margin: 0;
+      .caption-panel { border : 0; }
+      .caption-body { padding: 0; }
+    }
+
+    &.left, &.right {
+      width: 50%;
+      margin: 0 0 20px;
+    }
+
+    &.left { float: left; clear: left; margin-right: 20px; }
+    &.right { float: right; clear: right; margin-left: 20px; }
+
+    &.large {  }
+    &.medium { max-width: 400px;  }
+    &.small { max-width: 200px; }
+    &.thumb { max-width: 100px; }
+
+    &.large .caption { font-size: 1.3em; }
+    &.medium .caption { font-size: 1.1em; }
+    &.small .caption { font-size: 1em; }
+    &.thumb .caption { font-size: 0.8em; }
+  }
+
+  table .embedded {
+    @extend .embedded.inline;
+  }
+
+  // panels
+
+  .card-primary {
+    //background-color: lighten($card-border-color, 10%);
+  }
+  .card-success {
+    background-color: lighten($brand-success, 35%);
+
+    .card-header {
+      background-color: lighten($brand-success, 30%);
+    }
+  }
+  .card-info {
+    background-color: lighten($brand-info, 35%);
+
+    .card-header {
+      background-color: lighten($brand-info, 30%);
+    }
+  }
+  .card-warning {
+    background-color: lighten($brand-warning, 35%);
+
+    .card-header {
+      background-color: lighten($brand-warning, 30%);
+    }
+  }
+  .card-danger {
+    background-color: lighten($brand-danger, 35);
+
+    .card-header {
+      background-color: lighten($brand-danger, 30%);
+    }
+  }
+
+
+  .video .caption-panel {
+    display: block;
+  }
+
+  // JS lazy-loading video / Bootstrap responsive video embed
+  .video-content {
+
+    @extend .embed-responsive;
+    @extend .embed-responsive-16by9;
+
+    .uninitialised {
+      @extend .embed-responsive;
+      @extend .embed-responsive-item;
+
+      cursor: pointer;
+      background-size: cover;
+      background-position: center center;
+
+      &::after {
+        background-color: rgba(128, 200, 255, 0.4);
+        bottom: 0;
+        content: "";
+        display: block;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-image: url('../images/video_overlay.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 15% auto;
+      }
+    }
+  }
+
+  // Other lazy-loading embedded content
+
+  .embed-container {
+
+    display: block;
+
+    @extend .card;
+    @extend .card-block;
+
+    padding: 10px;
+
+    .embed-content {
+      overflow: hidden;
+
+      h2 {
+        margin: 0 0 4px;
+      }
+    }
+
+    .embed-image {
+      margin-top: 15px;
+      max-height: 500px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .uninitialised {
+      line-height: 500px;
+      font-size: 2em;
+      padding: 30px;
+      background-color: #bbb;
+    }
+
+     .slider, &.slider { height: 340px; }
+     .slides { height: 250px; }
+
+     @media (min-width: map_get($grid-breakpoints, 'md')) {
+       .slider, &.slider { height: 440px; }
+       .slides { height: 350px; }
+     }
+
+    @media (min-width: map_get($grid-breakpoints, 'lg')) {
+      .slider, &.slider { height: 540px; }
+      .slides { height: 450px; }
+    }
+
+    @media (min-width: map_get($grid-breakpoints, 'xl')) {
+      .slider, &.slider { height: 640px; }
+      .slides { height: 550px; }
+    }
+  }
+
+}
+
+span.bbcode {
+  display: inline-block;
+  margin-bottom: 5px;
+}

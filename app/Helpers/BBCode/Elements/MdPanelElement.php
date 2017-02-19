@@ -55,11 +55,14 @@ class MdPanelElement extends Element {
     function Parse($result, $scope)
     {
         $cls = '';
-        if ($this->meta == 'message') $cls = 'panel panel-success';
-        else if ($this->meta == 'info') $cls = 'panel panel-info';
-        else if ($this->meta == 'warning') $cls = 'panel panel-warning';
-        else if ($this->meta == 'error') $cls = 'panel panel-danger';
-        else $cls = 'panel panel-default';
-        return "<div class=\"embed-panel $cls\">" . ($this->title != '' ? "<div class=\"panel-heading\">{$this->parser->CleanString($this->title)}</div>" : '') . "<div class=\"panel-body\">" . $this->parser->ParseBlock($result, $this->text, $scope) . '</div></div>';
+        if ($this->meta == 'message') $cls = 'card-success';
+        else if ($this->meta == 'info') $cls = 'card-info';
+        else if ($this->meta == 'warning') $cls = 'card-warning';
+        else if ($this->meta == 'error') $cls = 'card-danger';
+        else $cls = 'card-default';
+        return "<div class=\"embed-panel card $cls\">" .
+               ($this->title != '' ? "<div class=\"card-header\">{$this->parser->CleanString($this->title)}</div>" : '') .
+                "<div class=\"card-block\">" . $this->parser->ParseBlock($result, $this->text, $scope) . '</div>' .
+                '</div>';
     }
 }

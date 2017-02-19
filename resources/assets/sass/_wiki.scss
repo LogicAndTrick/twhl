@@ -1,0 +1,60 @@
+.wiki-navigation {
+  background: #c2e5ff;
+  margin: 0 -15px;
+  padding: 5px 5px 0;
+  flex-wrap: wrap;
+
+  .btn {
+    padding: 2px 8px;
+    overflow: hidden;
+    border-radius: 0;
+    text-overflow: ellipsis;
+  }
+
+  .btn-group {
+    margin-left: 0;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+  @media (max-width: map_get($grid-breakpoints, 'xl') - 1px) and (min-width: map-get($grid-breakpoints, 'lg')) {
+    .btn {
+      max-width: 160px;
+    }
+  }
+
+  @media (max-width: map_get($grid-breakpoints, 'md') - 1px) {
+    .btn-group {
+      display: flex;
+      width: 100%;
+      margin-right: 0;
+
+      > .btn, > .btn-group {
+        flex: 1 1 auto;
+        max-width: none;
+      }
+    }
+  }
+}
+
+ul.wiki-categories {
+  @extend .inline-bullet;
+
+  border: 1px solid $gray-lighter;
+  margin-top: 10px;
+  padding: 5px;
+
+  .header {
+    font-weight: bold;
+  }
+
+}
+
+.wiki-image {
+  img, video, audio {
+    @extend .img-thumbnail;
+    display: block;
+    max-width: 95%;
+    margin: 10px auto;
+  }
+}

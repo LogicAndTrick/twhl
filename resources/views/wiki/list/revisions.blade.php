@@ -39,7 +39,7 @@
                     @if ($can_revert)
                         <td>
                             @if ($rev->id != $revision->id )
-                                <a class="btn btn-primary" href="{{ act('wiki', 'revert', $rev->id) }}">Revert</a>
+                                <a class="btn btn-primary btn-xs" href="{{ act('wiki', 'revert', $rev->id) }}">Revert</a>
                             @endif
                         </td>
                     @endif

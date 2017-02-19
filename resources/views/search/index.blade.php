@@ -2,9 +2,8 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>{{ $searched ? 'Search results' : 'Search TWHL' }}</h1>
-    </hc>
+    <h1>{{ $searched ? 'Search results' : 'Search TWHL' }}</h1>
+
     <form action="{{ url('search/index') }}" method="get">
         <div class="input-group">
             <div class="input-group-addon"><span class="fa fa-search"></span></div>
@@ -14,7 +13,9 @@
             </div>
         </div>
     </form>
+
     <hr/>
+
     <div class="search-results">
         @if ($searched)
 

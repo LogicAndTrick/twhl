@@ -38,6 +38,11 @@ h2 {
   font-size: 1.3rem;
 }
 
+.alert {
+  h1, h2, h3, h4, h5, h6 {
+    color: inherit;
+  }
+}
 
 
 /* HR headings (kinda hacky) */

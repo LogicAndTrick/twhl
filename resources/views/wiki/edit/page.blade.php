@@ -3,17 +3,20 @@
 
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
-    <hc>
+
+    <h1>
+        Edit: {{ $revision->getNiceTitle() }}
         @if (permission('WikiAdmin'))
             <a href="{{ act('wiki', 'delete', $revision->wiki_object->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
         @endif
-        <h1>Edit: {{ $revision->getNiceTitle() }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-            <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
-            <li class="active">Edit Page</li>
-        </ol>
-    </hc>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
+        <li class="active">Edit Page</li>
+    </ol>
+
     @form(wiki/edit upload=true)
         @hidden(id $revision)
         @if ($revision->wiki_object->type_id == \App\Models\Wiki\WikiType::PAGE)

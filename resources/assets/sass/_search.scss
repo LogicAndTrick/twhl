@@ -1,0 +1,27 @@
+.search-results {
+  h2 {
+    display: inline-block;
+    margin: 0;
+  }
+  .pagination {
+    display: inline-flex;
+    margin: 0px 20px 5px;
+    vertical-align: middle;
+    @include pagination-size($pagination-padding-y-sm, $pagination-padding-x-sm, $font-size-sm, $line-height-sm, $border-radius-sm);
+  }
+  .table {
+    margin-top: 5px;
+  }
+  .td .bbcode {
+    margin-bottom: 0;
+  }
+
+  .search-posts, .search-wikis {
+    tr > :nth-child(1) {
+      min-width: 150px;
+    }
+    tr > :nth-child(2) {
+      min-width: 150px;
+    }
+  }
+}

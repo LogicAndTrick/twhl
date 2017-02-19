@@ -9,7 +9,17 @@
 $font-size-base: 0.9rem;
 
 // No rounded corners
-$enable-rounded: false;
+//$enable-rounded: false;
+$border-radius: 0rem;
+$border-radius-lg: 0rem;
+$border-radius-sm: 0rem;
+
+$card-border-radius: 0rem;
+$card-border-radius-inner: 0rem;
+
+$btn-border-radius: .25rem;
+$btn-border-radius-lg: .3rem;
+$btn-border-radius-sm: .2rem;
 
 // Navbar should be shorter
 $navbar-padding-y: ($spacer / 8);
@@ -34,7 +44,7 @@ $btn-border-radius-xs: .15rem;
 }
 
 .btn {
-  border-radius: 4px;
+  //border-radius: 4px;
 }
 
 // Another option: pick and choose
