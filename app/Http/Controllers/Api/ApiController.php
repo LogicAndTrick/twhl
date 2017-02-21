@@ -771,6 +771,9 @@ class ApiController extends Controller {
 
     public function missingMethod($parameters = [])
     {
+        if (!is_array($parameters)) {
+            $parameters = explode('/', $parameters);
+        }
         $request = Request::instance();
         if (count($parameters) > 0 && isset($this->descriptors[$parameters[0]]))
         {

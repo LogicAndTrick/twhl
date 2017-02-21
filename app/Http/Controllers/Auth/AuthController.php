@@ -4,13 +4,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller {
 
-	use AuthenticatesAndRegistersUsers;
+    use AuthenticatesUsers, RegistersUsers {
+      AuthenticatesUsers::redirectPath insteadof RegistersUsers;
+      AuthenticatesUsers::guard insteadof RegistersUsers;
+  }
 
 	public function __construct()
 	{

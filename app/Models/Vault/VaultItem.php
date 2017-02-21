@@ -92,7 +92,7 @@ class VaultItem extends Model {
 
     public function getPrimaryScreenshot()
     {
-        $pri = array_first($this->vault_screenshots, function($i, $x) {
+        $pri = array_first($this->vault_screenshots, function($x, $i) {
             return $x->is_primary > 0;
         });
         if (!$pri && $this->vault_screenshots->count() > 0) $pri = $this->vault_screenshots[0];

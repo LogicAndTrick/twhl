@@ -1,9 +1,8 @@
 <?php namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class PasswordController extends Controller
 {
@@ -17,7 +16,9 @@ class PasswordController extends Controller
     | explore this trait and override any methods you wish to tweak.
     |
     */
-    use ResetsPasswords;
+    use SendsPasswordResetEmails, ResetsPasswords {
+        SendsPasswordResetEmails::broker insteadof ResetsPasswords;
+    }
 
     /**
      * Create a new password controller instance.

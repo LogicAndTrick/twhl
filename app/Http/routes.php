@@ -15,7 +15,8 @@ Route::get('/', 'HomeController@index');
 
 Route::get('/home', 'HomeController@index');
 
-Route::controllers([
+
+$controllers = [
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
     'ban' => 'Auth\BanController',
@@ -46,7 +47,9 @@ Route::controllers([
 
     'api' => 'Api\ApiController',
     'search' => 'Search\SearchController'
-]);
+];
+
+\App\Helpers\Routing::controllers($controllers);
 
 // Swagger convention suggests that the api definition should be available at /swagger.json
 Route::get('/swagger.json', 'Api\ApiController@getIndex');

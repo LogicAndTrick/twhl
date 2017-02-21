@@ -21,10 +21,6 @@ class StartupServiceProvider extends ServiceProvider {
 	{
         $guesser = MimeTypeGuesser::getInstance();
         $guesser->register(new ExtensionMimeTypeGuesser());
-
-        Paginator::presenter(function($presenter) {
-            return new PaginationPresenter($presenter);
-        });
 	}
 
 }
