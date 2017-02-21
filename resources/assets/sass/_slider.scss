@@ -65,11 +65,13 @@
   .arrow {
     position: absolute;
     cursor: pointer;
-    font-size: 50px;
+    font-size: 35px;
     text-shadow: #000 0px 0px 10px;
     color: #eee;
     font-family: 'FontAwesome';
     margin-top: -80px;
+
+    top: 50% !important;
 
     &:hover {
       color: #fff;

@@ -158,6 +158,48 @@
   }
 }
 
+#vault-slider {
+  .slider, &.slider { height: 350px; }
+  .slides { height: 260px; }
+
+  @media (min-width: map_get($grid-breakpoints, 'md')) {
+    .slider, &.slider { height: 470px; }
+    .slides { height: 380px; }
+  }
+
+  @media (min-width: map_get($grid-breakpoints, 'lg')) {
+    .slider, &.slider { height: 610px; }
+    .slides { height: 520px; }
+  }
+
+  @media (min-width: map_get($grid-breakpoints, 'xl')) {
+    .slider, &.slider { height: 550px; }
+    .slides { height: 460px; }
+  }
+}
+
+.vault-details {
+  dl {
+    margin-bottom: 0;
+  }
+  .stars {
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+
+    img {
+      height: 2rem;
+    }
+  }
+  .btn {
+    margin-top: 0.5rem;
+
+    @media (min-width: map_get($grid-breakpoints, 'md')) and (max-width: map_get($grid-breakpoints, 'lg') - 1px) {
+      font-size: 0.7rem;
+    }
+  }
+}
+
 .screenshots-dnd-explanation {
   font-size: 12px;
   line-height: 40px;
