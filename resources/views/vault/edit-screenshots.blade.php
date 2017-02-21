@@ -11,7 +11,7 @@
         </ol>
     </hc>
 
-    <div class="alert alert-info" style="margin-bottom: 0px;">
+    <div class="alert alert-info">
         <h4>The first screenshot is the primary screenshot</h4>
         <p>The primary screenshot is used as the display image for the vault item.</p>
     </div>
@@ -21,7 +21,7 @@
         <span class="fa fa-arrow-down"></span>
     </div>
 
-    <ul class="media-list screenshot-list">
+    <ul class="list-unstyled screenshot-list">
         <li>
             <img src="{{ asset('images/loading.gif') }}" alt="Loading" /> Please wait...
         </li>
@@ -39,7 +39,7 @@
 
 @section('scripts')
     <script type="text/template" id="vault-screenshot-template">
-        <li class="media" data-id="{id}">
+        <li class="media mb-3" data-id="{id}">
             <div class="media-left">
                 <img class="media-object" src="{{ asset('uploads/vault/{image_thumb}') }}" alt="Screenshot">
             </div>

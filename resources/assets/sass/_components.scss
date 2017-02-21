@@ -94,6 +94,13 @@
   }
 }
 
+.stars {
+  img {
+    height: 1em;
+    vertical-align: middle;
+  }
+}
+
 .horizontal-scroll {
   overflow-y: auto;
   display: flex;
@@ -114,16 +121,19 @@
 
   display: flex;
   flex-direction: column;
+  flex: 0 1 auto;
 
   > span {
     display: block;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .tile-heading {
     font-size: 1.4rem;
     text-align: left;
-    padding: 0.2rem;
+    padding: 0 0.2rem 0.4rem;
   }
 
   .tile-main {
@@ -138,11 +148,12 @@
     }
   }
   .tile-title {
-
+    margin-top: 0.3rem;
   }
   .tile-subtitle {
     color: lighten($tile-foreground-color, 20%);
     font-size: 80%;
+    margin-top: 0.3rem;
   }
 }
 
@@ -197,6 +208,13 @@ a.tile {
       color: lighten($tile-foreground-color, 20%);
       font-size: 80%;
       margin: 0.2rem 0.3rem;
+    }
+
+    .stars {
+      margin-left: 5px;
+      img {
+        vertical-align: top;
+      }
     }
   }
 

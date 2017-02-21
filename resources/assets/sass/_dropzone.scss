@@ -1,0 +1,15 @@
+@import "../css/dropzone";
+
+.dropzone {
+  border: 2px solid #dedede;
+  border-radius: 10px;
+
+  .dz-message {
+    font-size: 20px;
+  }
+
+  &.dz-drag-hover {
+    border-color: $brand-primary;
+    background-color: $gray-lighter;
+  }
+}

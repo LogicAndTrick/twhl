@@ -1,50 +1,49 @@
 <a id="comments"></a>
-<hc>
-    {? $cc = $comments->count(); ?}
-    <h2>
-        {{ $cc == 0 ? '' : $cc }} Comment{{ $cc == 1 ? '' : 's' }}
-    </h2>
-</hc>
+{? $cc = $comments->count(); ?}
+<h2>
+    {{ $cc == 0 ? '' : $cc }} Comment{{ $cc == 1 ? '' : 's' }}
+</h2>
 
-<ul class="media-list">
+<div class="comment-list">
     @foreach ($comments->sortBy('created_at') as $comment)
-        <li class="media" id="comment-{{ $comment->id }}">
-            <div class="media-left">
-                <div class="media-object">
-                    @if ($comment->user)
-                        @avatar($comment->user small show_name=false show_border=false)
+        <div class="slot" id="comment-{{ $comment->id }}">
+            <div class="slot-heading">
+                @if ($comment->user)
+                    <div class="slot-avatar">
+                        @avatar($comment->user small show_name=false)
+                    </div>
+                @endif
+                <div class="slot-title">
+                    @avatar($comment->user text)
+                    @if ($comment->hasRating())
+                        <span class="stars">
+                            @foreach ($comment->getRatingStars() as $star)
+                                <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
+                            @endforeach
+                        </span>
+                    @endif
+                    @if($comment->isDeletable())
+                        <a href="{{ act('comment', 'delete', $comment->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> <span class="hidden-xs">Delete</span></a>
+                    @endif
+                    @if($comment->isEditable($comments))
+                        <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
                     @endif
                 </div>
+                <div class="slot-subtitle">
+                    Commented @date($comment->created_at)
+                    <a class="pull-right" href="#comment-{{ $comment->id }}">Comment #{{ $comment->id }}</a>
+                </div>
             </div>
-            <div class="media-body">
+            <div class="slot-main">
                 @if ($comment->hasTemplate())
                     @include('comments.templates.'.$comment->getTemplate(), [ 'comment' => $comment, 'obj' => $comment->getTemplateArticleObject() ])
                 @else
-                    <div class="media-heading">
-                        @if($comment->isDeletable())
-                            <a href="{{ act('comment', 'delete', $comment->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> <span class="hidden-xs">Delete</span></a>
-                        @endif
-                        @if($comment->isEditable($comments))
-                            <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
-                        @endif
-                        @if ($comment->user)
-                            <span class="visible-xs-inline">@avatar($comment->user inline)</span><span class="hidden-xs">@avatar($comment->user text)</span> &bull;
-                        @endif
-                        @date($comment->created_at)
-                        @if ($comment->hasRating())
-                            <span class="stars">
-                                @foreach ($comment->getRatingStars() as $star)
-                                    <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
-                                @endforeach
-                            </span>
-                        @endif
-                    </div>
                     <div class="bbcode">{!! $comment->content_html !!}</div>
                 @endif
             </div>
-        </li>
+        </div>
     @endforeach
-</ul>
+</div>
 
 @if ($article->commentsIsLocked())
     <div class="alert alert-info text-center">

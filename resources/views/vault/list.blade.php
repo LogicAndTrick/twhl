@@ -2,19 +2,22 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <a class="btn btn-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
-        <h1>Vault items</h1>
+
+    <h1>
+        Vault items
+        @if (permission('VaultCreate'))
+            <a class="btn btn-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
+        @endif
+    </h1>
+
+    @if ($filtering)
         <ol class="breadcrumb">
-            @if ($filtering)
-                <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
-                <li class="active">Filter Vault Items</li>
-            @else
-                <li class="active">Vault</li>
-            @endif
+            <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
+            <li class="active">Filter Vault Items</li>
         </ol>
-        {!! $items->render() !!}
-    </hc>
+    @endif
+
+    {!! $items->render() !!}
 
     <form method="get" action="{{ act('vault', 'index') }}" class="vault-filter-form">
         <input type="hidden" data-filter="filter-games" name="games" value="{{ Request::get('games') }}"/>
@@ -29,37 +32,37 @@
             <input name="search" type="text" value="{{ Request::get('search') }}" placeholder="Type here to search" class="form-control">
             <div class="input-group-btn vault-filter-container">
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span> <span class="caret"></span></button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span></button>
                     <ul class="dropdown-menu vault-filter filter-games">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span> <span class="caret"></span></button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span></button>
                     <ul class="dropdown-menu vault-filter filter-categories">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span> <span class="caret"></span></button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span></button>
                     <ul class="dropdown-menu vault-filter filter-types">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span> <span class="caret"></span></button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span></button>
                     <ul class="dropdown-menu vault-filter remove-item filter-users">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span> <span class="caret"></span></button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-includes">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span> <span class="caret"></span></button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-one filter-rating">
                         <li class="filter-action" data-filter-value="5">5</li>
                         <li class="filter-action" data-filter-value="4.5">4.5</li>
@@ -75,7 +78,7 @@
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Sort: Created</span> <span class="caret"></span></button>
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Sort: Created</span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-one filter-sort">
                         <li class="filter-action" data-filter-value="date" data-text="Created">Date Created</li>
                         <li class="filter-action" data-filter-value="update" data-text="Updated">Date Updated</li>
@@ -92,23 +95,36 @@
         </div>
     </form>
 
-    <ul class="row vault-list">
+    <div class="row vault-list">
         @foreach ($items as $item)
-            <li class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                <div class="vault-item">
-                    <div class="top">
-                        <h2>
-                            <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
-                            <a href="{{ act('vault', 'view', $item->id) }}" title="{{ $item->name }}">
-                                {{ $item->name }}
-                            </a>
-                        </h2>
-                    </div>
-                    <a class="screenshot" href="{{ act('vault', 'view', $item->id) }}"
-                        style="background-image: url('{{ asset($item->getThumbnailAsset()) }}');"
-                    >
-                        <!--img src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" /-->
-                    </a>
+            <div class="col col-sm-6 col-md-4 col-lg-4 d-flex">
+                <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item">
+                    <span class="tile-heading">
+                        <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
+                        <span title="{{ $item->name }}">{{ $item->name }}</span>
+                    </span>
+                    <span class="tile-main">
+                        <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
+                    </span>
+                    <span class="tile-title">By @avatar($item->user inline link=false)</span>
+                    <span class="tile-subtitle">
+                        @date($item->created_at) &bull;
+                        <span class="stars">
+                            @if ($item->flag_ratings && $item->stat_ratings > 0)
+                                @foreach ($item->getRatingStars() as $star)
+                                    <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
+                                @endforeach
+                                ({{$item->stat_ratings}})
+                            @elseif ($item->flag_ratings)
+                                No Ratings Yet
+                            @else
+                                Ratings Disabled
+                            @endif
+                        </span>
+                    </span>
+                </a>
+{{--                <!--div class="vault-item">
+
                     <div class="bottom">
                         <span class="stars">
                             @if ($item->flag_ratings && $item->stat_ratings > 0)
@@ -125,10 +141,10 @@
                         <span>By @avatar($item->user inline)</span>
                         <span>@date($item->created_at)</span>
                     </div>
-                </div>
-            </li>
+                </div--> --}}
+            </div>
         @endforeach
-    </ul>
+    </div>
     <div class="footer-container">
         {!! $items->render() !!}
     </div>
@@ -201,6 +217,11 @@
                 if ($('.filter-users > [data-filter-value="' + $(this).data('filter-value') + '"]').length) return;
                 $(this).clone().addClass('active').insertBefore('.filter-users .clear-filter');
                 update_filters('filter-users');
+                $('.filter-users .user-search input').val('').focus();
+            });
+
+            $('.filter-users').parent().on('shown.bs.dropdown', function() {
+                $(this).find('input').val('').focus();
             });
 
             $('.filter-games').parent().on('show.bs.dropdown', function() {
@@ -232,7 +253,7 @@
                 populate_filter('filter-includes', data, '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>');
             });
 
-            var user_search_template = '<li class="static-control search-form user-search stop-close"><input class="form-control" type="text" placeholder="Search users..." /><ul class="search-results"></ul></li>';
+            var user_search_template = '<li class="static-control search-form user-search stop-close"><input class="form-control w-100" type="text" placeholder="Search users..." /><ul class="search-results"></ul></li>';
             var users = ($('[name=users]').val() || '').split('-').join(',');
             if (users) {
                 $.get('{{ url("api/users") }}', { id: users, count: 100 }, function(data) {

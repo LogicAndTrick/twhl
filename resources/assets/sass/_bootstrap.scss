@@ -17,6 +17,10 @@ $border-radius-sm: 0rem;
 $card-border-radius: 0rem;
 $card-border-radius-inner: 0rem;
 
+$input-border-radius: 0rem;
+$input-border-radius-lg: 0rem;
+$input-border-radius-sm: 0rem;
+
 $btn-border-radius: .25rem;
 $btn-border-radius-lg: .3rem;
 $btn-border-radius-sm: .2rem;
@@ -34,7 +38,7 @@ $breadcrumb-bg: transparent;
 // Bootstrap scss
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
-
+// New bootstrap stuff
 $btn-padding-x-xs: .4rem;
 $btn-padding-y-xs: .15rem;
 $btn-border-radius-xs: .15rem;
@@ -43,8 +47,21 @@ $btn-border-radius-xs: .15rem;
   @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $btn-border-radius-xs);
 }
 
+// Bootstrap 4 (alpha?) fixes
+
+// Input group buttons inside an input group should flex on the row
+.input-group .input-group-btn {
+  flex-direction: row;
+}
+
+// All buttons should have cursor: pointer
 .btn {
-  //border-radius: 4px;
+  cursor: pointer;
+}
+
+// Buttons in input groups shouldn't have border radius
+.input-group .btn {
+  border-radius: 0rem;
 }
 
 // Another option: pick and choose

@@ -21,35 +21,39 @@
         <p id="license-help" class="help-block"></p>
         @text(name:item_name $item) = Name
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <strong>Files included in download</strong>
+        <div class="card mb-3">
+            <div class="card-header">
+                Files included in download
             </div>
-            <div class="panel-body">
-                @foreach ($includes as $inc)
-                    <label class="checkbox-inline {{ $type_id != $inc->type_id ? 'inactive' : '' }}" title="{{ $inc->description }}">
-                        <input type="checkbox" name="__includes[]" value="{{ $inc->id }}" data-type="{{ $inc->type_id }}" {{
-                            $type_id != $inc->type_id ? 'disabled' : ''
-                        }} {{
-                            is_array($__includes) && array_search($inc->id, $__includes) !== false ? 'checked' : ''
-                        }} />
-                        {{ $inc->name }}
-                    </label>
-                @endforeach
+            <div class="card-block">
+                <div class="form-check form-check-inline">
+                    @foreach ($includes as $inc)
+                        <label class="form-check-label mr-1 {{ $type_id != $inc->type_id ? 'inactive' : '' }}" title="{{ $inc->description }}">
+                            <input class="form-check-input" type="checkbox" name="__includes[]" value="{{ $inc->id }}" data-type="{{ $inc->type_id }}" {{
+                                $type_id != $inc->type_id ? 'disabled' : ''
+                            }} {{
+                                is_array($__includes) && array_search($inc->id, $__includes) !== false ? 'checked' : ''
+                            }} />
+                            {{ $inc->name }}
+                        </label>
+                    @endforeach
+                </div>
             </div>
         </div>
 
-        <div class="panel panel-default option-panel">
-            <div class="panel-heading">
+        <div class="card mb-3 option-panel">
+            <div class="card-header">
                 <span>File upload method:</span>
-                <label class="radio-inline">
-                    <input type="radio" name="__upload_method" value="file" {{ $__upload_method != 'link' ? 'checked' : '' }} /> Upload file to TWHL
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="__upload_method" value="link" {{ $__upload_method == 'link' ? 'checked' : '' }} /> Link to file on another website
-                </label>
+                <span class="form-check form-check-inline d-inline-block mb-0">
+                    <label class="form-check-label ml-2">
+                        <input class="form-check-input" type="radio" name="__upload_method" value="file" {{ $__upload_method != 'link' ? 'checked' : '' }} /> Upload file to TWHL
+                    </label>
+                    <label class="form-check-label ml-1">
+                        <input class="form-check-input" type="radio" name="__upload_method" value="link" {{ $__upload_method == 'link' ? 'checked' : '' }} /> Link to file on another website
+                    </label>
+                </span>
             </div>
-            <div class="panel-body">
+            <div class="card-block">
                 @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb) - Leave blank to use current file
                 @text(link $location) = Link to File (Dropbox, Steam Workshop, etc.)
             </div>
@@ -106,8 +110,8 @@
             });
             $('[name=__upload_method]').on('change', function() {
                 var sel = $('[name=__upload_method]:checked').attr('value');
-                $('.option-panel .panel-body > div').addClass('hide');
-                $('[name="' + sel + '"]').parent().removeClass('hide');
+                $('.option-panel .card-block > div').addClass('d-none');
+                $('[name="' + sel + '"]').parent().removeClass('d-none');
             }).change();
             $('#update-preview').click(function() {
                 $('#preview-panel').html('Loading...');

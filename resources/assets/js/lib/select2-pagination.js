@@ -52,7 +52,7 @@ $.fn.select2.amd.define('select2/pagination', [
         this.loading = true;
         var params = $.extend({}, {page: 1}, this.lastParams);
         if (this.lastResults && this.lastResults.page) params.page = this.lastResults.page;
-        params.page += offset;
+        params.page = parseInt(params.page, 10) + offset;
         this.trigger('query', params);
     };
 
