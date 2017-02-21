@@ -5,12 +5,11 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
-		"laravel/framework": "5.3.*",
+		"laravel/framework": "5.4.*",
         "greggilbert/recaptcha": "2.1.*"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.0",
-		"phpspec/phpspec": "~2.1"
+		"phpunit/phpunit": "~5.7"
 	},
 	"autoload": {
 		"classmap": [
@@ -21,10 +20,10 @@
 		}
 	},
 	"autoload-dev": {
-		"classmap": [
-			"tests/TestCase.php"
-		]
-	},
+		 "psr-4": {
+			 "Tests\\": "tests/"
+		 }
+	 },
 	"scripts": {
 		"post-install-cmd": [
 			"php artisan clear-compiled",
