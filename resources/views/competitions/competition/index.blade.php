@@ -2,51 +2,50 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        <span class="fa fa-cubes"></span>
+        Competitions
         @if (permission('CompetitionAdmin'))
-            <a class="btn btn-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="fa fa-pencil"></span> Modify Competition Restrictions</a>
-            <a class="btn btn-primary btn-xs" href="{{ act('competition-admin', 'create') }}"><span class="fa fa-plus"></span> Create new Competition</a>
+            <a class="btn btn-outline-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="fa fa-pencil"></span> Modify Competition Restrictions</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('competition-admin', 'create') }}"><span class="fa fa-plus"></span> Create new Competition</a>
         @endif
-        <h1>Competitions</h1>
-    </hc>
-    <ul class="media-list competition-list">
+    </h1>
+    <div class="competition-list">
         @foreach ($comps->sortByDesc('close_date') as $comp)
-        <li class="media media-panel">
-            <div class="media-body">
-                <div class="media-heading">
-                    <h2>
-                        <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>
-                        <small class="pull-right">{{ $comp->type->name }} &bull; {{ $comp->judge_type->name }}</small>
-                    </h2>
+        <div class="slot">
+            <div class="slot-heading">
+                <small class="pull-right">{{ $comp->type->name }} &bull; {{ $comp->judge_type->name }}</small>
+                <div class="slot-title">
+                    <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>
                 </div>
+            </div>
+            <div class="slot-main">
                 <div class="row">
-                    <div class="col-lg-4 col-lg-push-8 col-md-5 col-md-push-7 info-column">
-                        <div class="text-center">
-                            <h2>{{ $comp->getStatusText() }}</h2>
+                    <div class="col-xl-4 push-xl-8 col-lg-5 push-lg-7 info-column">
+                        <h2>{{ $comp->getStatusText() }}</h2>
 
-                            @if ($comp->isVotingOpen())
-                                <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
-                            @elseif ($comp->isJudging() && $comp->canJudge())
-                                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse"><span class="fa fa-eye"></span> Go to Judging Panel</a>
-                            @elseif ($comp->isClosed())
-                                <div class="competition-winners">
-                                    <h5>Winners</h5>
-                                    @foreach ($comp->getEntriesForWinners() as $entry)
-                                        {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
-                                        @avatar($entry->user small show_border=true show_name=false)
-                                    @endforeach
-                                </div>
-                            @else
-                                {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->close_date) ({{ $comp->close_date->format('jS F Y') }})
-                            @endif
-                        </div>
+                        @if ($comp->isVotingOpen())
+                            <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
+                        @elseif ($comp->isJudging() && $comp->canJudge())
+                            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary"><span class="fa fa-eye"></span> Go to Judging Panel</a>
+                        @elseif ($comp->isClosed())
+                            <div class="competition-winners">
+                                <h5>Winners</h5>
+                                @foreach ($comp->getEntriesForWinners() as $entry)
+                                    {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
+                                    @avatar($entry->user small show_border=true show_name=false)
+                                @endforeach
+                            </div>
+                        @else
+                            {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->close_date) ({{ $comp->close_date->format('jS F Y') }})
+                        @endif
                     </div>
-                    <div class="col-lg-8 col-lg-pull-4 col-md-7 col-md-pull-5 brief-column">
+                    <div class="col-xl-8 pull-xl-4 col-lg-7 pull-lg-5 brief-column">
                         <div class="bbcode">{!! $comp->brief_html !!}</div>
                     </div>
                 </div>
             </div>
-        </li>
+        </div>
         @endforeach
-    </ul>
+    </div>
 @endsection

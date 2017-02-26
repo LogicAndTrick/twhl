@@ -144,7 +144,10 @@ class PanelController extends Controller {
             'matches_original' => 'This doesn\'t match your current password.'
         ]);
 
-        $user->update([ 'password' => bcrypt(Request::input('password')) ]);
+        $user->update([
+            'password' => bcrypt(Request::input('password')),
+            'legacy_password' => ''
+        ]);
         return redirect('panel/index/'.$id);
     }
 

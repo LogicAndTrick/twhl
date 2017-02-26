@@ -24,7 +24,8 @@
                         @endif
                     </div>
                     <div class="slot-subtitle">
-                        @date($poll->created_at) &bull;
+                        Posted @date($poll->created_at) &bull;
+                        {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }} &bull;
                         <a href="{{ act('poll', 'view', $poll->id) }}">
                             <span class="fa fa-comment"></span>
                             {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}

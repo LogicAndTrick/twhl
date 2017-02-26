@@ -53,7 +53,7 @@ elixir(function(mix) {
         'lib/Chart.js',
         '../../../node_modules/tether/dist/js/tether.js',
         '../../../node_modules/bootstrap/dist/js/bootstrap.js',
-        'lib/bootbox.min.js',
+        'lib/bootbox.js',
         'lib/dropzone.js',
         'lib/select2.js',
         'lib/select2-data-api.js',

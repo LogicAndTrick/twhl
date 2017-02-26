@@ -68,7 +68,7 @@
                 Description preview
                 <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
             </h4>
-            <div id="preview-panel" class="card card-block bbcode">{!! $content ? app('bbcode')->Parse($content) : '' !!}</div>
+            <div class="card"><div id="preview-panel" class="card-block bbcode">{!! $content ? app('bbcode')->Parse($content) : '' !!}</div></div>
         </div>
 
         @submit = Edit Vault Item

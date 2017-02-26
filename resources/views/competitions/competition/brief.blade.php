@@ -2,21 +2,23 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        Competition: {{ $comp->name }}
+
         @if (permission('CompetitionAdmin'))
-            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-info btn-xs"><span class="fa fa-list"></span> Edit Rules</a>
-            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fa fa-list"></span> Edit Rules</a>
+            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
             @if ($comp->canJudge())
-                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-xs"><span class="fa fa-eye"></span> Manage Entries</a>
+                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary btn-xs"><span class="fa fa-eye"></span> Manage Entries</a>
             @endif
         @endif
-        <h1>Competition: {{ $comp->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
-            <li class="active">View competition</li>
-        </ol>
-    </hc>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+        <li class="active">View competition</li>
+    </ol>
 
     {?
         $open_time = $comp->getOpenTime();
@@ -30,69 +32,73 @@
 
     @if ($collapse)
         <p class="text-center">
-            <button id="collapse-button" class="btn btn-default" type="button" data-toggle="collapse" data-target="#brief-container">
+            <button id="collapse-button" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#brief-container">
                 Show competition brief
                 <span class="fa fa-chevron-down"></span>
             </button>
         </p>
     @endif
 
-    <div class="collapse {{ $collapse ? '' : 'in' }}" id="brief-container">
-        <div class="row competition-brief">
-            <div class="col-lg-4 col-lg-push-8 col-md-5 col-md-push-7">
+    <div class="collapse {{ $collapse ? 'hide' : 'show' }}" id="brief-container">
+        <div class="slot">
+            <div class="slot-main">
+                <div class="row competition-brief">
+                    <div class="col-xl-4 push-xl-8 col-lg-5 push-lg-7">
 
-                <div class="competition-status">
-                    <span class="comp-status-message">Competition Status:</span>
-                    <span class="comp-status">{{ $comp->getStatusText() }}</span>
-                    @if ($comp->isOpen())
-                        <div id="countdown" class="countdown"></div>
-                    @elseif ($comp->isVotingOpen())
-                        <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success btn-lg">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
-                    @elseif ($comp->isJudging() && $comp->canJudge())
-                        <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-inverse btn-lg"><span class="fa fa-eye"></span> Go to Judging Panel</a>
-                        <hr/>
-                        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
-                    @elseif ($comp->isClosed())
-                        <a href="#results" class="btn btn-success btn-lg"><span class="fa fa-eye"></span> View Results</a>
-                    @endif
-                </div>
+                        <div class="competition-status">
+                            <span class="comp-status-message">Competition Status:</span>
+                            <span class="comp-status">{{ $comp->getStatusText() }}</span>
+                            @if ($comp->isOpen())
+                                <div id="countdown" class="countdown"></div>
+                            @elseif ($comp->isVotingOpen())
+                                <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success btn-lg">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
+                            @elseif ($comp->isJudging() && $comp->canJudge())
+                                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary btn-lg"><span class="fa fa-eye"></span> Go to Judging Panel</a>
+                                <hr/>
+                                <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
+                            @elseif ($comp->isClosed())
+                                <a href="#results" class="btn btn-success btn-lg"><span class="fa fa-eye"></span> View Results</a>
+                            @endif
+                        </div>
 
-                <dl class="dl-horizontal">
-                    <dt>Open Date</dt><dd>@date($open_time)</dd>
-                    <dt>Close Date</dt><dd>@date($close_time)</dd>
-                    @if ($comp->isVoted())
-                    <dt>Voting Open Date</dt><dd>@date($vote_open_time)</dd>
-                    <dt>Voting Close Date</dt><dd>@date($vote_close_time)</dd>
-                    @endif
-                    <dt>Type</dt><dd>{{ $comp->type->name }}</dd>
-                    <dt>Judging Type</dt><dd>{{ $comp->judge_type->name }}</dd>
-                    <dt>Allowed Engines</dt><dd>{{ implode(', ', $comp->engines->map(function($x) { return $x->name; })->toArray() ) }}</dd>
-                    @if (count($comp->judges) > 0)
-                    <dt>Judges</dt>
-                    <dd>
-                        {? $i = 0 ?}
-                        @foreach ($comp->judges as $judge)
-                            {!! $i++ != 0 ? '&bull;' : '' !!}
-                            @avatar($judge inline)
-                        @endforeach
-                    </dd>
-                    @endif
-                </dl>
+                        <dl class="dl-horizontal dl-half">
+                            <dt>Open Date</dt><dd>@date($open_time)</dd>
+                            <dt>Close Date</dt><dd>@date($close_time)</dd>
+                            @if ($comp->isVoted())
+                            <dt>Voting Open Date</dt><dd>@date($vote_open_time)</dd>
+                            <dt>Voting Close Date</dt><dd>@date($vote_close_time)</dd>
+                            @endif
+                            <dt>Type</dt><dd>{{ $comp->type->name }}</dd>
+                            <dt>Allowed Engines</dt><dd>{{ implode(', ', $comp->engines->map(function($x) { return $x->name; })->toArray() ) }}</dd>
+                            <dt>Judging Type</dt><dd>{{ $comp->judge_type->name }}</dd>
+                            @if (count($comp->judges) > 0)
+                            <dt>Judges</dt>
+                            <dd>
+                                <ul class="list-unstyled">
+                                    @foreach ($comp->judges as $judge)
+                                        <li>@avatar($judge inline)</li>
+                                    @endforeach
+                                </ul>
+                            </dd>
+                            @endif
+                        </dl>
 
-                <hr class="visible-xs-block visible-sm-block" />
+                        <hr class="hidden-lg-up" />
 
-            </div>
-            <div class="col-lg-8 col-lg-pull-4 col-md-7 col-md-pull-5 brief-column">
-                <div class="bbcode">{!! $comp->brief_html !!}</div>
-                @if ($comp->brief_attachment)
-                    <div class="well well-sm">
-                        Attached file:
-                        <a href="{{ asset('uploads/competition/attachments/'.$comp->brief_attachment) }}" class="btn btn-success btn-xs">
-                            <span class="fa fa-download"></span>
-                            Click to download
-                        </a>
                     </div>
-                @endif
+                    <div class="col-xl-8 pull-xl-4 col-lg-7 pull-lg-5 brief-column">
+                        <div class="bbcode">{!! $comp->brief_html !!}</div>
+                        @if ($comp->brief_attachment)
+                            <div class="well well-sm">
+                                Attached file:
+                                <a href="{{ asset('uploads/competition/attachments/'.$comp->brief_attachment) }}" class="btn btn-success btn-xs">
+                                    <span class="fa fa-download"></span>
+                                    Click to download
+                                </a>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -114,109 +120,17 @@
         </ul>
     @endif
     @if ($user_entry)
-        <hr>
-        <h3>Your Entry</h3>
+        <h2>Your Entry</h2>
         @include('competitions.entry._entry', [ 'comp' => $comp, 'entry' => $user_entry ])
     @endif
     @if ($comp->isOpen() && permission('CompetitionEnter'))
-        <hr>
-        <h3>{{ $user_entry ? 'Update' : 'Submit' }} Entry</h3>
+        <h2>{{ $user_entry ? 'Update' : 'Submit' }} Entry</h2>
         @form(competition-entry/submit upload=true)
             @include('competitions.entry._entry-form-fields', [ 'comp' => $comp, 'entry' => $user_entry ])
         @endform
     @endif
     @if ($comp->isClosed())
-
-        <a id="results"></a>
-        <hc>
-            <h1>
-                Results
-                @if ($comp->isJudged() && $comp->judges->count() > 0)
-                    <small class="pull-right">
-                        Judged By:
-                        {? $i = 0; ?}
-                        @foreach ($comp->judges as $judge)
-                            {!! $i++ == 0 ? '' : ' &bull; ' !!}
-                            @avatar($judge inline)
-                        @endforeach
-                    </small>
-                @endif
-            </h1>
-        </hc>
-
-        <div class="competition-results">
-            @if ($comp->results_intro_html)
-                <div class="bbcode">{!! $comp->results_intro_html !!}</div>
-            @endif
-            <ul class="media-list">
-                {? $prev_rank = -1; ?}
-                @foreach ($comp->getEntriesForResults() as $entry)
-                    {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
-                    @if ($prev_rank != 0 && $result->rank == 0)
-                        </ul>
-                        <hr/>
-                        <h3>Other Entries</h3>
-                        <ul class="media-list">
-                    @endif
-                    {? $shot = $entry->screenshots->first(); ?}
-                    {? $prev_rank = $result->rank; ?}
-                    {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
-                    <li class="media media-panel" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
-                        <div class="ribbon {{ $result->rank > 0 ? 'info' : '' }}">
-                            <div class="right">
-                                @if ($entry->file_location)
-                                    <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
-                                @endif
-                            </div>
-                            <div class="left">
-                                @avatar($entry->user small show_name=false)
-                            </div>
-                            @if ($result->rank == 1)
-                                <h2>1st Place - @avatar($entry->user text)</h2>
-                            @elseif ($result->rank == 2)
-                                <h2>2nd Place - @avatar($entry->user text)</h2>
-                            @elseif ($result->rank == 3)
-                                <h2>3rd Place - @avatar($entry->user text)</h2>
-                            @endif
-                            <h3>{{ $entry->title ? $entry->title : 'Unnamed entry' }}</h3>
-                        </div>
-                        <div class="media-body">
-                            <div class="visible-sm-block visible-xs-block text-center">
-                                <div style="display: inline-block;">
-                                    <a href="#" class="gallery-button img-thumbnail media-object">
-                                        <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
-                                        @foreach($entry->screenshots->slice(1, 3) as $sh)
-                                            <span class="preview" style="background-image: url('{{asset( $shot ? 'uploads/competition/'.$sh->image_thumb : 'images/no-screenshot-320.png' ) }}');">
-                                            </span>
-                                        @endforeach
-                                        @if ($entry->screenshots->count() > 4)
-                                            <span class="more">+{{ $entry->screenshots->count() - 4 }}</span>
-                                        @endif
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="bbcode">{!! $result->content_html !!}</div>
-                        </div>
-                        <div class="media-right hidden-xs hidden-sm">
-                            <a href="#" class="gallery-button img-thumbnail media-object">
-                                <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
-                                @foreach($entry->screenshots->slice(1, 3) as $sh)
-                                    <span class="preview" style="background-image: url('{{asset( $shot ? 'uploads/competition/'.$sh->image_thumb : 'images/no-screenshot-320.png' ) }}');">
-                                    </span>
-                                @endforeach
-                                @if ($entry->screenshots->count() > 4)
-                                    <span class="more">+{{ $entry->screenshots->count() - 4 }}</span>
-                                @endif
-                            </a>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-            @if ($comp->results_outro_html)
-                <div class="bbcode">{!! $comp->results_outro_html !!}</div>
-            @endif
-        </div>
-
+        @include('competitions.competition._results', [ 'comp' => $comp ])
     @endif
 @endsection
 

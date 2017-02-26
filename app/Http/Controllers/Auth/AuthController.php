@@ -22,7 +22,13 @@ class AuthController extends Controller {
 		$this->middleware('guest', ['except' => ['getLogout', 'getConvert', 'postConvert'] ]);
 	}
 
-	/**
+	public function getLogin() { return $this->showLoginForm(); }
+	public function postLogin(Request $request) { return $this->login($request); }
+	public function getLogout(Request $request) { return $this->logout($request); }
+    public function getRegister() { return $this->showRegistrationForm(); }
+   	public function postRegister(Request $request) { return $this->register($request); }
+
+    /**
 	 * Convert a legacy TWHL3 account into a TWHL4 account.
 	 */
 	public function getConvert()
@@ -74,8 +80,8 @@ class AuthController extends Controller {
      */
     protected function authenticated(Request $request, User $user)
     {
-        $request->session()->set('login_time', Carbon::create());
-        $request->session()->set('last_access_time', $user->last_access_time);
+        $request->session()->put('login_time', Carbon::create());
+        $request->session()->put('last_access_time', $user->last_access_time);
 
         $user->last_login_time = Carbon::create();
         $user->last_access_time = Carbon::create();

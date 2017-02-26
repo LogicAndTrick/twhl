@@ -2,18 +2,18 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit entry screenshots: {{ $entry->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
-            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
-            <li class="active">Edit Screenshots</li>
-        </ol>
-    </hc>
+    <h1>Edit entry screenshots: {{ $entry->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+        <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
+        <li class="active">Edit Screenshots</li>
+    </ol>
+
     @if (count($entry->screenshots) > 0)
-        <ul class="media-list screenshot-list">
+        <ul class="list-unstyled screenshot-list">
             @foreach ($entry->screenshots as $shot)
-                <li class="media">
+                <li class="media mb-3">
                     <div class="media-left">
                         <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot">
                     </div>

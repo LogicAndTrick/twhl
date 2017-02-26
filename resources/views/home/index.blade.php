@@ -100,6 +100,41 @@
                 @endforeach
             </div>
 
+            <h1>
+                <span class="fa fa-pie-chart"></span>
+                Poll
+                <a class="btn btn-outline-primary btn-xs" href="{{ act('poll', 'index') }}">See all</a>
+            </h1>
+            <div class="poll">
+                @foreach ($polls as $poll)
+                    <div class="slot" id="poll-{{ $poll->id }}">
+                        <div class="slot-heading">
+                            <div class="slot-title">
+                                <a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a>
+                            </div>
+                            <div class="slot-subtitle">
+                                Posted @date($poll->created_at) &bull;
+                                {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }} &bull;
+                                <a href="{{ act('poll', 'view', $poll->id) }}">
+                                    <span class="fa fa-comment"></span>
+                                    {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="slot-main">
+                            <div class="bbcode">{!! $poll->content_html !!}</div>
+                            <div class="card card-block">
+                                @if ($poll->isOpen() && Auth::user() && array_search($poll->id, $user_polls) === false)
+                                    @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
+                                @else
+                                    @include('polls/_results', [ 'poll' => $poll, 'user_votes' => $user_votes ])
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
         </div>
 
         <div class="col-md-4">
@@ -152,55 +187,6 @@
                     </a>
                 @endforeach
             </div>
-        </div>
-    </div>
-    <div class="row">
-
-        <div class="col-sm-5 col-md-4">
-
-            <hc class="text-right hidden-xs">
-                <h1>
-                    <small><a href="{{ act('poll', 'index') }}">See all</a></small>
-                    Poll
-                </h1>
-            </hc>
-            <hc class="visible-xs-block">
-                <h1>
-                    Poll
-                    <small><a href="{{ act('journal', 'index') }}">See all</a></small>
-                </h1>
-            </hc>
-            <ul class="media-list">
-                @foreach ($polls as $poll)
-                    <li class="media media-panel" id="poll-{{ $poll->id }}">
-                        <div class="media-body">
-                            <div class="media-heading">
-                                <h2>
-                                    <a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a>
-                                    @if ($poll->isOpen())
-                                        <small>Voting now!</small>
-                                    @else
-                                        <small>Voting closed</small>
-                                    @endif
-                                </h2>
-                                @date($poll->created_at) &bull;
-                                <a href="{{ act('poll', 'view', $poll->id) }}" class="btn btn-xs btn-link link">
-                                    <span class="fa fa-comment"></span>
-                                    {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
-                                </a>
-                            </div>
-                            <div class="bbcode">{!! $poll->content_html !!}</div>
-                            <div class="well well-sm">
-                                @if ($poll->isOpen() && Auth::user() && array_search($poll->id, $user_polls) === false)
-                                    @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
-                                @else
-                                    @include('polls/_results', [ 'poll' => $poll, 'user_votes' => $user_votes, 'front' => true ])
-                                @endif
-                            </div>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
         </div>
     </div>
 </div>

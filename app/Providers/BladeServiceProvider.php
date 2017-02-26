@@ -364,7 +364,7 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $label = BladeServiceProvider::esc( array_get($parameters, 'label', 'Submit') );
 
-                return "{$matches[1]}<button type='submit' class='btn btn-default'>$label</button>";
+                return "{$matches[1]}<button type='submit' class='btn btn-primary'>$label</button>";
             }, $view);
         });
 	}

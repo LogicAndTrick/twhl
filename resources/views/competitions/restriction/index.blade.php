@@ -2,13 +2,13 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Competition restrictions</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
-            <li class="active">Restrictions</li>
-        </ol>
-    </hc>
+    <h1>Competition restrictions</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+        <li class="active">Restrictions</li>
+    </ol>
+
     @foreach ($groups as $group)
         <h3>
             {{ $group->title }}
@@ -19,7 +19,7 @@
         <ul>
             @foreach ($group->restrictions as $rest)
                 <li>
-                    <span class="bbcode">{!! $rest->content_html !!}</span>
+                    <div class="bbcode d-inline-block mb-0 align-text-bottom">{!! $rest->content_html !!}</div>
                     <a href="{{ act('competition-restriction', 'edit', $rest->id) }}" class="btn btn-minimal btn-xxs"><span class="fa fa-pencil"></a>
                     <a href="{{ act('competition-restriction', 'delete', $rest->id) }}" class="btn btn-minimal btn-xxs"><span class="fa fa-remove"></a>
                 </li>
@@ -29,7 +29,9 @@
             </li>
         </ul>
     @endforeach
+
     <hr />
+
     <h3>Add Group</h3>
     @form(competition-group/create)
         @text(title) = Group Title

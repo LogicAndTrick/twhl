@@ -1,0 +1,37 @@
+
+textarea.form-control {
+  height: 350px;
+  &.gargantuan { height: 1200px; }
+  &.massive { height: 800px; }
+  &.huge { height: 600px; }
+  &.medium { height: 250px; }
+  &.small { height: 150px; }
+  &.tiny { height: 80px; }
+}
+
+// New bootstrap stuff
+$btn-padding-x-xs: .4rem;
+$btn-padding-y-xs: .15rem;
+$btn-border-radius-xs: .15rem;
+
+.btn-xs {
+  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $btn-border-radius-xs);
+}
+
+.btn-xxs {
+  @include button-size(2px, 3px, 10px, 10px);
+}
+
+.btn-minimal {
+  @extend .btn-link;
+  color: $btn-secondary-color;
+
+  &, &:active, &.active, &[disabled], fieldset[disabled] & {
+    background-color: #f6f6f6;
+  }
+
+  &:hover, &:focus {
+    text-decoration: none;
+    background-color: #dedede;
+  }
+}

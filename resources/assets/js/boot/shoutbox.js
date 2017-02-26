@@ -32,7 +32,7 @@
                         '<span class="input-group-btn">' +
                             '<button class="btn btn-info btn-sm edit-button" type="submit">Edit</button>' +
                             '<button class="btn btn-danger btn-sm delete-button" type="submit">Delete</button>' +
-                            '<button class="btn btn-default btn-sm cancel-button" type="button"><span class="fa fa-remove"></span></button>' +
+                            '<button class="btn btn-secondary btn-sm cancel-button" type="button"><span class="fa fa-remove"></span></button>' +
                             '<button class="btn btn-primary btn-sm shout-button" type="submit">Shout!</button>' +
                         '</span>' +
                     '</div>' +
@@ -43,8 +43,8 @@
                 '<span class="avatar"><a href="{user.url}"><img src="{user.avatar}" alt="{user.name}" /></a></span>' +
                 '<span class="message">' +
                     '<span class="time" data-stamp="{time}" title="{date}"></span>' +
-                    '<button data-id="{id}" class="btn btn-default btn-xxs delete">D</button>' +
-                    '<button data-id="{id}" class="btn btn-default btn-xxs edit">E</button>' +
+                    '<button data-id="{id}" class="btn btn-secondary btn-xxs delete">D</button>' +
+                    '<button data-id="{id}" class="btn btn-secondary btn-xxs edit">E</button>' +
                     '<span class="user"><a href="{user.url}">{user.name}</a></span>' +
                     '<span class="text">{formatted_content}</span> ' +
                 '</span>' +

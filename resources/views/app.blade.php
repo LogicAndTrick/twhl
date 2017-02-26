@@ -96,7 +96,7 @@
             active: '{{ Auth::user() != null ? "true" : "false" }}',
             moderator: '{{ permission("ForumAdmin") ? "true" : "false" }}'
         });
-        $('.navbar-dropdown-search').on('shown.bs.dropdown', function () {
+        $('.navbar-search-dropdown .dropdown').on('shown.bs.dropdown', function () {
             $(this).find('input:text').focus();
         });
     </script>

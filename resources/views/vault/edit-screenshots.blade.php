@@ -32,7 +32,7 @@
         <input type="hidden" name="id" value="{{ $item->id }}"/>
         <div class="fallback">
             <input name="file" type="file" />
-            <button class="btn btn-default" type="submit">Upload</button>
+            <button class="btn btn-secondary" type="submit">Upload</button>
         </div>
     </form>
 @endsection

@@ -97,7 +97,7 @@
 
     <div class="row vault-list">
         @foreach ($items as $item)
-            <div class="col col-sm-6 col-md-4 col-lg-4 d-flex">
+            <div class="col col-md-6 col-lg-4 d-flex">
                 <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item">
                     <span class="tile-heading">
                         <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
@@ -123,25 +123,6 @@
                         </span>
                     </span>
                 </a>
-{{--                <!--div class="vault-item">
-
-                    <div class="bottom">
-                        <span class="stars">
-                            @if ($item->flag_ratings && $item->stat_ratings > 0)
-                                @foreach ($item->getRatingStars() as $star)
-                                    <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
-                                @endforeach
-                                ({{$item->stat_ratings}})
-                            @elseif ($item->flag_ratings)
-                                No Ratings Yet
-                            @else
-                                Ratings Disabled
-                            @endif
-                        </span>
-                        <span>By @avatar($item->user inline)</span>
-                        <span>@date($item->created_at)</span>
-                    </div>
-                </div--> --}}
             </div>
         @endforeach
     </div>

@@ -41,8 +41,8 @@ class UpdateUserAccessDetails {
         $user = Auth::user();
 
         if (!$request->session()->has('login_time')) {
-            $request->session()->set('login_time', Carbon::create());
-            $request->session()->set('last_access_time', $user->last_access_time);
+            $request->session()->put('login_time', Carbon::create());
+            $request->session()->put('last_access_time', $user->last_access_time);
             $user->last_login_time = Carbon::create();
             $user->stat_logins++;
         }

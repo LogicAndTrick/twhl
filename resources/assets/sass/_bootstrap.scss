@@ -38,15 +38,6 @@ $breadcrumb-bg: transparent;
 // Bootstrap scss
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 
-// New bootstrap stuff
-$btn-padding-x-xs: .4rem;
-$btn-padding-y-xs: .15rem;
-$btn-border-radius-xs: .15rem;
-
-.btn-xs {
-  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $btn-border-radius-xs);
-}
-
 // Bootstrap 4 (alpha?) fixes
 
 // Input group buttons inside an input group should flex on the row

@@ -45,15 +45,6 @@ class CompetitionController extends Controller {
         ]);
     }
 
-    public function getResults($id) {
-        $comp = Competition::with(['judges', 'results', 'entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
-        if (!$comp->isClosed()) return abort(404);
-
-        return view('competitions/competition/results', [
-            'comp' => $comp
-        ]);
-    }
-
     public function getVote($id) {
         $comp = Competition::with(['entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
         $user_votes = CompetitionEntryVote::whereUserId(Auth::user() ? Auth::user()->id : 0)->whereCompetitionId($id)->get();

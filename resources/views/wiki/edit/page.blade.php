@@ -30,7 +30,7 @@
                 Page preview
                 <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
             </h4>
-            <div id="preview-panel" class="card card-block bbcode"></div>
+            <div class="card"><div id="preview-panel" class="card-block bbcode"></div></div>
         </div>
         @text(message) = Description of Edit
         @if (permission('WikiAdmin'))

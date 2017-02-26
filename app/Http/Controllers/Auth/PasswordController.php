@@ -3,6 +3,7 @@
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Http\Request;
 
 class PasswordController extends Controller
 {
@@ -29,4 +30,17 @@ class PasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    public function getEmail() { return $this->showLinkRequestForm(); }
+    public function postEmail(Request $request) { return $this->sendResetLinkEmail($request); }
+
+    public function getReset(Request $request, $token = null) { return $this->showResetForm($request, $token); }
+    public function postReset(Request $request) { return $this->reset($request); }
+
+
+    public function showLinkRequestForm()
+    {
+        return view('auth.password');
+    }
+
 }

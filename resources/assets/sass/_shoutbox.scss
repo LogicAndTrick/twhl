@@ -178,8 +178,8 @@
     form {
       height: 50px;
       border-top: 1px solid #eee;
-      padding: 10px;
-      .input-group { display: table; }
+      padding: 6px;
+      .input-group { display: flex; }
     }
   }
 

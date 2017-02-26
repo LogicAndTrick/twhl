@@ -52,7 +52,7 @@
                 Content preview
                 <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
             </h4>
-            <div id="preview-panel" class="card card-block bbcode">{!! Request::old('content_text') ? app('bbcode')->Parse(Request::old('content_text')) : '' !!}</div>
+            <div class="card"><div id="preview-panel" class="card-block bbcode">{!! Request::old('content_text') ? app('bbcode')->Parse(Request::old('content_text')) : '' !!}</div></div>
         </div>
         <script type="text/javascript">
             $('#update-preview').click(function() {

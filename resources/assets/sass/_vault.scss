@@ -150,6 +150,9 @@
     margin: 0;
     max-width: 100%;
   }
+  .tile-main > img {
+    min-width: 250px;
+  }
 }
 
 .vault-item {
@@ -235,3 +238,10 @@
     }
   }
 }
+
+
+.review-scores-label {
+  line-height: 2em;
+  text-align: center;
+}
+

@@ -2,17 +2,19 @@
 @extends('app')
 
 @section('content')
-    <hc>
+    <h1>
+        Competition voting: {{ $comp->name }}
         @if ($comp->canJudge())
-            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> View/Edit Results</a>
+            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> View/Edit Results</a>
         @endif
-        <h1>Competition voting: {{ $comp->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
-            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
-            <li class="active">Voting</li>
-        </ol>
-    </hc>
+    </h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+        <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
+        <li class="active">Voting</li>
+    </ol>
+
     <div class="alert alert-info">
         @if ($comp->isVotingOpen())
             <h3>Voting ends {{ $comp->getVotingCloseTime()->format('jS F, Y') }} at {{ $comp->getVotingCloseTime()->format('H:i') }} GMT ({{ $comp->getVotingCloseTime()->diffForHumans() }})</h3>
@@ -28,38 +30,48 @@
             <p>Voting has ended for this competition</p>
         @endif
     </div>
+
     @if (!$comp->canVote())
         <div class="alert alert-warning">
             <h3>Sorry, you are not eligable to vote for this competition.</h3>
             <p>Reason: {{ $comp->cantVoteReason() }}</p>
         </div>
     @endif
+
     <div class="row">
         @foreach ($comp->entries->shuffle() as $entry)
-            <div data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}" class="col-md-4 competition-vote-entry {{ $votes->contains($entry->id) ? 'voted' : '' }}">
-                <div class="thumbnail">
-                    <h3>{{ $entry->title }}</h3>
-                    <h4>By @avatar($entry->user inline)</h4>
+            <div data-id="{{ $entry->id }}"
+                 data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}"
+                 class="col col-sm-6 col-md-4 competition-vote-entry {{ $votes->contains($entry->id) ? 'voted' : '' }}">
+                <div class="tile">
                     {? $shot = $entry->screenshots->first(); ?}
-                    <a href="#" class="gallery-button">
-                    @if ($shot)
-                        <img src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
-                    @else
-                        <img src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
-                    @endif
+                    <a href="#" class="tile-main gallery-button">
+                        @if ($shot)
+                            <img src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot" />
+                        @else
+                            <img src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
+                        @endif
                     </a>
-                    @if ($entry->screenshots->count() > 1)
-                        <button class="btn btn-info btn-block gallery-button" type="button">
-                            <span class="fa fa-picture-o"></span>
-                            + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
+                    <div class="tile-main">
+                        @if ($entry->screenshots->count() > 1)
+                            <button class="btn btn-info btn-block gallery-button" type="button">
+                                <span class="fa fa-picture-o"></span>
+                                + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
+                            </button>
+                        @endif
+                        @if ($comp->canVote())
+                        <button class="btn btn-success btn-block btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
+                            <span class="fa fa-check"></span>
+                            <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
                         </button>
-                    @endif
-                    @if ($comp->canVote())
-                    <button class="btn btn-success btn-block btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
-                        <span class="fa fa-check"></span>
-                        <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
-                    </button>
-                    @endif
+                        @endif
+                    </div>
+                    <div class="tile-title">
+                        {{ $entry->title }}
+                    </div>
+                    <div class="tile-subtitle">
+                        By @avatar($entry->user inline)
+                    </div>
                 </div>
             </div>
         @endforeach
