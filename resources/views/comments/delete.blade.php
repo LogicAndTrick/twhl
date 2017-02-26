@@ -2,16 +2,15 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>
-            Delete comment by
-            @if ($comment->user)
-                @avatar($comment->user inline)
-            @else
-                [nobody]
-            @endif
-        </h1>
-    </hc>
+    <h1>
+        Delete comment by
+        @if ($comment->user)
+            @avatar($comment->user inline)
+        @else
+            [nobody]
+        @endif
+    </h1>
+
     <p>Are you sure you want to delete this comment?</p>
     <div class="bbcode">{!! $comment->content_html !!}</div>
     @form(comment/delete)

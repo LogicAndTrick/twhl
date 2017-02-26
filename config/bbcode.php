@@ -3,15 +3,15 @@
 return [
     'tags' => [
         // Standard inline
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'b',      'element' => 'strong'                                   ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'i',      'element' => 'em'                                       ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'u',      'element' => 'span', 'element_class' => 'underline'     ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 's',      'element' => 'span', 'element_class' => 'strikethrough' ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'b',      'element' => 'strong'                                   ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'i',      'element' => 'em'                                       ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'u',      'element' => 'span', 'element_class' => 'underline'     ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 's',      'element' => 'span', 'element_class' => 'strikethrough' ],
 
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'green',  'element' => 'span', 'element_class' => 'green'         ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'excerpt' ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'green',  'element' => 'span', 'element_class' => 'green'         ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
 
         // Standard block
         [ 'class' => 'App\Helpers\BBCode\Tags\PreTag',   'scopes' => [ ] ],
@@ -34,9 +34,9 @@ return [
 
         // Custom
         [ 'class' => 'App\Helpers\BBCode\Tags\QuoteTag',         'scopes' => [ ] ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',          'scopes' => [ 'excerpt' ] ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ 'excerpt' ] ],
-        [ 'class' => 'App\Helpers\BBCode\Tags\SpoilerTag',       'scopes' => [ 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\FontTag',          'scopes' => [ 'inline', 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WikiCategoryTag',  'scopes' => [ 'inline', 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\SpoilerTag',       'scopes' => [ 'inline', 'excerpt' ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\CodeTag',          'scopes' => [ 'excerpt' ] ],
     ],
     'elements' => [
@@ -51,13 +51,13 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Elements\MdColumnsElement', 'scopes' => [ ] ],
     ],
     'text_processors' => [
-        [ 'class' => 'App\Helpers\BBCode\Processors\MarkdownTextProcessor', 'scopes' => [ 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Processors\MarkdownTextProcessor', 'scopes' => [ 'inline', 'excerpt' ] ],
     ],
     'post_processors' => [
         [ 'class' => 'App\Helpers\BBCode\Processors\AutoLinkingProcessor', 'scopes' => [ 'excerpt' ] ],
         [
             'class' => 'App\Helpers\BBCode\Processors\SmiliesProcessor',
-            'scopes' => [ 'excerpt' ],
+            'scopes' => [ 'inline', 'excerpt' ],
             'smilies' => [
                 'aggrieved'    => [ ':aggrieved:'              ],
                 'aghast'       => [ ':aghast:'                 ],

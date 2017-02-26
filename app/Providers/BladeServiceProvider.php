@@ -32,15 +32,6 @@ class BladeServiceProvider extends ServiceProvider {
             return preg_replace('/\{\?(.*?)\?\}/is', '<?php $1 ?>', $view);
         });
 
-        // <hc> and </hc>
-        Blade::extend(function($view, $compiler) {
-            $r = $view;
-            $r = preg_replace('/<hc>/is', '<div class="header-container">', $r);
-            $r = preg_replace('/<hc class=["\'](.*?)["\']>/is', '<div class="header-container $1">', $r);
-            $r = preg_replace('/<\/hc>/is', '</div>', $r);
-            return $r;
-        });
-
         // @avatar(user type show_name show_title show_border)
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('avatar');

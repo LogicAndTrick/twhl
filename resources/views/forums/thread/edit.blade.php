@@ -2,15 +2,15 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit thread: {{ $thread->title }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
-            <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
-            <li><a href="{{ act('thread', 'view', $thread->id) }}">{{ $thread->title }}</a></li>
-            <li class="active">Edit Thread</li>
-        </ol>
-    </hc>
+    <h1>Edit thread: {{ $thread->title }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+        <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+        <li><a href="{{ act('thread', 'view', $thread->id) }}">{{ $thread->title }}</a></li>
+        <li class="active">Edit Thread</li>
+    </ol>
+
     @form(thread/edit)
         @hidden(id $thread)
         @text(title $thread) = Title

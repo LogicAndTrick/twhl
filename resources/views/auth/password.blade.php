@@ -2,9 +2,7 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Request password reset</h1>
-    </hc>
+    <h1>Request password reset</h1>
 
     @if (session('status'))
         <div class="alert alert-success">

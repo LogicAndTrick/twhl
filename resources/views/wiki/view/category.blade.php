@@ -1,4 +1,6 @@
-<hc>
+<h1>
+    Category: {{ $cat_name }}
+
     @if ($revision)
         <span class="pull-right">
             @if (!$revision->wiki_object->canEdit())
@@ -9,12 +11,13 @@
             Last edited @date($revision->created_at) by @avatar($revision->user inline)
         </span>
     @endif
-    <h1>Category: {{ $cat_name }}</h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-        <li class="active">View Category</li>
-    </ol>
-</hc>
+</h1>
+
+<ol class="breadcrumb">
+    <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+    <li class="active">View Category</li>
+</ol>
+
 @if ($revision)
     @include('wiki.view.revision-content', ['revision' => $revision])
 @else

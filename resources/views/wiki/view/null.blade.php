@@ -1,13 +1,14 @@
-<hc>
-    <h1>Page not found: {{ $slug }}</h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-        <li class="active">Nonexistent Page</li>
-    </ol>
-</hc>
+<h1>Page not found: {{ $slug }}</h1>
+
+<ol class="breadcrumb">
+    <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+    <li class="active">Nonexistent Page</li>
+</ol>
+
 <p>
     This page doesn't exist on the Wiki.
 </p>
+
 @if (permission('WikiCreate'))
     <p>You can create it if you think it is missing.</p>
     @form(wiki/create)

@@ -3,9 +3,8 @@
 
 @section('content')
 
-    <hc>
-        <h1>Register a TWHL account</h1>
-    </hc>
+    <h1>Register a TWHL account</h1>
+
     <div class="row">
         <div class="col-xl-4 push-xl-4 col-md-6 push-md-3">
             @form(auth/register)

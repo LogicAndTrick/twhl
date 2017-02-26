@@ -2,14 +2,14 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Create thread: {{ $forum->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
-            <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
-            <li class="active">Create Thread</li>
-        </ol>
-    </hc>
+    <h1>Create thread: {{ $forum->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+        <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
+        <li class="active">Create Thread</li>
+    </ol>
+
     @form(thread/create)
         <input type="hidden" name="forum_id" value="{{ $forum->id }}" />
         @text(title) = Thread Title

@@ -2,14 +2,14 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Add vault item review</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
-            <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
-            <li class="active">Add Review</li>
-        </ol>
-    </hc>
+    <h1>Add vault item review</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
+        <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
+        <li class="active">Add Review</li>
+    </ol>
+
     <div class="alert alert-info">
         <h2>
             Reviewing: {{ $item->name }}

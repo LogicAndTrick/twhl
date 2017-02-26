@@ -2,13 +2,13 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Create news post</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('news', 'index') }}">News</a></li>
-            <li class="active">Create News</li>
-        </ol>
-    </hc>
+    <h1>Create news post</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('news', 'index') }}">News</a></li>
+        <li class="active">Create News</li>
+    </ol>
+
     @form(news/create)
         @text(title) = News Post Title
         @textarea(text) = News Post Content

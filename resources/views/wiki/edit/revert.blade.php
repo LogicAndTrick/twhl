@@ -3,15 +3,16 @@
 
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
-    <hc>
-        <h1>Reverting: {{ $revision->getNiceTitle() }} <small>(to: {{ Date::TimeAgo($revision->created_at) }})</small></h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-            <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
-            <li><a href="{{ act('wiki', 'history', $revision->slug) }}">History</a></li>
-            <li class="active">Revert Page</li>
-        </ol>
-    </hc>
+
+    <h1>Reverting: {{ $revision->getNiceTitle() }} <small>(to: {{ Date::TimeAgo($revision->created_at) }})</small></h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
+        <li><a href="{{ act('wiki', 'history', $revision->slug) }}">History</a></li>
+        <li class="active">Revert Page</li>
+    </ol>
+
     <div class="card card-block">
         @form(wiki/revert)
             @hidden(id $revision)

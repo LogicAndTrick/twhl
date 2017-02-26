@@ -2,14 +2,13 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit vault item review by @avatar($review->user inline)</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
-            <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
-            <li class="active">Edit Review</li>
-        </ol>
-    </hc>
+    <h1>Edit vault item review by @avatar($review->user inline)</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
+        <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
+        <li class="active">Edit Review</li>
+    </ol>
 
     @form(vault-review/edit)
         @hidden(id $review)

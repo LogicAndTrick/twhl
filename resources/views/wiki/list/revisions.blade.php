@@ -3,15 +3,16 @@
 
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
-    <hc>
-        <h1>History of {{ $revision->getNiceTitle() }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-            <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
-            <li class="active">History</li>
-        </ol>
-        {!! $history->render() !!}
-    </hc>
+
+    <h1>History of {{ $revision->getNiceTitle() }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
+        <li class="active">History</li>
+    </ol>
+
+    {!! $history->render() !!}
 
     {? $can_revert = $revision->wiki_object->canEdit(); ?}
 

@@ -2,14 +2,13 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Vault item screenshots: {{ $item->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
-            <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
-            <li class="active">Manage Item Screenshots</li>
-        </ol>
-    </hc>
+    <h1>Vault item screenshots: {{ $item->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
+        <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
+        <li class="active">Manage Item Screenshots</li>
+    </ol>
 
     <div class="alert alert-info">
         <h4>The first screenshot is the primary screenshot</h4>

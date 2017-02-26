@@ -3,13 +3,14 @@
 
 @section('content')
     @include('wiki.nav')
-    <hc>
-        <h1>Upload new file</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-            <li class="active">Create File</li>
-        </ol>
-    </hc>
+
+    <h1>Upload new file</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li class="active">Create File</li>
+    </ol>
+
     <div class="alert alert-success">
         <h4>Please obey the rules when uploading files</h4>
         <ul>

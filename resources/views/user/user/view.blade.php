@@ -24,65 +24,77 @@
     </div>
 
     <div class="row">
+
         <div class="col-md-6">
-            <hc>
-                <h2>Recent Vault Items</h2>
-                <ol class="breadcrumb">
-                    <li><a href="{{ act('vault', 'index').'?users='.$user->id }}">See All</a></li>
-                </ol>
-            </hc>
-            <ul class="row vault-list">
+            <h2>
+                <span class="fa fa-database"></span>
+                Recent Vault Items
+                <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'index').'?users='.$user->id }}">See All</a>
+            </h2>
+
+            <div class="row vault-list pt-0">
                 @foreach ($vault_items as $item)
-                    <li class="col-xs-12">
-                        <div class="vault-item">
-                            <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
-                            <a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a>
-                            <a class="screenshot" href="{{ act('vault', 'view', $item->id) }}">
-                                <img src="{{ asset($item->getThumbnailAsset()) }}" alt="{{ $item->name }}" />
-                            </a>
-                            @if ($item->flag_ratings && $item->stat_ratings > 0)
+                    <div class="col d-flex">
+                        <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item">
+                            <span class="tile-heading">
+                                <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
+                                <span title="{{ $item->name }}">{{ $item->name }}</span>
+                            </span>
+                            <span class="tile-main">
+                                <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
+                            </span>
+                            <span class="tile-title">By @avatar($item->user inline link=false)</span>
+                            <span class="tile-subtitle">
+                                @date($item->created_at) &bull;
                                 <span class="stars">
-                                    @foreach ($item->getRatingStars() as $star)
-                                        <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
-                                    @endforeach
-                                    ({{$item->stat_ratings}})
+                                    @if ($item->flag_ratings && $item->stat_ratings > 0)
+                                        @foreach ($item->getRatingStars() as $star)
+                                            <img src="{{ asset('images/stars/rating_'.$star.'.svg') }}" alt="{{ $star }} star" />
+                                        @endforeach
+                                        ({{$item->stat_ratings}})
+                                    @elseif ($item->flag_ratings)
+                                        No Ratings Yet
+                                    @else
+                                        Ratings Disabled
+                                    @endif
                                 </span>
-                            @elseif ($item->flag_ratings)
-                                No Ratings Yet
-                            @else
-                                Ratings Disabled
-                            @endif
-                            <br/>
-                            By @avatar($item->user inline)<br/>
-                            @date($item->created_at)
-                        </div>
-                    </li>
+                            </span>
+                        </a>
+                    </div>
                 @endforeach
-            </ul>
+            </div>
+
         </div>
+
         <div class="col-md-6">
-            <hc class="text-right">
-                <h3>Recent Journals</h3>
-                <ol class="breadcrumb">
-                    <li><a href="{{ act('journal', 'index').'?user='.$user->id }}">See All</a></li>
-                </ol>
-            </hc>
-            <ul class="media-list">
+            <h2>
+                <span class="fa fa-quote-left"></span>
+                Recent Journals
+                <a class="btn btn-outline-primary btn-xs" href="{{ act('journal', 'index').'?user='.$user->id }}">See All</a>
+            </h2>
+
+            <div class="journals">
                 @foreach ($journals as $journal)
-                    <li class="media media-panel">
-                        <div class="media-body">
-                            <div class="media-heading">
-                                @date($journal->created_at) &bull;
-                                <a href="{{ act('journal', 'view', $journal->id) }}" class="btn btn-xs btn-link link">
-                                    <span class="fa fa-comment"></span>
-                                    {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
-                                </a>
-                            </div>
-                            <div class="bbcode">{!! app('bbcode')->ParseExcerpt($journal->content_text) !!}</div>
-                        </div>
-                    </li>
+                    <a href="{{ act('journal', 'view', $journal->id) }}" class="slip">
+                        <span class="slip-avatar">
+                            @avatar($journal->user small link=false show_name=false)
+                        </span>
+                        <span class="slip-content">
+                            <span class="slip-title">
+                                {{ $journal->getTitle() }}
+                            </span>
+                            <span class="slip-subtitle">
+                                @avatar($journal->user text link=false) &bull;
+                                @date($journal->created_at)
+                            </span>
+                            <span class="bbcode d-block">
+                                {!! app('bbcode')->ParseExcerpt($journal->content_text, 200, 'inline') !!}
+                            </span>
+                        </span>
+                    </a>
                 @endforeach
-            </ul>
+            </div>
+
         </div>
     </div>
 @endsection

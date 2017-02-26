@@ -2,19 +2,19 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Forum posts</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
-            @if ($user)
-                <li><a href="{{ act('post', 'index') }}">Posts</a></li>
-                <li class="active">Posted by @avatar($user inline)</li>
-            @else
-                <li class="active">Posts</li>
-            @endif
-        </ol>
-        {!! $posts->render() !!}
-    </hc>
+    <h1>Forum posts</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+        @if ($user)
+            <li><a href="{{ act('post', 'index') }}">Posts</a></li>
+            <li class="active">Posted by @avatar($user inline)</li>
+        @else
+            <li class="active">Posts</li>
+        @endif
+    </ol>
+
+    {!! $posts->render() !!}
 
     <div class="post-listing">
         @foreach ($posts as $post)

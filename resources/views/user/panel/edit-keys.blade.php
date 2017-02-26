@@ -2,13 +2,12 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Manage API keys: {{ $user->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
-            <li class="active">Manage API keys</li>
-        </ol>
-    </hc>
+    <h1>Manage API keys: {{ $user->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+        <li class="active">Manage API keys</li>
+    </ol>
 
     <h2>Active API Keys</h2>
     <table class="table">

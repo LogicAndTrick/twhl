@@ -3,14 +3,15 @@
 
 @section('content')
     @include('wiki.nav')
-    <hc>
-        <h1>Wiki pages</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-            <li class="active">Page List</li>
-        </ol>
-        {!! $revisions->render() !!}
-    </hc>
+
+    <h1>Wiki pages</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li class="active">Page List</li>
+    </ol>
+
+    {!! $revisions->render() !!}
 
     <ul>
     @foreach ($revisions as $r)

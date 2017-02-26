@@ -2,14 +2,14 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit poll: {{ $poll->title }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('poll', 'index') }}">Polls</a></li>
-            <li><a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a></li>
-            <li class="active">Edit Poll</li>
-        </ol>
-    </hc>
+    <h1>Edit poll: {{ $poll->title }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('poll', 'index') }}">Polls</a></li>
+        <li><a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a></li>
+        <li class="active">Edit Poll</li>
+    </ol>
+
     @form(poll/edit)
         @hidden(id $poll)
         @text(title $poll) = Poll Title

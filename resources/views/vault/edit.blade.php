@@ -2,14 +2,14 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit vault item: {{ $item->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
-            <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
-            <li class="active">Edit Item</li>
-        </ol>
-    </hc>
+    <h1>Edit vault item: {{ $item->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('vault', 'index') }}">Vault</a></li>
+        <li><a href="{{ act('vault', 'view', $item->id) }}">{{ $item->name }}</a></li>
+        <li class="active">Edit Item</li>
+    </ol>
+
     @form(vault/edit upload=true)
         @hidden(id $item)
         @autocomplete(engine_id api/engines $item) = Game Engine

@@ -2,13 +2,12 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Notifications and subscriptions: {{ $user->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
-            <li class="active">Notifications and subscriptions</li>
-        </ol>
-    </hc>
+    <h1>Notifications and subscriptions: {{ $user->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+        <li class="active">Notifications and subscriptions</li>
+    </ol>
 
     <h2>Notifications</h2>
     <table class="table">

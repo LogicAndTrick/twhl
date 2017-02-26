@@ -3,9 +3,8 @@
 
 @section('content')
 
-    <hc>
-        <h1>Welcome to the new and exciting TWHL!</h1>
-    </hc>
+    <h1>Welcome to the new and exciting TWHL!</h1>
+
     <div class="alert alert-info">
         <p>
             Welcome back to TWHL! Please take a moment to confirm your details.

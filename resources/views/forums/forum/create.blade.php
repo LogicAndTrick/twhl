@@ -2,13 +2,13 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Create forum</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
-            <li class="active">Create</li>
-        </ol>
-    </hc>
+    <h1>Create forum</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
+        <li class="active">Create</li>
+    </ol>
+
     @form(forum/create)
         <h3>Create Forum</h3>
         @text(name:forum_name) = Name

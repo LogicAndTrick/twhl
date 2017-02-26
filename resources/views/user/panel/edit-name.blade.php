@@ -2,13 +2,11 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Update username: {{ $user->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
-            <li class="active">Update Name</li>
-        </ol>
-    </hc>
+    <h1>Update username: {{ $user->name }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+        <li class="active">Update Name</li>
+    </ol>
 
     <div class="alert alert-danger">
         <strong>Careful!</strong>

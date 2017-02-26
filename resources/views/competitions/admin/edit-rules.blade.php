@@ -2,14 +2,13 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit competition rules: {{ $comp->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
-            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
-            <li class="active">Edit Rules</li>
-        </ol>
-    </hc>
+    <h1>Edit competition rules: {{ $comp->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('competition', 'index') }}">Competitions</a></li>
+        <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name}}</a></li>
+        <li class="active">Edit Rules</li>
+    </ol>
 
     @form(competition-admin/edit-rules)
         @hidden(id $comp)

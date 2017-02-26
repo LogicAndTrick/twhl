@@ -2,9 +2,7 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>You have been banned</h1>
-    </hc>
+    <h1>You have been banned</h1>
     <p>
         You have been banned from TWHL.
         @if ($ban->reason)

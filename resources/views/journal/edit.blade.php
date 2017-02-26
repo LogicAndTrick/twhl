@@ -2,14 +2,14 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit journal: {{ $journal->getTitle() }} by @avatar($journal->user inline)</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
-            <li><a href="{{ act('journal', 'view', $journal->id) }}">Journal #{{ $journal->id }}</a></li>
-            <li class="active">Edit Journal</li>
-        </ol>
-    </hc>
+    <h1>Edit journal: {{ $journal->getTitle() }} by @avatar($journal->user inline)</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('journal', 'index') }}">Journals</a></li>
+        <li><a href="{{ act('journal', 'view', $journal->id) }}">Journal #{{ $journal->id }}</a></li>
+        <li class="active">Edit Journal</li>
+    </ol>
+
     @form(journal/edit)
         @hidden(id $journal)
         @text(title $journal) = Journal Title

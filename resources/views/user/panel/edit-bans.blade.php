@@ -2,13 +2,12 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Manage bans: {{ $user->name }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
-            <li class="active">Manage Bans</li>
-        </ol>
-    </hc>
+    <h1>Manage bans: {{ $user->name }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('panel', 'index', $user->id) }}">Control Panel</a></li>
+        <li class="active">Manage Bans</li>
+    </ol>
 
     <h2>Ban History</h2>
     <table class="table">

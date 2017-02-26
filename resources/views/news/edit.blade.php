@@ -2,14 +2,14 @@
 @extends('app')
 
 @section('content')
-    <hc>
-        <h1>Edit news post: {{ $news->title }}</h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ act('news', 'index') }}">News</a></li>
-            <li><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></li>
-            <li class="active">Edit</li>
-        </ol>
-    </hc>
+    <h1>Edit news post: {{ $news->title }}</h1>
+
+    <ol class="breadcrumb">
+        <li><a href="{{ act('news', 'index') }}">News</a></li>
+        <li><a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a></li>
+        <li class="active">Edit</li>
+    </ol>
+
     @form(news/edit)
         @hidden(id $news)
         @text(title $news) = News Post Title
