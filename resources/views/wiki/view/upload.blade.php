@@ -1,5 +1,6 @@
 
 <h1>
+    <span class="fa fa-upload"></span>
     {{ $revision->getNiceTitle() }}
     <small class="pull-right">
         @if (!$revision->wiki_object->canEdit())

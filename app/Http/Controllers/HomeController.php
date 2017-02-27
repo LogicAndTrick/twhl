@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use App\Models\Accounts\User;
+use App\Models\Competitions\Competition;
+use App\Models\Competitions\CompetitionStatus;
 use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use App\Models\Journal;
@@ -31,6 +33,11 @@ class HomeController extends Controller {
             ->whereIn('type_id', [1,4]) // Maps and mods
             ->orderBy('updated_at', 'desc')
             ->limit(4)
+            ->get();
+
+        // Competitions
+        $comps = Competition::with(['type', 'judge_type'])
+            ->whereIn('status_id', [CompetitionStatus::ACTIVE, CompetitionStatus::JUDGING, CompetitionStatus::VOTING])
             ->get();
 
         // Wiki section
@@ -84,6 +91,7 @@ class HomeController extends Controller {
 
 		return view('home/index', [
             'new_maps' => $new_maps,
+            'competitions' => $comps,
             'wiki_edits' => $wiki_edits,
             'threads' => $threads,
             'journals' => $journals,

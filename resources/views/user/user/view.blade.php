@@ -3,7 +3,8 @@
 
 @section('content')
     <h1>
-        User: {{ $user->name }}
+        <span class="fa fa-user"></span>
+        {{ $user->name }}
         @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
             <a href="{{ act('panel', 'index', $user->id) }}" class="btn btn-xs btn-info">
                 <span class="fa fa-cog"></span>
@@ -33,7 +34,7 @@
             </h2>
 
             <div class="row vault-list pt-0">
-                @foreach ($vault_items as $item)
+                @forelse ($vault_items as $item)
                     <div class="col d-flex">
                         <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item">
                             <span class="tile-heading">
@@ -61,7 +62,11 @@
                             </span>
                         </a>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col text-center">
+                        <em>None!</em>
+                    </div>
+                @endforelse
             </div>
 
         </div>
@@ -74,7 +79,7 @@
             </h2>
 
             <div class="journals">
-                @foreach ($journals as $journal)
+                @forelse ($journals as $journal)
                     <a href="{{ act('journal', 'view', $journal->id) }}" class="slip">
                         <span class="slip-avatar">
                             @avatar($journal->user small link=false show_name=false)
@@ -92,7 +97,11 @@
                             </span>
                         </span>
                     </a>
-                @endforeach
+                @empty
+                    <div class="col text-center">
+                        <em>None!</em>
+                    </div>
+                @endforelse
             </div>
 
         </div>

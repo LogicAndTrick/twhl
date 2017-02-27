@@ -62,6 +62,29 @@
   margin: 3px 0 10px;
 }
 
+.countdown.is-countdown {
+  width: 300px;
+  margin: 0 auto;
+  background-color: #fefefe;
+  padding: 5px 0;
+
+  .countdown-row {
+    display: inline-block;
+  }
+}
+
+.countdown {
+  display: flex;
+  flex-direction: column;
+
+  .countdown-descr {
+    order: 1;
+  }
+  .countdown-show4 {
+    order: 2;
+  }
+}
+
 .competition-brief {
   .competition-status {
     text-align: center;

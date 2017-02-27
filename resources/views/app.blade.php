@@ -78,8 +78,9 @@
     <script type="text/javascript">
         window.urls = {
             embed: {
-                vault: '{{ url("vault/embed/{id}") }}',
-                vault_screenshot: '{{ asset("uploads/vault/{shot}") }}'
+                vault: '{{ url("api/vault-items") }}',
+                vault_screenshot: '{{ asset("uploads/vault/{shot}") }}',
+                game_icon: '{{asset('images/games/{game_abbr}_32.svg') }}'
             },
             view: {
                 user: '{{ url("user/view/{id}") }}',

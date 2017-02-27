@@ -3,7 +3,10 @@
 
 @section('content')
 
-    <h1>Welcome to the new and exciting TWHL!</h1>
+    <h1>
+        <span class="fa fa-smile-o"></span>
+        Welcome to the new and exciting TWHL!
+    </h1>
 
     <div class="alert alert-info">
         <p>

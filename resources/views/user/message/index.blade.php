@@ -4,6 +4,7 @@
 @section('content')
 
     <h1>
+        <span class="fa fa-envelope"></span>
         Messages: {{ $user->name }}
         @if (Auth::user()->id == $user->id)
             <a href="{{ act('message', 'send') }}" class="btn btn-info btn-xs"><span class="fa fa-envelope"></span> Send New Message</a>

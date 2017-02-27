@@ -3,7 +3,7 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-cubes"></span>
+        <span class="fa fa-trophy"></span>
         Competitions
         @if (permission('CompetitionAdmin'))
             <a class="btn btn-outline-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="fa fa-pencil"></span> Modify Competition Restrictions</a>

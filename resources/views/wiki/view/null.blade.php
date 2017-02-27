@@ -1,4 +1,7 @@
-<h1>Page not found: {{ $slug }}</h1>
+<h1>
+    <span class="fa fa-frown-o"></span>
+    Page not found: {{ $slug }}
+</h1>
 
 <ol class="breadcrumb">
     <li><a href="{{ url('/wiki') }}">Wiki</a></li>

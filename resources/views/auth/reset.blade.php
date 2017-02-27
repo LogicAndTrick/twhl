@@ -2,7 +2,10 @@
 @extends('app')
 
 @section('content')
-    <h1>Reset password</h1>
+    <h1>
+        <span class="fa fa-life-ring"></span>
+        Reset password
+    </h1>
     <div class="row">
         <div class="col-xl-4 push-xl-4 col-md-6 push-md-3">
             @form(password/reset)

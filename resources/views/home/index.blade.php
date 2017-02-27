@@ -5,7 +5,7 @@
 <div class="home-page">
 
     <div class="row">
-        <div class="col-8">
+        <div class="col-md-8">
             <h1>
                 <span class="fa fa-newspaper-o"></span>
                 Latest News
@@ -37,16 +37,108 @@
                 @endforeach
             </div>
         </div>
-        <div class="col-4">
-            <h1>Welcome back!</h1>
-            <ul>
-                <li>This is your <strong>too many</strong><sup>th</sup> login</li>
-                <li>You have no private messages</li>
-                <li>Join the competition: <strong>3 brush challenge!</strong></li>
-                <li>Say hello to <strong>Some douche</strong>, our newest member!</li>
-            </ul>
+        <div class="col-md-4">
+            @if (Auth::check())
+                {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
+                {? $notify_count = Auth::user()->unreadNotificationCount(); ?}
+                <h1>
+                    <span class="fa fa-user"></span>
+                    Welcome back!
+                </h1>
+                <div class="list-group">
+                    <span class="list-group-item">
+                        <span>
+                            <span class="fa fa-sign-in"></span>
+                            This is your <strong>{{ Auth::user()->stat_logins }}</strong><sup>{{ ordinal(Auth::user()->stat_logins, false) }}</sup> login
+                        </span>
+                    </span>
+                    <a href="{{ act('message', 'index') }}" class="list-group-item list-group-item-action justify-content-between {{ $unread_count > 0 ? 'list-group-item-warning' : '' }}">
+                        <span>
+                            New private messages
+                        </span>
+                        <span class="badge badge-default badge-pill">{{  $unread_count }}</span>
+                    </a>
+                    <a href="{{ act('panel', 'notifications') }}" class="list-group-item list-group-item-action justify-content-between {{ $notify_count > 0 ? 'list-group-item-warning' : '' }}">
+                        <span>
+                            New notifications
+                        </span>
+                        <span class="badge badge-default badge-pill">{{  $notify_count }}</span>
+                    </a>
+                    <a href="{{ act('auth', 'logout') }}" class="list-group-item list-group-item-action">
+                        <span>
+                            <span class="fa fa-sign-out"></span>
+                            Logout
+                        </span>
+                  </a>
+                </div>
+            @else
+                <h1>
+                    <span class="fa fa-sign-in"></span>
+                    Log in
+                </h1>
+                @form(auth/login)
+                    {? $login_form_checked = true; ?}
+                    @text(email placeholder=Email/username) = Email or Username
+                    @password(password) = Password
+                    <div class="row">
+                        <div class="col-8">
+                            @checkbox(remember $login_form_checked) = Remember Me
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block btn-sm">Login</button>
+                        </div>
+                    </div>
+                @endform
+                <div class="text-center mt-3">
+                    <a class="btn btn-outline-primary btn-sm" href="{{ url('/auth/register') }}">Register</a>
+                    <a class="btn btn-secondary btn-sm" href="{{ url('/password/email') }}">Forgot password</a>
+                </div>
+            @endif
         </div>
     </div>
+
+    @if (count($competitions) > 0)
+        <h1>
+            <span class="fa fa-trophy"></span>
+            Active Competitions
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('competition', 'index') }}">See all</a>
+        </h1>
+        <div class="competition-list">
+            <div class="slot">
+                <div class="slot-main">
+                    @foreach ($competitions->sortByDesc('close_date') as $comp)
+                        @if (!$loop->first)
+                            <hr />
+                        @endif
+                        <div class="row">
+                            <div class="col-6 col-sm-4 d-flex flex-column align-items-start">
+                                <h2 class="font-weight-normal my-0">
+                                    <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>
+                                </h2>
+                                <small>{{ $comp->type->name }} &bull; {{ $comp->judge_type->name }}</small>
+                            </div>
+                            <div class="col-6 col-sm-4 d-flex align-items-center justify-content-center">
+                                <h2 class="font-weight-normal my-0 text-center">{{ $comp->getStatusText() }}</h2>
+                            </div>
+                            <div class="col-12 justify-content-center col-sm-4 d-flex align-items-center justify-content-sm-end pt-3 pt-sm-0">
+                                <div class="d-inline-block">
+                                    @if ($comp->isOpen())
+                                        <a href="{{ act('competition', 'brief', $comp->id) }}" class="btn btn-success">Enter Now</a>
+                                    @elseif ($comp->isVotingOpen())
+                                        <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-info">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
+                                    @elseif ($comp->isVoting() || $comp->isJudging())
+                                        Results coming soon!
+                                    @else
+                                        {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->close_date) ({{ $comp->close_date->format('jS F Y') }})
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    @endif
 
     <h1>
         <span class="fa fa-database"></span>

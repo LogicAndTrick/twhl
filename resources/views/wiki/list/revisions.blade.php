@@ -4,7 +4,10 @@
 @section('content')
     @include('wiki.nav', ['revision' => $revision])
 
-    <h1>History of {{ $revision->getNiceTitle() }}</h1>
+    <h1>
+        <span class="fa fa-clock-o"></span>
+        History of {{ $revision->getNiceTitle() }}
+    </h1>
 
     <ol class="breadcrumb">
         <li><a href="{{ url('/wiki') }}">Wiki</a></li>

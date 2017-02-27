@@ -2,7 +2,10 @@
 @extends('app')
 
 @section('content')
-    <h1>Login to TWHL</h1>
+    <h1>
+        <span class="fa fa-user-circle-o"></span>
+        Login to TWHL
+    </h1>
 
     <div class="row">
         <div class="col-xl-4 push-xl-4 col-md-6 push-md-3">

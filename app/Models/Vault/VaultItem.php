@@ -26,7 +26,9 @@ class VaultItem extends Model {
         'name', 'content_text', 'content_html',
         'is_hosted_externally', 'file_location', 'file_size',
         'flag_notify', 'flag_ratings',
-        'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating'
+        'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating',
+        'created_at', 'updated_at',
+        'vault_screenshots', 'user', 'engine', 'game', 'license', 'vault_category', 'vault_type', 'vault_includes', 'vault_item_reviews', 'motms'
     ];
     protected $dates = ['created_at', 'updated_at'];
 

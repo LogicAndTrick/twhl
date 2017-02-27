@@ -84,3 +84,14 @@ if (!function_exists('render_time'))
         return \App\Helpers\Egg::GetRenderTime();
     }
 }
+
+if (!function_exists('ordinal'))
+{
+    function ordinal($number, $include_number = true)
+    {
+        $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+        $n = $include_number ? $number : '';
+        if (($number % 100) >= 11 && ($number%100) <= 13) return $n . 'th';
+        else return $n . $ends[$number % 10];
+    }
+}

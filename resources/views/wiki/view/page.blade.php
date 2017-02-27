@@ -1,4 +1,5 @@
 <h1>
+    <span class="fa fa-file-o"></span>
     {{ $revision->getNiceTitle() }}
 
     <small class="pull-right">

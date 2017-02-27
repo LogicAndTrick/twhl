@@ -3,6 +3,7 @@
 
 @section('content')
     <h1>
+        <span class="fa fa-newspaper-o"></span>
         News posts
         @if (permission('NewsAdmin'))
             <a class="btn btn-primary btn-xs" href="{{ act('news', 'create') }}"><span class="fa fa-plus"></span> Create new news post</a>

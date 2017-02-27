@@ -310,9 +310,19 @@ class ApiController extends Controller {
         ],
         'vault-items' => [
             'description' => 'Vault Items',
-            'methods' => [],
+            'expand' => ['vault_screenshots', 'user', 'engine', 'game', 'license', 'vault_category', 'vault_type', 'vault_includes', 'vault_item_reviews', 'motms'],
+            'methods' => ['get'],
+            'auth' => [],
+            'parameters' => [
+                'get' => [
+                    'user_id' => [ 'type' => 'integer', 'description' => 'The ID of the user' ]
+                ]
+            ],
             'object' => VaultItem::class,
-            'filter_columns' => [],
+            'filter_columns' => [ 'name' ],
+            'sort_column' => 'created_at',
+            'allowed_sort_columns' => ['updated_at'],
+            'default_filters' => []
         ],
         'competition-restriction-groups' => [
             'description' => 'Competition Restriction Groups',

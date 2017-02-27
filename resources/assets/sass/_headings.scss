@@ -44,6 +44,31 @@ h2 {
   font-size: 1.3rem;
 }
 
+h3 {
+  font-size: 1.2rem;
+  color: darken($heading-foreground-color, 10%);
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-weight: normal;
+  color: darken($heading-foreground-color, 25%);
+}
+
+h5 {
+  font-size: 1.0rem;
+  font-weight: normal;
+  text-decoration: underline;
+  color: darken($heading-foreground-color, 35%);
+}
+
+h6 {
+  font-variant: small-caps;
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: darken($heading-foreground-color, 50%);
+}
+
 .alert {
   h1, h2, h3, h4, h5, h6 {
     color: inherit;

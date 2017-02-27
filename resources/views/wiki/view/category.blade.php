@@ -1,4 +1,5 @@
 <h1>
+    <span class="fa fa-list-ul"></span>
     Category: {{ $cat_name }}
 
     @if ($revision)

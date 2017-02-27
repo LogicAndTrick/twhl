@@ -4,7 +4,10 @@
 @section('content')
     @include('wiki.nav')
 
-    <h1>Wiki pages</h1>
+    <h1>
+        <span class="fa fa-files-o"></span>
+        Wiki pages
+    </h1>
 
     <ol class="breadcrumb">
         <li><a href="{{ url('/wiki') }}">Wiki</a></li>

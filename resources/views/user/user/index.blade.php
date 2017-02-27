@@ -2,7 +2,10 @@
 @extends('app')
 
 @section('content')
-    <h1>TWHL members</h1>
+    <h1>
+        <span class="fa fa-users"></span>
+        TWHL members
+    </h1>
 
     {!! $users->render() !!}
 

@@ -15,16 +15,22 @@ var embed_templates = {
             '<div data-u="thumbnavigator" class="thumbs"><div data-u="slides"><div data-u="prototype" class="p"><div data-u="thumbnailtemplate" class="i"></div></div></div></div>' +
             '<span data-u="arrowleft" class="arrow left" style="top: 123px; left: 8px;"></span><span data-u="arrowright" class="arrow right" style="top: 123px; right: 8px;"></span>' +
             '</div>',
-    vault: '<h2><a href="{url}">{name}</a> by ' +
-            '<span class="avatar inline "><a href="{user_url}"><img src="{user_avatar}" alt="{user_name}"><span class="name"> {user_name}</span></a></span>' +
-            '</h2>{vault_slider}',
+    vault: '<div class="slot">' +
+            ' <div class="slot-heading mb-3">' +
+            '  <div class="pull-right text-center" title="{game_name}"><img class="game-icon" src="{game_image}" alt="{game_name}"><small class="d-block">{game_abbr}</small></div>' +
+            '  <div class="slot-avatar"><span class="avatar small" title="{user_name}"><a href="{user_url}"><img src="{user_avatar}" alt="{user_name}"></a></span></div>' +
+            '  <div class="slot-title"><a href="{url}">{name}</a> by <a href="{user_url}">{user_name}</a></div>' +
+            '  <div class="slot-subtitle">Posted {created} &bull; {category} &bull; {game_name}</div>' +
+            ' </div>' +
+            ' {vault_slider}' +
+            '</div>',
     vault_no_slider: '<a href="{url}"><img class="embed-image" src="{shot}" alt="Screenshot" /></a>'
 };
 
 var __uniq = 0;
 var embed_callbacks = {
     vault: function (element, data) {
-        var images = data.vault_screenshots;
+        var images = data.vault_screenshots || [];
         images.forEach(function (img) {
             img.image_large = template(window.urls.embed.vault_screenshot, { shot: img.image_large });
             img.image_thumb= template(window.urls.embed.vault_screenshot, { shot: img.image_thumb });
@@ -37,7 +43,7 @@ var embed_callbacks = {
             var embed_no_slider = template(embed_templates.vault, {
                 url: template(window.urls.view.vault, data),
                 name: data.name,
-                user_url: template(window.urls.view.vault, data.user),
+                user_url: template(window.urls.view.user, data.user),
                 user_avatar: data.user.avatar_inline,
                 user_name: data.user.name,
                 vault_slider: template(embed_templates.vault_no_slider, { shot: shot, url: template(window.urls.view.vault, data) })
@@ -64,9 +70,14 @@ var embed_callbacks = {
             var embed = template(embed_templates.vault, {
                 url: template(window.urls.view.vault, data),
                 name: data.name,
-                user_url: template(window.urls.view.vault, data.user),
-                user_avatar: data.user.avatar_inline,
+                user_url: template(window.urls.view.user, data.user),
+                user_avatar: data.user.avatar_small,
                 user_name: data.user.name,
+                created: readableTime(Date.parse(data.updated_at)),
+                category: data.vault_category.name,
+                game_abbr: data.game.abbreviation,
+                game_name: data.game.name,
+                game_image: template(window.urls.embed.game_icon, { game_abbr: data.game.abbreviation }),
                 vault_slider: show
             });
 
@@ -102,13 +113,13 @@ $(document).on('appear', '.embed-content .uninitialised', function(e, $affected)
      par = $t.parent(),
      typ = $t.data('embed-type'),
       id = $t.data(typ+'-id'),
-     url = template(window.urls.embed[typ], {id:id});
+     url = window.urls.embed[typ];
 
     if ($t.data('stop')) return;
     $t.data('stop', true);
 
-    $.get(url, { }).done(function(data) {
-        embed_callbacks[typ].call(window, par, data);
+    $.get(url, { id: id, expand: 'user,vault_screenshots,game,vault_category' }).done(function(data) {
+        embed_callbacks[typ].call(window, par, data[0]);
     });
 });
 

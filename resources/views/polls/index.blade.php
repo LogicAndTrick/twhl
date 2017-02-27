@@ -4,6 +4,7 @@
 @section('content')
     
     <h1>
+        <span class="fa fa-pie-chart"></span>
         Polls
         @if (permission('PollAdmin'))
             <a class="btn btn-primary btn-xs" href="{{ act('poll', 'create') }}"><span class="fa fa-plus"></span> Create new poll</a>
