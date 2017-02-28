@@ -125,6 +125,7 @@
                     </span>
                 </a>
             </div>
+            <div class="w-100 hidden-md-up"></div>
         @endforeach
     </div>
     <div class="footer-container">
