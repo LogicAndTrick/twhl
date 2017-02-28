@@ -7,3 +7,19 @@
     }
   }
 }
+
+@media (max-width: map_get($grid-breakpoints, 'sm') - 1px) {
+  .pagination {
+    li {
+      display: none;
+
+      &.active, &.disabled,
+      &:first-child, &:last-child,
+      &:nth-child(2), &:nth-child(3),
+      &:nth-last-child(2), &:nth-last-child(3) {
+        display: inline;
+      }
+    }
+  }
+}
+

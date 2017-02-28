@@ -1,6 +1,11 @@
 <?php namespace App\Models\Comments;
 
+use App\Models\Journal;
+use App\Models\News;
+use App\Models\Polls\Poll;
+use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemReview;
+use App\Models\Wiki\WikiObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -82,6 +87,25 @@ class Comment extends Model {
             if ($meta->key == $type) return $meta->value;
         }
         return null;
+    }
+
+    public function getArticle() {
+        switch ($this->article_type) {
+            case Comment::NEWS;
+                return News::findOrFail($this->article_id);
+            case Comment::JOURNAL;
+                return Journal::findOrFail($this->article_id);
+            case Comment::VAULT;
+                return VaultItem::findOrFail($this->article_id);
+            case Comment::REVIEW;
+                return VaultItemReview::findOrFail($this->article_id);
+            case Comment::POLL:
+                return Poll::findOrFail($this->article_id);
+            case Comment::WIKI:
+                return WikiObject::findOrFail($this->article_id);
+            default:
+                throw new \Exception('Undefined comment type in getArticle: ' . $this->article_type);
+        }
     }
 
     public static function canCreate($type)

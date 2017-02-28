@@ -31,7 +31,7 @@
                 </div>
                 <div class="slot-subtitle">
                     Commented @date($comment->created_at)
-                    <a class="pull-right" href="#comment-{{ $comment->id }}">Comment #{{ $comment->id }}</a>
+                    <a class="pull-right hidden-xs-down" href="#comment-{{ $comment->id }}">Comment #{{ $comment->id }}</a>
                 </div>
             </div>
             <div class="slot-main">

@@ -36,8 +36,8 @@
                     <thead>
                         <tr>
                             <th>Article</th>
-                            <th>Last Modified</th>
-                            <th>Excerpt</th>
+                            <th class="hidden-sm-down">Last Modified</th>
+                            <th class="hidden-md-down">Excerpt</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,11 +46,11 @@
                                 <td>
                                     <a href="{{ act('wiki', 'page', $wiki->slug) }}">{{ $wiki->getNiceTitle() }}</a>
                                 </td>
-                                <td>
+                                <td class="hidden-sm-down">
                                     @date($wiki->created_at)
                                     by @avatar($wiki->user inline)
                                 </td>
-                                <td>
+                                <td class="hidden-md-down">
                                     <div class="bbcode">{!! app('bbcode')->ParseExcerpt($wiki->content_text) !!}</div>
                                 </td>
                             </tr>
@@ -70,18 +70,18 @@
                     <thead>
                         <tr>
                             <th>Title</th>
-                            <th>Forum</th>
-                            <th>Created</th>
-                            <th>Last Post</th>
+                            <th class="hidden-sm-down">Forum</th>
+                            <th class="hidden-sm-down">Created</th>
+                            <th class="hidden-md-down">Last Post</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($results_threads as $thread)
                             <tr>
                                 <td><a href="{{ act('thread', 'view', $thread->id) }}">{{ $thread->title }}</a></td>
-                                <td><a href="{{ act('forum', 'view', $thread->forum->slug) }}">{{ $thread->forum->name }}</a></td>
-                                <td>@date($thread->created_at)</td>
-                                <td>
+                                <td class="hidden-sm-down"><a href="{{ act('forum', 'view', $thread->forum->slug) }}">{{ $thread->forum->name }}</a></td>
+                                <td class="hidden-sm-down">@date($thread->created_at)</td>
+                                <td class="hidden-md-down">
                                     @if ($thread->last_post)
                                         <a href="{{ act('thread', 'view', $thread->id) }}?page=last#post-{{ $thread->last_post->id }}">{{ $thread->last_post->created_at->diffForHumans() }}</a>
                                         by @avatar($thread->last_post->user inline)
@@ -104,8 +104,8 @@
                     <thead>
                         <tr>
                             <th>In Thread</th>
-                            <th>Posted</th>
-                            <th>Excerpt</th>
+                            <th class="hidden-sm-down">Posted</th>
+                            <th class="hidden-md-down">Excerpt</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,11 +115,11 @@
                                     <a href="{{ act('thread', 'locate-post', $post->id) }}">{{ $post->thread->title }}</a><br/>
                                     in <a href="{{ act('forum', 'view', $post->thread->forum->id) }}">{{ $post->forum->name }}</a>
                                 </td>
-                                <td>
+                                <td class="hidden-sm-down">
                                     @date($post->created_at)<br/>
                                     by @avatar($post->user inline)
                                 </td>
-                                <td>
+                                <td class="hidden-md-down">
                                     <div class="bbcode">{!! app('bbcode')->ParseExcerpt($post->content_text) !!}</div>
                                 </td>
                             </tr>
@@ -140,10 +140,10 @@
                     <thead>
                         <tr>
                             <th>Vault Item</th>
-                            <th>Category</th>
-                            <th>Type</th>
-                            <th>Uploaded By</th>
-                            <th>Excerpt</th>
+                            <th class="hidden-sm-down">Category</th>
+                            <th class="hidden-sm-down">Type</th>
+                            <th class="hidden-sm-down">Uploaded By</th>
+                            <th class="hidden-md-down">Excerpt</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -152,13 +152,13 @@
                                 <td>
                                     <a href="{{ act('vault', 'view', $vault->id) }}">{{ $vault->name }}</a>
                                 </td>
-                                <td>{{ $vault->vault_category->name }}</td>
-                                <td>{{ $vault->vault_type->name }}</td>
-                                <td>
+                                <td class="hidden-sm-down">{{ $vault->vault_category->name }}</td>
+                                <td class="hidden-sm-down">{{ $vault->vault_type->name }}</td>
+                                <td class="hidden-sm-down">
                                     @date($vault->created_at)
                                     by @avatar($vault->user inline)
                                 </td>
-                                <td>
+                                <td class="hidden-md-down">
                                     <div class="bbcode">{!! app('bbcode')->ParseExcerpt($vault->content_text) !!}</div>
                                 </td>
                             </tr>
@@ -179,7 +179,7 @@
                     <thead>
                         <tr>
                             <th>User</th>
-                            <th>Biography Excerpt</th>
+                            <th class="hidden-sm-down">Biography Excerpt</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,7 +188,7 @@
                                 <td>
                                     @avatar($user inline)
                                 </td>
-                                <td>
+                                <td class="hidden-sm-down">
                                     <div class="bbcode">{!! app('bbcode')->ParseExcerpt($user->info_biography_text) !!}</div>
                                 </td>
                             </tr>

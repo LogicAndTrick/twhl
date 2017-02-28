@@ -63,7 +63,7 @@
 }
 
 .countdown.is-countdown {
-  width: 300px;
+  max-width: 300px;
   margin: 0 auto;
   background-color: #fefefe;
   padding: 5px 0;
@@ -111,7 +111,9 @@
 
   .main {
     display: block;
+    max-width: 100%;
   }
+
   .preview {
     display: inline-block;
     width: 24%;

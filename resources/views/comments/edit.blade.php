@@ -11,5 +11,5 @@
         @endif
     </h1>
 
-    @include('comments.create', [ 'article_type' => $comment->article_type, 'article_id' => $comment->article_id, 'text' => $comment->content_text, 'comment' => $comment ])
+    @include('comments.create', [ 'article' => $comment->getArticle(), 'article_type' => $comment->article_type, 'article_id' => $comment->article_id, 'text' => $comment->content_text, 'comment' => $comment ])
 @endsection

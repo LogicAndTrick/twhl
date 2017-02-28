@@ -35,7 +35,7 @@
 
     a {
       float: right;
-      padding: 0 3px;
+      padding: 1px 6px;
       color: white;
 
       &:hover {
@@ -61,6 +61,7 @@
     display: none;
     font-size: 12px;
     padding: 4px;
+    vertical-align: bottom;
   }
   &.refreshing .refresh-icon { display: inline; }
 
@@ -191,6 +192,7 @@
     }
   }
 
+  .close-button { display: none; }
   .pin-button { display: none; }
 
   &.open {
@@ -213,14 +215,25 @@
     right: 0;
     width: auto;
     max-height: none;
-    height: 26px;
+    height: 2rem;
+
+    .shouts {
+      top: 2rem;
+    }
+
     h1 {
-      font-size: 16px;
+      font-size: 1.3rem;
+      line-height: 1.6rem;
+      padding: 0.2rem;
       a {
         background: darken($twhl-brand, 10%);
-        margin: 0 10px;
+        margin: 0px 3px;
+        padding: 2px 15px;
+        border-radius: 4px;
+        line-height: 1rem;
       }
     }
+
     &.open {
       width: auto;
       height: 80%;

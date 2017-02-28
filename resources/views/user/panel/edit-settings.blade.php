@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card">
+                <div class="card mt-3 mt-md-0">
                     <div class="card-header">
                         Time Zone
                     </div>

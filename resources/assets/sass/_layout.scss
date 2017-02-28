@@ -64,6 +64,19 @@ dl.dl-horizontal {
     dt { @extend .col-6; }
     dd { @extend .col-6; }
   }
+
+  @media (max-width: map_get($grid-breakpoints, 'sm') - 1px) {
+    dt {
+      text-align: left;
+      max-width: 100%;
+      flex-basis: 100%;
+    }
+    dd {
+      max-width: 100%;
+      flex-basis: 100%;
+      border-left: 1rem solid transparent;
+    }
+  }
 }
 
 ul.inline-bullet {

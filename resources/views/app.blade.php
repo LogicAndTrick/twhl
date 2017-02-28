@@ -47,7 +47,7 @@
     </footer>
 
     @if (app('config')->get('app.debug'))
-        <div class="container hidden-xs hidden-sm" style="padding-top: 20px;">
+        <div class="container hidden-sm-down" style="padding-top: 20px;">
             <table class="table table-bordered table-sm">
                 <thead>
                     <tr>

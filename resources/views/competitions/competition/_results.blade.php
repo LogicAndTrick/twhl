@@ -31,7 +31,7 @@
             {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
             <div class="slot rank-{{ $result->rank }}" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
                 <div class="slot-heading">
-                    <div class="pull-right mt-2">
+                    <div class="pull-right mt-2 hidden-xs-down">
                         @if ($entry->file_location)
                             <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
                         @endif
@@ -54,6 +54,11 @@
                     </div>
                 </div>
                 <div class="slot-main">
+                    @if ($entry->file_location)
+                        <div class="my-2 hidden-sm-up text-center">
+                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
+                        </div>
+                    @endif
                     <div class="d-flex flex-column flex-lg-row">
                         <div class="text-center flex-lg-last my-2 ml-0 ml-lg-3 my-lg-0">
                             <div style="display: inline-block;">

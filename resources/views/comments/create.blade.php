@@ -44,7 +44,7 @@
             Comment preview
             <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
         </h4>
-        <div class="card"><div id="preview-panel" class="card-block bbcode">{{ app('bbcode')->Parse($text) }}</div></div>
+        <div class="card"><div id="preview-panel" class="card-block bbcode">{!! app('bbcode')->Parse($text) !!}</div></div>
     </div>
     <script type="text/javascript">
         $('#update-preview').click(function() {
