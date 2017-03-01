@@ -1,9 +1,16 @@
 body > nav {
 
+  @media (max-width: map_get($grid-breakpoints, 'sm') - 1px) {
+    .container {
+      width: 100%;
+    }
+  }
+
   .nav-item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: center;
   }
 
   .nav-avatar {
@@ -38,6 +45,12 @@ body > nav {
     }
   }
 
+  .navbar-form {
+    .input-group {
+      background: #fff;
+    }
+  }
+
   .dropdown-item .fa {
       width: 24px;
       text-align: center;
@@ -58,12 +71,6 @@ body > nav {
         color: $navbar-inverse-active-color;
         text-decoration: none;
         background-color: darken($gray-dark, 5%);
-      }
-    }
-
-    .navbar-form {
-      .input-group {
-        background: #fff;
       }
     }
   }
