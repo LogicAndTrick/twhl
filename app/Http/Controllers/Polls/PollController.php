@@ -47,6 +47,7 @@ class PollController extends Controller {
         return view('polls/view', [
             'poll' => $poll,
             'comments' => $comments,
+            'subscription' => Comment::getSubscription(Auth::user(), Comment::POLL, $id, true),
             'user_vote' => $user_vote,
             'user_votes' => [$user_vote]
         ]);

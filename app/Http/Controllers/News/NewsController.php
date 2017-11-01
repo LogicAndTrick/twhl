@@ -30,7 +30,8 @@ class NewsController extends Controller {
         $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::NEWS)->whereArticleId($id)->get();
         return view('news/view', [
             'news' => $news,
-            'comments' => $comments
+            'comments' => $comments,
+            'subscription' => Comment::getSubscription(Auth::user(), Comment::NEWS, $id, true)
         ]);
     }
 

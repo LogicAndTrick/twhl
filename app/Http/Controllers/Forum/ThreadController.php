@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
+use App\Models\Accounts\UserSubscription;
 use App\Models\Forums\Forum;
 use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
@@ -92,8 +93,33 @@ class ThreadController extends Controller {
         return view('forums/thread/view', [
             'forum' => $forum,
             'thread' => $thread,
-            'posts' => $pag
+            'posts' => $pag,
+            'subscription' => UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id, true)
         ]);
+    }
+
+    public function getSubscribe($id)
+    {
+        $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id);
+        if (!$sub) {
+            $sub = UserSubscription::Create([
+                'user_id' => Auth::user()->id,
+                'article_type' => UserSubscription::FORUM_THREAD,
+                'article_id' => intval($id, 10),
+                'send_email' => true,
+                'send_push_notification' => false
+            ]);
+        }
+        return redirect('thread/view/'.$id);
+    }
+
+    public function getUnsubscribe($id)
+    {
+        $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id);
+        if ($sub) {
+            $sub->delete();
+        }
+        return redirect('thread/view/'.$id);
     }
 
     public function getCreate($id)

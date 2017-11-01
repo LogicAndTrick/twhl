@@ -21,6 +21,15 @@
         <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
         <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
         <li class="active">View Thread</li>
+        <li class="float-right no-breadcrumb">
+            @if (Auth::check())
+                @if ($subscription)
+                    <a href="{{ act('thread', 'unsubscribe', $thread->id) }}" class="btn btn-xs btn-secondary"><span class="fa fa-bell"></span> Unsubscribe</a>
+                @else
+                    <a href="{{ act('thread', 'subscribe', $thread->id) }}" class="btn btn-xs btn-secondary"><span class="fa fa-bell"></span> Subscribe</a>
+                @endif
+            @endif
+        </li>
     </ol>
 
     {!! $posts->render() !!}

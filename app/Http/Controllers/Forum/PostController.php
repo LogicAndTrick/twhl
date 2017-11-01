@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers\Forum;
 
+use App\Events\ForumPostCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
 use App\Models\Forums\Forum;
@@ -61,6 +62,7 @@ class PostController extends Controller {
             'content_text' => Request::input('text'),
             'content_html' => app('bbcode')->Parse(Request::input('text')),
         ]);
+        event(new ForumPostCreated($post));
         return redirect('thread/view/'.$thread->id.'?page=last#post-' . $post->id);
 	}
 

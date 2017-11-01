@@ -1,5 +1,7 @@
 <?php namespace App\Models\Comments;
 
+use App\Models\Accounts\UserNotification;
+use App\Models\Accounts\UserSubscription;
 use App\Models\Journal;
 use App\Models\News;
 use App\Models\Polls\Poll;
@@ -9,6 +11,7 @@ use App\Models\Wiki\WikiObject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
+use DB;
 
 class Comment extends Model {
 
@@ -18,6 +21,21 @@ class Comment extends Model {
     const REVIEW = 'r';
     const POLL = 'p';
     const WIKI = 'w';
+
+    public static function getSubscription($user, $article_type, $article_id, $clear = false)
+    {
+        if (!$user || !$user->id) return null;
+
+        $ty = UserNotification::GetTypeFromCommentType($article_type);
+        $sub = UserSubscription::whereUserId($user->id)
+                ->whereArticleType($ty)
+                ->whereArticleId($article_id)
+                ->first();
+        if ($sub && $clear) {
+            DB::statement('CALL clear_user_notifications(?, ?, ?);', [$user->id, $ty, $article_id]);
+        }
+        return $sub;
+    }
 
     use SoftDeletes;
 

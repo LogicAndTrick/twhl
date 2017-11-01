@@ -3,30 +3,21 @@
 namespace App\Events;
 
 use App\Events\Event;
+use App\Models\Wiki\WikiRevision;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class WikiRevisionCreated extends Event
 {
     use SerializesModels;
-
+    
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @var WikiRevision
      */
-    public function __construct()
-    {
-        //
-    }
+    public $revision;
 
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
+    public function __construct(WikiRevision $revision)
     {
-        return [];
+        $this->revision = $revision;
     }
 }

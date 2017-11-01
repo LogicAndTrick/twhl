@@ -19,9 +19,19 @@ body > footer {
   .td, .th {
 
   }
+  tr.unread {
+    background-color: lighten($alert-success-bg, 6%) !important;
+  }
   > thead > tr > th {
     border-bottom-color: $twhl-brand;
   }
+
+  .col-5p  { width:  5%; }
+  .col-10p { width: 10%; }
+  .col-15p { width: 15%; }
+  .col-20p { width: 20%; }
+  .col-25p { width: 25%; }
+  .col-30p { width: 30%; }
 }
 
 .breadcrumb {
@@ -30,6 +40,12 @@ body > footer {
 
   li {
     @extend .breadcrumb-item;
+  }
+
+  .no-breadcrumb {
+    &::before {
+      content: '';
+    }
   }
 }
 

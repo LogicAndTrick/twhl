@@ -2,6 +2,8 @@
 
 use App\Events\CommentCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\UserNotification;
+use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
 use App\Models\Comments\CommentMeta;
 use Request;
@@ -60,7 +62,7 @@ class CommentController extends Controller {
 	public function __construct()
 	{
         // Just assert for a logged-in user, do the permission checks dynamically
-        $this->permission(['create', 'edit', 'delete'], true);
+        $this->permission(['create', 'edit', 'delete', 'subscribe', 'unsubscribe'], true);
 	}
     
     private function replaceUrlVars($url, $comment)
@@ -179,6 +181,42 @@ class CommentController extends Controller {
         }
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
         return redirect($this->replaceUrlVars($config['redirect'], $comment) );
+    }
+
+    // Subscriptions
+
+    public function getSubscribe($type, $article_id)
+    {
+        $sub = Comment::getSubscription(Auth::user(), $type, $article_id);
+        if (!$sub) {
+            $sub = UserSubscription::Create([
+                'user_id' => Auth::user()->id,
+                'article_type' => UserNotification::GetTypeFromCommentType($type),
+                'article_id' => intval($article_id, 10),
+                'send_email' => true,
+                'send_push_notification' => false
+            ]);
+        }
+
+        $config = CommentController::$comment_config[$type];
+        $str = $config['redirect'];
+        $str = str_ireplace('{id}', $article_id, $str);
+        $str = str_ireplace('{bookmark}', '#comments', $str);
+        return redirect($str);
+    }
+
+    public function getUnsubscribe($type, $article_id)
+    {
+        $sub = Comment::getSubscription(Auth::user(), $type, $article_id);
+        if ($sub) {
+            $sub->delete();
+        }
+
+        $config = CommentController::$comment_config[$type];
+        $str = $config['redirect'];
+        $str = str_ireplace('{id}', $article_id, $str);
+        $str = str_ireplace('{bookmark}', '#comments', $str);
+        return redirect($str);
     }
 
     // Administrative Tasks

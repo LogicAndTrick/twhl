@@ -6,9 +6,9 @@ use App\Models\Accounts\ApiKey;
 use App\Models\Accounts\Ban;
 use App\Models\Accounts\User;
 use App\Models\Accounts\UserNameHistory;
-use App\Models\Accounts\UserNotification;
 use App\Models\Accounts\UserNotificationDetails;
 use App\Models\Accounts\UserSubscription;
+use App\Models\Accounts\UserSubscriptionDetails;
 use Carbon\Carbon;
 use Request;
 use Input;
@@ -246,12 +246,25 @@ class PanelController extends Controller {
     public function getNotifications($id = 0) {
         $user = PanelController::GetUser($id);
         $notifications = UserNotificationDetails::whereUserId($user->id)->whereIsUnread(true)->get();
-        $subscriptions = UserSubscription::whereUserId($user->id)->get();
+        $subscriptions = UserSubscriptionDetails::whereUserId($user->id)->get();
         return view('user/panel/notifications', [
             'user' => $user,
             'notifications' => $notifications,
             'subscriptions' => $subscriptions
         ]);
+    }
+
+    public function getClearNotifications($id = 0) {
+        $user = PanelController::GetUser($id);
+        DB::statement("UPDATE user_notifications SET is_unread = 0 WHERE user_id = ? AND is_unread = 1", [ $user->id ]);
+        return redirect('panel/notifications/'.$id);
+    }
+
+    public function getDeleteSubscription($id) {
+	    $sub = UserSubscription::findOrFail($id);
+        $user = PanelController::GetUser($sub->user_id);
+        $sub->delete();
+        return redirect('panel/notifications/'.$user->id);
     }
 
     public function getEditName($id = 0) {

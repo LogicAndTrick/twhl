@@ -1,6 +1,7 @@
 <?php namespace App\Models\Accounts;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class UserSubscription extends Model {
 
@@ -13,15 +14,31 @@ class UserSubscription extends Model {
     const JOURNAL = 'jn';
     const POLL = 'po';
 
+    public static function getSubscription($user, $article_type, $article_id, $clear = false)
+    {
+        if (!$user || !$user->id) return null;
+
+        $ty = $article_type;
+        $sub = UserSubscription::whereUserId($user->id)
+                ->whereArticleType($ty)
+                ->whereArticleId($article_id)
+                ->first();
+        if ($sub && $clear) {
+            DB::statement('CALL clear_user_notifications(?, ?, ?);', [$user->id, $ty, $article_id]);
+        }
+        return $sub;
+    }
+
 	protected $table = 'user_subscriptions';
 	protected $fillable = [ 'user_id', 'article_type', 'article_id', 'send_email', 'send_push_notification' ];
     public $visible = [ ];
+    public $timestamps = false;
 
     protected $appends = ['type_description','link'];
     public function getTypeDescriptionAttribute() {
         switch ($this->article_type) {
             case UserSubscription::WIKI_OBJECT: return 'Wiki Comments';
-            case UserSubscription::WIKI_REVISION: return 'Wiki Page';
+            case UserSubscription::WIKI_REVISION: return 'Wiki Revisions';
             case UserSubscription::FORUM_THREAD: return 'Forum Thread';
             case UserSubscription::VAULT_CATEGORY: return 'Vault Category';
             case UserSubscription::VAULT_ITEM: return 'Vault Item';

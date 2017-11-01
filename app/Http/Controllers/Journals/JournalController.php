@@ -36,7 +36,8 @@ class JournalController extends Controller {
         $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::JOURNAL)->whereArticleId($id)->get();
         return view('journal/view', [
             'journal' => $journal,
-            'comments' => $comments
+            'comments' => $comments,
+            'subscription' => Comment::getSubscription(Auth::user(), Comment::JOURNAL, $id, true)
         ]);
     }
 

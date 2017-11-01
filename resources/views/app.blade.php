@@ -41,7 +41,7 @@
     </div>
 
     <footer>
-        Site and non-dynamic content copyright &copy; 2016, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
+        Site and non-dynamic content copyright &copy; 2017, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
         All member-submitted resources copyright their respective authors unless otherwise specified.<br/>
         {{ render_time() }}
     </footer>

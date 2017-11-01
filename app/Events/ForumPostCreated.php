@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Events\Event;
+use App\Models\Forums\ForumPost;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
@@ -11,22 +12,12 @@ class ForumPostCreated extends Event
     use SerializesModels;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @var ForumPost
      */
-    public function __construct()
-    {
-        //
-    }
+    public $post;
 
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
+    public function __construct(ForumPost $post)
     {
-        return [];
+        $this->post = $post;
     }
 }

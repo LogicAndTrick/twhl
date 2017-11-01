@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Events\Event;
+use App\Models\Vault\VaultItem;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
@@ -11,22 +12,12 @@ class VaultItemCreated extends Event
     use SerializesModels;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @var VaultItem
      */
-    public function __construct()
-    {
-        //
-    }
+    public $item;
 
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
+    public function __construct(VaultItem $item)
     {
-        return [];
+        $this->item = $item;
     }
 }

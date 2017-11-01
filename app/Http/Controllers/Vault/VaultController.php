@@ -76,6 +76,7 @@ class VaultController extends Controller {
         return view('vault/view', [
             'item' => $item,
             'comments' => $comments,
+            'subscription' => Comment::getSubscription(Auth::user(), Comment::VAULT, $id, true),
             'user_review' => $review
         ]);
     }

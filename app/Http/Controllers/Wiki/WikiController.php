@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers\Wiki;
 
+use App\Events\WikiRevisionCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
 use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
@@ -129,8 +131,12 @@ class WikiController extends Controller {
         }
 
         $comments = [];
+        $sub = null;
+        $obj_sub = null;
         if ($rev) {
             $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::WIKI)->whereArticleId($rev->object_id)->get();
+            $sub = Comment::getSubscription(Auth::user(), Comment::WIKI, $rev->object_id, true);
+            $obj_sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $rev->object_id, true);
         }
 
         return view('wiki/view/object', [
@@ -138,11 +144,37 @@ class WikiController extends Controller {
             'slug_title' => str_replace('_', ' ', $page),
             'object' => $rev ? $rev->wiki_object : null,
             'revision' => $rev,
+            'obj_subscription' => $obj_sub,
             'cat_name' => $cat_name,
             'cat_pages' => $cat_pages,
             'upload' => $upload,
-            'comments' => $comments
+            'comments' => $comments,
+            'subscription' => $sub
         ]);
+    }
+
+    public function getSubscribe($id)
+    {
+        $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $id);
+        if (!$sub) {
+            $sub = UserSubscription::Create([
+                'user_id' => Auth::user()->id,
+                'article_type' => UserSubscription::WIKI_REVISION,
+                'article_id' => intval($id, 10),
+                'send_email' => true,
+                'send_push_notification' => false
+            ]);
+        }
+        return redirect('wiki/view/'.$id);
+    }
+
+    public function getUnsubscribe($id)
+    {
+        $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $id);
+        if ($sub) {
+            $sub->delete();
+        }
+        return redirect('wiki/view/'.$id);
     }
 
     public function getEmbed($id)
@@ -247,6 +279,9 @@ class WikiController extends Controller {
         // Save meta & update the object
         $revision->wiki_revision_metas()->saveMany($meta);
         DB::statement('CALL update_wiki_object(?);', [$object->id]);
+
+
+        event(new WikiRevisionCreated($revision));
 
         return $revision;
     }

@@ -54,12 +54,14 @@
                     </span>
                     <a href="{{ act('message', 'index') }}" class="list-group-item list-group-item-action justify-content-between {{ $unread_count > 0 ? 'list-group-item-warning' : '' }}">
                         <span>
+                            <span class="fa fa-envelope"></span>
                             New private messages
                         </span>
                         <span class="badge badge-default badge-pill">{{  $unread_count }}</span>
                     </a>
                     <a href="{{ act('panel', 'notifications') }}" class="list-group-item list-group-item-action justify-content-between {{ $notify_count > 0 ? 'list-group-item-warning' : '' }}">
                         <span>
+                            <span class="fa fa-bell"></span>
                             New notifications
                         </span>
                         <span class="badge badge-default badge-pill">{{  $notify_count }}</span>

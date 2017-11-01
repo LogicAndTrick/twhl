@@ -15,6 +15,15 @@
 <ol class="breadcrumb">
     <li><a href="{{ url('/wiki') }}">Wiki</a></li>
     <li class="active">View Page</li>
+    <li class="float-right no-breadcrumb">
+        @if (Auth::check())
+            @if ($obj_subscription)
+                <a href="{{ act('wiki', 'unsubscribe', $revision->object_id) }}" class="btn btn-xs btn-secondary"><span class="fa fa-bell"></span> Unsubscribe</a>
+            @else
+                <a href="{{ act('wiki', 'subscribe', $revision->object_id) }}" class="btn btn-xs btn-secondary"><span class="fa fa-bell"></span> Subscribe</a>
+            @endif
+        @endif
+    </li>
 </ol>
 
 @include('wiki.view.revision-content', ['revision' => $revision])
