@@ -122,14 +122,14 @@ class DeployFormat extends Command
 
     private function process($type, $query, $source = 'content_text', $target = 'content_html', $callback = null)
     {
-        $inc = 10000;
         $this->comment("Processing: {$type}");
         $grand_total = $query->count();
-        for ($i = 0; $i < $grand_total; $i += $inc) {
-            $query_result = $query->limit($inc)->get();
+        $i = 0;
+
+        $query->chunk(1000, function ($query_result) use (&$i, $grand_total, $type, $target, $source, $callback) {
+            $last_reported = 0;
             $total = $query_result->count();
             $count = 1;
-            $last_reported = 0;
             foreach ($query_result as $q) {
                 try {
                     $parse_result = app('bbcode')->ParseResult($q->$source);
@@ -146,7 +146,8 @@ class DeployFormat extends Command
                 $count++;
                 $last_reported = $this->report($type . " group {$i} of {$grand_total}: ", $total, $count, $last_reported);
             }
-        }
+            $i += 1000;
+        });
     }
 
     private function report($type, $total, $count, $last_reported) {
