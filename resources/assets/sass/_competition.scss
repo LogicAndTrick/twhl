@@ -109,6 +109,10 @@
   text-align: center;
   display: inline-block;
 
+  &.btn {
+      font-size: 14px;
+  }
+
   .main {
     display: block;
     max-width: 100%;
