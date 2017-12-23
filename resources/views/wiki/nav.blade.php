@@ -7,9 +7,13 @@
             @endif
             <a class="btn btn-secondary" href="{{ act('wiki', 'history', $revision->slug) }}"><span class="fa fa-clock-o"></span> History</a>
         </div>
+    @elseif (isset($cat_name) && strpos($cat_name, '+') !== false)
+        <div class="btn-group" role="group">
+            <a class="btn btn-secondary" href="{{ act('wiki', 'page', 'category:'.$cat_name) }}">Subcategory</a>
+        </div>
     @elseif (isset($cat_name) && $cat_name != null)
         <div class="btn-group" role="group">
-            <a class="btn btn-secondary" href="{{ act('wiki', 'page', 'category:'.$cat_name) }}">Category: {{ $cat_name }}</a>
+            <a class="btn btn-secondary" href="{{ act('wiki', 'page', 'category:'.$cat_name) }}">Category: {{ str_replace('_', ' ', $cat_name) }}</a>
             @if (permission('WikiCreate'))
                 <a class="btn btn-secondary" href="{{ act('wiki', 'create', 'category:'.$cat_name) }}"><span class="fa fa-pencil"></span> Edit</a>
             @endif

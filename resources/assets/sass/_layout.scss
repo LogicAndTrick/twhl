@@ -129,3 +129,25 @@ ul.inline-bullet {
     z-index: 99;
   }
 }
+
+@media screen and (min-width: map_get($grid-breakpoints, 'md')) {
+  .columns-3, .columns-4 {
+    column-count: 2;
+    column-gap: 20px;
+  }
+}
+
+@media screen and (min-width: map_get($grid-breakpoints, 'lg')) {
+  .columns-2 {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  .columns-3 {
+    column-count: 3;
+    column-gap: 20px;
+  }
+  .columns-4 {
+    column-count: 4;
+    column-gap: 20px;
+  }
+}

@@ -113,16 +113,46 @@ class WikiController extends Controller {
         // A category will always have the list of pages at the bottom, even if the page doesn't exist
         $cat_name = null;
         $cat_pages = null;
+        $subcats = null;
         if (substr($page, 0, 9) == 'category:') {
             $cat_name = substr($page, 9);
-            $cat_pages = DB::table('wiki_revision_metas as m')
-                ->join('wiki_revisions as r', 'm.revision_id', '=', 'r.id')
-                ->select(['r.*'])
-                ->where('r.is_active', '=', true)
-                ->where('m.value', '=', $cat_name)
-                ->where('m.key', '=', WikiRevisionMeta::CATEGORY)
-                ->orderBy('r.title')
+
+            $cat_names = explode('+', $cat_name);
+            $cat_num = count($cat_names);
+            $cats_escaped = implode(',', array_map(function($x) {
+                return DB::connection()->getPdo()->quote($x);
+            }, $cat_names));
+
+            $cat_pages = WikiRevision::whereIsActive(true)
+                ->whereRaw("id in (
+                    select m.revision_id
+                    from wiki_revision_metas as m
+                    where m.key = ?
+                    and m.value in ({$cats_escaped})
+                    group by m.revision_id
+                    having count(*) = ?
+                )", [ WikiRevisionMeta::CATEGORY, $cat_num ])
+                ->orderBy('title')
                 ->paginate(50);
+
+            $subcats = DB::select("
+                    select `value` as name, count(*) as num
+                    from wiki_revision_metas as mm
+                    where mm.`key` = ?
+                    and `value` not in ({$cats_escaped})
+                    and mm.revision_id in (
+                        select id from `wiki_revisions` as r
+                        where r.`is_active` = 1
+                        and r.id in (
+                            select m.revision_id from wiki_revision_metas as m
+                            where m.key = ?
+                            and m.value in ({$cats_escaped})
+                            group by m.revision_id
+                            having count(*) = ?
+                        ) and r.deleted_at is null
+                    )
+                    group by `value`
+                ", [ WikiRevisionMeta::CATEGORY, WikiRevisionMeta::CATEGORY, $cat_num ]);
         }
 
         $upload = null;
@@ -147,6 +177,7 @@ class WikiController extends Controller {
             'obj_subscription' => $obj_sub,
             'cat_name' => $cat_name,
             'cat_pages' => $cat_pages,
+            'subcats' => $subcats,
             'upload' => $upload,
             'comments' => $comments,
             'subscription' => $sub

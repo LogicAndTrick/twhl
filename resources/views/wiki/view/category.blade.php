@@ -1,6 +1,6 @@
 <h1>
     <span class="fa fa-list-ul"></span>
-    Category: {{ $cat_name }}
+    Category: {{ str_replace('_', ' ', str_replace('+', ' > ', $cat_name)) }}
 
     @if ($revision)
         <span class="pull-right">
@@ -21,6 +21,12 @@
 
 @if ($revision)
     @include('wiki.view.revision-content', ['revision' => $revision])
+@elseif (strpos($cat_name, '+') !== false)
+    <div class="card card-outline-info">
+        <div class="card-block">
+            This is a subcategory page, all pages matching the selected categories will be shown.
+        </div>
+    </div>
 @else
     <div class="card card-outline-info">
         <div class="card-block">
@@ -30,9 +36,18 @@
     </div>
 @endif
 
+@if (count($subcats) > 0)
+    <h4>Subcategories</h4>
+    <ul class="columns-3">
+        @foreach ($subcats as $sc)
+            <li><a href="{{ act('wiki', 'page', 'category:' . $cat_name . '+' . $sc->name) }}">{{ str_replace('_', ' ', $sc->name) }}</a> ({{ $sc->num }})</li>
+        @endforeach
+    </ul>
+@endif
+
 <h4>Pages in this category</h4>
 
-<ul>
+<ul class="columns-2">
     @foreach ($cat_pages as $page)
         <li><a href="{{ act('wiki', 'page', $page->slug) }}">{{ $page->title }}</a></li>
     @endforeach
