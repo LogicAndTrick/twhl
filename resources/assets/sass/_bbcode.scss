@@ -64,6 +64,9 @@ pre {
   span.red {
     color: red;
   }
+  span.yellow {
+    color: orange; // this class is just a straight-up liar
+  }
   span.spoiler {
     color: #333;
     background-color: #333;

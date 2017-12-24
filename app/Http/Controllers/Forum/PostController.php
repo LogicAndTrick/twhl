@@ -8,6 +8,7 @@ use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use Request;
 use Auth;
+use Input;
 
 class PostController extends Controller {
 
@@ -42,7 +43,7 @@ class PostController extends Controller {
        $posts = $query->paginate(50);
 
        return view('forums/post/index', [
-           'posts' => $posts,
+           'posts' => $posts->appends(Input::except('page')),
            'user' => $user
        ]);
    	}

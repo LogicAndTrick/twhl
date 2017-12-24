@@ -43,6 +43,11 @@ class ForumController extends Controller {
         ]);
 	}
 
+	public function getId($id) {
+	    $forum = Forum::findOrFail($id);
+	    return redirect('/forum/view/' . $forum->slug);
+    }
+
     public function getView($slug)
     {
         $page = intval(Input::get('page')) ?: 1;

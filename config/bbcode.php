@@ -12,9 +12,11 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'blue',   'element' => 'span', 'element_class' => 'blue'          ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'red',    'element' => 'span', 'element_class' => 'red'           ],
         [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'purple', 'element' => 'span', 'element_class' => 'purple'        ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [ 'inline', 'excerpt' ], 'token' => 'yellow', 'element' => 'span', 'element_class' => 'yellow'        ],
 
         // Standard block
         [ 'class' => 'App\Helpers\BBCode\Tags\PreTag',   'scopes' => [ ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\Tag',      'scopes' => [                     ], 'token' => 'h',      'element' => 'h3',                                      ],
 
         // Links
         [ 'class' => 'App\Helpers\BBCode\Tags\LinkTag',      'scopes' => [ 'excerpt' ], 'token' => 'url' ],

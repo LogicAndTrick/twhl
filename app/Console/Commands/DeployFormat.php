@@ -122,32 +122,41 @@ class DeployFormat extends Command
 
     private function process($type, $query, $source = 'content_text', $target = 'content_html', $callback = null)
     {
+        $inc = 1000;
         $this->comment("Processing: {$type}");
         $grand_total = $query->count();
-        $i = 0;
 
-        $query->chunk(1000, function ($query_result) use (&$i, $grand_total, $type, $target, $source, $callback) {
-            $last_reported = 0;
-            $total = $query_result->count();
-            $count = 1;
-            foreach ($query_result as $q) {
-                try {
-                    $parse_result = app('bbcode')->ParseResult($q->$source);
-                    $q->$target = $parse_result->text;
-                    $q->timestamps = false;
-                    $q->save();
-                    if ($callback && is_callable($callback)) {
-                        call_user_func($callback, $q, $parse_result);
+        for ($i = 0; $i < $grand_total; $i += $inc) {
+
+            $cb = function($query_result) use ($type, $source, $target, $callback, $inc, $grand_total, $i) {
+
+                $total = $query_result->count();
+                $count = 1;
+                $last_reported = 0;
+                foreach ($query_result as $q) {
+                    try {
+                        $parse_result = app('bbcode')->ParseResult($q->$source);
+                        $q->$target = $parse_result->text;
+                        $q->timestamps = false;
+                        $q->save();
+                        if ($callback && is_callable($callback)) {
+                            call_user_func($callback, $q, $parse_result);
+                        }
+                    } catch (\Exception $ex) {
+                        $this->comment("ERROR processing {$type}: {$q->id}");
+                        throw $ex;
                     }
-                } catch (\Exception $ex) {
-                    $this->comment("ERROR processing {$type}: {$q->id}");
-                    throw $ex;
+                    $count++;
+                    $last_reported = $this->report($type . " group {$i} of {$grand_total}: ", $total, $count, $last_reported);
                 }
-                $count++;
-                $last_reported = $this->report($type . " group {$i} of {$grand_total}: ", $total, $count, $last_reported);
-            }
-            $i += 1000;
-        });
+            };
+
+            $results = $query->limit($inc)->get();
+            $cb($results);
+
+            unset($results);
+            unset($cb);
+        }
     }
 
     private function report($type, $total, $count, $last_reported) {

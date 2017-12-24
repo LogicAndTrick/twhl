@@ -51,6 +51,48 @@ $controllers = [
 
 \App\Helpers\Routing::controllers($controllers);
 
+// Important redirects
+$legacy = [
+    'forums.php' => function() {
+        $page = array_get($_GET, 'page', 'last', 301);
+        if (isset($_GET['thread'])) return redirect("/thread/view/{$_GET['thread']}?page={$page}", 301);
+       	elseif (isset($_GET['id'])) return redirect("/forum/id/{$_GET['id']}", 301);
+       	else return redirect('/forum', 301);
+    },
+    'competitions.php' => function() {
+        if (isset($_GET['comp'])) return redirect("/competition/brief/{$_GET['comp']}", 301);
+        elseif (isset($_GET['results'])) return redirect("competition/brief/{$_GET['results']}", 301);
+        else return redirect('/competition', 301);
+    },
+    'vault.php' => function() {
+        if (isset($_GET['map'])) return redirect("/vault/view/{$_GET['map']}", 301);
+        else return redirect('/vault', 301);
+    },
+    'mapvault_map.php' => function() {
+        if (isset($_GET['id'])) return redirect("/vault/view/{$_GET['id']}", 301);
+        else return redirect('/vault', 301);
+    },
+    'user.php' => function () {
+        if (isset($_GET['id'])) return redirect("/user/view/{$_GET['id']}", 301);
+        else return redirect('/user', 301);
+    },
+    'journals.php' => function () {
+        if (isset($_GET['id'])) return redirect("/journal/view/{$_GET['id']}", 301);
+        else return redirect('/journal', 301);
+    },
+    'news.php' => function () {
+        if (isset($_GET['id'])) return redirect("/news/view/{$_GET['id']}", 301);
+        else return redirect('/news', 301);
+    },
+    'articulator.php' => function() {
+        return redirect('/wiki/page/category:VERC_Archive');
+    }
+];
+
+foreach ($legacy as $page => $fn) {
+    Route::get($page, $fn);
+}
+
 // Swagger convention suggests that the api definition should be available at /swagger.json
 Route::get('/swagger.json', 'Api\ApiController@getIndex');
 
