@@ -405,7 +405,7 @@ class BladeServiceProvider extends ServiceProvider {
 
     public static function ErrorMessageIfExists($errors, $names) {
         $message = BladeServiceProvider::FirstErrorMessage($errors, $names);
-        return $message ? '<p class="help-block">' . BladeServiceProvider::esc($message) . "</p>" : '';
+        return $message ? '<p class="text-danger help-block">' . BladeServiceProvider::esc($message) . "</p>" : '';
     }
 
     public static function ErrorClass($errors, $names) {

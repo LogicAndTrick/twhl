@@ -14,7 +14,7 @@ class ProcessVaultUploads extends Command {
 	protected $name = 'process:vault_uploads';
 	protected $description = 'Process uploads in the unprocessed vault uploads folder.';
 
-	public function fire()
+	public function handle()
 	{
         $path = public_path('uploads/vault/process_uploads');
         if (!is_dir($path)) return;

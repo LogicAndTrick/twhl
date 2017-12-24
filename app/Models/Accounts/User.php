@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
-	use Authenticatable, CanResetPassword, SoftDeletes;
+	use Notifiable, Authenticatable, CanResetPassword, SoftDeletes;
 
     const DEFINITELY_OBLITERATE_THIS_USER = '79aaca79215e23a4e0c99cdaf96aeb9aa111becadb88b23b00e2b96f32c9ed90';
 

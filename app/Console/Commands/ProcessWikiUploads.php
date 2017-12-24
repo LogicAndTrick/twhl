@@ -13,7 +13,7 @@ class ProcessWikiuploads extends Command {
 	protected $name = 'process:wiki_uploads';
 	protected $description = 'Process any images in the uploads/wiki/process folder and create uploads from them.';
 
-	public function fire()
+	public function handle()
 	{
         $path = public_path('uploads/wiki/process');
         if (!is_dir($path)) return;

@@ -51,6 +51,11 @@ $controllers = [
 
 \App\Helpers\Routing::controllers($controllers);
 
+
+$this->get('password/reset', 'Auth\PasswordController@getReset')->name('password.request');
+$this->post('password/email', 'Auth\PasswordController@postEmail')->name('password.email');
+$this->get('password/reset/{token}', 'Auth\PasswordController@getReset')->name('password.reset');
+
 // Important redirects
 $legacy = [
     'forums.php' => function() {

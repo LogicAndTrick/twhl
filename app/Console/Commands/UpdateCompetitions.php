@@ -12,7 +12,7 @@ class UpdateCompetitions extends Command {
 	protected $name = 'update:competitions';
 	protected $description = 'Update competition statuses if required.';
 
-	public function fire()
+	public function handle()
 	{
         // Competition statuses:
         // if (DRAFT && open_date <= now) ACTIVE

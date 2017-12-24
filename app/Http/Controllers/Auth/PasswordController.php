@@ -21,26 +21,27 @@ class PasswordController extends Controller
         SendsPasswordResetEmails::broker insteadof ResetsPasswords;
     }
 
-    /**
-     * Create a new password controller instance.
-     *
-     * @return \App\Http\Controllers\Auth\PasswordController
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
-    public function getEmail() { return $this->showLinkRequestForm(); }
-    public function postEmail(Request $request) { return $this->sendResetLinkEmail($request); }
-
-    public function getReset(Request $request, $token = null) { return $this->showResetForm($request, $token); }
-    public function postReset(Request $request) { return $this->reset($request); }
-
-
-    public function showLinkRequestForm()
+    public function getEmail()
     {
         return view('auth.password');
     }
 
+    public function postEmail(Request $request) {
+        return $this->sendResetLinkEmail($request);
+    }
+
+    public function getReset(Request $request, $token = null) {
+        return view('auth.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+    public function postReset(Request $request) {
+        return $this->reset($request);
+    }
 }

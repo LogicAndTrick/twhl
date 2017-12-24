@@ -14,7 +14,7 @@ class ProcessVaultScreenshots extends Command {
 	protected $name = 'process:vault_screenshots';
 	protected $description = 'Process images in the unprocessed vault screenshots folder.';
 
-	public function fire()
+	public function handle()
 	{
         $path = public_path('uploads/vault/process_screens');
         if (!is_dir($path)) return;

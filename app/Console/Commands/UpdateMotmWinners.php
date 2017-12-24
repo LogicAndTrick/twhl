@@ -11,7 +11,7 @@ class UpdateMotmWinners extends Command {
 	protected $name = 'update:motm';
 	protected $description = 'Update motm winners if required.';
 
-	public function fire()
+	public function handle()
 	{
         /**
          * If we're in December, we want to look at the MOTM for October.
