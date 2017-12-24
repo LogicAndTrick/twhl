@@ -1,6 +1,6 @@
 [cat:Meta]
 
-== TWHL v4: 2016
+== TWHL v4: 2017
 
 Who would have thought that after all these years, the Goldsource community is still alive and strong? Coming up on 18 years since the original release of Half-Life 1, I've finally managed to finish the fabled TWHL4 to keep up with the pace of the rest of the modding community. Big thanks to the folks that helped me with design advice: Ant, Strider, Archie, Grim, as well as anybody who tested the beta and provided feedback. And of course big thanks to Atom and Seventh-Monkey for creating the site and keeping it alive for all these years.
 

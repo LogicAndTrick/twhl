@@ -29,9 +29,10 @@
     @include('nav')
 
     @if (!app()->environment('production'))
-        <div class="alert alert-danger">
+        <div class="alert alert-warning">
             <div class="container">
-                This is the beta version of TWHL and is not currently active. Please go to <a href="http://twhl.info">twhl.info</a> if you are looking for resources or information.
+                This is the public beta version of TWHL and any content posted here will be deleted once the database is refreshed.
+                Please go to <a href="http://twhl.info">twhl.info</a> if you are looking for resources or information.
             </div>
         </div>
     @endif
