@@ -38,6 +38,7 @@
     @endif
 
     <div class="container{{ isset($fluid) && $fluid === true ? '-fluid' : '' }}">
+        @include('nav-desktop')
 	    @yield('content')
     </div>
 

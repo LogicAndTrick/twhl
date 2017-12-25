@@ -1,4 +1,4 @@
-<nav class="navbar navbar-toggleable-sm bg-inverse navbar-inverse">
+<nav class="navbar navbar-toggleable-sm bg-inverse navbar-inverse hidden-lg-up">
     <div class="container">
 
         <div class="d-flex justify-content-between">

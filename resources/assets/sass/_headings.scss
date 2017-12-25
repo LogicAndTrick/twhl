@@ -31,12 +31,32 @@ h1,h2,h3,h4,h5,h6 {
   }
 }
 
+$h1-color: #E3A141;
+
 h1 {
   font-size: 1.4rem;
   border-bottom: 1px solid lighten($heading-foreground-color, 25%);
 
   small {
     font-size: 60%;
+    color: lighten($h1-color, 50%);
+  }
+
+  a {
+    color: white;
+  }
+
+  background-color: $h1-color;
+  color: white;
+  padding: 0.3rem 0.4rem;
+  margin-top: 10px;
+
+  .btn-outline-primary,
+  .btn-outline-secondary,
+  .btn-outline-danger,
+  .btn-outline-info,
+  .btn-outline-warning {
+    background: white;
   }
 }
 

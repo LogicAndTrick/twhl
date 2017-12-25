@@ -141,10 +141,12 @@
     display: flex;
     align-items: center;
     flex-direction: row;
+    background: #333;
 
     > img {
       width: 100%;
       display: block;
+      background: $tile-background-color;
     }
   }
   .tile-title {
@@ -259,9 +261,17 @@ a.tile {
   }
 
   &:nth-child(2n) {
-    background-color: lighten($tile-background-color, 2%);
+    background-color: $tile-background-color-alt;
+    border: $tile-border-alt;
+    color: $tile-foreground-color-alt;
   }
 
+  .slot-hover-only {
+    visibility: hidden;
+  }
+  &:hover .slot-hover-only {
+    visibility: visible;
+  }
 }
 
 .slip {
