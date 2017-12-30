@@ -81,7 +81,9 @@
                             @form(competition-judging/edit)
                                 @hidden(id $entry)
                                 @select(rank $rank_values $result ) = Rank
-                                @textarea(content_text $result class=tiny) = Review Text
+                                <div class="wikicode-input">
+                                    @textarea(content_text $result class=tiny) = Review Text
+                                </div>
                                 @submit = Save
                             @endform
                         </div>

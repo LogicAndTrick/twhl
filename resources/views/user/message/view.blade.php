@@ -44,26 +44,10 @@
     @form(message/send)
         @hidden(id $thread)
         @autocomplete(users[] api/users multiple=true) = Invite additional users to this thread
-        @textarea(content_text) = Message content
-        <div class="form-group">
-            <h4>
-                Message preview
-                <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-            </h4>
-            <div class="card"><div id="preview-panel" class="card-block bbcode"></div></div>
+        <div class="wikicode-input">
+            @textarea(content_text) = Message content
         </div>
         @submit = Send Message
     @endform
 
-@endsection
-
-@section('scripts')
-    <script type="text/javascript">
-        $('#update-preview').click(function() {
-            $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/posts/format") }}?field=content_text', $('form').serializeArray(), function(data) {
-                $('#preview-panel').html(data);
-            });
-        });
-    </script>
 @endsection

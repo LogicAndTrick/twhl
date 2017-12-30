@@ -13,25 +13,9 @@
     @form(journal/edit)
         @hidden(id $journal)
         @text(title $journal) = Journal Title
-        @textarea(content_text:text $journal) = Journal Content
-        <div class="form-group">
-            <h4>
-                Journal preview
-                <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-            </h4>
-            <div class="card"><div id="preview-panel" class="card-block bbcode"></div></div>
+        <div class="wikicode-input">
+            @textarea(content_text:text $journal) = Journal Content
         </div>
         @submit = Edit Journal
     @endform
-@endsection
-
-@section('scripts')
-    <script type="text/javascript">
-        $('#update-preview').click(function() {
-            $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/posts/format") }}?field=text', $('form').serializeArray(), function(data) {
-                $('#preview-panel').html(data);
-            });
-        });
-    </script>
 @endsection

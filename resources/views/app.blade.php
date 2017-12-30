@@ -90,7 +90,14 @@
             },
             images: {
                 no_screenshot_320: '{{ asset("images/no-screenshot-320.png") }}',
-                no_screenshot_640: '{{ asset("images/no-screenshot-640.png") }}'
+                no_screenshot_640: '{{ asset("images/no-screenshot-640.png") }}',
+                smiley_folder: '{{ asset('images/smilies') }}'
+            },
+            api: {
+                format: '{{ url("api/posts/format") }}'
+            },
+            wiki: {
+                formatting_guide: '{{ url("wiki/page/TWHL:_WikiCode_Syntax") }}'
             }
         };
         $('body').shoutbox({

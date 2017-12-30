@@ -38,21 +38,8 @@
         @endif
     @endforeach
     {? $text = Request::old('text') !== null ? Request::old('text') : (isset($comment) ? $comment->content_text : $text); ?}
-    @textarea(text $text) = Comment Text
-    <div class="form-group">
-        <h4>
-            Comment preview
-            <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-        </h4>
-        <div class="card"><div id="preview-panel" class="card-block bbcode">{!! app('bbcode')->Parse($text) !!}</div></div>
+    <div class="wikicode-input">
+        @textarea(text $text) = Comment Text
     </div>
-    <script type="text/javascript">
-        $('#update-preview').click(function() {
-            $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/posts/format") }}?field=text', $('form').serializeArray(), function(data) {
-                $('#preview-panel').html(data);
-            });
-        });
-    </script>
     @submit = Post Comment
 @endform

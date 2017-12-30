@@ -17,7 +17,9 @@
         @autocomplete(judge_type_id api/competition-judge-types) = Judging Method
         @autocomplete(engines[] api/engines multiple=true) = Allowed Engines
         @autocomplete(judges[] api/users multiple=true) = Judges (if applicable)
-        @textarea(brief_text) = Competition Brief
+        <div class="wikicode-input">
+            @textarea(brief_text) = Competition Brief
+        </div>
         @text(open_date) = Date Open (dd/mm/yyyy)
         @text(close_date) = Date Closed (dd/mm/yyyy)
         @text(voting_close_date) = Date Voting Closed (if applicable) (dd/mm/yyyy)

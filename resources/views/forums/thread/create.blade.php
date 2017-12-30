@@ -13,25 +13,9 @@
     @form(thread/create)
         <input type="hidden" name="forum_id" value="{{ $forum->id }}" />
         @text(title) = Thread Title
-        @textarea(text) = Post Content
-        <div class="form-group">
-            <h4>
-                Post preview
-                <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-            </h4>
-            <div class="card"><div id="preview-panel" class="card-block bbcode"></div></div>
+        <div class="wikicode-input">
+            @textarea(text) = Post Content
         </div>
         @submit = Create Thread
     @endform
-@endsection
-
-@section('scripts')
-    <script type="text/javascript">
-        $('#update-preview').click(function() {
-            $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/posts/format") }}?field=text', $('form').serializeArray(), function(data) {
-                $('#preview-panel').html(data);
-            });
-        });
-    </script>
 @endsection

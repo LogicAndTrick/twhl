@@ -13,7 +13,9 @@
         <h3>Create Forum</h3>
         @text(name:forum_name) = Name
         @text(slug) = URL Slug
-        @textarea(description) = Description
+        <div class="wikicode-input">
+            @textarea(description) = Description
+        </div>
         @autocomplete(permission_id api/permissions clearable=true) = Required Permission
         @submit = Create Forum
     @endform

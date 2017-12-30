@@ -18,7 +18,9 @@
         @autocomplete(judge_type_id api/competition-judge-types $comp) = Judging Method
         @autocomplete(engines[] api/engines multiple=true $comp) = Allowed Engines
         @autocomplete(judges[] api/users multiple=true $comp) = Judges (if applicable)
-        @textarea(brief_text $comp) = Competition Brief
+        <div class="wikicode-input">
+            @textarea(brief_text $comp) = Competition Brief
+        </div>
         @text(open_date format=d/m/Y $comp) = Date Open (dd/mm/yyyy)
         @text(close_date format=d/m/Y $comp) = Date Closed (dd/mm/yyyy)
         @text(voting_close_date format=d/m/Y $comp) = Date Voting Closed (if applicable) (dd/mm/yyyy)
@@ -27,8 +29,12 @@
             <p>Current Attachment: {{ $comp->brief_attachment }}</p>
             @checkbox(delete_attachment) = Delete the attachment
         @endif
-        @textarea(results_intro_text $comp) = Results Intro Text (required to close)
-        @textarea(results_outro_text $comp) = Results Outro Text (optional)
+        <div class="wikicode-input">
+            @textarea(results_intro_text $comp) = Results Intro Text (required to close)
+        </div>
+        <div class="wikicode-input">
+            @textarea(results_outro_text $comp) = Results Outro Text (optional)
+        </div>
         @submit = Edit Competition
     @endform
 @endsection

@@ -12,7 +12,9 @@
     @form(poll/create)
         @text(title) = Poll Title
         @text(close_date) = Close Date (dd/mm/yyyy)
-        @textarea(content_text class=small) = Poll Description (don't put the items in here)
+        <div class="wikicode-input">
+            @textarea(content_text class=small) = Poll Description (don't put the items in here)
+        </div>
         @textarea(items class=small) = Poll Items (one per line)
         @submit = Create poll
     @endform

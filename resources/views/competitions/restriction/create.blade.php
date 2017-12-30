@@ -12,7 +12,9 @@
 
     @form(competition-restriction/create)
         @autocomplete(group_id api/competition-restriction-groups $group_id text=title) = Restriction Group
-        @textarea(content_text) = Restriction Content
+        <div class="wikicode-input">
+            @textarea(content_text) = Restriction Content
+        </div>
         @submit = Add Restriction
     @endform
 @endsection

@@ -13,25 +13,9 @@
     @form(news/edit)
         @hidden(id $news)
         @text(title $news) = News Post Title
-        @textarea(content_text:text $news) = News Post Content
-        <div class="form-group">
-            <h4>
-                News post preview
-                <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-            </h4>
-            <div class="card"><div id="preview-panel" class="card-block bbcode"></div></div>
+        <div class="wikicode-input">
+            @textarea(content_text:text $news) = News Post Content
         </div>
         @submit = Edit News Post
     @endform
-@endsection
-
-@section('scripts')
-    <script type="text/javascript">
-        $('#update-preview').click(function() {
-            $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/posts/format") }}?field=text', $('form').serializeArray(), function(data) {
-                $('#preview-panel').html(data);
-            });
-        });
-    </script>
 @endsection

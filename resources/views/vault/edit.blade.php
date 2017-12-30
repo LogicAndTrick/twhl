@@ -62,13 +62,8 @@
         @checkbox(flag_notify $item) = Send me a private message when someone comments on this content
         @checkbox(flag_ratings $item) = Allow ratings for this content
 
-        @textarea(content_text $item) = Description
-        <div class="form-group">
-            <h4>
-                Description preview
-                <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-            </h4>
-            <div class="card"><div id="preview-panel" class="card-block bbcode">{!! $content ? app('bbcode')->Parse($content) : '' !!}</div></div>
+        <div class="wikicode-input">
+            @textarea(content_text $item) = Description
         </div>
 
         @submit = Edit Vault Item
@@ -113,12 +108,6 @@
                 $('.option-panel .card-block > div').addClass('d-none');
                 $('[name="' + sel + '"]').parent().removeClass('d-none');
             }).change();
-            $('#update-preview').click(function() {
-                $('#preview-panel').html('Loading...');
-                $.post('{{ url("api/posts/format") }}?field=content_text', $('form').serializeArray(), function(data) {
-                    $('#preview-panel').html(data);
-                });
-            });
         });
     </script>
 @endsection

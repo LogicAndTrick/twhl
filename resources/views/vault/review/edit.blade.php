@@ -33,22 +33,9 @@
             </div>
         </div>
 
-        @textarea(content_text $review) = Review Content
-        <div class="form-group">
-            <h4>
-                Content preview
-                <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-            </h4>
-            <div class="card"><div id="preview-panel" class="card-block bbcode">{!! $content ? app('bbcode')->Parse($content) : '' !!}</div></div>
+        <div class="wikicode-input">
+            @textarea(content_text $review) = Review Content
         </div>
-        <script type="text/javascript">
-            $('#update-preview').click(function() {
-                $('#preview-panel').html('Loading...');
-                $.post('{{ url("api/posts/format") }}?field=content_text', $('form').serializeArray(), function(data) {
-                    $('#preview-panel').html(data);
-                });
-            });
-        </script>
 
         @submit = Edit Review
     @endform

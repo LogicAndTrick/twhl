@@ -16,25 +16,9 @@
         @if (permission('ForumAdmin'))
             @autocomplete(user_id api/users $post) = Post Owner
         @endif
-        @textarea(content_text $post) = Post Content
-        <div class="form-group">
-            <h4>
-                Post preview
-                <button id="update-preview" type="button" class="btn btn-info btn-xs">Update Preview</button>
-            </h4>
-            <div class="card"><div id="preview-panel" class="card-block bbcode"></div></div>
+        <div class="wikicode-input">
+            @textarea(content_text $post) = Post Content
         </div>
         @submit = Edit Post
     @endform
-@endsection
-
-@section('scripts')
-    <script type="text/javascript">
-        $('#update-preview').click(function() {
-            $('#preview-panel').html('Loading...');
-            $.post('{{ url("api/posts/format") }}?field=content_text', $('form').serializeArray(), function(data) {
-                $('#preview-panel').html(data);
-            });
-        });
-    </script>
 @endsection

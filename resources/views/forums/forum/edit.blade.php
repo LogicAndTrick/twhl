@@ -13,7 +13,9 @@
         @hidden(id $forum)
         @text(name:forum_name $forum) = Name
         @text(slug $forum) = URL Slug
-        @textarea(description $forum) = Description
+        <div class="wikicode-input">
+            @textarea(description $forum) = Description
+        </div>
         @autocomplete(permission_id api/permissions $forum clearable=true) = Required Permission
         @submit
     @endform
