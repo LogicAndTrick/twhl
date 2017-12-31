@@ -118,6 +118,14 @@ nav {
 
   .greetings {
     color: white;
+
+    a {
+      color: $twhl-brand;
+
+      &:hover {
+        text-shadow: $twhl-brand 0 0 2px;
+      }
+    }
   }
 }
 

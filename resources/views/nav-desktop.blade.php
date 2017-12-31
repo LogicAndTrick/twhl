@@ -88,10 +88,32 @@
                     @endif
                 </ul>
             </div>
+            {? $data = header_data() ?}
             <div class="greetings text-right align-self-center">
-                Check out {competition} competition results!<br/>
-                Take a look at {map}, {month}'s map of the month!<br/>
-                Say hello to {username}, our newest member!
+                @if (array_key_exists('competition', $data))
+                    {? $comp = $data['competition'] ?}
+                    @if ($comp->isVotingOpen())
+                        Vote for a winner in the <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a> competition!
+                    @elseif ($comp->isOpen())
+                        Enter our newest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!
+                    @elseif ($comp->isJudging() || $comp->isVoting())
+                        <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results coming soon...
+                    @elseif ($comp->isClosed())
+                        Check out <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results!
+                    @else
+                        Take a look at our latest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!
+                    @endif
+                    <br />
+                @endif
+                @if (array_key_exists('motm', $data))
+                    {? $motm = $data['motm'] ?}
+                    <a href="{{ act('vault', 'view', $motm->item_id) }}">{{ $motm->vault_item->name }}</a> is map of the month for {{ $motm->getDateString() }}!
+                    <br/>
+                @endif
+                @if (array_key_exists('user', $data))
+                    {? $user = $data['user'] ?}
+                    Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!
+                @endif
             </div>
         </div>
     </div>
