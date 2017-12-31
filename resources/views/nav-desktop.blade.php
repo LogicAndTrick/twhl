@@ -90,7 +90,7 @@
             </div>
             {? $data = header_data() ?}
             <div class="greetings text-right align-self-center">
-                @if (array_key_exists('competition', $data))
+                @if ($data['competition'])
                     {? $comp = $data['competition'] ?}
                     @if ($comp->isVotingOpen())
                         Vote for a winner in the <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a> competition!
@@ -105,12 +105,12 @@
                     @endif
                     <br />
                 @endif
-                @if (array_key_exists('motm', $data))
+                @if ($data['motm'])
                     {? $motm = $data['motm'] ?}
                     <a href="{{ act('vault', 'view', $motm->item_id) }}">{{ $motm->vault_item->name }}</a> is map of the month for {{ $motm->getDateString() }}!
                     <br/>
                 @endif
-                @if (array_key_exists('user', $data))
+                @if ($data['user'])
                     {? $user = $data['user'] ?}
                     Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!
                 @endif
