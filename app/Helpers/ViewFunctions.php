@@ -99,12 +99,11 @@ if (!function_exists('ordinal'))
 if (!function_exists('header_data')) {
     function header_data() {
 
-        \Illuminate\Support\Facades\Cache::forget('header_data');
         return \Illuminate\Support\Facades\Cache::remember('header_data', 60, function () {
 
             $user = \App\Models\Accounts\User::orderBy('created_at', 'desc')->first();
             $comp = \App\Models\Competitions\Competition::orderBy('created_at', 'desc')->where('status_id', '!=', \App\Models\Competitions\CompetitionStatus::DRAFT)->first();
-            $motm = \App\Models\Vault\Motm::with(['vault_item'])->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
+            $motm = \App\Models\Vault\Motm::with(['vault_item'])->whereNotNull('item_id')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
 
             return [
                 'user' => $user,
