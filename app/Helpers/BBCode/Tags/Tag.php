@@ -74,7 +74,7 @@ class Tag
             return false;
         } else {
             $text = $state->ScanTo('[/' . $this->token . ']');
-            if ($state->Peek($tokenLength + 3) == '[/' . $this->token . ']' && $this->Validate($options, $text)) {
+            if (strtolower($state->Peek($tokenLength + 3)) == '[/' . $this->token . ']' && $this->Validate($options, $text)) {
                 $state->Seek(strlen($this->token) + 3, false);
                 return $this->FormatResult($result, $parser, $state, $scope, $options, $text);
             } else {

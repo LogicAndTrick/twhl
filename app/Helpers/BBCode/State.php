@@ -22,7 +22,7 @@ class State
 
     function ScanTo($char)
     {
-        $pos = strpos($this->text, $char, $this->index);
+        $pos = stripos($this->text, $char, $this->index);
         if ($pos === false) $pos = strlen($this->text);
         $ret = substr($this->text, $this->index, $pos - $this->index);
         $this->index = $pos;
@@ -47,7 +47,7 @@ class State
 
     function PeekTo($str)
     {
-        $pos = strpos($this->text, $str, $this->index);
+        $pos = stripos($this->text, $str, $this->index);
         if ($pos === false) return false;
         return substr($this->text, $this->index, $pos - $this->index);
     }
@@ -87,6 +87,6 @@ class State
             }
             $tok .= $char;
         }
-        return $found ? $tok : false;
+        return $found ? strtolower($tok) : false;
     }
 }
