@@ -5,7 +5,7 @@
 
     <h1>
         Message thread: {{ $thread->subject }}
-        <a href="{{ act('message', 'delete', $thread->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+        <a href="{{ act('message', 'delete', $thread->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
     </h1>
 
     <ol class="breadcrumb">

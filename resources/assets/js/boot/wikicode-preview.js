@@ -97,8 +97,8 @@ var smilies = [
 ];
 
 function addButtons(container, textarea) {
-    // container.addClass('d-flex');
-    var toolbar = $('<div class="btn-toolbar"></div>').appendTo(container);
+
+    var toolbar = $('<div class="btn-toolbar hidden-xs-down"></div>').appendTo(container);
 
     for (var j = 0; j < buttons.length; j++) {
         var group = $('<div class="btn-group btn-group-xs mr-2"></div>').appendTo(toolbar);
@@ -114,7 +114,7 @@ function addButtons(container, textarea) {
         }
     }
 
-    var ddm = $('<div class="dropdown-menu dropdown-menu-right p-1" style="width: 300px;"></div>');
+    var ddm = $('<div class="dropdown-menu dropdown-menu-right p-1 smiley-dropdown" style="width: 300px;"></div>');
     var smiley = $('<button type="button" class="btn btn-outline-dark btn-xs dropdown-toggle" data-toggle="dropdown"></button>');
     smiley.append('<span class="fa fa-smile-o"></span>');
 

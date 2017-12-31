@@ -300,3 +300,9 @@ span.bbcode {
   display: inline-block;
   margin-bottom: 5px;
 }
+
+.smiley-dropdown {
+  .btn-link:hover {
+      background: rgba(0, 0, 0, 0.2);
+  }
+}

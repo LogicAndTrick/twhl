@@ -7,7 +7,7 @@
         <span class="fa fa-pie-chart"></span>
         Polls
         @if (permission('PollAdmin'))
-            <a class="btn btn-primary btn-xs" href="{{ act('poll', 'create') }}"><span class="fa fa-plus"></span> Create new poll</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('poll', 'create') }}"><span class="fa fa-plus"></span> Create new poll</a>
         @endif
     </h1>
 

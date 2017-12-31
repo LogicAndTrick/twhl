@@ -6,7 +6,7 @@
         <span class="fa fa-user"></span>
         {{ $user->name }}
         @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
-            <a href="{{ act('panel', 'index', $user->id) }}" class="btn btn-xs btn-info">
+            <a href="{{ act('panel', 'index', $user->id) }}" class="btn btn-xs btn-outline-info">
                 <span class="fa fa-cog"></span>
                 {{ (Auth::user() && Auth::user()->id == $user->id) ? 'My' : $user->name."'s" }} Control Panel
             </a>

@@ -6,7 +6,7 @@
         <span class="fa fa-comments"></span> Forum listing
         @if (permission('ForumAdmin'))
             @if ($show_deleted)
-                <a class="btn btn-warning btn-xs" href="{{ act('forum', 'index') }}"><span class="fa fa-eye-slash"></span> Hide deleted forums</a>
+                <a class="btn btn-outline-warning btn-xs" href="{{ act('forum', 'index') }}"><span class="fa fa-eye-slash"></span> Hide deleted forums</a>
             @else
                 <a class="btn btn-outline-warning btn-xs" href="{{ act('forum', 'index') }}?deleted"><span class="fa fa-eye"></span> Show deleted forums</a>
             @endif

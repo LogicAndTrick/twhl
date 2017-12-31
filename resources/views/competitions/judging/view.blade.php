@@ -8,8 +8,8 @@
         @if (permission('CompetitionAdmin') && $comp->isJudging())
             <a href="{{ act('competition-judging', 'publish', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fa fa-arrow-right"></span> Publish Results</a>
         @endif
-        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
-        <a href="{{ act('competition-judging', 'create-entry', $comp->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-plus"></span> Add Entry</a>
+        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-outline-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
+        <a href="{{ act('competition-judging', 'create-entry', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-plus"></span> Add Entry</a>
     </h1>
 
     <ol class="breadcrumb">

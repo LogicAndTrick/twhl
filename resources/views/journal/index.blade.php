@@ -6,7 +6,7 @@
         <span class="fa fa-quote-left"></span>
         Journals
         @if (permission('JournalCreate'))
-            <a href="{{ act('journal', 'create') }}" class="btn btn-primary btn-xs"><span class="fa fa-plus"></span> Create new journal</a>
+            <a href="{{ act('journal', 'create') }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-plus"></span> Create new journal</a>
         @endif
     </h1>
 

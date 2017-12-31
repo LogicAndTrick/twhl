@@ -10,8 +10,8 @@
             <a class="btn btn-xs btn-outline-danger" href="{{ act('vault', 'delete', $item->id) }}"><span class="fa fa-remove"></span> Delete</a>
         @endif
         @if ($item->isEditable())
-            <a class="btn btn-xs btn-info" href="{{ act('vault', 'edit-screenshots', $item->id) }}"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
-            <a class="btn btn-xs btn-primary" href="{{ act('vault', 'edit', $item->id) }}"><span class="fa fa-pencil"></span> Edit</a>
+            <a class="btn btn-xs btn-outline-info" href="{{ act('vault', 'edit-screenshots', $item->id) }}"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
+            <a class="btn btn-xs btn-outline-primary" href="{{ act('vault', 'edit', $item->id) }}"><span class="fa fa-pencil"></span> Edit</a>
         @endif
 
     </h1>

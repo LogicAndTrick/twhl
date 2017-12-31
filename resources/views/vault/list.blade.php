@@ -7,7 +7,7 @@
         <span class="fa fa-database"></span>
         Vault items
         @if (permission('VaultCreate'))
-            <a class="btn btn-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
         @endif
     </h1>
 

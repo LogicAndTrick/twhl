@@ -7,7 +7,7 @@
     <h1>
         Edit: {{ $revision->getNiceTitle() }}
         @if (permission('WikiAdmin'))
-            <a href="{{ act('wiki', 'delete', $revision->wiki_object->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
+            <a href="{{ act('wiki', 'delete', $revision->wiki_object->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
         @endif
     </h1>
 

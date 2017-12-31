@@ -7,7 +7,7 @@
         <span class="forum-icon {{ $forum->getIconClasses() }}"></span>
         {{ $forum->name }}
         @if (permission('ForumCreate'))
-            <a class="btn btn-primary btn-xs" href="{{ act('thread', 'create', $forum->id) }}"><span class="fa fa-plus"></span> Create new thread</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('thread', 'create', $forum->id) }}"><span class="fa fa-plus"></span> Create new thread</a>
         @endif
     </h1>
     <ol class="breadcrumb">
