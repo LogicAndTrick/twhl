@@ -67,7 +67,7 @@
                         <li class="nav-item dropdown {{ $unread_count + $notify_count > 0 ? 'has-notification' : '' }}">
                             <a class="nav-link dropdown-toggle nav-avatar" href="{{ act('panel', 'index') }}" data-toggle="dropdown">
                                 <img src="{{ Auth::user()->getAvatarUrl('inline') }}" alt="{{ Auth::user()->name }}"/>
-                                @if ($unread_count > 0)
+                                @if ($unread_count + $notify_count > 0)
                                     <span class="fa fa-exclamation-triangle"></span>
                                 @endif
                                 <span class="name">{{ Auth::user()->name }}</span>

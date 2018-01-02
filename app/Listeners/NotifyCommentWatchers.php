@@ -18,13 +18,11 @@ class NotifyCommentWatchers
         $type = UserNotification::GetTypeFromCommentType($event->comment->article_type);
         if ($type == null) return;
 
-        $id = $event->comment->article_id;
-        $user_id = $event->comment->user_id;
-
-        DB::statement(
-            'INSERT INTO user_notifications (user_id, article_type, article_id, is_unread, is_processed, created_at, updated_at)
-            SELECT US.user_id, US.article_type, US.article_id, 1, 0, UTC_TIMESTAMP(), UTC_TIMESTAMP()
-            FROM user_subscriptions US
-            WHERE US.article_type = ? AND US.article_id = ? AND US.user_id != ?', [$type, $id, $user_id]);
+        UserNotification::AddNotification(
+            $event->comment->user_id,
+            $type,
+            $event->comment->article_id,
+            $event->comment->id
+        );
     }
 }

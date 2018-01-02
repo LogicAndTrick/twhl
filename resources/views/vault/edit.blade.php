@@ -59,7 +59,6 @@
             </div>
         </div>
 
-        @checkbox(flag_notify $item) = Send me a private message when someone comments on this content
         @checkbox(flag_ratings $item) = Allow ratings for this content
 
         <div class="wikicode-input">

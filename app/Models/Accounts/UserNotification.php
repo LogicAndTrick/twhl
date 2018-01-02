@@ -2,6 +2,7 @@
 
 use App\Models\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class UserNotification extends Model {
 
@@ -15,10 +16,10 @@ class UserNotification extends Model {
     const POLL = 'po';
 
 	protected $table = 'user_notifications';
-	protected $fillable = [ 'user_id', 'article_type', 'article_id', 'is_unread', 'is_processed' ];
+	protected $fillable = [ 'user_id', 'article_type', 'article_id', 'is_unread', 'is_processed', 'stat_hits' ];
     public $visible = [ ];
+    protected $appends = ['type_description', 'link'];
 
-    protected $appends = ['type_description','link'];
     public function getTypeDescriptionAttribute() {
         switch ($this->article_type) {
             case UserSubscription::WIKI_OBJECT: return 'Wiki Comments';
@@ -32,19 +33,55 @@ class UserNotification extends Model {
             default: return 'Unknown';
         }
     }
+
     public function getLinkAttribute() {
+        $link = '';
+        $bookmark = '';
+
         $id = $this->article_id;
+        $post_id = $this->post_id;
+
         switch ($this->article_type) {
             case UserSubscription::WIKI_OBJECT:
-            case UserSubscription::WIKI_REVISION: return act('wiki', 'view', $id);
-            case UserSubscription::FORUM_THREAD: return act('thread', 'view', $id).'?page=last';
-            case UserSubscription::VAULT_CATEGORY: return act('vault', 'index').'?cats='.$id;
-            case UserSubscription::VAULT_ITEM: return act('vault', 'view', $id);
-            case UserSubscription::NEWS: return act('news', 'view', $id);
-            case UserSubscription::JOURNAL: return act('journal', 'view', $id);
-            case UserSubscription::POLL: return act('poll', 'view', $id);
-            default: return 'Unknown';
+            case UserSubscription::WIKI_REVISION:
+                $link = act('wiki', 'view', $id);
+                break;
+            case UserSubscription::FORUM_THREAD:
+                $link = act('thread', 'view', $id).'?page=last';
+                break;
+            case UserSubscription::VAULT_CATEGORY:
+                $link = act('vault', 'index').'?cats='.$id;
+                break;
+            case UserSubscription::VAULT_ITEM:
+                $link = act('vault', 'view', $id);
+                break;
+            case UserSubscription::NEWS:
+                $link = act('news', 'view', $id);
+                break;
+            case UserSubscription::JOURNAL:
+                $link = act('journal', 'view', $id);
+                break;
+            case UserSubscription::POLL:
+                $link = act('poll', 'view', $id);
+                break;
         }
+
+        if ($post_id <= 0) return $link;
+
+        switch ($this->article_type) {
+            case UserSubscription::WIKI_OBJECT:
+            case UserSubscription::VAULT_ITEM:
+            case UserSubscription::NEWS:
+            case UserSubscription::JOURNAL:
+            case UserSubscription::POLL:
+                $bookmark = "#comment-$post_id";
+                break;
+            case UserSubscription::FORUM_THREAD:
+                $link = act('thread', 'locate-post', $post_id);
+                break;
+        }
+
+        return $link . $bookmark;
     }
 
     public function user()
@@ -72,5 +109,44 @@ class UserNotification extends Model {
             case Comment::WIKI: return UserNotification::WIKI_OBJECT;
             default: return null;
         }
+    }
+
+    /**
+     * Add a notification to all subscribers
+     *
+     * @param $notifying_user_id int The user who created the post. They will not be notified.
+     * @param $article_type string The article type
+     * @param $article_id int The article id
+     * @param $post_id int The post id
+     */
+    public static function AddNotification($notifying_user_id, $article_type, $article_id, $post_id)
+    {
+        $type = $article_type;
+        $id = $article_id;
+        $user_id = $notifying_user_id;
+
+        DB::statement('
+            UPDATE user_notifications
+            SET stat_hits = stat_hits + 1
+            WHERE user_id != ?
+            AND article_id = ?
+            AND article_type = ?
+            AND is_unread = 1
+        ', [ $user_id, $id, $type ]);
+
+        DB::statement('
+            INSERT INTO user_notifications (user_id, article_type, article_id, post_id, stat_hits, is_unread, is_processed, created_at, updated_at)
+            SELECT US.user_id, US.article_type, US.article_id, ?, 1, 1, 0, UTC_TIMESTAMP(), UTC_TIMESTAMP()
+            FROM user_subscriptions US
+            WHERE US.article_type = ? AND US.article_id = ? AND US.user_id != ?
+            AND (
+                SELECT COUNT(*)
+                FROM user_notifications UN
+                WHERE UN.user_id = US.user_id
+                AND UN.article_id = US.article_id
+                AND UN.article_type = US.article_type
+                AND UN.is_unread = 1
+            ) = 0
+        ', [ $post_id, $type, $id, $user_id ]);
     }
 }

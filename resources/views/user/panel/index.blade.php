@@ -21,6 +21,7 @@
                         <li><a href="{{ act('thread', 'index').'?user='.$user->id }}"><span class="fa fa-list-alt"></span> View Forum Threads</a></li>
                         <li><a href="{{ act('post', 'index').'?user='.$user->id }}"><span class="fa fa-list"></span> View Forum Posts</a></li>
                         <li><a href="{{ url('message/index/'.$user->id) }}"><span class="fa fa-envelope"></span> View Private Messages</a></li>
+                        <li><a href="{{ url('panel/notifications/'.$user->id) }}"><span class="fa fa-bell"></span> Notifications and Subscriptions</a></li>
                     </ul>
                 </div>
             </div>

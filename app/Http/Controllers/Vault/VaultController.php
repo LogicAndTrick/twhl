@@ -2,6 +2,7 @@
 
 use App\Helpers\Image;
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
 use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultItem;
@@ -233,6 +234,16 @@ class VaultController extends Controller {
         if ($screen) {
             $this->makeScreenshot($item, $screen);
         }
+
+        // Subscribe to the item
+        $sub = UserSubscription::Create([
+            'user_id' => Auth::user()->id,
+            'article_type' => UserSubscription::VAULT_ITEM,
+            'article_id' => $item->id,
+            'send_email' => true,
+            'send_push_notification' => false,
+            'is_own_article' => true
+        ]);
 
         return redirect('vault/view/'.$item->id);
     }

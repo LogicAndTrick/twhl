@@ -69,7 +69,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function unreadNotificationCount()
     {
-        return UserNotification::whereUserId($this->id)->whereIsUnread(true)->count();
+        return UserNotification::whereUserId($this->id)->whereIsUnread(true)->sum('stat_hits');
     }
 
     public function deleteAvatar() {

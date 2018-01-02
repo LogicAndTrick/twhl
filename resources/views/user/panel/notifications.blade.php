@@ -9,6 +9,8 @@
         <li class="active">Notifications and subscriptions</li>
     </ol>
 
+    <div class="alert alert-info">You are automatically subscribed to your own articles.</div>
+
     <h2>
         <span class="fa fa-bell"></span> Notifications
         <a href="{{ act('panel', 'clear-notifications') }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-check"></span> Mark all as read</a>
@@ -26,9 +28,9 @@
                 <tr class="{{ $notify->is_unread ? 'unread' : '' }}">
                     <td class="col-30p">
                         @if ($notify->is_unread)
-                            <span class="fa fa-exclamation-triangle"></span>
+                            <span class="badge badge-success">{{ $notify->stat_hits }}</span>
                         @endif
-                        {{ $notify->type_description }}
+                        {{ $notify->type_description ? $notify->type_description : '[No title]' }}
                     </td>
                     <td><a href="{{ $notify->link }}">{{ $notify->title }}</a></td>
                     <td class="col-30p">@date($notify->created_at)</td>
@@ -51,7 +53,7 @@
             @foreach($subscriptions as $subscription)
                 <tr>
                     <td class="col-30p">{{ $subscription->type_description }}</td>
-                    <td><a href="{{ $subscription->link }}">{{ $subscription->title }}</a></td>
+                    <td><a href="{{ $subscription->link }}">{{ $subscription->title ? $subscription->title : '[No title]' }}</a></td>
                     <!--td class="col-15p">{{ $subscription->send_email ? 'Yes' : 'No' }}</td-->
                     <td class="text-right col-15p">
                         <a href="{{ act('panel', 'delete-subscription', $subscription->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span> Unsubscribe</a>

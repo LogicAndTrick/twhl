@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
+use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
 use App\Models\Journal;
 use Request;
@@ -59,6 +60,14 @@ class JournalController extends Controller {
             'content_html' => app('bbcode')->Parse(Request::input('text')),
             'stat_comments' => 0,
             'flag_locked' => false
+        ]);
+        $sub = UserSubscription::Create([
+            'user_id' => Auth::user()->id,
+            'article_type' => UserSubscription::JOURNAL,
+            'article_id' => $journal->id,
+            'send_email' => true,
+            'send_push_notification' => false,
+            'is_own_article' => true
         ]);
         return redirect('journal/view/'.$journal->id);
     }

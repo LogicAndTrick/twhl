@@ -59,9 +59,9 @@
         </div>
 
         @file(screen) = (Optional) Upload a screenshot (.jpg, .png, maximum size: 2mb). You can add extra screenshots later.
-
-        @checkbox(flag_notify) = Send me a private message when someone comments on this content
-        @checkbox(flag_ratings) = Allow ratings for this content
+    
+        {? $fr_def = !old('_token') || !!old('flag_ratings') ?}
+        @checkbox(flag_ratings $fr_def) = Allow ratings for this content
 
         <div class="wikicode-input">
             @textarea(content_text) = Description

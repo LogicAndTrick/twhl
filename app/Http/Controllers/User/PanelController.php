@@ -246,7 +246,7 @@ class PanelController extends Controller {
     public function getNotifications($id = 0) {
         $user = PanelController::GetUser($id);
         $notifications = UserNotificationDetails::whereUserId($user->id)->whereIsUnread(true)->get();
-        $subscriptions = UserSubscriptionDetails::whereUserId($user->id)->get();
+        $subscriptions = UserSubscriptionDetails::whereUserId($user->id)->whereIsOwnArticle(0)->get();
         return view('user/panel/notifications', [
             'user' => $user,
             'notifications' => $notifications,

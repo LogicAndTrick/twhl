@@ -150,6 +150,14 @@ class ThreadController extends Controller {
             'content_text' => Request::input('text'),
             'content_html' => app('bbcode')->Parse(Request::input('text')),
         ]);
+        $sub = UserSubscription::Create([
+            'user_id' => Auth::user()->id,
+            'article_type' => UserSubscription::FORUM_THREAD,
+            'article_id' => $thread->id,
+            'send_email' => true,
+            'send_push_notification' => false,
+            'is_own_article' => true
+        ]);
         return redirect('thread/view/'.$thread->id.'?page=last');
     }
 

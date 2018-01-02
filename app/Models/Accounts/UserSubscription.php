@@ -30,7 +30,7 @@ class UserSubscription extends Model {
     }
 
 	protected $table = 'user_subscriptions';
-	protected $fillable = [ 'user_id', 'article_type', 'article_id', 'send_email', 'send_push_notification' ];
+	protected $fillable = [ 'user_id', 'article_type', 'article_id', 'send_email', 'send_push_notification', 'is_own_article' ];
     public $visible = [ ];
     public $timestamps = false;
 

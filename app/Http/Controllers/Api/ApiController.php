@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
  
+use App\Events\CommentCreated;
 use App\Http\Controllers\Comments\CommentController;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\ApiKey;
@@ -1024,9 +1025,7 @@ class ApiController extends Controller {
             $comment->comment_metas()->saveMany($metas);
         }
         DB::statement('CALL update_comment_statistics(?, ?, ?);', [$type, $id, $comment->user_id]);
-        if (method_exists($article, 'onCommentCreated')) {
-            $article->onCommentCreated($comment);
-        }
+        event(new CommentCreated($comment));
         return $comment;
     }
 
