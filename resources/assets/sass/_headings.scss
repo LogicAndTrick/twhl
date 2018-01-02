@@ -35,11 +35,10 @@ $h1-color: #E3A141;
 
 h1 {
   font-size: 1.4rem;
-  border-bottom: 1px solid lighten($heading-foreground-color, 25%);
 
   small {
     font-size: 60%;
-    color: lighten($h1-color, 50%);
+    color: #eee;
   }
 
   a {
@@ -67,27 +66,27 @@ h2 {
 
 h3 {
   font-size: 1.2rem;
-  color: darken($heading-foreground-color, 10%);
+  color: lighten($heading-foreground-color, 6%);
 }
 
 h4 {
   font-size: 1.1rem;
   font-weight: normal;
-  color: darken($heading-foreground-color, 25%);
+  color: lighten($heading-foreground-color, 9%);
 }
 
 h5 {
   font-size: 1.0rem;
   font-weight: normal;
   text-decoration: underline;
-  color: darken($heading-foreground-color, 35%);
+  color: lighten($heading-foreground-color, 12%);
 }
 
 h6 {
   font-variant: small-caps;
   font-weight: normal;
   font-size: 0.9rem;
-  color: darken($heading-foreground-color, 50%);
+  color: lighten($heading-foreground-color, 15%);
 }
 
 .alert {

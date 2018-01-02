@@ -25,6 +25,13 @@ pre {
     margin-top: 10px;
   }
 
+  h1 {
+    background-color: initial;
+    color: $heading-foreground-color;
+    border-bottom: 1px solid $twhl-brand;
+    padding: 0.3rem 0;
+  }
+
   .card {
     margin-bottom: 1rem;
 
