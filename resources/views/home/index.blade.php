@@ -7,9 +7,8 @@
     <div class="row">
         <div class="col-md-8">
             <h1>
-                <span class="fa fa-newspaper-o"></span>
-                Latest News
-                <a class="btn btn-outline-primary btn-xs" href="{{ act('news', 'index') }}">See all</a>
+                <a href="{{ act('news', 'index') }}"><span class="fa fa-newspaper-o"></span> Latest News</a>
+                <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('news', 'index') }}">See all</a>
             </h1>
             <div class="news">
                 @foreach ($newses as $news)
@@ -101,9 +100,8 @@
 
     @if (count($competitions) > 0)
         <h1>
-            <span class="fa fa-trophy"></span>
-            Active Competitions
-            <a class="btn btn-outline-primary btn-xs" href="{{ act('competition', 'index') }}">See all</a>
+            <a href="{{ act('competition', 'index') }}"><span class="fa fa-trophy"></span> Active Competitions</a>
+            <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('competition', 'index') }}">See all</a>
         </h1>
         <div class="competition-list">
             <div class="slot">
@@ -143,9 +141,8 @@
     @endif
 
     <h1>
-        <span class="fa fa-database"></span>
-        New in the Vault
-        <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'index') }}">See all</a>
+        <a href="{{ act('vault', 'index') }}"><span class="fa fa-database"></span> New in the Vault</a>
+        <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('vault', 'index') }}">See all</a>
     </h1>
     <div class="horizontal-scroll">
         @foreach ($new_maps as $item)
@@ -164,9 +161,8 @@
 
         <div class="col-md-8">
             <h1>
-                <span class="fa fa-comments"></span>
-                From the Forums
-                <a class="btn btn-outline-primary btn-xs" href="{{ act('forum', 'index') }}">See all</a>
+                <a href="{{ act('forum', 'index') }}"><span class="fa fa-comment"></span> From the Forums</a>
+                <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('forum', 'index') }}">See all</a>
             </h1>
             <div class="forum">
                 @foreach ($threads as $thread)
@@ -195,9 +191,8 @@
             </div>
 
             <h1>
-                <span class="fa fa-pie-chart"></span>
-                Poll
-                <a class="btn btn-outline-primary btn-xs" href="{{ act('poll', 'index') }}">See all</a>
+                <a href="{{ act('poll', 'index') }}"><span class="fa fa-pie-chart"></span> Poll</a>
+                <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('poll', 'index') }}">See all</a>
             </h1>
             <div class="poll">
                 @foreach ($polls as $poll)
@@ -234,9 +229,8 @@
         <div class="col-md-4">
 
             <h1>
-                <span class="fa fa-quote-left"></span>
-                Journals
-                <a class="btn btn-outline-primary btn-xs" href="{{ act('journal', 'index') }}">See all</a>
+                <a href="{{ act('journal', 'index') }}"><span class="fa fa-quote-left"></span> Journals</a>
+                <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('journal', 'index') }}">See all</a>
             </h1>
             <div class="journals">
                 @foreach ($journals as $journal)
@@ -260,9 +254,8 @@
 
 
             <h1>
-                <span class="fa fa-edit"></span>
-                Wiki Edits
-                <a class="btn btn-outline-primary btn-xs" href="{{ act('wiki', 'index') }}">View wiki</a>
+                <a href="{{ act('wiki', 'index') }}"><span class="fa fa-edit"></span> Wiki Edits</a>
+                <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('wiki', 'index') }}">View wiki</a>
             </h1>
             <div class="wiki-edits">
                 @foreach ($wiki_edits as $obj)

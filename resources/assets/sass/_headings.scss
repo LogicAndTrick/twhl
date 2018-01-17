@@ -43,6 +43,11 @@ h1 {
 
   a {
     color: white;
+
+    &:hover {
+      color: lighten($twhl-brand, 40%);
+      text-decoration: none;
+    }
   }
 
   background-color: $h1-color;
