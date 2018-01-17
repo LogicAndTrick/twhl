@@ -79,6 +79,10 @@ nav {
 .nav-desktop {
   margin: 0 -15px;
 
+  .main-nav {
+    flex-shrink: 0;
+  }
+
   .navbar-form {
     padding: 0;
   }
@@ -118,6 +122,7 @@ nav {
 
   .greetings {
     color: white;
+    padding-left: 2em;
 
     a {
       color: $twhl-brand;

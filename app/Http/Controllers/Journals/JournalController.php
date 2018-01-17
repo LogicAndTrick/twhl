@@ -26,7 +26,7 @@ class JournalController extends Controller {
 
         $journals = $query->paginate();
 		return view('journal/index', [
-            'journals' => $journals,
+            'journals' => $journals->appends(Input::except('page')),
             'user' => $user
         ]);
 	}

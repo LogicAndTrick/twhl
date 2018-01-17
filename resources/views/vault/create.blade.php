@@ -59,7 +59,7 @@
         </div>
 
         @file(screen) = (Optional) Upload a screenshot (.jpg, .png, maximum size: 2mb). You can add extra screenshots later.
-    
+
         {? $fr_def = !old('_token') || !!old('flag_ratings') ?}
         @checkbox(flag_ratings $fr_def) = Allow ratings for this content
 

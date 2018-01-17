@@ -33,7 +33,7 @@
 
     @if (!$comp->canVote())
         <div class="alert alert-warning">
-            <h3>Sorry, you are not eligable to vote for this competition.</h3>
+            <h3>Sorry, you are not eligible to vote for this competition.</h3>
             <p>Reason: {{ $comp->cantVoteReason() }}</p>
         </div>
     @endif

@@ -1,7 +1,7 @@
 <nav class="nav-desktop hidden-md-down header-{{ rand(1, 4) }}">
     <div class="wrapper">
         <div class="d-flex flex-row">
-            <div class="mr-auto">
+            <div class="mr-auto main-nav">
 
                 <div class="d-flex flex-row align-items-center">
 
@@ -93,26 +93,33 @@
                 @if ($data['competition'])
                     {? $comp = $data['competition'] ?}
                     @if ($comp->isVotingOpen())
-                        Vote for a winner in the <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a> competition!
+                        <span class="hidden-lg-down">Vote for a winner in the <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a> competition!</span>
+                        <span class="hidden-xl-up">Vote now: <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a></span>
                     @elseif ($comp->isOpen())
-                        Enter our newest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!
+                        <span class="hidden-lg-down">Enter our newest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</span>
+                        <span class="hidden-xl-up">Open for entries: <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a></span>
                     @elseif ($comp->isJudging() || $comp->isVoting())
-                        <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results coming soon...
+                        <span class="hidden-lg-down"><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results coming soon...</span>
+                        <span class="hidden-xl-up">Results coming soon: <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a></span>
                     @elseif ($comp->isClosed())
-                        Check out <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results!
+                        <span class="hidden-lg-down">Check out <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results!</span>
+                        <span class="hidden-xl-up">Competition results: <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a></span>
                     @else
-                        Take a look at our latest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!
+                        <span class="hidden-lg-down">Take a look at our latest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</span>
+                        <span class="hidden-xl-up">Latest competition: <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a></span>
                     @endif
                     <br />
                 @endif
                 @if ($data['motm'])
                     {? $motm = $data['motm'] ?}
-                    <a href="{{ act('vault', 'view', $motm->item_id) }}">{{ $motm->vault_item->name }}</a> is map of the month for {{ $motm->getDateString() }}!
+                        <span class="hidden-lg-down"><a href="{{ act('vault', 'view', $motm->item_id) }}">{{ $motm->vault_item->name }}</a> is map of the month for {{ $motm->getDateString() }}!</span>
+                        <span class="hidden-xl-up">{{ $motm->getShortDateString() }} MOTM: <a href="{{ act('vault', 'view', $motm->item_id) }}">{{ $motm->vault_item->name }}</a></span>
                     <br/>
                 @endif
                 @if ($data['user'])
                     {? $user = $data['user'] ?}
-                    Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!
+                    <span class="hidden-lg-down">Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!</span>
+                    <span class="hidden-xl-up">Welcome to TWHL, <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>!</span>
                 @endif
             </div>
         </div>

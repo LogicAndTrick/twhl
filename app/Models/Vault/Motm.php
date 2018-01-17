@@ -19,4 +19,9 @@ class Motm extends Model
     {
         return Carbon::create($this->year, $this->month, 10)->format('F Y');
     }
+
+    public function getShortDateString()
+    {
+        return Carbon::create($this->year, $this->month, 10)->format('M Y');
+    }
 }
