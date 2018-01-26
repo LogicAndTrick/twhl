@@ -17,6 +17,7 @@
     var window_template =
             '<div class="shoutbox">' +
                 '<h1>' +
+                    '<span class="new-message-icon fa fa-comment"></span> ' +
                     'Shoutbox <span class="refresh-icon fa fa-refresh"></span>' +
                     '<a href="#" class="pin-button"><span class="fa fa-thumb-tack"></span></a>' +
                     '<a href="#" class="close-button"><span class="fa fa-remove"></span></a>' +

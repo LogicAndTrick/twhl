@@ -48,6 +48,10 @@
     }
   }
 
+  .new-message-icon {
+    display: none;
+  }
+
   &.flash h1 {
     background-color: rgb(236, 94, 0);
     transition: none;
@@ -55,6 +59,10 @@
 
   &.new h1 {
     background-color: rgb(236, 94, 0);
+  }
+
+  &.new .new-message-icon {
+    display: inline-block;
   }
 
   .refresh-icon {
@@ -67,7 +75,7 @@
 
   .shouts {
     position: absolute;
-    top: 23px;
+    top: 25px;
     bottom: 50px;
     left: 0;
     right: 0;

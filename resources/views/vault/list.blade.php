@@ -6,7 +6,7 @@
     <h1>
         <span class="fa fa-database"></span>
         Vault items
-        @if (permission('VaultCreate'))
+        @if (permission('VaultCreate') && !$items->hasPages())
             <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
         @endif
     </h1>
@@ -18,6 +18,9 @@
         </ol>
     @endif
 
+    @if (permission('VaultCreate') && $items->hasPages())
+        <a class="btn btn-primary float-right" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
+    @endif
     {!! $items->render() !!}
 
     <form method="get" action="{{ act('vault', 'index') }}" class="vault-filter-form">

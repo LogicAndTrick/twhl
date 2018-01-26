@@ -50,7 +50,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($recent_threads->where('forum_id', $forum->id) as $thread)
+                                    @foreach ($recent_threads->where('forum_id', $forum->id)->sortBy('updated_at', 0, true) as $thread)
                                         <tr>
                                             <td class="col-thread">
                                                 <a href="{{ act('thread', 'view', $thread->id) }}?page=last">{{ $thread->title }}</a>
