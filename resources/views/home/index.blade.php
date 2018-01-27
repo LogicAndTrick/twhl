@@ -146,7 +146,10 @@
     </h1>
     <div class="horizontal-scroll">
         @foreach ($new_maps as $item)
-            <a href="{{ act('vault', 'view', $item->id) }}" class="tile">
+            <a href="{{ act('vault', 'view', $item->id) }}" class="tile tagged">
+                @if ($item->updated_at > $latest_created_map)
+                    <span class="tag"><span class="fa fa-certificate"></span> Updated</span>
+                @endif
                 <span class="tile-main">
                     <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
                 </span>
