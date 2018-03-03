@@ -1,4 +1,4 @@
-<nav class="nav-desktop hidden-md-down header-{{ rand(1, 4) }}">
+<nav class="nav-desktop hidden-md-down header-{{ rand(1, 8) }}">
     <div class="wrapper">
         <div class="d-flex flex-row">
             <div class="mr-auto main-nav">

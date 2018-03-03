@@ -138,8 +138,7 @@ nav {
   background-color: #333;
   background: url("/images/header/header-1.jpg") center center;
 
-  &.header-1 { background: url("/images/header/header-1.jpg") center center; }
-  &.header-2 { background: url("/images/header/header-2.jpg") center center; }
-  &.header-3 { background: url("/images/header/header-3.jpg") center center; }
-  &.header-4 { background: url("/images/header/header-4.jpg") center center; }
+  @for $i from 1 through 20 {
+      &.header-#{$i} { background: url("/images/header/header-#{$i}.jpg") center center; }
+  }
 }
