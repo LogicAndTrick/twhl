@@ -47,10 +47,18 @@ class CreateWikiRevisionsTable extends Migration {
                     SELECT id INTO rid
                     FROM wiki_revisions WHERE object_id = oid AND deleted_at IS NULL
                     ORDER BY created_at DESC LIMIT 1;
-
-                    -- Update current revision
-                    UPDATE wiki_objects SET current_revision_id = rid WHERE id = oid;
-                    UPDATE wiki_revisions SET is_active = 1 WHERE id = rid;
+                    
+                    IF rid IS NULL THEN
+                        -- All revisions are deleted
+                        UPDATE wiki_objects SET
+                            current_revision_id = 0,
+                            deleted_at = NOW()
+                        WHERE id = oid;
+                    ELSE
+                        -- Update current revision
+                        UPDATE wiki_objects SET current_revision_id = rid WHERE id = oid;
+                        UPDATE wiki_revisions SET is_active = 1 WHERE id = rid;
+                    END IF;
                 END IF;
             END;");
 
