@@ -18,7 +18,7 @@
         @endif
     </p>
     <div class="text-center">
-        <a href="{{ act('auth', 'logout') }}" class="btn btn-lg btn-primary">
+        <a href="{{ act('auth', 'logout') . '?_token=' . csrf_token() }}" class="btn btn-lg btn-primary">
             Log Out
         </a>
     </div>

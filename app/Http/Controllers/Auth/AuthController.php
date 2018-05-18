@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,7 +25,21 @@ class AuthController extends Controller {
 
 	public function getLogin() { return $this->showLoginForm(); }
 	public function postLogin(Request $request) { return $this->login($request); }
-	public function getLogout(Request $request) { return $this->logout($request); }
+
+	public function getLogout(Request $request) {
+        // Verify CSRF token to avoid trolls (aka potatis_invalid)
+        $token = $request->input('_token');
+
+        if (
+            is_string($request->session()->token()) &&
+            is_string($token) &&
+            hash_equals($request->session()->token(), $token)
+        ) {
+            return $this->logout($request);
+        } else {
+            throw new TokenMismatchException();
+        }
+    }
     public function getRegister() { return $this->showRegistrationForm(); }
    	public function postRegister(Request $request) { return $this->register($request); }
 

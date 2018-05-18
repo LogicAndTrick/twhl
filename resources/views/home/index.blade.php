@@ -65,7 +65,7 @@
                         </span>
                         <span class="badge badge-default badge-pill">{{  $notify_count }}</span>
                     </a>
-                    <a href="{{ act('auth', 'logout') }}" class="list-group-item list-group-item-action">
+                    <a href="{{ act('auth', 'logout') . '?_token=' . csrf_token() }}" class="list-group-item list-group-item-action">
                         <span>
                             <span class="fa fa-sign-out"></span>
                             Logout

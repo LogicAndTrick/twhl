@@ -82,7 +82,7 @@
                                 </a>
                                 <a class="dropdown-item" href="{{ act('user', 'view', Auth::user()->id) }}"><span class="fa fa-user"></span> My Profile</a>
                                 <a class="dropdown-item" href="{{ act('panel', 'index') }}"><span class="fa fa-cogs"></span> Control Panel</a>
-                                <a class="dropdown-item" href="{{ url('/auth/logout') }}"><span class="fa fa-sign-out"></span> Logout</a>
+                                <a class="dropdown-item" href="{{ url('/auth/logout') . '?_token=' . csrf_token() }}"><span class="fa fa-sign-out"></span> Logout</a>
                             </div>
                         </li>
                     @endif
