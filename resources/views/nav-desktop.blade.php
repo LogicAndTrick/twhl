@@ -11,7 +11,7 @@
                     </a>
 
                     <form class="navbar-search-inline form-inline" action="{{ url('search/index') }}" method="get">
-                        <div class="navbar-form">
+                        <div class="navbar-form navbar-search-form">
                             <div class="form-group">
                                 <div class="input-group input-group-sm">
                                     <div class="input-group-addon"><span class="fa fa-search"></span></div>

@@ -327,7 +327,8 @@ class DeployImages extends Command
                 }
             }
 
-            if (count($item->vault_sceeenshots) == 0) {
+            //$this->comment($item->vault_sceeenshots->count());
+            if ($item->vault_sceeenshots == null || $item->vault_sceeenshots->count() == 0) {
                 $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . '.jpg';
                 if (!is_file($path)) $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . '.png';
                 if (is_file($path)) {
