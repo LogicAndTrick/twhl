@@ -9,6 +9,10 @@
         <li class="active">Manage API keys</li>
     </ol>
 
+    <p>
+        <a href="{{ url('/wiki/page/TWHL_API_Documentation') }}">See this page for how to use the API.</a>
+    </p>
+
     <h2>Active API Keys</h2>
     <table class="table">
         <tr>
