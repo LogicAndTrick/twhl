@@ -43,8 +43,10 @@
     </div>
 
     <footer>
-        Site and non-dynamic content copyright &copy; 2017, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
+        Site and non-dynamic content copyright &copy; 2018, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
         All member-submitted resources copyright their respective authors unless otherwise specified.<br/>
+        If you are looking for web hosting and would like to support TWHL's hosting fees please consider using these referral links:
+        <a href="https://m.do.co/c/05508760a38a">DigitalOcean</a> &bull; <a href="https://www.dreamhost.com/r.cgi?666215">DreamHost</a><br/>
         {{ render_time() }}
     </footer>
 
