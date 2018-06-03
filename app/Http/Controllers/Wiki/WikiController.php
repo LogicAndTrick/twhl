@@ -310,7 +310,7 @@ class WikiController extends Controller {
         // Save meta & update the object
         $revision->wiki_revision_metas()->saveMany($meta);
         DB::statement('CALL update_wiki_object(?);', [$object->id]);
-
+        $object->touch();
 
         event(new WikiRevisionCreated($revision));
 
