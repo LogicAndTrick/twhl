@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel {
         'App\Console\Commands\ProcessVaultUploads',
         'App\Console\Commands\DeployFormat',
         'App\Console\Commands\DeployImages',
+        'App\Console\Commands\DeployTutorialImages',
 	];
 
 	/**
