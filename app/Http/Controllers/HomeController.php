@@ -85,6 +85,9 @@ class HomeController extends Controller {
             ->take(1)
             ->get();
 
+        // Onliners section
+        $onliners = User::with([])->orderBy('last_access_time', 'desc')->take(7)->get();
+
         $user_votes = [];
         $user_polls = [];
         if (Auth::user()) {
@@ -104,7 +107,8 @@ class HomeController extends Controller {
             'newses' => $newses,
             'polls' => $polls,
             'user_votes' => $user_votes,
-            'user_polls' => $user_polls
+            'user_polls' => $user_polls,
+            'onliners' => $onliners
         ]);
 	}
 

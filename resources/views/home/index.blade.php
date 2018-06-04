@@ -278,6 +278,22 @@
                     </a>
                 @endforeach
             </div>
+
+            <h1>
+                <span class="fa fa-globe"></span> Active Users
+            </h1>
+            <div class="active-users">
+                <ul class="list-unstyled">
+                    @foreach ($onliners as $o)
+                        <li>
+                            <em class="float-right">
+                                {{ $o->last_access_time->diffForHumans() }}
+                            </em>
+                            @avatar($o inline)
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </div>
 </div>
