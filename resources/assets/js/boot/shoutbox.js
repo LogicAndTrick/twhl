@@ -24,8 +24,8 @@ var window_template =
                 'Shoutbox <span v-if="loading" class="refresh-icon fa fa-refresh"></span>' +
                 '<a href="#" class="minimise-button" @click.prevent.stop="state = \'closed\'"><span class="fa fa-caret-down"></span></a>' +
                 '<a href="#" class="expand-button" @click.prevent.stop="state = \'open\'"><span class="fa fa-caret-up"></span></a>' +
-            '<a href="#" v-if="position !== \'left\'" class="minimise-button" @click.prevent.stop="position = \'left\'"><span class="fa fa-caret-left"></span></a>' +
-            '<a href="#" v-if="position !== \'right\'" class="minimise-button" @click.prevent.stop="position = \'right\'"><span class="fa fa-caret-right"></span></a>' +
+            '<a href="#" v-if="position !== \'left\'" class="minimise-button position-button" @click.prevent.stop="position = \'left\'"><span class="fa fa-caret-left"></span></a>' +
+            '<a href="#" v-if="position !== \'right\'" class="minimise-button position-button" @click.prevent.stop="position = \'right\'"><span class="fa fa-caret-right"></span></a>' +
             '</h1>' +
             '<ul class="shouts">' +
                 '<li v-if="!shouts.length" class="shout inactive">' +

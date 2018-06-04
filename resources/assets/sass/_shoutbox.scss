@@ -152,20 +152,18 @@
 // Responsive
 @media (max-width: map_get($grid-breakpoints, 'sm') - 1px) {
   .shoutbox {
-    left: 0;
-    right: 0;
-    width: auto;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
     max-height: none;
     height: 2rem;
 
-
-    &.state-open {
-      width: auto;
-    }
-
     &.state-closed, &.state-default {
-      width: auto;
       height: 2rem;
+
+      form {
+        height: 0;
+      }
 
       .expand-button {
         display: inline-block;
@@ -173,6 +171,10 @@
       .minimise-button {
         display: none;
       }
+    }
+
+    .position-button {
+      display: none !important;
     }
 
     h1 {
