@@ -50,6 +50,8 @@
         {{ render_time() }}
     </footer>
 
+    <div id="shoutbox-container"></div>
+
     @if (app('config')->get('app.debug'))
         <div class="container hidden-sm-down" style="padding-top: 20px;">
             <table class="table table-bordered table-sm">
@@ -102,11 +104,13 @@
                 formatting_guide: '{{ url("wiki/page/TWHL:_WikiCode_Syntax") }}'
             }
         };
-        $('body').shoutbox({
-            url:'{{ url("api/shouts{action}") }}',
-            userUrl:'{{ url("user/view/{id}") }}',
-            active: '{{ Auth::user() != null ? "true" : "false" }}',
-            moderator: '{{ permission("ForumAdmin") ? "true" : "false" }}'
+        $(function() {
+            window.initShoutbox({
+                url:'{{ url("api/shouts{action}") }}',
+                userUrl:'{{ url("user/view/{id}") }}',
+                active: {{ Auth::user() != null ? "true" : "false" }},
+                moderator: {{ permission("ForumAdmin") ? "true" : "false" }}
+            });
         });
         $('.navbar-search-dropdown .dropdown').on('shown.bs.dropdown', function () {
             $(this).find('input:text').focus();

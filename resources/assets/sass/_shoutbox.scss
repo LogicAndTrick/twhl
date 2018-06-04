@@ -14,13 +14,38 @@
 
   transition: all 0.3s ease;
 
-  &.open {
+  display: flex;
+  flex-flow: column nowrap;
+
+  &.position-left {
+    left: 20px;
+    right: auto;
+  }
+
+  &.state-open, &.state-default {
     width: 300px;
     height: 450px;
     transition: all 0.3s ease;
 
-    h1 a .fa-caret-up::before {
-      content: "\f0d7";
+    .expand-button {
+      display: none;
+    }
+    .minimise-button {
+      display: inline-block;
+    }
+  }
+
+  &.state-closed {
+    .expand-button {
+      display: inline-block;
+    }
+    .minimise-button {
+      display: none;
+    }
+
+    cursor: pointer;
+    h1:hover {
+      background-color: rgb(236, 208, 37);
     }
   }
 
@@ -33,6 +58,7 @@
     padding: 4px;
     color: white;
     transition: background-color 0.5s ease;
+    flex: 0 0 auto;
 
     a {
       float: right;
@@ -42,44 +68,11 @@
       &:hover {
         background-color: rgb(203, 93, 0);
       }
-
-      .fa-caret-up {
-        //transform: scale(0.7);
-      }
     }
   }
 
-  .new-message-icon {
-    display: none;
-  }
-
-  &.flash h1 {
-    background-color: rgb(236, 94, 0);
-    transition: none;
-  }
-
-  &.new h1 {
-    background-color: rgb(236, 94, 0);
-  }
-
-  &.new .new-message-icon {
-    display: inline-block;
-  }
-
-  .refresh-icon {
-    display: none;
-    font-size: 12px;
-    padding: 4px;
-    vertical-align: bottom;
-  }
-  &.refreshing .refresh-icon { display: inline; }
-
   .shouts {
-    position: absolute;
-    top: 25px;
-    bottom: 50px;
-    left: 0;
-    right: 0;
+    flex: 1 1 auto;
     padding: 0;
     margin: 0;
     list-style: none;
@@ -129,90 +122,29 @@
         margin-right: 3px;
         display: none;
       }
-    }
-  }
 
-  &.open .error {
-    position: absolute;
-    bottom: 50px;
-    left: 0;
-    right: 0;
-    background-color: #c83925;
-    color: white;
-    font-weight: bold;
-    font-size: 12px;
-    display: none;
-    padding: 3px 5px;
-
-    .fa {
-      float: right;
-      cursor: pointer;
-    }
-  }
-
-  form {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0;
-    height: 0px;
-    transition: height 0.2s ease;
-    background-color: #f5f5f5;
-
-    .input-group { display: none; }
-
-    .edit-button, .delete-button, .cancel-button {
-      display: none;
-    }
-  }
-
-  &.editing form {
-    .edit-button, .cancel-button {
-      display: inline-block;
-    }
-    .shout-button {
-      display: none;
-    }
-  }
-  &.deleting form {
-    .delete-button, .cancel-button {
-      display: inline-block;
-    }
-    .shout-button {
-      display: none;
-    }
-  }
-
-  &.open {
-    form {
-      height: 50px;
-      border-top: 1px solid #eee;
-      padding: 6px;
-      .input-group { display: flex; }
-    }
-  }
-
-  &.moderator {
-    .shout:hover {
-      .edit, .delete {
-        display: inline-block;
+      &:hover {
+        .edit, .delete {
+          display: inline-block;
+        }
       }
     }
   }
 
-  .close-button { display: none; }
-  .pin-button { display: none; }
+  form {
+    flex: 0 0 auto;
+    padding: 0;
+    transition: height 0.2s ease;
+    background-color: #f5f5f5;
 
-  &.open {
-    .pin-button { display: inline; }
-    .close-button { display: none; }
-  }
+    input {
+      margin-left: -1px;
+    }
 
-  &.pinned {
-    .pin-button {
-      .fa { transform: rotate(45deg) scale(0.8); }
-      color: black;
+    &.inactive {
+      text-align: center;
+      padding: 5px;
+      font-style: italic;
     }
   }
 }
@@ -226,8 +158,21 @@
     max-height: none;
     height: 2rem;
 
-    .shouts {
-      top: 2rem;
+
+    &.state-open {
+      width: auto;
+    }
+
+    &.state-closed, &.state-default {
+      width: auto;
+      height: 2rem;
+
+      .expand-button {
+        display: inline-block;
+      }
+      .minimise-button {
+        display: none;
+      }
     }
 
     h1 {

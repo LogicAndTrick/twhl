@@ -9,6 +9,7 @@
     "autoprefixer": "^6.6.1",
     "clean-css": "^3.4.23",
     "gulp-sass": "^3.1.0",
-    "require-dir": "^0.3.2"
+    "require-dir": "^0.3.2",
+    "vue": "^2.5.16"
   }
 }

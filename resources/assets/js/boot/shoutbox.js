@@ -1,131 +1,175 @@
 /*
  * TWHL Shoutbox - Because there's not enough useless JavaScript in the world yet
  */
+;
 
-;(function($, template) {
-    var opts = {
+// Increment this to clear everyone's cached local storage
+var TWHL_SHOUTBOX_DATA_FORMAT_VERSION = '1';
+
+var probably_twhl = (/(?:\b|\/\/|^)twhl\.info(?:\b|\/|$)/i);
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+var readableTime = window.readableTime;
+
+var window_template =
+        '<div :class="\'shoutbox \' + classes" @click="state = \'open\'">' +
+            '<h1>' +
+                '<span v-if="newMessage" class="new-message-icon fa fa-comment"></span> ' +
+                'Shoutbox <span v-if="loading" class="refresh-icon fa fa-refresh"></span>' +
+                '<a href="#" class="minimise-button" @click.prevent.stop="state = \'closed\'"><span class="fa fa-caret-down"></span></a>' +
+                '<a href="#" class="expand-button" @click.prevent.stop="state = \'open\'"><span class="fa fa-caret-up"></span></a>' +
+            '<a href="#" v-if="position !== \'left\'" class="minimise-button" @click.prevent.stop="position = \'left\'"><span class="fa fa-caret-left"></span></a>' +
+            '<a href="#" v-if="position !== \'right\'" class="minimise-button" @click.prevent.stop="position = \'right\'"><span class="fa fa-caret-right"></span></a>' +
+            '</h1>' +
+            '<ul class="shouts">' +
+                '<li v-if="!shouts.length" class="shout inactive">' +
+                    'Loading...' +
+                '</li>' +
+                '<li v-else v-for="s in shouts" class="shout">' +
+                    '<span class="avatar"><a href="{{user.url}}"><img :src="s.user.avatar_small" :alt="s.user.name" /></a></span>' +
+                    '<span class="message">' +
+                        '<span class="time" :title="s.date">{{formatTime(s.created)}}</span>' +
+                        '<button v-if="moderator" class="btn btn-secondary btn-xxs delete" @click="beginDelete(s)">D</button>' +
+                        '<button v-if="moderator" class="btn btn-secondary btn-xxs edit" @click="beginEdit(s)">E</button>' +
+                        '<span class="user"><a :href="s.user.url">{{s.user.name}}</a></span>' +
+                        '<span class="text" v-html="s.formatted_content" /> ' +
+                    '</span>' +
+                '</li>' +
+            '</ul>' +
+            '<div class="error" v-if="errorMessage"">' +
+                '<span class="fa fa-remove"></span><span class="message">{{errorMessage}}</span>' +
+            '</div>' +
+            '<form method="get" @submit.prevent="save()" v-if="active">' +
+                '<div class="input-group">' +
+                    '<input :disabled="deleting" type="text" maxlength="250" class="form-control input-sm" placeholder="Type here" v-model="text">' +
+                    '<span class="input-group-btn">' +
+                        '<button :disabled="loading" v-if="editing" class="btn btn-info btn-sm edit-button" type="submit" @click="save()">Edit</button>' +
+                        '<button :disabled="loading" v-if="deleting" class="btn btn-danger btn-sm delete-button" type="submit" @click="save()">Delete</button>' +
+                        '<button :disabled="loading" v-if="editing || deleting" class="btn btn-secondary btn-sm cancel-button" type="button" @click="cancelEdit()"><span class="fa fa-remove"></span></button>' +
+                        '<button :disabled="loading" v-if="!editing && !deleting" class="btn btn-primary btn-sm shout-button" type="submit" @click="save()">Shout!</button>' +
+                    '</span>' +
+                '</div>' +
+            '</form>' +
+            '<form v-else class="inactive">Log in to add shouts of your own</form>' +
+        '</div>';
+
+var shoutbox = new Vue({
+    template: window_template,
+    data: {
+        // options
         url: '',
         userUrl: '',
-        active: 'false',
-        moderator: 'false',
-        getAction: '/from',
-        postAction: '',
-        editAction: '',
-        deleteAction: ''
-    };
+        active: false,
+        moderator: false,
 
-    var window_template =
-            '<div class="shoutbox">' +
-                '<h1>' +
-                    '<span class="new-message-icon fa fa-comment"></span> ' +
-                    'Shoutbox <span class="refresh-icon fa fa-refresh"></span>' +
-                    '<a href="#" class="pin-button"><span class="fa fa-thumb-tack"></span></a>' +
-                    '<a href="#" class="close-button"><span class="fa fa-remove"></span></a>' +
-                    '<a href="#" class="minimise-button"><span class="fa fa-caret-up"></span></a>' +
-                '</h1>' +
-                '<ul class="shouts">' +
-                    '<li class="shout inactive">Loading...</li>' +
-                '</ul>' +
-                '<div class="error"><span class="fa fa-remove"></span><span class="message"></span></div>' +
-                '<form method="get">' +
-                    '<div class="input-group">' +
-                        '<input type="text" maxlength="250" class="form-control input-sm" placeholder="Type here">' +
-                        '<span class="input-group-btn">' +
-                            '<button class="btn btn-info btn-sm edit-button" type="submit">Edit</button>' +
-                            '<button class="btn btn-danger btn-sm delete-button" type="submit">Delete</button>' +
-                            '<button class="btn btn-secondary btn-sm cancel-button" type="button"><span class="fa fa-remove"></span></button>' +
-                            '<button class="btn btn-primary btn-sm shout-button" type="submit">Shout!</button>' +
-                        '</span>' +
-                    '</div>' +
-                '</form>' +
-            '</div>';
-    var shout_template =
-            '<li class="shout">' +
-                '<span class="avatar"><a href="{user.url}"><img src="{user.avatar}" alt="{user.name}" /></a></span>' +
-                '<span class="message">' +
-                    '<span class="time" data-stamp="{time}" title="{date}"></span>' +
-                    '<button data-id="{id}" class="btn btn-secondary btn-xxs delete">D</button>' +
-                    '<button data-id="{id}" class="btn btn-secondary btn-xxs edit">E</button>' +
-                    '<span class="user"><a href="{user.url}">{user.name}</a></span>' +
-                    '<span class="text">{formatted_content}</span> ' +
-                '</span>' +
-            '</li>';
+        // store
+        loading: true,
+        store: null,
+        lastUpdate: 0,
+        lastId: 0,
+        lastSeen: 0,
 
-    var readableTime = window.readableTime;
+        // positioning
+        state: 'default',
+        position: 'right',
 
-    // Increment this to clear everyone's cached local storage
-    var TWHL_SHOUTBOX_DATA_FORMAT_VERSION = '1';
-
-    var Shoutbox = function(parent, options) {
-
-        this.options = $.extend(opts, options);
-        this.options.get = template(this.options.url, { action: this.options.getAction });
-        this.options.post = template(this.options.url, { action: this.options.postAction });
-        this.options.edit = template(this.options.url, { action: this.options.editAction });
-        this.options.delete = template(this.options.url, { action: this.options.deleteAction });
-        this.options.pinned = $.cookie('shoutbox.pinned') == 'true';
-        this.el = $(parent);
-        var self = this;
-
-        this.store = [];
-        this.lastUpdate = this.lastId = this.lastSeen = 0;
-
-        try {
-            var version = localStorage.getItem('shoutbox.version') || '0';
-            if (version == TWHL_SHOUTBOX_DATA_FORMAT_VERSION) {
-                this.store = JSON.parse(localStorage.getItem('shoutbox.store')) || [];
-                this.lastUpdate = parseInt(localStorage.getItem('shoutbox.lastUpdate'), 10) || 0;
-                this.lastId = parseInt(localStorage.getItem('shoutbox.lastId'), 10) || 0;
-                this.lastSeen = parseInt(localStorage.getItem('shoutbox.lastSeen'), 10) || 0;
-            }
-        } catch (ex) {
-            this.store = [];
-            this.lastUpdate = this.lastId = this.lastSeen = 0;
+        // interaction
+        editing: false,
+        deleting: false,
+        text: '',
+        interval: null,
+        errorMessage: null
+    },
+    mounted: function() {
+        this.loadStorage();
+        this.loadCookie();
+        this.scrollToEnd();
+        this.fetch(true);
+        this.interval = setInterval(this.fetch, 60 * 1000);
+    },
+    destroyed: function() {
+        clearInterval(this.interval);
+    },
+    computed: {
+        urls: function() {
+            return {
+                get: template(this.url, { action: '/from' }),
+                post: template(this.url, { action: '' }),
+                edit: template(this.url, { action: '' }),
+                delete: template(this.url, { action: '' })
+            };
+        },
+        shouts: function() {
+            return this.store;
+        },
+        classes: function () {
+            var cls = [];
+            if (this.editing) cls.push('editing');
+            if (this.deleting) cls.push('deleting');
+            if (this.moderator) cls.push('moderator');
+            if (this.loading) cls.push('refreshing');
+            if (this.newMessage) cls.push('new');
+            cls.push('position-' + this.position);
+            cls.push('state-' + this.state);
+            return cls.join(' ');
+        },
+        newMessage: function() {
+            return false;
         }
-
-        var entityMap = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': '&quot;',
-            "'": '&#39;',
-            "/": '&#x2F;'
-        };
-
-        function escapeHtml(string) {
-            return String(string).replace(/[&<>"'\/]/g, function (s) {
-                return entityMap[s];
-            });
-        }
-
-        var probably_twhl = (/(?:\b|\/\/|^)twhl\.info(?:\b|\/|$)/i);
-
-        this.format = function(content)
-        {
-            // Linkify links but hide the html in base64 so they don't get encoded
-            content = Autolinker.link(content, {
-                replaceFn : function( autolinker, match ) {
-                    var tag = window.tag = autolinker.getTagBuilder().build(match);
-                    tag.setInnerHtml(escapeHtml(tag.getInnerHtml())); // Escape the link text
-                    if (probably_twhl.test(tag.getAttr('href'))) delete tag.attrs['target'];
-                    var str = tag.toAnchorString();
-                    return '\0\u9998'+window.btoa(str).replace(/\//ig,'-')+'\u9999\0'; // B64 encode the whole thing, replace slashes as they'll be encoded later
+    },
+    methods: {
+        loadStorage: function() {
+            try {
+                var version = localStorage.getItem('shoutbox.version') || '0';
+                if (version === TWHL_SHOUTBOX_DATA_FORMAT_VERSION) {
+                    this.store = JSON.parse(localStorage.getItem('shoutbox.store')) || [];
+                    this.lastUpdate = parseInt(localStorage.getItem('shoutbox.lastUpdate'), 10) || 0;
+                    this.lastId = parseInt(localStorage.getItem('shoutbox.lastId'), 10) || 0;
+                    this.lastSeen = parseInt(localStorage.getItem('shoutbox.lastSeen'), 10) || 0;
+                    this.loading = false;
                 }
+            } catch (ex) {
+                this.store = [];
+                this.lastUpdate = this.lastId = this.lastSeen = 0;
+            }
+        },
+        saveStorage: function() {
+            localStorage.setItem('shoutbox.version', TWHL_SHOUTBOX_DATA_FORMAT_VERSION);
+            localStorage.setItem('shoutbox.store', JSON.stringify(this.store));
+            localStorage.setItem('shoutbox.lastUpdate', this.lastUpdate);
+            localStorage.setItem('shoutbox.lastId', this.lastId);
+            localStorage.setItem('shoutbox.lastSeen', this.lastSeen);
+        },
+        loadCookie: function() {
+            try {
+                var c = JSON.parse($.cookie('shoutbox.settings'));
+                if (c.state === 'open' || c.state === 'closed') this.state = c.state;
+                if (c.position === 'left' || c.position === 'right') this.position = c.position;
+            } catch (ex) {
+                //
+            }
+        },
+        saveCookie: function() {
+            $.cookie('shoutbox.settings', JSON.stringify({ state: this.state, position: this.position }), { expires: 365, path: '/' });
+        },
+        fetch: function(full) {
+            var self = this;
+            var timestamp = full === true ? 0 : Math.floor(this.lastUpdate / 1000);
+            this.refreshing = true;
+            $.get(this.urls.get, { timestamp: timestamp }, function(data) {
+                self.updateStore(data, full);
             });
-
-            // Escape any sneaky html
-            content = escapeHtml(content);
-
-            // Decode the base64 links so we're good again
-            content = content.replace(/\u0000\u9998([\s\S]*?)\u9999\u0000/g, function(match, b64) {
-                return window.atob(b64.replace(/-/ig,'/'));
-            });
-
-            return content;
-        };
-
-        this.updateStore = function(arr, full) {
+        },
+        updateStore: function(arr, full) {
             var obj, i;
+
+            var scroll = this.getScroll();
 
             if (full === true) this.store = [];
 
@@ -144,6 +188,10 @@
                     ids[obj.id] = newStore.length;
                     newStore.push(obj);
                 }
+                obj.formatted_content = this.format(obj.content);
+                obj.time = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
+                obj.date = new Date(obj.time).toLocaleString();
+                obj.user.url = template(this.userUrl, { id: obj.user.id });
             }
             newStore.sort(function (a, b) {
                 if (a.created > b.created) return 1;
@@ -159,195 +207,131 @@
                 this.lastUpdate = Math.max(this.lastUpdate, obj.updated);
             }
 
-            localStorage.setItem('shoutbox.version', TWHL_SHOUTBOX_DATA_FORMAT_VERSION);
-            localStorage.setItem('shoutbox.store', JSON.stringify(this.store));
-            localStorage.setItem('shoutbox.lastUpdate', this.lastUpdate);
-            localStorage.setItem('shoutbox.lastId', this.lastId);
-            localStorage.setItem('shoutbox.lastSeen', this.lastSeen);
-        };
+            this.loading = this.refreshing = false;
+            this.saveStorage();
 
-        this.render = function() {
-            this.shoutsContainer.empty();
-            for (var i = 0; i < this.store.length; i++) {
-                var obj = this.store[i];
-                obj['user.name'] = obj.user.name;
-                obj['user.url'] = template(this.options.userUrl, { id: obj.user.id });
-                obj['user.avatar'] = obj.user.avatar_small;
-                obj['time'] = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
-                obj['date'] = new Date(obj['time']).toLocaleString();
-                obj['formatted_content'] = this.format(obj.content);
-                this.shoutsContainer.append(template(shout_template, obj));
-            }
-            var sc = this.shoutsContainer[0];
-            setTimeout(function() { sc.scrollTop = sc.scrollHeight; }, 0);
-            this.updateTimes();
-            this.container.find('form').removeClass('loading');
-            if (this.options.active == 'true') this.container.find('input, button').prop('disabled', false);
+            if (scroll >= 0.98 || full) this.scrollToEnd();
+        },
+        escapeHtml: function(string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return entityMap[s];
+            });
+        },
+        format: function(content) {
+            var self = this;
 
-            if (this.lastSeen != this.lastId) {
-                if (this.container.is('.open')) {
-                    this.lastSeen = this.lastId;
-                    this.container.addClass('flash');
-                    setTimeout(function() { self.container.removeClass('flash'); }, 10);
-                } else {
-                    this.container.addClass('new');
+            // Linkify links but hide the html in base64 so they don't get encoded
+            content = Autolinker.link(content, {
+                replaceFn : function(match) {
+                    var tag = window.tag = this.getTagBuilder().build(match);
+                    tag.setInnerHtml(self.escapeHtml(tag.getInnerHtml())); // Escape the link text
+                    if (probably_twhl.test(tag.getAttr('href'))) delete tag.attrs['target'];
+                    var str = tag.toAnchorString();
+                    return '\0\u9998'+window.btoa(str).replace(/\//ig,'-')+'\u9999\0'; // B64 encode the whole thing, replace slashes as they'll be encoded later
                 }
-            }
-        };
-
-        this.refresh = function(full) {
-            var timestamp = full === true ? 0 : Math.floor(this.lastUpdate / 1000);
-            this.container.addClass('refreshing');
-            $.get(this.options.get, { timestamp: timestamp }, function(data) {
-                self.container.removeClass('refreshing');
-                self.updateStore(data, full);
-                self.render();
             });
-        };
 
-        this.updateTimes = function() {
-            this.shoutsContainer.find('[data-stamp]').each(function() {
-                var $t = $(this), stamp = $t.data('stamp');
-                $t.text(readableTime(parseInt(stamp, 10)));
+            // Escape any sneaky html
+            content = this.escapeHtml(content);
+
+            // Decode the base64 links so we're good again
+            content = content.replace(/\u0000\u9998([\s\S]*?)\u9999\u0000/g, function(match, b64) {
+                return window.atob(b64.replace(/-/ig,'/'));
             });
-        };
 
-        this.post = function() {
-            var input = this.container.find('input');
-            var content = input.val();
-            if (!content || !this.options.active) return;
+            return content;
+        },
+        formatTime: function (time) {
+            return readableTime(time);
+        },
+        save: function () {
+            var content = this.text;
+            if (!content || !this.active) return;
 
-            input.val('');
-            this.container.find('form').addClass('loading');
-            this.container.find('input,button').prop('disabled', true);
-            this.container.addClass('refreshing');
+            this.text = '';
+            this.loading = true;
 
-            var url = this.editing ? this.options.edit
-                    : this.deleting ? this.options.delete
-                    : this.options.post;
+            var url = this.editing ? this.urls.edit
+                    : this.deleting ? this.urls.delete
+                    : this.urls.post;
             var method = this.editing ? 'PUT'
                     : this.deleting ? 'DELETE'
                     : 'POST';
+            var id = this.editing ? this.editing.id
+                    : this.deleting ? this.deleting.id
+                    : null;
             var full = this.deleting;
 
-            // $.post(url, { text: content, id: this.editing || this.deleting || null })
+            if (!this.editing && !this.deleting) this.scrollToEnd();
+
+            var self = this;
             $.ajax({
                 url: url,
                 method: method,
                 contentType: 'application/json',
                 dataType: 'json',
-                data: JSON.stringify({ text: content, id: this.editing || this.deleting || null })
+                data: JSON.stringify({ text: content, id: id })
             }).fail(function(req) {
-                self.container.find('form').removeClass('loading');
-                self.container.find('input,button').prop('disabled', false);
-                self.container.removeClass('refreshing');
-                self.container.find('.error').addClass('show').find('.message').text(req.responseJSON.text[0]);
-                input.val(content).focus();
+                self.loading = false;
+                self.errorMessage = req.responseJSON.text[0];
+                self.focus();
             }).done(function() {
                 self.cancelEdit();
-                self.refresh(!!full);
+                self.fetch(!!full);
             });
-        };
-
-        this.beginEdit = function(id, data) {
-            this.cancelEdit();
-            this.editing = id;
-            this.container.addClass('editing');
-            this.container.find('input').val(data.content).focus();
-        };
-
-        this.beginDelete = function(id, data) {
-            this.cancelEdit();
-            this.deleting = id;
-            this.container.addClass('deleting');
-            this.container.find('input').val(data.content).focus();
-        };
-
-        this.cancelEdit = function() {
+        },
+        beginEdit: function (shout) {
+            this.deleting = false;
+            this.editing = shout;
+            this.text = shout.content;
+            this.focus();
+        },
+        beginDelete: function (shout) {
+            this.deleting = shout;
+            this.editing = false;
+            this.text = shout.content;
+            this.focus();
+        },
+        cancelEdit: function () {
             this.editing = this.deleting = false;
-            this.container.removeClass('editing deleting');
-            this.container.find('input').val('');
-        };
-
-        this.togglePin = function() {
-            $.cookie('shoutbox.pinned', this.options.pinned = !this.options.pinned, { expires: 365, path: '/' });
-            this.container.toggleClass('pinned', this.options.pinned);
-        };
-
-        this.toggle = function() {
-            this.container.toggleClass('open');
-            this.container.removeClass('new');
-            localStorage.setItem('shoutbox.lastSeen', this.lastSeen = this.lastId);
-        };
-
-        this.destroy = function() {
-            this.el.data('shoutbox', null);
-            clearInterval(this.interval);
-            this.container.remove();
-        };
-
-        this.bind = function() {
-            this.container.find('.minimise-button').on('click', function(event) {
-                event.preventDefault();
-                self.toggle();
+            this.text = '';
+        },
+        focus: function() {
+            this.$nextTick(function () {
+                $('input', this.$el).focus();
             });
-            this.container.find('.pin-button').on('click', function(event) {
-                event.preventDefault();
-                self.togglePin();
+        },
+        scrollToEnd: function () {
+            this.$nextTick(function () {
+                this.setScroll(1);
             });
-            this.container.find('.close-button').on('click', function(event) {
-                event.preventDefault();
-                self.destroy(); // todo confirm and cookie
-            });
-            this.container.find('form').on('submit', function(event) {
-                event.preventDefault();
-                self.post();
-            });
-            this.container.find('.error .fa').on('click', function(event) {
-                self.container.find('.error').removeClass('show');
-            });
-            this.container.on('click', '.shout .edit', function(event) {
-                var id = $(event.currentTarget).data('id');
-                for (var i = 0; i < self.store.length; i++) {
-                    var s = self.store[i];
-                    if (s.id == id) {
-                        self.beginEdit(id, s);
-                        break;
-                    }
-                }
-            });
-            this.container.on('click', '.shout .delete', function(event) {
-                var id = $(event.currentTarget).data('id');
-                for (var i = 0; i < self.store.length; i++) {
-                    var s = self.store[i];
-                    if (s.id == id) {
-                        self.beginDelete(id, s);
-                        break;
-                    }
-                }
-            });
-            this.container.find('.cancel-button').on('click', function(event) {
-                event.preventDefault();
-                self.cancelEdit();
-            });
-        };
+        },
+        getScroll: function() {
+            var el = $('.shouts', this.$el).get(0);
+            if (!el) return 1;
+            return el.scrollTop / (el.scrollHeight - el.offsetHeight);
+        },
+        setScroll: function(s) {
+            var el = $('.shouts', this.$el).get(0);
+            if (!el) return;
+            el.scrollTop = s * (el.scrollHeight - el.offsetHeight);
+        }
+    },
+    watch: {
+        state: function () {
+            this.saveCookie();
+        },
+        position: function () {
+            this.saveCookie();
+        }
+    }
 
-        this.container = $(window_template).toggleClass('open pinned', this.options.pinned).appendTo(this.el);
-        this.shoutsContainer = this.container.find('.shouts');
-        if (this.options.active != 'true') this.container.find('input, button').prop('disabled', true);
-        if (this.options.moderator == 'true') this.container.addClass('moderator');
+});
 
-        this.interval = setInterval(function() {
-            self.refresh();
-        }, 60 * 1000);
-
-        this.bind();
-        this.render();
-        this.refresh(true);
-    };
-
-    $.fn.shoutbox = function(options) {
-        if ($.cookie('shoutbox.removed')) return;
-        $(this).data('shoutbox', new Shoutbox(this, options));
-    };
-})(jQuery, template);
+window.initShoutbox = function(options) {
+    shoutbox.url = options.url;
+    shoutbox.userUrl = options.userUrl;
+    shoutbox.active = options.active;
+    shoutbox.moderator = options.moderator;
+    shoutbox.$mount(document.getElementById('shoutbox-container'));
+};
