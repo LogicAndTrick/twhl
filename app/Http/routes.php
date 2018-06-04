@@ -91,11 +91,15 @@ $legacy = [
     },
     'articulator.php' => function() {
         return redirect('/wiki/page/category:VERC_Archive');
+    },
+    'Legacy' => function() {
+        return redirect('/');
     }
 ];
 
 foreach ($legacy as $page => $fn) {
     Route::get($page, $fn);
+    Route::get('Legacy/'.$page, $fn);
 }
 
 // Swagger convention suggests that the api definition should be available at /swagger.json
