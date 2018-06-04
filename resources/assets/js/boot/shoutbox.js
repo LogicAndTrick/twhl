@@ -32,7 +32,7 @@ var window_template =
                     'Loading...' +
                 '</li>' +
                 '<li v-else v-for="s in shouts" class="shout">' +
-                    '<span class="avatar"><a href="{{user.url}}"><img :src="s.user.avatar_small" :alt="s.user.name" /></a></span>' +
+                    '<span class="avatar"><a :href="s.user.url"><img :src="s.user.avatar_small" :alt="s.user.name" /></a></span>' +
                     '<span class="message">' +
                         '<span class="time" :title="s.date">{{formatTime(s.created)}}</span>' +
                         '<button v-if="moderator" class="btn btn-secondary btn-xxs delete" @click="beginDelete(s)">D</button>' +
