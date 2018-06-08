@@ -16,14 +16,16 @@ class MarkdownTextProcessor extends Processor {
          * Very simple rules: no nesting, no newlines, must start/end on a word boundary
          */
 
-        // pre-condition: start of a line OR one of: !?^()+=[]{}"'<>,. OR whitespace
-        $pre = '%(?<=^|[!\^()+=\[\]{}"\'<>?,.\s])';
+        $break_chars = '[!\^()+=\[\]{}"\'<>?,.:\s]';
+
+        // pre-condition: start of a line OR one of: !?^()+=[]{}"'<>,.: OR whitespace
+        $pre = "%(?<=^|$break_chars)";
 
         // first and last character is NOT whitespace. everything else is fine except for <> or newlines
-        $mid = '([^<>\r\n\s][^<>\r\n]*?[^<>\r\n\s])';
+        $mid = '((?<=[^<>\r\n\s])[^<>\r\n]*?(?=[^<>\r\n\s]))';
 
-        // post-condition: end of a line OR one of: !?^()+=[]{}"'<>,. OR whitespace
-        $post = '(?=[!\^()+=\[\]{}"\'<>?,.\s]|$)%imu';
+        // post-condition: end of a line OR one of: !?^()+=[]{}"'<>,.: OR whitespace
+        $post = "(?=$break_chars|\$)%imu";
 
         // Bold
         $text = preg_replace("{$pre}\*{$mid}\*{$post}", '<strong>$1</strong>', $text);
