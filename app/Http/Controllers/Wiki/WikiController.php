@@ -94,12 +94,12 @@ class WikiController extends Controller {
     public function getView($id) {
         $obj = WikiObject::findOrFail($id);
         $rev = WikiRevision::where('is_active', '=', 1)->where('object_id', '=', $id)->firstOrFail();
-        return redirect('wiki/page/'.$rev->slug);
+        return redirect('wiki/page/'.$rev->escaped_slug);
     }
 
     public function getViewRevision($id) {
         $rev = WikiRevision::findOrFail($id);
-        return redirect('wiki/page/'.$rev->slug);
+        return redirect('wiki/page/'.$rev->escaped_slug);
     }
 
     public function getPage($page, $revision = 0) {
@@ -356,7 +356,7 @@ class WikiController extends Controller {
         if (substr(Request::input('title'), 0, 9) == 'category:') $type = WikiType::CATEGORY;
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = $this->createRevision($object);
-        return redirect('wiki/page/'.$revision->slug);
+        return redirect('wiki/page/'.$revision->escaped_slug);
     }
 
     public function getEdit($page) {
@@ -417,7 +417,7 @@ class WikiController extends Controller {
             $obj->save();
         }
 
-        return redirect('wiki/page/'.$revision->slug);
+        return redirect('wiki/page/'.$revision->escaped_slug);
     }
 
     public function getRevert($id) {
@@ -475,7 +475,7 @@ class WikiController extends Controller {
         }
         $revision->wiki_revision_metas()->saveMany($meta);
         DB::statement('CALL update_wiki_object(?);', [$obj->id]);
-        return redirect('wiki/page/'.$revision->slug);
+        return redirect('wiki/page/'.$revision->escaped_slug);
     }
 
     public function getDelete($id)
@@ -543,6 +543,6 @@ class WikiController extends Controller {
         $type = WikiType::UPLOAD;
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = $this->createRevision($object);
-        return redirect('wiki/page/'.$revision->slug);
+        return redirect('wiki/page/'.$revision->escaped_slug);
     }
 }

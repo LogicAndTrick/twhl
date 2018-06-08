@@ -51,8 +51,9 @@ class WikiImageTag extends LinkTag {
             $params = isset($regs[2]) ? explode('|', trim($regs[2])) : [];
             $src = $image;
             if (strstr($image, '/') === false) {
+                $image = htmlspecialchars_decode($image);
                 $result->AddMeta('WikiUpload', $image);
-                $src = url('/wiki/embed/' . WikiRevision::CreateSlug($image));
+                $src = act('wiki', 'embed', WikiRevision::CreateSlug($image));
             }
             $url = null;
             $caption = null;
@@ -66,8 +67,9 @@ class WikiImageTag extends LinkTag {
             }
             if ($tag == 'img' && $url && $this->ValidateUrl($url)) {
                 if (!preg_match('%^[a-z]{2,10}://%i', $url)) {
+                    $url = htmlspecialchars_decode($url);
                     $result->AddMeta('WikiLink', $url);
-                    $url = url('/wiki/page/' . WikiRevision::CreateSlug($url));
+                    $url = act('wiki', 'page', WikiRevision::CreateSlug($url));
                 }
             } else {
                 $url = '';
@@ -109,7 +111,7 @@ class WikiImageTag extends LinkTag {
 
     private function ValidateUrl($url)
     {
-        return stristr($url, '<script') === false && preg_match('%^([a-z]{2,10}://)?([^]"\n ]+?)$%i', $url);
+        return stristr($url, '<script') === false; // && preg_match('%^([a-z]{2,10}://)?([^]"\n ]+?)$%i', $url);
     }
 
     private $valid_classes = [ 'large', 'medium', 'small', 'thumb', 'left', 'right', 'center', 'inline' ];

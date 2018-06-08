@@ -52,13 +52,13 @@
     @if ($upload->isImage())
         <dt>Image Width</dt><dd>{{ $revision->getImageWidth() }}</dd>
         <dt>Image Height</dt><dd>{{ $revision->getImageHeight() }}</dd>
-        <dt>BBCode (TWHL only)</dt><dd>[img:{{ $revision->getEmbedSlug() }}]</dd>
+        <dt>BBCode (TWHL only)</dt><dd>[img:{{ $revision->title }}]</dd>
     @endif
     @if ($upload->isVideo())
-        <dt>BBCode (TWHL only)</dt><dd>[video:{{ $revision->getEmbedSlug() }}]</dd>
+        <dt>BBCode (TWHL only)</dt><dd>[video:{{ $revision->title }}]</dd>
     @endif
     @if ($upload->isAudio())
-        <dt>BBCode (TWHL only)</dt><dd>[audio:{{ $revision->getEmbedSlug() }}]</dd>
+        <dt>BBCode (TWHL only)</dt><dd>[audio:{{ $revision->title }}]</dd>
     @endif
     <dt>Embed URL (dynamic)</dt><dd><a href="{{ $upload->getEmbeddableFileName() }}">{{ $upload->getEmbeddableFileName() }}</a></dd>
     <dt>Embed URL (permalink)</dt><dd><a href="{{ $upload->getResourceFileName() }}">{{ $upload->getResourceFileName() }}</a></dd>

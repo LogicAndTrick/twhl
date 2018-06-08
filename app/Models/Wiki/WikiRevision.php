@@ -10,6 +10,8 @@ class WikiRevision extends Model {
     protected $fillable = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'content_html', 'message'];
     public $visible = ['id', 'object_id', 'user_id', 'is_active', 'slug', 'title', 'content_text', 'content_html', 'message', 'created_at', 'wiki_object', 'user', 'wiki_revision_metas'];
 
+    public $appends = [ 'escaped_slug' ];
+
     use SoftDeletes;
 
     public function wiki_object()
@@ -57,6 +59,10 @@ class WikiRevision extends Model {
         else return $this->slug;
     }
 
+    public function getEscapedSlugAttribute() {
+        return rawurlencode($this->slug);
+    }
+
     private function getMeta($type, $first = false) {
         $r = [];
         foreach ($this->wiki_revision_metas as $meta) {
@@ -78,7 +84,7 @@ class WikiRevision extends Model {
 
     public static function CreateSlug($text) {
         $text = str_ireplace(' ', '_', $text);
-        $text = preg_replace('%[^a-z0-9-_()\'\\.:]%si', '', $text);
+        $text = preg_replace('%[^!-~]%si', '', $text);
         return $text;
     }
 }
