@@ -3,14 +3,14 @@
     Category: {{ str_replace('_', ' ', str_replace('+', ' > ', $cat_name)) }}
 
     @if ($revision)
-        <span class="pull-right">
+        <small class="pull-right">
             @if (!$revision->wiki_object->canEdit())
                 <span class="fa fa-lock" title="You do not have access to edit this page."></span>
             @elseif ($revision->wiki_object->isProtected())
                 <span class="fa fa-lock faded" title="This page is protected."></span>
             @endif
             Last edited @date($revision->created_at) by @avatar($revision->user inline)
-        </span>
+        </small>
     @endif
 </h1>
 
