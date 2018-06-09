@@ -335,8 +335,8 @@ class WikiController extends Controller {
         });
         Validator::extend('category_name_must_exist', function($attribute, $value, $parameters) {
             if (substr($value, 0, 9) != 'category:') return true;
-            $cat_name = substr($value, 9);
-            $meta = WikiRevisionMeta::whereKey(WikiRevisionMeta::CATEGORY)->whereValue($cat_name)->first();
+            $cat_name = WikiRevision::CreateSlug(substr($value, 9));
+            $meta = WikiRevisionMeta::where('key', '=', WikiRevisionMeta::CATEGORY)->where('value', '=', $cat_name)->first();
             return $meta !== null;
         });
         Validator::extend('invalid_title', function($attribute, $value, $parameters) {
