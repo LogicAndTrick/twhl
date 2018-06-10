@@ -35,11 +35,6 @@ class HomeController extends Controller {
             ->limit(4)
             ->get();
 
-        $latest_created_map = VaultItem::whereIn('type_id', [1,4])
-            ->orderBy('updated_at', 'desc')
-            ->skip(3)
-            ->value('created_at');
-
         // Competitions
         $comps = Competition::with(['type', 'judge_type'])
             ->whereIn('status_id', [CompetitionStatus::ACTIVE, CompetitionStatus::JUDGING, CompetitionStatus::VOTING])

@@ -147,7 +147,7 @@
     <div class="horizontal-scroll">
         @foreach ($new_maps as $item)
             <a href="{{ act('vault', 'view', $item->id) }}" class="tile tagged">
-                @if ($item->created_at < $latest_created_map)
+                @if ($item->created_at < $item->updated_at->subWeeks(2))
                     <span class="tag"><span class="fa fa-certificate"></span> Updated</span>
                 @endif
                 <span class="tile-main">
