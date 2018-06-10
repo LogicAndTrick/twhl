@@ -94,7 +94,6 @@ class HomeController extends Controller {
 
 		return view('home/index', [
             'new_maps' => $new_maps,
-            'latest_created_map' => $latest_created_map,
             'competitions' => $comps,
             'wiki_edits' => $wiki_edits,
             'threads' => $threads,
