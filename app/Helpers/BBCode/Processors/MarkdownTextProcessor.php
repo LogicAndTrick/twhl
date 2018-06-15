@@ -22,7 +22,7 @@ class MarkdownTextProcessor extends Processor {
         $pre = "%(?<=^|$break_chars)";
 
         // first and last character is NOT whitespace. everything else is fine except for <> or newlines
-        $mid = '((?<=[^<>\r\n\s])[^<>\r\n]*?(?=[^<>\r\n\s]))';
+        $mid = '((?=[^<>\r\n\s])[^<>\r\n]*?(?<=[^<>\r\n\s]))';
 
         // post-condition: end of a line OR one of: !?^()+=[]{}"'<>,.: OR whitespace
         $post = "(?=$break_chars|\$)%imu";
