@@ -242,10 +242,10 @@ class WikiController extends Controller {
     private function createRevision($object, $existing_revision = null) {
         $parse_result = app('bbcode')->ParseResult(Request::input('content_text'));
 
-        // The title can only change for standard pages
+        // The title can only change for standard/upload pages
         $title = Request::input('title');
         $slug = WikiRevision::CreateSlug(Request::input('title'));
-        if ($object->type_id != WikiType::PAGE) {
+        if ($object->type_id != WikiType::PAGE && $object->type_id != WikiType::UPLOAD) {
             if ($existing_revision) {
                 $title = $existing_revision->title;
                 $slug = $existing_revision->slug;
@@ -397,12 +397,20 @@ class WikiController extends Controller {
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
+        $max_size = 4096;
+        $allowed_extensions = 'jpeg,jpg,png,gif';
+        if (permission('Admin')) {
+            $max_size = 1024*16;
+            $allowed_extensions .= ',zip,rar';
+        }
         $rules = [
-            'file' => 'max:4096|valid_extension:jpeg,jpg,png,gif',
+            'file' => "max:$max_size|valid_extension:$allowed_extensions",
             'content_text' => 'required|max:65536|must_change|valid_categories',
             'message' => 'max:200'
         ];
-        if ($obj->type_id == WikiType::PAGE) $rules['title'] = 'required|max:200|unique_wiki_slug|invalid_title';
+        if ($obj->type_id == WikiType::PAGE || $obj->type_id == WikiType::UPLOAD) {
+            $rules['title'] = 'required|max:200|unique_wiki_slug|invalid_title';
+        }
         $this->validate(Request::instance(), $rules, [
             'must_change' => 'At least one field must be changed to apply an edit.',
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',

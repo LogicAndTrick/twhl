@@ -22,6 +22,7 @@
         @if ($revision->wiki_object->type_id == \App\Models\Wiki\WikiType::PAGE)
             @text(title $revision) = Page Title
         @elseif ($revision->wiki_object->type_id == \App\Models\Wiki\WikiType::UPLOAD)
+            @text(title $revision) = Page Title
             @file(file) = Choose File (leave blank to keep the existing file)
         @endif
         <div class="wikicode-input">
