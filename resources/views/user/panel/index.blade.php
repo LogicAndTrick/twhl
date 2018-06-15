@@ -43,6 +43,7 @@
                         <hr title="Admin Actions"/>
                         <ul class="list-unstyled">
                             <li><a href="{{ act('panel', 'edit-name', $user->id) }}"><span class="fa fa-user"></span> Change User's Name</a></li>
+                            <li><a href="{{ act('panel', 'edit-permissions', $user->id) }}"><span class="fa fa-key"></span> Manage User's Permissions</a></li>
                             <li><a href="{{ act('panel', 'edit-bans', $user->id) }}"><span class="fa fa-ban"></span> Manage User's Bans</a></li>
                             @if (permission('ObliterateAdmin') && $user->id != Auth::user()->id)
                                 <li><a class="text-danger" href="{{ act('panel', 'obliterate', $user->id) }}"><span class="fa fa-trash"></span> Obliterate User</a></li>

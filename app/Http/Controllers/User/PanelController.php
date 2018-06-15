@@ -7,6 +7,7 @@ use App\Models\Accounts\Ban;
 use App\Models\Accounts\User;
 use App\Models\Accounts\UserNameHistory;
 use App\Models\Accounts\UserNotificationDetails;
+use App\Models\Accounts\UserPermission;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Accounts\UserSubscriptionDetails;
 use Carbon\Carbon;
@@ -21,7 +22,7 @@ class PanelController extends Controller {
 
 	public function __construct() {
         $this->permission(['index', 'editAvatar', 'editProfile', 'editSettings', 'editPassword'], true);
-        $this->permission(['editName', 'editBans', 'addBan', 'deleteBan'], 'Admin');
+        $this->permission(['editName', 'editBans', 'addBan', 'deleteBan', 'editPermissions', 'addPermission', 'deletePermission'], 'Admin');
         $this->permission(['obliterate'], 'ObliterateAdmin');
 	}
 
@@ -326,6 +327,38 @@ class PanelController extends Controller {
         $ban = Ban::findOrFail($id);
         $ban->delete();
         return redirect('panel/edit-bans/'.$ban->user_id);
+    }
+
+    public function getEditPermissions($id = 0) {
+        $user = PanelController::GetUser($id);
+        $permissions = UserPermission::with(['permission'])->whereUserId($id)->get();
+        return view('user/panel/edit-permissions', [
+            'user' => $user,
+            'permissions' => $permissions
+        ]);
+    }
+
+    public function postAddPermission() {
+        $id = Request::input('id');
+        $user = PanelController::GetUser($id);
+
+        $this->validate(Request::instance(), [
+            'permission_id' => 'required|integer'
+        ]);
+
+        $perm = UserPermission::create([
+            'user_id' => $user->id,
+            'permission_id' => Request::input('permission_id')
+        ]);
+
+        return redirect('panel/edit-permissions/'.$id);
+    }
+
+    public function postDeletePermission() {
+        $id = Request::input('id');
+        $perm = UserPermission::findOrFail($id);
+        $perm->delete();
+        return redirect('panel/edit-permissions/'.$perm->user_id);
     }
 
     public function getObliterate($id) {
