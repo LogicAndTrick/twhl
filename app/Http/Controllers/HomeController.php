@@ -12,9 +12,12 @@ use App\Models\Polls\PollItemVote;
 use App\Models\Vault\Motm;
 use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiObject;
+use App\Models\Wiki\WikiRevision;
+use App\Models\Wiki\WikiRevisionMeta;
 use DB;
 use Auth;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller {
 
@@ -45,6 +48,8 @@ class HomeController extends Controller {
             ->orderBy('updated_at', 'desc')
             ->limit(6)
             ->get();
+
+        $wiki_articles = $this->getWikiFeatureData();
 
         // Forums section
         $threads = ForumThread::with(['last_post', 'last_post.user'])
@@ -96,6 +101,7 @@ class HomeController extends Controller {
             'new_maps' => $new_maps,
             'competitions' => $comps,
             'wiki_edits' => $wiki_edits,
+            'wiki_articles' => $wiki_articles,
             'threads' => $threads,
             'journals' => $journals,
             'newses' => $newses,
@@ -105,5 +111,32 @@ class HomeController extends Controller {
             'onliners' => $onliners
         ]);
 	}
+
+    private function getWikiFeatureData()
+    {
+        return [
+            // Featured tutorial lasts 1 day
+            'featured_tutorials' => \Illuminate\Support\Facades\Cache::remember('featured_tutorials', 60 * 24, function () {
+                return WikiRevision::whereIsActive(true)
+                    ->whereRaw("id in (
+                        select m.revision_id
+                        from wiki_revision_metas as m
+                        where m.key = ?
+                        and m.value = ?
+                        group by m.revision_id
+                    )", [ WikiRevisionMeta::CATEGORY, WikiRevision::CreateSlug('Tutorials') ])
+                    ->orderByRaw('RAND()')
+                    ->limit(3)
+                    ->get();
+            }),
+            // Recent edits lasts 1 minute
+            'recent_edits' => Cache::remember('recent_edits', 1, function () {
+                return WikiObject::with(['current_revision', 'current_revision.user'])
+                    ->orderBy('updated_at', 'desc')
+                    ->limit(6)
+                    ->get();
+            })
+        ];
+    }
 
 }

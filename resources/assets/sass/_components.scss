@@ -28,6 +28,16 @@
   }
 }
 
+h1 .nice-date {
+  &:hover {
+    background: hsla(0, 0%, 33%, 0.1);
+  }
+
+  &.on {
+    background: hsla(0, 0%, 33%, 0.3);
+  }
+}
+
 
 .avatar {
   display: block;

@@ -255,28 +255,35 @@
                 @endforeach
             </div>
 
-
             <h1>
-                <a href="{{ act('wiki', 'index') }}"><span class="fa fa-edit"></span> Wiki Edits</a>
+                <a href="{{ act('wiki', 'index') }}"><span class="fa fa-lightbulb-o"></span> Resources</a>
                 <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('wiki', 'index') }}">View wiki</a>
             </h1>
-            <div class="wiki-edits">
-                @foreach ($wiki_edits as $obj)
-                    <a href="{{ act('wiki', 'page', $obj->current_revision->slug) }}" class="slip">
-                        <span class="slip-avatar">
-                            @avatar($obj->current_revision->user small link=false show_name=false)
-                        </span>
-                        <span class="slip-content">
-                            <span class="slip-title">
-                                {{ $obj->current_revision->getNiceTitle($obj) }}
-                            </span>
-                            <span class="slip-subtitle">
-                                @avatar($obj->current_revision->user text link=false) &bull;
-                                @date($obj->current_revision->updated_at)
-                            </span>
-                        </span>
+            <div class="slot wiki-feature">
+                <h2>Featured tutorials</h2>
+                <ul>
+                    @foreach ($wiki_articles['featured_tutorials'] as $wa)
+                        <li>
+                            <a href="{{ act('wiki', 'page', $wa->slug) }}">{{ $wa->title }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="text-center my-2">
+                    <a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Tutorials')) }}" class="btn btn-primary btn-xs">
+                        <span class="fa fa-chevron-circle-right"></span>
+                        See all tutorials
                     </a>
-                @endforeach
+                </div>
+                <h2>Recently edited pages</h2>
+                <ul>
+                    @foreach ($wiki_edits as $obj)
+                        <li>
+                            <a href="{{ act('wiki', 'page', $obj->current_revision->slug) }}" class="d-block">
+                                {{ $obj->current_revision->getNiceTitle($obj) }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
             <h1>
