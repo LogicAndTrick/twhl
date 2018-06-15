@@ -245,12 +245,13 @@ class WikiController extends Controller {
         // The title can only change for standard/upload pages
         $title = Request::input('title');
         $slug = WikiRevision::CreateSlug(Request::input('title'));
+        if ($object->type_id == WikiType::UPLOAD) {
+            $slug = 'upload:'.$slug;
+        }
         if ($object->type_id != WikiType::PAGE && $object->type_id != WikiType::UPLOAD) {
             if ($existing_revision) {
                 $title = $existing_revision->title;
                 $slug = $existing_revision->slug;
-            } else if ($object->type_id == WikiType::UPLOAD) {
-                $slug = 'upload:'.$slug;
             }
         }
 
