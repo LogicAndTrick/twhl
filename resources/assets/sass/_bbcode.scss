@@ -301,6 +301,29 @@ pre {
     }
   }
 
+  .contents {
+    h2 {
+      margin: 0 0 2px;
+      padding: 0 0 4px;
+      border-bottom: 1px solid $gray-lighter;
+      font-size: 15px;
+      text-align: center;
+    }
+    ul {
+      border: 1px solid $twhl-brand;
+      display: inline-block;
+      list-style: none;
+      padding: 10px 20px;
+      margin-top: 0;
+    }
+    .level-1 { margin-left:  0px; }
+    .level-2 { margin-left:  8px; }
+    .level-3 { margin-left: 16px; }
+    .level-4 { margin-left: 24px; }
+    .level-5 { margin-left: 32px; }
+    .level-6 { margin-left: 40px; }
+  }
+
 }
 
 span.bbcode {

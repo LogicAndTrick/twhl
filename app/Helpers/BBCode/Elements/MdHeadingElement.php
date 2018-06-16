@@ -34,7 +34,13 @@ class MdHeadingElement extends Element {
 
     function Parse($result, $scope)
     {
+        $id = uniqid('h');
+        $result->AddMeta('Heading', [
+            'level' => $this->level,
+            'text' => $this->text,
+            'id' => $id
+        ]);
         $text = $this->parser->CleanString($this->text);
-        return '<h' . $this->level . '>' . $this->parser->ParseBBCode($result, $text, $scope, 'inline') . '</h' . $this->level . '>';
+        return '<h' . $this->level . ' id="' . $id . '">' . $this->parser->ParseBBCode($result, $text, $scope, 'inline') . '</h' . $this->level . '>';
     }
 }

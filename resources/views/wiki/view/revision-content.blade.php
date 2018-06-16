@@ -4,6 +4,6 @@
         <a href="{{ act('wiki', 'page', $revision->slug) }}">Click here</a> to see the current revision of this page.
     </div>
 @endif
-<div class="bbcode">
+<div class="wiki bbcode">
     {!! $revision->content_html !!}
 </div>
