@@ -30,7 +30,7 @@ class ForumController extends Controller {
                             from forum_threads t
                             where t.forum_id = {$f->id}
                             and t.deleted_at is null
-                            order by t.updated_at desc
+                            order by t.last_post_at desc
                             limit 5)";
                 })->toArray()) . ') forum_threads'
             )
