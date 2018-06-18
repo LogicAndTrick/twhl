@@ -24,7 +24,6 @@
                     Please make sure it's correct!
                 </p>
                 @text(email $user) = Email
-                @text(email_confirmation) = Confirm Email
                 <hr/>
 
 

@@ -68,7 +68,7 @@ class AuthController extends Controller {
         });
 
         $this->validate($request->instance(), [
-            'email' => 'required|confirmed|email|max:255|unique:users,email,'.$user->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
             'old_password' => 'required|match_legacy_password',
             'password' => 'required|confirmed|min:6',
             'agree_rules' => 'accepted'
