@@ -19,6 +19,7 @@ class PasswordController extends Controller
     */
     use SendsPasswordResetEmails, ResetsPasswords {
         SendsPasswordResetEmails::broker insteadof ResetsPasswords;
+        resetPassword as protected resetPasswordInner;
     }
 
     public function __construct()
@@ -44,4 +45,10 @@ class PasswordController extends Controller
     public function postReset(Request $request) {
         return $this->reset($request);
     }
+
+    protected function resetPassword($user, $password) {
+        $user->legacy_password = '';
+        $this->resetPasswordInner($user, $password);
+    }
+
 }
