@@ -13,6 +13,8 @@ class ForumThread extends Model {
     protected $fillable = ['forum_id','user_id','title','is_open','is_sticky'];
     public $visible = ['id', 'forum_id', 'user_id', 'title', 'stat_views', 'stat_posts', 'last_post_id', 'is_open', 'is_sticky', 'created_at', 'updated_at', 'forum', 'user', 'last_post'];
 
+    const THREAD_LOCK_DAYS = 365;
+
     protected $table = 'forum_threads';
 
     public function forum()
@@ -73,8 +75,8 @@ class ForumThread extends Model {
         // 4a. If the thread is sticky, it can always be posted in
         if ($this->is_sticky) return true;
 
-        // 4b. Normal threads are closed if they are over 90 days old
-        if (Date::DiffDays(Date::Now(), $this->last_post->updated_at) > 90) return false;
+        // 4b. Normal threads are closed if they are over ForumThread::THREAD_LOCK_DAYS days old
+        if (Date::DiffDays(Date::Now(), $this->last_post->updated_at) > ForumThread::THREAD_LOCK_DAYS) return false;
 
         return true;
     }
@@ -88,7 +90,7 @@ class ForumThread extends Model {
         if (!Auth::user()) return 'You must be logged in to post a response.';
         if (!permission('ForumCreate')) return 'You do not have permission to post a response.';
         if (!$this->is_open) return 'This thread has been closed, responses cannot be posted.';
-        if (Date::DiffDays(Date::Now(), $this->last_post->updated_at) > 90) return 'This thread has automatically been locked because it has been idle for over 90 days.';
+        if (Date::DiffDays(Date::Now(), $this->last_post->updated_at) > ForumThread::THREAD_LOCK_DAYS) return 'This thread has automatically been locked because it has been idle for over ' . ForumThread::THREAD_LOCK_DAYS . ' days.';
         return null;
     }
 
