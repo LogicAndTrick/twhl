@@ -45,12 +45,12 @@
                         <a class="thread-title" href="{{ act('thread', 'view', $thread->id) }}">{{ $thread->title }}</a><br/>
                         @avatar($thread->user text), @date($thread->created_at)
                         <div class="hidden-md-up">
-                            <span class="posts">{{ $thread->stat_posts }} {{ ($thread->stat_posts == 1 ? 'reply' : 'replies') }}</span> &bull;
+                            <span class="posts">{{ $thread->stat_posts - 1 }} {{ ($thread->stat_posts - 1 == 1 ? 'reply' : 'replies') }}</span> &bull;
                             <span class="views">{{ $thread->stat_views }} {{ ($thread->stat_views == 1 ? 'view' : 'views') }}</span>
                         </div>
                     </td>
                     <td class="col-posts">
-                        <span class="posts">{{ $thread->stat_posts }} {{ ($thread->stat_posts == 1 ? 'reply' : 'replies') }}</span><br/>
+                        <span class="posts">{{ $thread->stat_posts - 1 }} {{ ($thread->stat_posts - 1 == 1 ? 'reply' : 'replies') }}</span><br/>
                         <span class="views">{{ $thread->stat_views }} {{ ($thread->stat_views == 1 ? 'view' : 'views') }}</span>
                     </td>
                     <td class="col-last-post">
