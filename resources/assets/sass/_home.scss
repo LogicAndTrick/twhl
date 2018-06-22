@@ -15,7 +15,7 @@
   }
 
   .wiki-feature {
-    text-align: center;
+    text-align: left;
 
     h2 {
       margin: 3px;
@@ -30,12 +30,12 @@
 
       li {
         margin-bottom: 2px;
-        padding-bottom: 2px;
         border-bottom: 1px solid darken($tile-background-color, 10%);
+        padding: 0 5px 2px;
       }
       li:last-child {
         margin: 0;
-        padding: 0;
+        padding: 0 5px;
         border: 0;
       }
     }
