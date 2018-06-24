@@ -2,13 +2,16 @@
 
 use App\Events\CommentCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Accounts\User;
 use App\Models\Accounts\UserNotification;
 use App\Models\Accounts\UserSubscription;
+use App\Models\Comments\CommentArticle;
 use App\Models\Comments\Comment;
 use App\Models\Comments\CommentMeta;
 use Request;
 use Auth;
 use DB;
+use Input;
 
 class CommentController extends Controller {
 
@@ -75,6 +78,28 @@ class CommentController extends Controller {
         $str = str_ireplace('{id}', $comment->article_id, $str);
         $str = str_ireplace('{bookmark}', $bookmark, $str);
         return $str;
+    }
+
+    public function getIndex() {
+        $query = Comment::with(['user', 'comment_metas'])
+            ->orderBy('created_at', 'desc');
+
+        $user = intval(Request::get('user'));
+        $user = $user > 0 ? User::find($user) : null;
+        if ($user) $query = $query->whereUserId($user->id);
+
+        $comments = $query->paginate(10);
+
+        $conditions = [];
+        foreach ($comments as $comment) {
+            $conditions[] = "(article_type  = '{$comment->article_type}' AND article_id = $comment->article_id)";
+        }
+        $sql = '(' . implode(' OR ', $conditions) . ')';
+
+        return view('comments/index', [
+            'comments' => $comments->appends(Input::except('page')),
+            'user' => $user
+        ]);
     }
 
 	public function postCreate()
