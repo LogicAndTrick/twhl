@@ -144,21 +144,22 @@
         <a href="{{ act('vault', 'index') }}"><span class="fa fa-database"></span> New in the Vault</a>
         <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('vault', 'index') }}">See all</a>
     </h1>
-    <div class="horizontal-scroll">
-        @foreach ($new_maps as $item)
-            <a href="{{ act('vault', 'view', $item->id) }}" class="tile tagged">
-                @if ($item->created_at < $item->updated_at->subWeeks(2))
-                    <span class="tag"><span class="fa fa-certificate"></span> Updated</span>
-                @endif
-                <span class="tile-main">
-                    <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
-                </span>
-                <span class="tile-title">{{ $item->name }}</span>
-                <span class="tile-subtitle">@avatar($item->user inline link=false)</span>
-            </a>
-        @endforeach
+    <div class="vault-items">
+        <div class="horizontal-scroll">
+            @foreach ($new_maps as $item)
+                <a href="{{ act('vault', 'view', $item->id) }}" class="tile tagged">
+                    @if ($item->created_at < $item->updated_at->subWeeks(2))
+                        <span class="tag"><span class="fa fa-certificate"></span> Updated</span>
+                    @endif
+                    <span class="tile-main">
+                        <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
+                    </span>
+                    <span class="tile-title">{{ $item->name }}</span>
+                    <span class="tile-subtitle">@avatar($item->user inline link=false)</span>
+                </a>
+            @endforeach
+        </div>
     </div>
-
 
     <div class="row">
 
@@ -247,7 +248,7 @@
                             </span>
                             <span class="slip-subtitle">
                                 @avatar($journal->user text link=false) &bull;
-                                @date($journal->created_at) &bull;
+                                <span class="hidden-md-only">@date($journal->created_at) &bull;</span>
                                 <span class="fa fa-comment"></span> {{ $journal->stat_comments }}
                             </span>
                         </span>
@@ -289,7 +290,7 @@
             <h1>
                 <span class="fa fa-globe"></span> Active Users
             </h1>
-            <div class="active-users">
+            <div class="slot active-users">
                 <ul class="list-unstyled">
                     @foreach ($onliners as $o)
                         <li>

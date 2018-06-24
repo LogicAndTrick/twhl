@@ -1,9 +1,11 @@
 
-function insertIntoInput(textarea, template, cursor, cursor2) {
+function insertIntoInput(textarea, template, cursor, cursor2, force_newline) {
     var val = textarea.val() || '',
         st = textarea[0].selectionStart || 0,
         end = textarea[0].selectionEnd || 0,
-        before = val.substr(0, st),
+        prev = val.substr(0, st),
+        is_newline = prev.length === 0 || prev[prev.length] === '\n',
+        before = force_newline === true && !is_newline ? prev + '\n' : prev,
         between = val.substring(st, end),
         curVal = between || cursor,
         after = val.substr(end),
@@ -41,6 +43,10 @@ var buttons = [
         { icon: 'link', title: 'Link', template: '[CUR2|CUR1]', cur1: 'link text', cur2: 'http://example.com/' },
         { icon: 'picture-o', title: 'Image', template: '[img:CUR2|CUR1]', cur1: 'caption text', cur2: 'http://example.com/image.jpg' },
         { icon: 'video-camera', title: 'Youtube', template: '[youtube:CUR2|CUR1]', cur1: 'caption text', cur2: 'youtube_id' },
+        { icon: 'quote-right', title: 'Quote', template: '> CUR1', cur1: 'quoted text', cur2: '', force_newline: true },
+    ], [
+        { icon: 'list-ul', title: 'Unsorted List', template: '- CUR1', cur1: 'Item 1', cur2: '', force_newline: true },
+        { icon: 'list-ol', title: 'Sorted List', template: '# CUR1', cur1: 'Item 1', cur2: '', force_newline: true },
     ]
 ];
 var smilies = [
@@ -110,7 +116,7 @@ function addButtons(container, textarea) {
             if (btn.icon) b.append($('<span></span>').addClass('fa fa-' + btn.icon));
             if (btn.text) b.append($('<span></span>').text(' ' + btn.text));
             group.append(b);
-            b.on('click', insertIntoInput.bind(window, textarea, btn.template, btn.cur1, btn.cur2));
+            b.on('click', insertIntoInput.bind(window, textarea, btn.template, btn.cur1, btn.cur2, btn.force_newline));
         }
     }
 

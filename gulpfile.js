@@ -50,6 +50,7 @@ elixir(function(mix) {
         'lib/jquery.plugin.js',
         'lib/jquery.countdown.js',
         'lib/jquery-ui.min.js',
+        'lib/jquery.ba-throttle-debounce.js',
         'lib/Chart.js',
         '../../../node_modules/tether/dist/js/tether.js',
         '../../../node_modules/bootstrap/dist/js/bootstrap.js',

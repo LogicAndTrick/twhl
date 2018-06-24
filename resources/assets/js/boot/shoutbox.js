@@ -106,7 +106,7 @@ var shoutbox = new Vue({
             };
         },
         shouts: function() {
-            return this.store;
+            return this.store || [];
         },
         classes: function () {
             var cls = [];
