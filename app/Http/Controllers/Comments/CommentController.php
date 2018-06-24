@@ -88,7 +88,7 @@ class CommentController extends Controller {
         $user = $user > 0 ? User::find($user) : null;
         if ($user) $query = $query->whereUserId($user->id);
 
-        $comments = $query->paginate(10);
+        $comments = $query->paginate(50);
 
         $conditions = [];
         foreach ($comments as $comment) {
