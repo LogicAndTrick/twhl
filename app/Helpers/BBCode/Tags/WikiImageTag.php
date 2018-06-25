@@ -83,12 +83,11 @@ class WikiImageTag extends LinkTag {
                 $el = 'div';
             }
 
-            // The caption is already html escaped at this point (the default element cleans all strings)
             return ' <' . $el . ' class="' . implode(' ', $classes) . '"'.($caption ? ' title="'. htmlspecialchars($caption) . '"' : '').'>'
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'
                  . $this->getEmbedObject($tag, $parser, $src, $caption)
-                 . ($caption ? '<span class="caption">' . $caption . '</span>' : '')
+                 . ($caption ? '<span class="caption">' . htmlspecialchars($caption) . '</span>' : '')
                  . '</span>'
                  . ($url ? '</a>' : '')
                  . '</' . $el . '> ';
@@ -101,7 +100,7 @@ class WikiImageTag extends LinkTag {
     {
         switch ($tag) {
             case 'img':
-                return '<img class="caption-body" src="' . $parser->CleanUrl($url) . '" alt="' . ($caption ? $caption : 'User posted image') . '" />';
+                return '<img class="caption-body" src="' . $parser->CleanUrl($url) . '" alt="' . ($caption ? htmlspecialchars($caption) : 'User posted image') . '" />';
             case 'video':
             case 'audio':
                 return "<$tag class=\"caption-body\" src=\"$url\" controls>Your browser doesn't support embedded $tag.</$tag>";
