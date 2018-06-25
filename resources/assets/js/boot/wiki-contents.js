@@ -20,7 +20,7 @@ $(function() {
 
                 var hlevel = parseInt(h.get(0).tagName.substring(1), 10);
                 if (hlevel > lastLvl) lvl++;
-                else lvl = 1;
+                else if (hlevel < lastLvl) lvl = 1;
                 lastLvl = hlevel;
 
                 list.append('<li class="level-' + lvl + '"><a href="#' + h.attr('id') + '">' + h.text() + '</a></li>');

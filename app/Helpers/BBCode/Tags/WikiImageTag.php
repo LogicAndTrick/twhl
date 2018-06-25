@@ -84,7 +84,7 @@ class WikiImageTag extends LinkTag {
             }
 
             // The caption is already html escaped at this point (the default element cleans all strings)
-            return ' <' . $el . ' class="' . implode(' ', $classes) . '"'.($caption ? " title='$caption'" : '').'>'
+            return ' <' . $el . ' class="' . implode(' ', $classes) . '"'.($caption ? ' title="'. htmlspecialchars($caption) . '"' : '').'>'
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'
                  . $this->getEmbedObject($tag, $parser, $src, $caption)
