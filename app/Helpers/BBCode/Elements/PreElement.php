@@ -28,7 +28,7 @@ class PreElement extends Element {
             $lines->Next();
             $arr[] = substr(trim($line), 0, -6);
         } else {
-            $arr[] = $line;
+            if (strlen($line) > 0) $arr[] = $line;
             $found = false;
             while ($lines->Next()) {
                 $value = $lines->Value();
@@ -36,7 +36,8 @@ class PreElement extends Element {
                     $found = true;
                     $value = substr(trim($value), 0, -6);
                 }
-                $arr[] = rtrim($value);
+                $value = rtrim($value);
+                if (count($arr) > 0 || strlen($value) > 0) $arr[] = $value;
                 if ($found) break;
             }
             if (!$found) {
