@@ -44,11 +44,6 @@ class HomeController extends Controller {
             ->get();
 
         // Wiki section
-        $wiki_edits = WikiObject::with(['current_revision', 'current_revision.user'])
-            ->orderBy('updated_at', 'desc')
-            ->limit(6)
-            ->get();
-
         $wiki_articles = $this->getWikiFeatureData();
 
         // Forums section
@@ -100,7 +95,6 @@ class HomeController extends Controller {
 		return view('home/index', [
             'new_maps' => $new_maps,
             'competitions' => $comps,
-            'wiki_edits' => $wiki_edits,
             'wiki_articles' => $wiki_articles,
             'threads' => $threads,
             'journals' => $journals,
@@ -132,6 +126,9 @@ class HomeController extends Controller {
             // Recent edits lasts 1 minute
             'recent_edits' => Cache::remember('recent_edits', 1, function () {
                 return WikiObject::with(['current_revision', 'current_revision.user'])
+                    ->leftJoin('wiki_revisions as cr', 'cr.id', '=', 'wiki_objects.current_revision_id')
+                    ->whereRaw("(cr.slug not like 'upload:%')")
+                    ->select('wiki_objects.*')
                     ->orderBy('updated_at', 'desc')
                     ->limit(6)
                     ->get();

@@ -277,7 +277,7 @@
                 </div>
                 <h2>Recently edited pages</h2>
                 <ul>
-                    @foreach ($wiki_edits as $obj)
+                    @foreach ($wiki_articles['recent_edits'] as $obj)
                         <li>
                             <a href="{{ act('wiki', 'page', $obj->current_revision->slug) }}" class="d-block">
                                 {{ $obj->current_revision->getNiceTitle($obj) }}
