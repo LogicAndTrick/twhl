@@ -133,7 +133,7 @@ class WikiController extends Controller {
                     having count(*) = ?
                 )", [ WikiRevisionMeta::CATEGORY, $cat_num ])
                 ->orderBy('title')
-                ->paginate(50);
+                ->paginate(250);
 
             $subcats = DB::select("
                     select `value` as name, count(*) as num
