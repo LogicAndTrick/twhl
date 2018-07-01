@@ -165,20 +165,27 @@ class Comment extends Model {
     }
 
     public function getArticleTitle($article) {
+        $title = '';
         switch ($this->article_type) {
             case Comment::NEWS;
             case Comment::JOURNAL;
             case Comment::POLL:
-                return $article->title;
+                $title = $article->title;
+            break;
             case Comment::VAULT;
-                return $article->name;
+                $title = $article->name;
+                break;
             case Comment::REVIEW;
-                return 'Review #' . $article->id;
+                $title = 'Review #' . $article->id;
+                break;
             case Comment::WIKI:
-                return $article->current_revision->title;
+                $title = $article->current_revision->title;
+                break;
             default:
                 throw new \Exception('Undefined comment type in getArticleTitle: ' . $this->article_type);
         }
+        if (strlen($title) == 0) $title = '#'.$this->article_id;
+        return $title;
     }
 
     public static function canCreate($type)

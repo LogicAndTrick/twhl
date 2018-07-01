@@ -30,7 +30,7 @@
                         @if ($notify->is_unread)
                             <span class="badge badge-success">{{ $notify->stat_hits }}</span>
                         @endif
-                        {{ $notify->type_description ? $notify->type_description : '[No title]' }}
+                        {{ $notify->type_description && strlen($notify->type_description) > 0 ? $notify->type_description : '[No title]' }}
                     </td>
                     <td><a href="{{ $notify->link }}">{{ $notify->title }}</a></td>
                     <td class="col-30p">@date($notify->created_at)</td>
@@ -53,7 +53,7 @@
             @foreach($subscriptions as $subscription)
                 <tr>
                     <td class="col-30p">{{ $subscription->type_description }}</td>
-                    <td><a href="{{ $subscription->link }}">{{ $subscription->title ? $subscription->title : '[No title]' }}</a></td>
+                    <td><a href="{{ $subscription->link }}">{{ $subscription->title && strlen($subscription->title) > 0 ? $subscription->title : '[No title]' }}</a></td>
                     <!--td class="col-15p">{{ $subscription->send_email ? 'Yes' : 'No' }}</td-->
                     <td class="text-right col-15p">
                         <a href="{{ act('panel', 'delete-subscription', $subscription->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span> Unsubscribe</a>
