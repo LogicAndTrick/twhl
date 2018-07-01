@@ -45,12 +45,12 @@ class Comment extends Model {
 
     public function user()
     {
-        return $this->belongsTo('App\Models\Accounts\User');
+        return $this->belongsTo('App\Models\Accounts\User', 'user_id', 'id');
     }
 
     public function comment_metas()
     {
-        return $this->hasMany('App\Models\Comments\CommentMeta');
+        return $this->hasMany('App\Models\Comments\CommentMeta', 'comment_id', 'id');
     }
 
     public function hasRating() {
@@ -123,6 +123,61 @@ class Comment extends Model {
                 return WikiObject::findOrFail($this->article_id);
             default:
                 throw new \Exception('Undefined comment type in getArticle: ' . $this->article_type);
+        }
+    }
+
+    public function getArticleTypeDescription() {
+        switch ($this->article_type) {
+            case Comment::NEWS;
+                return 'news';
+            case Comment::JOURNAL;
+                return 'journal';
+            case Comment::VAULT;
+                return 'vault item';
+            case Comment::REVIEW;
+                return 'review';
+            case Comment::POLL:
+                return 'poll';
+            case Comment::WIKI:
+                return 'wiki page';
+            default:
+                throw new \Exception('Undefined comment type in getArticle: ' . $this->article_type);
+        }
+    }
+
+    public function getArticleUrl() {
+        switch ($this->article_type) {
+            case Comment::NEWS;
+                return act('news', 'view', $this->article_id);
+            case Comment::JOURNAL;
+                return act('journal', 'view', $this->article_id);
+            case Comment::VAULT;
+                return act('vault', 'view', $this->article_id);
+            case Comment::REVIEW;
+                return act('review', 'view', $this->article_id);
+            case Comment::POLL:
+                return act('poll', 'view', $this->article_id);
+            case Comment::WIKI:
+                return act('wiki', 'view', $this->article_id);
+            default:
+                throw new \Exception('Undefined comment type in getArticle: ' . $this->article_type);
+        }
+    }
+
+    public function getArticleTitle($article) {
+        switch ($this->article_type) {
+            case Comment::NEWS;
+            case Comment::JOURNAL;
+            case Comment::POLL:
+                return $article->title;
+            case Comment::VAULT;
+                return $article->name;
+            case Comment::REVIEW;
+                return 'Review #' . $article->id;
+            case Comment::WIKI:
+                return $article->current_revision->title;
+            default:
+                throw new \Exception('Undefined comment type in getArticleTitle: ' . $this->article_type);
         }
     }
 

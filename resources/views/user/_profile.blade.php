@@ -18,7 +18,7 @@
             <dt class="text-right col-5 col-md-6 col-lg-5">Wiki Edits</dt>
             <dd class="text-left col-7 col-md-6 col-lg-7">{{ $user->stat_wiki_edits }} ({{ round($user->stat_wiki_edits / $age, 2) }})</dd>
             <dt class="text-right col-5 col-md-6 col-lg-5">Comments</dt>
-            <dd class="text-left col-7 col-md-6 col-lg-7">{{ $user->stat_comments }} ({{ round($user->stat_comments / $age, 2) }})</dd>
+            <dd class="text-left col-7 col-md-6 col-lg-7"><a href="{{ act('comment', 'index').'?user='.$user->id }}">{{ $user->stat_comments }} ({{ round($user->stat_comments / $age, 2) }})</a></dd>
             <dt class="text-right col-5 col-md-6 col-lg-5">Shouts</dt>
             <dd class="text-left col-7 col-md-6 col-lg-7">{{ $user->stat_shouts }} ({{ round($user->stat_shouts / $age, 2) }})</dd>
         </dl>

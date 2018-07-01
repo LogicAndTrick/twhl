@@ -7,7 +7,15 @@ use App\Models\Accounts\UserNotification;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\CommentArticle;
 use App\Models\Comments\Comment;
+use App\Models\Comments\CommentDetail;
+use App\Models\Comments\CommentDetails;
 use App\Models\Comments\CommentMeta;
+use App\Models\Journal;
+use App\Models\News;
+use App\Models\Polls\Poll;
+use App\Models\Vault\VaultItem;
+use App\Models\Wiki\WikiObject;
+use Illuminate\Support\Collection;
 use Request;
 use Auth;
 use DB;
@@ -90,15 +98,30 @@ class CommentController extends Controller {
 
         $comments = $query->paginate(50);
 
-        $conditions = [];
-        foreach ($comments as $comment) {
-            $conditions[] = "(article_type  = '{$comment->article_type}' AND article_id = $comment->article_id)";
-        }
-        $sql = '(' . implode(' OR ', $conditions) . ')';
+        // Get the articles
+        $col = new Collection($comments->items());
+        $news = News::whereIn('id', $col->where('article_type', '=', Comment::NEWS)->pluck('article_id')->unique())->get();
+        $journals = Journal::whereIn('id', $col->where('article_type', '=', Comment::JOURNAL)->pluck('article_id')->unique())->get();
+        $vaults = VaultItem::whereIn('id', $col->where('article_type', '=', Comment::VAULT)->pluck('article_id')->unique())->get();
+        $polls = Poll::whereIn('id', $col->where('article_type', '=', Comment::POLL)->pluck('article_id')->unique())->get();
+        $wiki_objects = WikiObject::with('current_revision')->whereIn('id', $col->where('article_type', '=', Comment::WIKI)->pluck('article_id')->unique())->get();
+
+        $articles = new Collection(); //$news->all() + $journals->all() + $vaults->all() + $polls->all() + $wiki_objects->all()) ;// $news->union($journals)->union($vaults)->union($polls)->union($wiki_objects);
+        $articles = $articles->concat($news)->concat($journals)->concat($vaults)->concat($polls)->concat($wiki_objects);
+        $indexed = $articles->keyBy(function ($i) {
+            $ty = '?';
+            if ($i instanceof News) $ty = Comment::NEWS;
+            else if ($i instanceof Journal) $ty = Comment::JOURNAL;
+            else if ($i instanceof VaultItem) $ty = Comment::VAULT;
+            else if ($i instanceof Poll) $ty = Comment::POLL;
+            else if ($i instanceof WikiObject) $ty = Comment::WIKI;
+            return $ty . $i->id;
+        });
 
         return view('comments/index', [
             'comments' => $comments->appends(Input::except('page')),
-            'user' => $user
+            'user' => $user,
+            'articles' => $indexed
         ]);
     }
 
