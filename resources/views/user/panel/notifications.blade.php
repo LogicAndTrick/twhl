@@ -30,9 +30,9 @@
                         @if ($notify->is_unread)
                             <span class="badge badge-success">{{ $notify->stat_hits }}</span>
                         @endif
-                        {{ $notify->type_description && strlen($notify->type_description) > 0 ? $notify->type_description : '[No title]' }}
+                        {{ $notify->type_description }}
                     </td>
-                    <td><a href="{{ $notify->link }}">{{ $notify->title }}</a></td>
+                    <td><a href="{{ $notify->link }}">{{ $notify->title && strlen($notify->title) > 0 ? $notify->title : '[No title]' }}</a></td>
                     <td class="col-30p">@date($notify->created_at)</td>
                 </tr>
             @endforeach
