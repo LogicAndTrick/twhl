@@ -220,14 +220,15 @@ var shoutbox = new Vue({
         format: function(content) {
             var self = this;
 
+
             // Linkify links but hide the html in base64 so they don't get encoded
             content = Autolinker.link(content, {
                 replaceFn : function(match) {
-                    var tag = window.tag = this.getTagBuilder().build(match);
+                    var tag = this.getTagBuilder().build(match);
                     tag.setInnerHtml(self.escapeHtml(tag.getInnerHtml())); // Escape the link text
                     if (probably_twhl.test(tag.getAttr('href'))) delete tag.attrs['target'];
                     var str = tag.toAnchorString();
-                    return '\0\u9998'+window.btoa(str).replace(/\//ig,'-')+'\u9999\0'; // B64 encode the whole thing, replace slashes as they'll be encoded later
+                    return '\0\u9998'+b64EncodeUnicode(str).replace(/\//ig,'-')+'\u9999\0'; // B64 encode the whole thing, replace slashes as they'll be encoded later
                 }
             });
 
@@ -236,7 +237,7 @@ var shoutbox = new Vue({
 
             // Decode the base64 links so we're good again
             content = content.replace(/\u0000\u9998([\s\S]*?)\u9999\u0000/g, function(match, b64) {
-                return window.atob(b64.replace(/-/ig,'/'));
+                return b64DecodeUnicode(b64.replace(/-/ig,'/'));
             });
 
             return content;
