@@ -222,6 +222,7 @@ var shoutbox = new Vue({
 
 
             // Linkify links but hide the html in base64 so they don't get encoded
+            content = content.replace(/\u0000/g, ''); // Replace \0 with empty string, there's no reason for them to exist
             content = Autolinker.link(content, {
                 replaceFn : function(match) {
                     var tag = this.getTagBuilder().build(match);
