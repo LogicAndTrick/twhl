@@ -67,7 +67,7 @@
                     </a>
                     <a href="https://discord.gg/NgN6JBu" class="list-group-item list-group-item-action justify-content-between list-group-item-info">
                         <span>
-                            <img src="images/discord.svg" alt="discord" class="discord-icon" />
+                            <img src="images/discord.svg" alt="discord" class="discord-icon" style="height: 1.3em; margin: -10px 0 -10px -3px;" />
                             TWHL Discord
                         </span>
                     </a>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="text-center mt-3">
                     <a href="https://discord.gg/NgN6JBu" class="btn btn-info btn-sm">
-                        <img src="images/discord-white.svg" alt="discord" class="discord-icon" />
+                        <img src="images/discord-white.svg" alt="discord" class="discord-icon" style="height: 1.3em; margin: -10px 0 -10px -3px;" />
                         TWHL Discord
                     </a>
                 </div>
