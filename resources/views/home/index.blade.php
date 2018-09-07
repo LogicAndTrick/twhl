@@ -65,6 +65,12 @@
                         </span>
                         <span class="badge badge-default badge-pill">{{  $notify_count }}</span>
                     </a>
+                    <a href="https://discord.gg/NgN6JBu" class="list-group-item list-group-item-action justify-content-between list-group-item-info">
+                        <span>
+                            <img src="images/discord.svg" alt="discord" class="discord-icon" />
+                            TWHL Discord
+                        </span>
+                    </a>
                     <a href="{{ act('auth', 'logout') . '?_token=' . csrf_token() }}" class="list-group-item list-group-item-action">
                         <span>
                             <span class="fa fa-sign-out"></span>
@@ -93,6 +99,12 @@
                 <div class="text-center mt-3">
                     <a class="btn btn-outline-primary btn-sm" href="{{ url('/auth/register') }}">Register</a>
                     <a class="btn btn-secondary btn-sm" href="{{ url('/password/email') }}">Forgot password</a>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="https://discord.gg/NgN6JBu" class="btn btn-info btn-sm">
+                        <img src="images/discord-white.svg" alt="discord" class="discord-icon" />
+                        TWHL Discord
+                    </a>
                 </div>
             @endif
         </div>
