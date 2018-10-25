@@ -181,6 +181,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'user_permissions',
         ];
 
+        // Clean up PM threads
+        DB::statement("delete u from message_users u where u.message_id IN ( select m.id from messages m where m.user_id = ? )", [$id]);
+        DB::statement("delete u from message_thread_users u where u.thread_id IN ( select m.id from message_threads m where m.user_id = ? )", [$id]);
+
         foreach ($soft_delete_tables as $t) {
             DB::statement("UPDATE $t SET deleted_at = ? WHERE user_id = ?", [$deleted, $id]);
         }
