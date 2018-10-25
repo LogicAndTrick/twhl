@@ -40,8 +40,25 @@ class AuthController extends Controller {
             throw new TokenMismatchException();
         }
     }
-    public function getRegister() { return $this->showRegistrationForm(); }
-   	public function postRegister(Request $request) { return $this->register($request); }
+
+    private function isLastRegistrationRecent()
+    {
+        $lastUser = User::withTrashed()->orderBy('created_at', 'desc')->first();
+        return $lastUser->created_at->diffInMinutes() < 60;
+    }
+
+    public function getRegister()
+    {
+        if ($this->isLastRegistrationRecent()) return view('auth.rate-limited');
+        return $this->showRegistrationForm();
+    }
+
+   	public function postRegister(Request $request)
+    {
+        // If two people hit ths post at the same time, let them through
+        // Bots can't hit this endpoint directly due to Recaptcha.
+        return $this->register($request);
+    }
 
     /**
 	 * Convert a legacy TWHL3 account into a TWHL4 account.
@@ -116,15 +133,34 @@ class AuthController extends Controller {
    	 */
    	public function validator(array $data)
    	{
+        Validator::extend('no_spammers', function($attr, $value, $parameters) {
+            // Use the StopForumSpam API to try and stop spammers from creating an account
+            $ip = urlencode(request()->ip());
+            $url = "https://api.stopforumspam.org/api?ip=$ip&confidence&json";
+
+            $json = file_get_contents($url);
+            $object = json_decode($json);
+
+            // API's not working
+            if (!$object || !isset($object->success) || !is_object($object->ip)) return true;
+
+            // If the API is more than 40% confident then block the user
+            $data = $object->ip;
+            if ($data->appears === 1 && $data->confidence >= 40) return false;
+
+            return true;
+        });
+
         Validator::extend('never', function($attribute, $value, $parameters) { return false; }, 'Registration is disabled.');
    		return Validator::make($data, [
-   			'name' => 'required|max:255|unique:users',
+   			'name' => 'required|max:255|unique:users|no_spammers',
    			'email' => 'required|confirmed|email|max:255|unique:users',
    			'password' => 'required|confirmed|min:6',
             'g-recaptcha-response' => 'required|recaptcha',
-            'agree_rules' => 'accepted'
+            'agree_rules' => 'accepted',
    		], [
-            'accepted' => 'You must agree to the rules.'
+            'accepted' => 'You must agree to the rules.',
+            'no_spammers' => 'Registration was unsuccessful, try again later.' // Why should they get any more detailed information?
         ]);
    	}
 
