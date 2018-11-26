@@ -39,7 +39,7 @@
                     <div class="card-block">
                         <div class="alert alert-info">
                             Dates and times on the site will use the time zone you select.
-                            If you're not sure what time zone you live in, <a href="https://www.timeanddate.com/time/map/" target="_blank"><strong>use this map</strong></a> to find out.
+                            If you're not sure what time zone you live in, <a href="https://www.timeanddate.com/time/map/" target="_blank" rel="noopener noreferrer"><strong>use this map</strong></a> to find out.
                             TWHL doesn't support daylight savings time, so you should change your time zone manually if you want it to change.
                         </div>
                         @select(timezone $zones $user) = Time Zone
