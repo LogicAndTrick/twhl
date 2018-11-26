@@ -15,36 +15,58 @@ class MdCodeElement extends Element {
     function Matches($lines)
     {
         $value = $lines->Value();
-        if (trim($value) == '') return false;
-        if (strlen($value) > 4 && substr($value, 0, 4) == '    ') return true;
-        if ($value[0] == "\t") return true;
-        return false;
+        return substr($value, 0, 3) == '```';
     }
 
     function Consume($parser, $lines)
     {
-        $val = $lines->Value();
-        if ($val[0] == "\t") {
-            $expected = "\t";
-            $level = 1;
-            $value = substr($val, 1);
-        } else {
-            $rtval = rtrim($val);
-            $value = trim($val);
-            $level = strlen($rtval) - strlen($value);
-            $expected = str_repeat(' ', $level);
+        $current = $lines->Current();
+
+        $first_line = rtrim(substr($lines->Value(), 3));
+
+        $arr = [];
+        $arr[] = $first_line;
+
+        $found = false;
+        while ($lines->Next()) {
+            $value = rtrim($lines->Value());
+            if (ends_with($value, '```')) {
+                $last_line = rtrim(substr($value, 0, -3));
+                $arr[] = $last_line;
+                $found = true;
+                break;
+            } else {
+                $arr[] = $value;
+            }
+        }
+        if (!$found) {
+            $lines->SetCurrent($current);
+            return null;
         }
 
-        $arr = array();
-        $arr[] = $value;
-        while ($lines->Next()) {
-            $value = $lines->Value();
-            if (substr($value, 0, $level) != $expected) {
-                $lines->Back();
-                break;
-            }
-            $arr[] = rtrim(substr($value, $level));
+        // Trim blank lines from the start and end of the array
+        for ($i = 0; $i < 2; $i++) {
+            while (count($arr) > 0 && trim($arr[0]) == '') array_shift($arr);
+            $arr = array_reverse($arr);
         }
+
+        // Replace all tabs with 4 spaces
+        $arr = array_map(function ($a) {
+            return str_replace("\t", '    ', $a);
+        }, $arr);
+
+        // Find the longest common whitespace amongst all lines (ignore blank lines)
+        $longest_whitespace = array_reduce($arr, function ($c, $i) {
+            if (strlen(trim($i)) == 0) return $c;
+            $wht = strlen($i) - strlen(ltrim($i));
+            return min($wht, $c);
+        }, 9999);
+
+        // Dedent all lines by the longest common whitespace
+        $arr = array_map(function ($a) use ($longest_whitespace) {
+            return substr($a, $longest_whitespace);
+        }, $arr);
+
         $el = new MdCodeElement();
         $el->parser = $parser;
         $el->text = implode("\n", $arr);
