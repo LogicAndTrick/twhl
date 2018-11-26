@@ -22,7 +22,7 @@ class MarkdownTextProcessor extends Processor {
         $pre = "%(?<=^|$break_chars)";
 
         // first and last character is NOT whitespace. everything else is fine except for <> or newlines
-        $mid = '((?=[^<>\r\n\s])[^<>\r\n]*?(?<=[^<>\r\n\s]))';
+        $mid = '((?=[^<>\r\n\s])[^<>\r\n]+?(?<=[^<>\r\n\s]))';
 
         // post-condition: end of a line OR one of: !?^()+=[]{}"'<>,.: OR whitespace
         $post = "(?=$break_chars|\$)%imu";
@@ -37,7 +37,7 @@ class MarkdownTextProcessor extends Processor {
         $text = preg_replace("{$pre}_{$mid}_{$post}", '<span class="underline">$1</span>', $text);
 
         // Strikethrough
-        $text = preg_replace("{$pre}-{$mid}-{$post}", '<span class="strikethrough">$1</span>', $text);
+        $text = preg_replace("{$pre}~{$mid}~{$post}", '<span class="strikethrough">$1</span>', $text);
 
         // Code
         $text = preg_replace("{$pre}`{$mid}`{$post}", '<code>$1</code>', $text);
