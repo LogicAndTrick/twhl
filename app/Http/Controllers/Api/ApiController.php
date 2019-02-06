@@ -10,6 +10,7 @@ use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
 use App\Models\Comments\Comment;
 use App\Models\Comments\CommentMeta;
+use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionJudgeType;
 use App\Models\Competitions\CompetitionRestriction;
 use App\Models\Competitions\CompetitionRestrictionGroup;
@@ -323,6 +324,22 @@ class ApiController extends Controller {
             'filter_columns' => [ 'name' ],
             'sort_column' => 'created_at',
             'allowed_sort_columns' => ['updated_at'],
+            'default_filters' => []
+        ],
+        'competitions' => [
+            'description' => 'Competitions',
+            'expand' => ['status', 'type', 'judge_type'],
+            'methods' => ['get'],
+            'auth' => [],
+            'parameters' => [
+                'get' => [
+                    'status_id' => [ 'type' => 'integer', 'description', 'The status ID of the competition']
+                ]
+            ],
+            'object' => Competition::class,
+            'filter_columns' => ['name'],
+            'sort_column' => 'created_at',
+            'allowed_sort_columns' => ['updated_at', 'id'],
             'default_filters' => []
         ],
         'competition-restriction-groups' => [
