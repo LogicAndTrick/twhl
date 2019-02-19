@@ -29,10 +29,11 @@ class UpdateUserAccessDetails {
      */
     protected function shouldUpdate(Request $request)
     {
+        $segments = $request->segments();
         return Auth::user() != null
             && !$request->isXmlHttpRequest()
             && $request->method() == 'GET'
-            && $request->segments()[0] !== 'api';
+            && (count($segments) === 0 || $segments[0] !== 'api');
     }
 
     /**
