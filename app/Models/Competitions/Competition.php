@@ -16,6 +16,11 @@ class Competition extends Model {
         'open_date', 'close_date', 'voting_close_date',
         'results_intro_text', 'results_intro_html', 'results_outro_text', 'results_outro_html'
     ];
+    public $visible = [
+        'id', 'status_id', 'type_id', 'judge_type_id', 'name', 'brief_text', 'brief_html', 'brief_attachment',
+        'open_date', 'close_date', 'voting_close_date', 'results_intro_text', 'results_intro_html', 'results_outro_text', 'results_outro_html',
+        'created_at', 'updated_at'
+    ];
 
     public function getDates()
     {

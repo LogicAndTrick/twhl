@@ -29,7 +29,10 @@ class UpdateUserAccessDetails {
      */
     protected function shouldUpdate(Request $request)
     {
-        return Auth::user() != null && !$request->isXmlHttpRequest() && $request->method() == 'GET';
+        return Auth::user() != null
+            && !$request->isXmlHttpRequest()
+            && $request->method() == 'GET'
+            && $request->segments()[0] !== 'api';
     }
 
     /**
