@@ -77,7 +77,7 @@ class ThreadController extends Controller {
         $thread->timestamps = true;
 
         $page = intval(Input::get('page')) ?: 1;
-        $post_query = ForumPost::with('user')->where('thread_id', '=', $id)->orderBy('created_at');
+        $post_query = ForumPost::with('user')->where('thread_id', '=', $id)->whereNull('deleted_at')->orderBy('created_at');
         $count = $post_query->getQuery()->getCountForPagination();
         if (Input::get('page') == 'last') $page = ceil($count / 50);
         $posts = $post_query->skip(($page - 1) * 50)->take(50)->get();
