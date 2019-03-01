@@ -59,19 +59,25 @@
                                 + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
                             </button>
                         @endif
-                        @if ($comp->canVote())
-                        <button class="btn btn-success btn-block btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
-                            <span class="fa fa-check"></span>
-                            <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
-                        </button>
-                        @endif
                     </div>
+                    @if ($entry->getLinkUrl())
+                        <a href="{{ $entry->getLinkUrl() }}" class="btn btn-sm btn-success mt-1">
+                            <span class="fa fa-download"></span> Download
+                        </a>
+                    @endif
                     <div class="tile-title">
                         {{ $entry->title }}
                     </div>
                     <div class="tile-subtitle">
                         By @avatar($entry->user inline)
+
                     </div>
+                    @if ($comp->canVote())
+                        <button class="btn btn-info btn-block btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
+                            <span class="fa fa-check"></span>
+                            <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
+                        </button>
+                    @endif
                 </div>
             </div>
         @endforeach

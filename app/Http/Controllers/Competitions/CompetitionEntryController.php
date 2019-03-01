@@ -84,7 +84,7 @@ class CompetitionEntryController extends Controller {
         $location = Request::input('link');
         if (!$location) $location = '';
 
-        if ($uploaded && !$competition->isVoted()) {
+        if ($uploaded) {
             $file = Request::file('file');
             $dir = public_path('uploads/competition/entries');
             $location = 'entry-' . $entry->id . '-' . preg_replace('/[^a-z0-9-_]/sm', '-', $user->name) . '.' . strtolower($file->getClientOriginalExtension());
