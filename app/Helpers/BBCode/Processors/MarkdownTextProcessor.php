@@ -16,9 +16,9 @@ class MarkdownTextProcessor extends Processor {
          * Very simple rules: no nesting, no newlines, must start/end on a word boundary
          */
 
-        $break_chars = '[!\^()+=\[\]{}"\'<>?,.:\s]';
+        $break_chars = '[!\^()+=\[\]{}"\'<>?,.\s]';
 
-        // pre-condition: start of a line OR one of: !?^()+=[]{}"'<>,.: OR whitespace
+        // pre-condition: start of a line OR one of: !?^()+=[]{}"'<>,. OR whitespace
         $pre = "%(?<=^|$break_chars)";
 
         // first and last character is NOT whitespace. everything else is fine except for <> or newlines
