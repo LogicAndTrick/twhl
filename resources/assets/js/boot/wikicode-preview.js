@@ -33,7 +33,7 @@ var buttons = [
         { icon: 'bold', title: 'Bold text', template: '*CUR1*', cur1: 'bold text', cur2: '' },
         { icon: 'italic', title: 'Italic text', template: '/CUR1/', cur1: 'italic text', cur2: '' },
         { icon: 'underline', title: 'Underline text', template: '_CUR1_', cur1: 'underline text', cur2: '' },
-        { icon: 'strikethrough', title: 'Strikethrough text', template: '-CUR1-', cur1: 'strikethrough text', cur2: '' },
+        { icon: 'strikethrough', title: 'Strikethrough text', template: '~CUR1~', cur1: 'strikethrough text', cur2: '' },
         { icon: 'code', title: 'Code', template: '`CUR1`', cur1: 'code', cur2: '' },
     ], [
         { icon: 'header', text: '1', title: 'Header 1', template: '= CUR1', cur1: 'Header', cur2: '' },
