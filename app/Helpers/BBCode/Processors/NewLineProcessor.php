@@ -25,5 +25,3 @@ class NewLineProcessor extends Processor {
     }
 
 }
-
-?> 

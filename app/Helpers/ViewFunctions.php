@@ -99,7 +99,7 @@ if (!function_exists('ordinal'))
 if (!function_exists('header_data')) {
     function header_data() {
 
-        return \Illuminate\Support\Facades\Cache::remember('header_data', 60, function () {
+        return \Illuminate\Support\Facades\Cache::remember('header_data', now()->addHour(), function () {
 
             $user = \App\Models\Accounts\User::orderBy('created_at', 'desc')->first();
             $comp = \App\Models\Competitions\Competition::orderBy('created_at', 'desc')->where('status_id', '!=', \App\Models\Competitions\CompetitionStatus::DRAFT)->first();

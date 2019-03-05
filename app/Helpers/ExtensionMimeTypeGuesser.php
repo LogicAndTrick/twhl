@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use \Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
 use \Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesserInterface;
+use Illuminate\Support\Arr;
  
 class ExtensionMimeTypeGuesser extends MimeTypeExtensionGuesser implements MimeTypeGuesserInterface {
 
@@ -15,7 +16,7 @@ class ExtensionMimeTypeGuesser extends MimeTypeExtensionGuesser implements MimeT
      */
     public function guess($path)
     {
-        $ext = array_last(explode('.', $path), function($x) { return true; });
+        $ext = Arr::last(explode('.', $path), function($x) { return true; });
         $key = array_search($ext, $this->defaultExtensions);
         return $key !== false ? $key : null;
     }

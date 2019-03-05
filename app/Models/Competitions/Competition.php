@@ -3,7 +3,8 @@
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Arr;
 
 class Competition extends Model {
 
@@ -239,7 +240,7 @@ class Competition extends Model {
 
     public function getEntriesForJudging() {
         $votes = $this->votes;
-        return array_sort($this->entries, function($e) use ($votes) {
+        return Arr::sort($this->entries, function($e) use ($votes) {
             $count = 0;
             foreach ($votes as $v) {
                 if ($v->entry_id == $e->id) $count++;

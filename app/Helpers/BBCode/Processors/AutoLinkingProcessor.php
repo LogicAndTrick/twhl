@@ -18,5 +18,3 @@ class AutoLinkingProcessor extends Processor {
     }
 
 }
-
-?> 

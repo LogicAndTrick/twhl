@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
-		"laravel/framework": "5.6.*",
+		"laravel/framework": "5.8.*",
         "greggilbert/recaptcha": "2.1.*"
 	},
 	"require-dev": {

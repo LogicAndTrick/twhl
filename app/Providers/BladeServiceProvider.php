@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Arr;
 
 class BladeServiceProvider extends ServiceProvider {
 
@@ -104,10 +105,10 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
 
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
                 $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); ?>";
 
                 return "{$matches[1]}<input type='hidden' name='$mapped_name' value='$collect'>";
@@ -122,14 +123,14 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
                 $format = $parameters['format'];
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
                 $placeholder = BladeServiceProvider::esc( $parameters['placeholder'] );
                 if (!$placeholder) $placeholder = $label;
 
@@ -151,14 +152,14 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
                 $format = $parameters['format'];
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
 
                 $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name', '$format'); ?>";
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
@@ -178,17 +179,17 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
                 $items = $parameters['items'];
                 $name_key = $parameters['name_key'];
                 $value_key = $parameters['value_key'];
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
 
                 $print =
                 "<?php
@@ -216,13 +217,13 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
 
                 $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name') ? 'checked' : ''; ?>";
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
@@ -242,13 +243,13 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
 
                 $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name') ? 'checked' : ''; ?>";
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
@@ -268,14 +269,14 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
                 $class = $parameters['class'];
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
 
                 $collect = "<?php echo \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); ?>";
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
@@ -295,15 +296,15 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['model_name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
                 $parameters['url'] = "<?php echo url('{$parameters['url']}') ?>";
-                //if (!$parameters['placeholder']) $parameters['placeholder'] = array_get($parameters, 'label', $name);
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                //if (!$parameters['placeholder']) $parameters['placeholder'] = Arr::get($parameters, 'label', $name);
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
 
                 $collect = "<?php \$sel_value = \\App\\Providers\\BladeServiceProvider::CollectValue($var, '$mapped_name', '$name'); " .
                 'if (!is_array($sel_value)) $sel_value = [$sel_value]; ' .
@@ -330,13 +331,13 @@ class BladeServiceProvider extends ServiceProvider {
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
-                $mapped_name = array_get($expl_name, 1, $name);
+                $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', $name) );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
-                $var = array_get($parameters, '$', 'null');
-                $var = array_get($parameters, 'value', $var);
+                $var = Arr::get($parameters, '$', 'null');
+                $var = Arr::get($parameters, 'value', $var);
 
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
@@ -353,7 +354,7 @@ class BladeServiceProvider extends ServiceProvider {
             return preg_replace_callback($pattern, function($matches) {
                 $parameters = $this->parseBladeTemplatePattern($matches, [], [], 'label');
 
-                $label = BladeServiceProvider::esc( array_get($parameters, 'label', 'Submit') );
+                $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', 'Submit') );
 
                 return "{$matches[1]}<button type='submit' class='btn btn-primary'>$label</button>";
             }, $view);

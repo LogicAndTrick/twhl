@@ -8,6 +8,7 @@ use App\Models\Messages\MessageUser;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
+use Illuminate\Support\Arr;
 
 class VaultItem extends Model {
 
@@ -94,7 +95,7 @@ class VaultItem extends Model {
 
     public function getPrimaryScreenshot()
     {
-        $pri = array_first($this->vault_screenshots, function($x, $i) {
+        $pri = Arr::first($this->vault_screenshots, function($x, $i) {
             return $x->is_primary > 0;
         });
         if (!$pri && $this->vault_screenshots->count() > 0) $pri = $this->vault_screenshots[0];

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Helpers\BBCode\Elements;
+use Illuminate\Support\Str;
  
 class MdCodeElement extends Element {
 
@@ -30,7 +31,7 @@ class MdCodeElement extends Element {
         $found = false;
         while ($lines->Next()) {
             $value = rtrim($lines->Value());
-            if (ends_with($value, '```')) {
+            if (Str::endsWith($value, '```')) {
                 $last_line = rtrim(substr($value, 0, -3));
                 $arr[] = $last_line;
                 $found = true;

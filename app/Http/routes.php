@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Arr;
+use \Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +61,7 @@ $this->get('password/reset/{token}', 'Auth\PasswordController@getReset')->name('
 // Important redirects
 $legacy = [
     'forums.php' => function() {
-        $page = array_get($_GET, 'page', 'last', 301);
+        $page = Arr::get($_GET, 'page', 'last');
         if (isset($_GET['thread'])) return redirect("/thread/view/{$_GET['thread']}?page={$page}", 301);
        	elseif (isset($_GET['id'])) return redirect("/forum/id/{$_GET['id']}", 301);
        	else return redirect('/forum', 301);

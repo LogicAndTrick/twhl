@@ -13,5 +13,3 @@ abstract class Processor {
         return !$scope || $scope == '' || array_search($scope, $this->scopes) !== false;
     }
 }
-
-?> 

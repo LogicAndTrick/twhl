@@ -2,6 +2,7 @@
 
 use Illuminate\Auth\EloquentUserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Support\Str;
 
 class TwhlUserProvider extends EloquentUserProvider {
 
@@ -23,7 +24,7 @@ class TwhlUserProvider extends EloquentUserProvider {
    		foreach ($credentials as $key => $value)
    		{
             if ($key == 'email') $key = 'name';
-   			if ( ! str_contains($key, 'password')) $query->where($key, $value);
+   			if ( ! Str::contains($key, 'password')) $query->where($key, $value);
    		}
 
    		$first = $query->first();

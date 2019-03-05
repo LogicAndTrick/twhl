@@ -110,7 +110,7 @@ class HomeController extends Controller {
     {
         return [
             // Featured tutorial lasts 1 day
-            'featured_tutorials' => \Illuminate\Support\Facades\Cache::remember('featured_tutorials', 60 * 24, function () {
+            'featured_tutorials' => Cache::remember('featured_tutorials', now()->addDay(), function () {
                 return WikiRevision::whereIsActive(true)
                     ->whereRaw("id in (
                         select m.revision_id
@@ -124,7 +124,7 @@ class HomeController extends Controller {
                     ->get();
             }),
             // Recent edits lasts 1 minute
-            'recent_edits' => Cache::remember('recent_edits', 1, function () {
+            'recent_edits' => Cache::remember('recent_edits', now()->addMinute(), function () {
                 return WikiObject::with(['current_revision', 'current_revision.user'])
                     ->leftJoin('wiki_revisions as cr', 'cr.id', '=', 'wiki_objects.current_revision_id')
                     ->whereRaw("(cr.slug not like 'upload:%')")
