@@ -4,9 +4,9 @@
     {{ $cc == 0 ? '' : $cc }} Comment{{ $cc == 1 ? '' : 's' }}
     @if (Auth::check())
         @if ($subscription)
-            <a href="{{ act('comment', 'unsubscribe', $article_type, $article_id) }}" class="btn btn-xs btn-secondary"><span class="fa fa-bell"></span> Unsubscribe</a>
+            <a href="{{ act('comment', 'unsubscribe', $article_type, $article_id) }}" class="btn btn-xs btn-outline-dark"><span class="fa fa-bell"></span> Unsubscribe</a>
         @else
-            <a href="{{ act('comment', 'subscribe', $article_type, $article_id) }}" class="btn btn-xs btn-secondary"><span class="fa fa-bell"></span> Subscribe</a>
+            <a href="{{ act('comment', 'subscribe', $article_type, $article_id) }}" class="btn btn-xs btn-outline-dark"><span class="fa fa-bell"></span> Subscribe</a>
         @endif
     @endif
 </h2>

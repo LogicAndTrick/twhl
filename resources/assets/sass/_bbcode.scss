@@ -7,8 +7,8 @@ pre {
   tab-size: 4;
   -moz-tab-size: 4;
   -o-tab-size: 4;
-  border: 1px solid $pre-border-color;
-  background-color: $pre-bg;
+  border: 1px solid $gray-400;
+  background-color: $gray-100;
   padding: 1rem;
 }
 
@@ -38,7 +38,7 @@ pre {
     .card-header {
       padding: 0.5rem 1rem;
     }
-    .card-block {
+    .card-body {
       padding: 0.75rem 1rem;
     }
   }
@@ -105,7 +105,7 @@ pre {
     max-width: 100%;
 
     @extend .card;
-    @extend .card-block;
+    @extend .card-body;
 
     padding: 0px;
     margin: 0;
@@ -174,26 +174,30 @@ pre {
   }
 
   table .embedded {
-    @extend .embedded.inline;
+    @extend .embedded, .inline;
   }
 
   // panels
+
+  .card-block {
+    @extend .card-body;
+  }
 
   .card-primary {
     //background-color: lighten($card-border-color, 10%);
   }
   .card-success {
-    background-color: lighten($brand-success, 35%);
+    background-color: lighten($brand-success, 40%);
 
     .card-header {
-      background-color: lighten($brand-success, 30%);
+      background-color: lighten($brand-success, 35%);
     }
   }
   .card-info {
-    background-color: lighten($brand-info, 35%);
+    background-color: lighten($brand-info, 50%);
 
     .card-header {
-      background-color: lighten($brand-info, 30%);
+      background-color: lighten($brand-info, 45%);
     }
   }
   .card-warning {
@@ -204,7 +208,7 @@ pre {
     }
   }
   .card-danger {
-    background-color: lighten($brand-danger, 35);
+    background-color: lighten($brand-danger, 35%);
 
     .card-header {
       background-color: lighten($brand-danger, 30%);
@@ -254,7 +258,7 @@ pre {
     display: block;
 
     @extend .card;
-    @extend .card-block;
+    @extend .card-body;
 
     padding: 10px;
 

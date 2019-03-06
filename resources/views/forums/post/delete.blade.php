@@ -15,7 +15,7 @@
         @hidden(id $post)
         <p>Are you sure you want to delete this post?</p>
         <div class="form-group">
-            <div class="card card-block">
+            <div class="card card-body">
                 <div class="bbcode">{!! $post->content_html !!}</div>
             </div>
         </div>

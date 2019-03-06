@@ -56,14 +56,14 @@
                             <span class="fa fa-envelope"></span>
                             {{ $unread_count > 0 ? 'New private messages' : 'Private messages' }}
                         </span>
-                        <span class="badge badge-default badge-pill">{{  $unread_count }}</span>
+                        <span class="badge badge-secondary badge-pill">{{  $unread_count }}</span>
                     </a>
                     <a href="{{ act('panel', 'notifications') }}" class="list-group-item list-group-item-action justify-content-between {{ $notify_count > 0 ? 'list-group-item-warning' : '' }}">
                         <span>
                             <span class="fa fa-bell"></span>
                             {{ $notify_count > 0 ? 'New notifications' : 'Notifications' }}
                         </span>
-                        <span class="badge badge-default badge-pill">{{  $notify_count }}</span>
+                        <span class="badge badge-secondary badge-pill">{{  $notify_count }}</span>
                     </a>
                     <a href="https://discord.gg/NgN6JBu" class="list-group-item list-group-item-action justify-content-between list-group-item-info">
                         <span>
@@ -228,7 +228,7 @@
                         </div>
                         <div class="slot-main">
                             <div class="bbcode">{!! $poll->content_html !!}</div>
-                            <div class="card card-block">
+                            <div class="card card-body">
                                 @if ($poll->isOpen() && Auth::user() && array_search($poll->id, $user_polls) === false)
                                     @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
                                 @else

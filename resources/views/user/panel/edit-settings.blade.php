@@ -17,7 +17,7 @@
                     <div class="card-header">
                         Email
                     </div>
-                    <div class="card-block">
+                    <div class="card-body">
                         <div class="alert alert-warning">
                             This email is what TWHL will use to communicate with you, including password resets.
                             Be very careful that it's valid! If it's not, your account may not be recoverable.
@@ -36,7 +36,7 @@
                     <div class="card-header">
                         Time Zone
                     </div>
-                    <div class="card-block">
+                    <div class="card-body">
                         <div class="alert alert-info">
                             Dates and times on the site will use the time zone you select.
                             If you're not sure what time zone you live in, <a href="https://www.timeanddate.com/time/map/" target="_blank" rel="noopener noreferrer"><strong>use this map</strong></a> to find out.

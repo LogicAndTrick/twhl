@@ -26,7 +26,7 @@ body > footer {
 
   }
   tr.unread {
-    background-color: lighten($alert-success-bg, 6%) !important;
+    background-color: lighten(theme-color-level('success', $alert-bg-level), 6%) !important;
   }
   > thead > tr > th {
     border-bottom-color: $twhl-brand;

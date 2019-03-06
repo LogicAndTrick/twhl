@@ -35,8 +35,8 @@ var window_template =
                     '<span class="avatar"><a :href="s.user.url"><img :src="s.user.avatar_small" :alt="s.user.name" /></a></span>' +
                     '<span class="message">' +
                         '<span class="time" :title="s.date">{{formatTime(s.created)}}</span>' +
-                        '<button v-if="moderator" class="btn btn-secondary btn-xxs delete" @click="beginDelete(s)">D</button>' +
-                        '<button v-if="moderator" class="btn btn-secondary btn-xxs edit" @click="beginEdit(s)">E</button>' +
+                        '<button v-if="moderator" class="btn btn-outline-dark btn-xxs delete" @click="beginDelete(s)">D</button>' +
+                        '<button v-if="moderator" class="btn btn-outline-dark btn-xxs edit" @click="beginEdit(s)">E</button>' +
                         '<span class="user"><a :href="s.user.url">{{s.user.name}}</a></span>' +
                         '<span class="text" v-html="s.formatted_content" /> ' +
                     '</span>' +
@@ -48,10 +48,10 @@ var window_template =
             '<form method="get" @submit.prevent="save()" v-if="active">' +
                 '<div class="input-group">' +
                     '<input :disabled="deleting" type="text" maxlength="250" class="form-control input-sm" placeholder="Type here" v-model="text">' +
-                    '<span class="input-group-btn">' +
+                    '<span class="input-group-append">' +
                         '<button :disabled="loading" v-if="editing" class="btn btn-info btn-sm edit-button" type="submit" @click="save()">Edit</button>' +
                         '<button :disabled="loading" v-if="deleting" class="btn btn-danger btn-sm delete-button" type="submit" @click="save()">Delete</button>' +
-                        '<button :disabled="loading" v-if="editing || deleting" class="btn btn-secondary btn-sm cancel-button" type="button" @click="cancelEdit()"><span class="fa fa-remove"></span></button>' +
+                        '<button :disabled="loading" v-if="editing || deleting" class="btn btn-outline-dark btn-sm cancel-button" type="button" @click="cancelEdit()"><span class="fa fa-remove"></span></button>' +
                         '<button :disabled="loading" v-if="!editing && !deleting" class="btn btn-primary btn-sm shout-button" type="submit" @click="save()">Shout!</button>' +
                     '</span>' +
                 '</div>' +

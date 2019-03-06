@@ -6,11 +6,9 @@
 
     <form action="{{ url('search/index') }}" method="get">
         <div class="input-group">
-            <div class="input-group-addon"><span class="fa fa-search"></span></div>
+            <div class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></div>
             <input type="text" class="form-control" name="search" placeholder="Search" value="{{ $search }}">
-            <div class="input-group-btn">
-                <button type="submit" class="btn btn-default">Search</button>
-            </div>
+            <button type="submit" class="btn btn-light">Search</button>
         </div>
     </form>
 

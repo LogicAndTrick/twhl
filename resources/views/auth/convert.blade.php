@@ -16,7 +16,7 @@
         </p>
     </div>
     <div class="row">
-        <div class="col-xl-4 push-xl-4 col-md-6 push-md-3">
+        <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3">
             @form(auth/convert)
 
                 <p class="text-info">
@@ -49,7 +49,7 @@
                 @checkbox(agree_rules) = I agree to follow the rules of the site
                 <hr/>
 
-                <div>
+                <div class="text-center">
                     <button type="submit" class="btn btn-primary">Continue</button>
                 </div>
             @endform

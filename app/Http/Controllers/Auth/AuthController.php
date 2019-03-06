@@ -112,11 +112,11 @@ class AuthController extends Controller {
      */
     protected function authenticated(Request $request, User $user)
     {
-        $request->session()->put('login_time', Carbon::create());
+        $request->session()->put('login_time', Carbon::now());
         $request->session()->put('last_access_time', $user->last_access_time);
 
-        $user->last_login_time = Carbon::create();
-        $user->last_access_time = Carbon::create();
+        $user->last_login_time = Carbon::now();
+        $user->last_access_time = Carbon::now();
         $user->last_access_page = $request->getPathInfo();
         $user->last_access_ip = $request->ip();
         $user->stat_logins++;

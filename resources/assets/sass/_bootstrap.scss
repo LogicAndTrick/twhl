@@ -1,8 +1,22 @@
 
 // Default values
-@import "node_modules/bootstrap/scss/_variables.scss";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
 
+// Stuff I use that bootstrap used to have
+$gray-dark:     #292b2c !default;
+$gray:          #464a4c !default;
+$gray-light:    #636c72 !default;
+$gray-lighter:  #eceeef !default;
+$gray-lightest: #f7f7f9 !default;
 
+$brand-primary:       $primary;
+$brand-success:       $success;
+$brand-info:          $info;
+$brand-warning:       $warning;
+$brand-danger:        $danger;
+
+$font-size-xs: .75rem !default;
 
 // Overrides
 
@@ -21,6 +35,7 @@ $input-border-radius: 0rem;
 $input-border-radius-lg: 0rem;
 $input-border-radius-sm: 0rem;
 
+$btn-font-size: 0.9rem;
 $btn-border-radius: .25rem;
 $btn-border-radius-lg: .3rem;
 $btn-border-radius-sm: .2rem;
@@ -36,106 +51,12 @@ $breadcrumb-bg: transparent;
 
 
 // Bootstrap scss
-@import "node_modules/bootstrap/scss/bootstrap.scss";
+@import '~bootstrap/scss/bootstrap';
 
-// Bootstrap 4 (alpha?) fixes
-
-// Input group buttons inside an input group should flex on the row
-.input-group .input-group-btn {
-  flex-direction: row;
-}
-
-// All buttons should have cursor: pointer
-.btn {
-  cursor: pointer;
-}
+// Bootstrap 4 fixes
 
 // Buttons in input groups shouldn't have border radius
 .input-group .btn {
-  border-radius: 0rem;
+  border-radius: 0;
 }
 
-// btn-dark missing from alpha
-.btn-outline-dark {
-  color: #343a40;
-  background-color: transparent;
-  background-image: none;
-  border-color: #343a40;
-}
-
-.btn-outline-dark:hover {
-  color: #fff;
-  background-color: #343a40;
-  border-color: #343a40;
-}
-
-.btn-outline-dark:focus, .btn-outline-dark.focus {
-  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
-}
-
-.btn-outline-dark.disabled, .btn-outline-dark:disabled {
-  color: #343a40;
-  background-color: transparent;
-}
-
-.btn-outline-dark:not([disabled]):not(.disabled):active, .btn-outline-dark:not([disabled]):not(.disabled).active,
-.show > .btn-outline-dark.dropdown-toggle {
-  color: #fff;
-  background-color: #343a40;
-  border-color: #343a40;
-  box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
-}
-
-// Another option: pick and choose
-/*
-// Copied from bootstrap.scss
-
-// Core variables and mixins
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
-@import "node_modules/bootstrap/scss/custom";
-
-// Reset and dependencies
-@import "node_modules/bootstrap/scss/normalize";
-@import "node_modules/bootstrap/scss/print";
-
-// Core CSS
-@import "node_modules/bootstrap/scss/reboot";
-@import "node_modules/bootstrap/scss/type";
-@import "node_modules/bootstrap/scss/images";
-@import "node_modules/bootstrap/scss/code";
-@import "node_modules/bootstrap/scss/grid";
-@import "node_modules/bootstrap/scss/tables";
-@import "node_modules/bootstrap/scss/forms";
-@import "node_modules/bootstrap/scss/buttons";
-
-// Components
-@import "node_modules/bootstrap/scss/transitions";
-@import "node_modules/bootstrap/scss/dropdown";
-@import "node_modules/bootstrap/scss/button-group";
-@import "node_modules/bootstrap/scss/input-group";
-@import "node_modules/bootstrap/scss/custom-forms";
-@import "node_modules/bootstrap/scss/nav";
-@import "node_modules/bootstrap/scss/navbar";
-@import "node_modules/bootstrap/scss/card";
-@import "node_modules/bootstrap/scss/breadcrumb";
-@import "node_modules/bootstrap/scss/pagination";
-@import "node_modules/bootstrap/scss/badge";
-@import "node_modules/bootstrap/scss/jumbotron";
-@import "node_modules/bootstrap/scss/alert";
-@import "node_modules/bootstrap/scss/progress";
-@import "node_modules/bootstrap/scss/media";
-@import "node_modules/bootstrap/scss/list-group";
-@import "node_modules/bootstrap/scss/responsive-embed";
-@import "node_modules/bootstrap/scss/close";
-
-// Components w/ JavaScript
-@import "node_modules/bootstrap/scss/modal";
-@import "node_modules/bootstrap/scss/tooltip";
-@import "node_modules/bootstrap/scss/popover";
-@import "node_modules/bootstrap/scss/carousel";
-
-// Utility classes
-@import "node_modules/bootstrap/scss/utilities";
-
-*/

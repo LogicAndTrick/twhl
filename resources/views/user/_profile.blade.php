@@ -36,7 +36,7 @@
                 <dd>
                     <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
                     @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
-                        <span class="badge badge-default">
+                        <span class="badge badge-secondary">
                             @if ($user->show_email)
                                 <span class="fa fa-check"></span> Visible on public profile
                             @else

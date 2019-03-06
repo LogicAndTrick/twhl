@@ -20,7 +20,7 @@ class Ban extends Model {
 
     public function isActive()
     {
-        $now = Carbon::create();
+        $now = Carbon::now();
         return $this->created_at <= $now && (!$this->ends_at || $this->ends_at >= $now);
     }
 }

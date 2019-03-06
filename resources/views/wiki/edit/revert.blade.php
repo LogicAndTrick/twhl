@@ -13,7 +13,7 @@
         <li class="active">Revert Page</li>
     </ol>
 
-    <div class="card card-block">
+    <div class="card card-body">
         @form(wiki/revert)
             @hidden(id $revision)
             <p>Continuing will revert this page to the revision displayed below. Are you sure you want to continue?</p>
@@ -30,7 +30,7 @@
         <div class="card-header">
           Page appearance after reverting
         </div>
-        <div class="card-block">
+        <div class="card-body">
             <div class="bbcode">{!! $revision->content_html !!}</div>
             @include('wiki.view.revision-categories', ['revision' => $revision])
         </div>

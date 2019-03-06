@@ -104,7 +104,7 @@ var smilies = [
 
 function addButtons(container, textarea) {
 
-    var toolbar = $('<div class="btn-toolbar hidden-xs-down"></div>').appendTo(container);
+    var toolbar = $('<div class="btn-toolbar hidden-xs-only"></div>').appendTo(container);
 
     for (var j = 0; j < buttons.length; j++) {
         var group = $('<div class="btn-group btn-group-xs mr-2"></div>').appendTo(toolbar);
@@ -148,7 +148,7 @@ $(function() {
             heading = $('<h4>Message preview</h4>)'),
             btn = $('<button type="button" class="btn btn-info btn-xs">Update Preview</button>'),
             card = $('<div class="card"></div>'),
-            panel = $('<div class="card-block bbcode"></div>'),
+            panel = $('<div class="card-body bbcode"></div>'),
             form = $t.closest('form'),
             ta = $t.find('textarea'),
             name = ta.attr('name'),

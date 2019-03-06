@@ -14,7 +14,7 @@ $(function() {
             );
         }
         con.append(
-            $(' <button></button>').attr({ type: 'button' }).addClass('btn btn-secondary btn-sm').text('Remove Rating').click(function() {
+            $(' <button></button>').attr({ type: 'button' }).addClass('btn btn-outline-dark btn-sm').text('Remove Rating').click(function() {
                 sel.val(0).change();
             })
         );

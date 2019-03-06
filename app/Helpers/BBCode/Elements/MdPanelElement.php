@@ -62,7 +62,7 @@ class MdPanelElement extends Element {
         else $cls = 'card-default';
         return "<div class=\"embed-panel card $cls\">" .
                ($this->title != '' ? "<div class=\"card-header\">{$this->parser->CleanString($this->title)}</div>" : '') .
-                "<div class=\"card-block\">" . $this->parser->ParseBlock($result, $this->text, $scope) . '</div>' .
+                "<div class=\"card-body\">" . $this->parser->ParseBlock($result, $this->text, $scope) . '</div>' .
                 '</div>';
     }
 }

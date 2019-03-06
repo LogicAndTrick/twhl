@@ -1,6 +1,16 @@
+.vault-filter-form {
+  .form-control {
+    height: auto;
+  }
+}
 .vault-filter-container {
   .btn-group > .btn {
     padding: 0.5rem;
+    border-color: #ced4da;
+    border-width: 1px 0px 1px 1px;
+  }
+  .dropdown-toggle::after {
+    vertical-align: middle;
   }
   .filter-info {
     font-size: 0.8rem;

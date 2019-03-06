@@ -23,13 +23,13 @@
     @include('wiki.view.revision-content', ['revision' => $revision])
 @elseif (strpos($cat_name, '+') !== false)
     <div class="card card-outline-info">
-        <div class="card-block">
+        <div class="card-body">
             This is a subcategory page, all pages matching the selected categories will be shown.
         </div>
     </div>
 @else
     <div class="card card-outline-info">
-        <div class="card-block">
+        <div class="card-body">
             No information for this category has been entered yet. You can change this by creating the category page by
             <a href="{{ act('wiki', 'create', 'category:'.$cat_name) }}">clicking here</a>.
         </div>

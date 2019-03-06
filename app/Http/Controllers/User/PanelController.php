@@ -315,7 +315,7 @@ class PanelController extends Controller {
         $ban = Ban::create([
             'user_id' => $user->id,
             'ip' => (Request::input('ip_ban') && $user->last_access_ip ? $user->last_access_ip : null),
-            'ends_at' => $hours < 0 ? null : Carbon::create()->addHours($hours),
+            'ends_at' => $hours < 0 ? null : Carbon::now()->addHours($hours),
             'reason' => Request::input('reason')
         ]);
 

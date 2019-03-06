@@ -24,7 +24,7 @@
         <div class="slot-row">
             <div class="slot-main">
                 <div class="bbcode">{!! $poll->content_html !!}</div>
-                <div class="card card-block">
+                <div class="card card-body">
                     @if ($poll->isOpen() && !$user_vote && Auth::user())
                         @include('polls/_form', [ 'poll' => $poll, 'user_votes' => $user_votes ])
                     @else

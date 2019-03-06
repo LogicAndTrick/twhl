@@ -36,7 +36,7 @@
     <hr/>
 
     <h2>Choose a Preset Avatar</h2>
-    <div class="card card-block">
+    <div class="card card-body">
         All that uploading business too complicated? Don't worry!
         Just click any of the avatars below to use it instantly.
     </div>
@@ -47,7 +47,7 @@
             <div class="card-header">
                 {{ $title }} <span class="pull-right">Click an avatar to use it</span>
             </div>
-            <div class="card-block">
+            <div class="card-body">
                 <div class="row avatar-preset-chooser">
                     @foreach ($avatars as $avatar)
                         <div class="col-md-2 col-sm-3 col-xs-6 mb-3">
@@ -55,7 +55,7 @@
                                 @hidden(id $user)
                                 <input type="hidden" name="type" value="preset" />
                                 <input type="hidden" name="preset" value="{{ $avatar }}" />
-                                <button class="btn btn-{{ $avatar == $sel ? 'primary' : 'secondary' }}" style="cursor: pointer;" type="submit">
+                                <button class="btn btn-{{ $avatar == $sel ? 'primary' : 'outline-secondary' }}" style="cursor: pointer;" type="submit">
                                     <img src="{{ asset('images/avatars/full/'.$avatar) }}" alt="Preset Avatar" />
                                 </button>
                             @endform

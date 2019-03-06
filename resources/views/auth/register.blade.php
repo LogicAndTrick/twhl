@@ -9,7 +9,7 @@
     </h1>
 
     <div class="row">
-        <div class="col-xl-4 push-xl-4 col-md-6 push-md-3">
+        <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3">
             @form(auth/register)
                 @text(name) = Username
 
@@ -26,8 +26,9 @@
                 @password(password_confirmation) = Confirm Password
                 <hr/>
 
-                {!! Recaptcha::render() !!}
-
+                <div class="d-flex justify-content-center">
+                    {!! Recaptcha::render() !!}
+                </div>
                 <hr/>
                 <p>
                     TWHL has some simple rules that we expect our users to follow.
@@ -42,7 +43,7 @@
                 @checkbox(agree_rules) = I agree to follow the rules of the site
                 <hr/>
 
-                <div>
+                <div class="text-center">
                     <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             @endform

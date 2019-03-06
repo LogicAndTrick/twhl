@@ -5,8 +5,8 @@
 @import "bootstrap";
 
 // Font Awesome
-@fa-font-path:   "../fonts";
-@import "node_modules/font-awesome/scss/font-awesome.scss";
+//@fa-font-path:   "../fonts";
+@import "~font-awesome/scss/font-awesome";
 
 // Third party
 

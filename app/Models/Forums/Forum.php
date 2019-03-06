@@ -44,7 +44,7 @@ class Forum extends Model {
         if ($this->last_post == null) return false;
 
         $last_access = session('last_access_time');
-        if (!$last_access || !($last_access instanceof Carbon)) $last_access = Carbon::create()->addDays(1);
+        if (!$last_access || !($last_access instanceof Carbon)) $last_access = Carbon::now()->addDays(1);
 
         return $this->last_post->updated_at > $last_access;
     }

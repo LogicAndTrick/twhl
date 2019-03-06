@@ -1,16 +1,15 @@
-## TWHL Beta Website
+## TWHL Website
 
 TWHL is a mapping and modding resource website for the Half-Life and Source engines.
 
 - [Visit twhl.info](http://twhl.info)
-- [Visit beta2.twhl.info](http://beta2.twhl.info)
 
 ### Getting a dev environment set up
 
 TWHL4 uses the [Laravel](http://laravel.com/) framework. Detailed instructions can be found
 in the Laravel docs, but here's the basic steps:
 
-1. Get an Apache environment with MySQL (5.5+) and PHP (5.6+)
+1. Get an Apache environment with MySQL (5.5+) and PHP (7.1+)
    - The easiest way to do this is to download [XAMPP](https://www.apachefriends.org/index.html)
    for your platform and follow the install instructions.
    - Put the **php**/**php.exe** executable path into your system's environment variables
@@ -25,9 +24,6 @@ in the Laravel docs, but here's the basic steps:
    - Make sure the repo folder has the correct read & execute permissions
 6. In the repo's root folder, install the app dependencies using Composer by running:
    `composer install`
-   - If you're on OSX, make sure your homebrew is up to date, and `brew install openssl`
-   before doing this. Also open `php.ini` and add this line:
-   `openssl.cafile=/usr/local/etc/openssl/cert.pem`
 7. Add this to your `apache/conf/httpd.conf` - this config assumes your repo is
    at `C:\twhl`, change the path for your system as required.
 
@@ -55,20 +51,17 @@ in the Laravel docs, but here's the basic steps:
 	    this may be because I had an older version of MySQL installed. If you get an error
 		about "Cannot load from mysql.proc", try doing this. Drop and re-create the twhl
 		database before trying again.
-   - `npm install --global gulp` (requires node.js on path)
    - `npm install`
-   - `gulp`
+   - `npm run development`
 12. Hopefully, you're done! Go to [http://localhost:82/auth/login](http://localhost:82/auth/login)
    to log in. User: `admin@twhl.info` // Pass: `admin`.
 
 ### Working with Laravel
 
-Some general notes if you're not used to Laravel/Composer/Gulp:
+Some general notes if you're not used to Laravel/Composer:
 
-- If `composer.json` changes, run `composer update` to get the latest library versions.
-  Run it sometimes even if `composer.json` doesn't change. `composer dump-autoload` can
-  sometimes be useful if the dependencies aren't updating correctly.
+- If `composer.json` changes, run `composer install` to get the latest library versions.
 - Run `composer self-update` if it nags you, it's a good idea to stay up to date.
-- When making changes to `*.less` and `*.js` files, you need to run `gulp` to bundle
+- When making changes to `*.css`, `*.scss` and `*.js` files, you need to run `npm run development` to bundle
   those changes into the compiled CSS and JS files. The easiest way to do this is to run
-  `gulp watch`, which will watch the files for changes and auto-build when needed.
+  `npm run watch`, which will watch the files for changes and auto-build when needed.

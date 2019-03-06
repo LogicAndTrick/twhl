@@ -21,7 +21,7 @@
             </div>
             <div class="slot-main">
                 <div class="row">
-                    <div class="col-xl-4 push-xl-8 col-lg-5 push-lg-7 info-column">
+                    <div class="col-xl-4 col-lg-5 order-2 info-column">
                         <h2>{{ $comp->getStatusText() }}</h2>
 
                         @if ($comp->isVotingOpen())
@@ -40,7 +40,7 @@
                             {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->close_date) ({{ $comp->close_date->format('jS F Y') }})
                         @endif
                     </div>
-                    <div class="col-xl-8 pull-xl-4 col-lg-7 pull-lg-5 brief-column">
+                    <div class="col-xl-8 col-lg-7 order-1 brief-column">
                         <div class="bbcode">{!! $comp->brief_html !!}</div>
                     </div>
                 </div>

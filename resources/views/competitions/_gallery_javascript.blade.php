@@ -16,7 +16,7 @@
                 buttons: {
                     ok: {
                         label: "Close",
-                        className: "btn-default"
+                        className: "btn-light"
                     }
                 },
                 callback: function() {

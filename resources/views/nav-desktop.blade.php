@@ -14,9 +14,9 @@
                         <div class="navbar-form navbar-search-form">
                             <div class="form-group">
                                 <div class="input-group input-group-sm">
-                                    <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></div>
                                     <input type="text" class="form-control" name="search" placeholder="Search">
-                                    <span class="input-group-btn"><button type="submit" class="btn btn-default">Go</button></span>
+                                    <span class="input-group-append"><button type="submit" class="btn btn-light">Go</button></span>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 @form(auth/login)
-                                    <div class="navbar-form">
+                                    <div class="navbar-form login-form">
                                         {? $login_form_checked = true; ?}
                                         @text(email placeholder=Email/username) = Email or Username
                                         @password(password) = Password

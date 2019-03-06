@@ -105,7 +105,7 @@ class ForumThread extends Model {
         if ($this->last_post == null) return false;
 
         $last_access = session('last_access_time');
-        if (!$last_access || !($last_access instanceof Carbon)) $last_access = Carbon::create()->addDays(1);
+        if (!$last_access || !($last_access instanceof Carbon)) $last_access = Carbon::now()->addDays(1);
 
         $thread_read = session('thread_persistance_data');
         if ($thread_read && is_array($thread_read) && array_key_exists($this->id, $thread_read)) {
@@ -120,7 +120,7 @@ class ForumThread extends Model {
     {
         $thread_read = session('thread_persistance_data');
         if (!$thread_read || !is_array($thread_read)) $thread_read = [];
-        $thread_read[$this->id] = Carbon::create();
+        $thread_read[$this->id] = Carbon::now();
         session(['thread_persistance_data' => $thread_read]);
     }
 

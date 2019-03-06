@@ -49,6 +49,9 @@ nav {
     .input-group {
       background: #fff;
     }
+    &.login-form {
+      min-width: 250px;
+    }
   }
 
   .dropdown-item .fa {
@@ -56,8 +59,8 @@ nav {
       text-align: center;
   }
 
-  &.bg-inverse .dropdown-menu {
-    background: $inverse-bg;
+  &.bg-dark .dropdown-menu {
+    background: $dark;
     color: $navbar-inverse-color;
 
     a {
@@ -68,7 +71,7 @@ nav {
       color: $navbar-inverse-color;
 
       @include hover-focus {
-        color: $navbar-inverse-active-color;
+        color: $navbar-dark-active-color;
         text-decoration: none;
         background-color: darken($gray-dark, 5%);
       }

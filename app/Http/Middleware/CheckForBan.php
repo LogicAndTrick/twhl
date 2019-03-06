@@ -49,7 +49,7 @@ class CheckForBan {
     {
         $id = !Auth::user() ? -1 : Auth::user()->id;
         $ip = $request->ip();
-        $now = Carbon::create();
+        $now = Carbon::now();
 
         $activeBan = Ban::where('created_at', '<=', $now)
             ->whereRaw('(ends_at IS NULL OR ends_at >= ?)', [$now])

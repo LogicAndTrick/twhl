@@ -19,7 +19,7 @@
     </ol>
 
     <div class="card">
-        <div class="card-block">
+        <div class="card-body">
             @include('user._profile', [ 'user' => $user ])
         </div>
     </div>

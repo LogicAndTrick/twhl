@@ -14,7 +14,7 @@
             </label>
         </span>
     </div>
-    <div class="card-block">
+    <div class="card-body">
         @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
         {? $location = $entry && $entry->is_hosted_externally ? $entry->file_location : ''; ?}
         @text(link $location) = Link to File (Dropbox, Steam Workshop, etc.)
@@ -35,7 +35,7 @@
     $(function() {
         $('[name=__upload_method]').on('change', function() {
             var sel = $('[name=__upload_method]:checked').attr('value');
-            $('.option-panel .card-block > div').addClass('d-none');
+            $('.option-panel .card-body > div').addClass('d-none');
             $('[name="' + sel + '"]').parent().removeClass('d-none');
         }).change();
     });

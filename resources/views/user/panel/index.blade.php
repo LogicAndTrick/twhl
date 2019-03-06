@@ -13,7 +13,7 @@
                 <div class="card-header">
                     Links
                 </div>
-                <div class="card-block">
+                <div class="card-body">
                     <ul class="list-unstyled">
                         <li><a href="{{ act('user', 'view', $user->id) }}"><span class="fa fa-user"></span> View Public Profile</a></li>
                         <li><a href="{{ act('vault', 'index').'?users='.$user->id }}"><span class="fa fa-files-o"></span> View Vault Items</a></li>
@@ -31,7 +31,7 @@
                 <div class="card-header">
                     Actions
                 </div>
-                <div class="card-block">
+                <div class="card-body">
                     <ul class="list-unstyled">
                         <li><a href="{{ act('panel', 'edit-profile', $user->id) }}"><span class="fa fa-pencil"></span> Edit Public Profile</a></li>
                         <li><a href="{{ act('panel', 'edit-avatar', $user->id) }}"><span class="fa fa-picture-o"></span> Change Avatar</a></li>
@@ -58,7 +58,7 @@
         <div class="card-header">
             Profile
         </div>
-        <div class="card-block">
+        <div class="card-body">
             @include('user._profile', [ 'user' => $user ])
         </div>
     </div>

@@ -52,14 +52,12 @@
                             <img src="{{ asset('images/no-screenshot-320.png') }}" alt="Screenshot" />
                         @endif
                     </a>
-                    <div class="tile-main">
-                        @if ($entry->screenshots->count() > 1)
-                            <button class="btn btn-info btn-block gallery-button" type="button">
-                                <span class="fa fa-picture-o"></span>
-                                + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
-                            </button>
-                        @endif
-                    </div>
+                    @if ($entry->screenshots->count() > 1)
+                        <button class="btn btn-info btn-block gallery-button" type="button">
+                            <span class="fa fa-picture-o"></span>
+                            + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
+                        </button>
+                    @endif
                     @if ($entry->getLinkUrl())
                         <a href="{{ $entry->getLinkUrl() }}" class="btn btn-sm btn-success mt-1">
                             <span class="fa fa-download"></span> Download

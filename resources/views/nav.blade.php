@@ -1,7 +1,7 @@
-<nav class="navbar navbar-toggleable-sm bg-inverse navbar-inverse hidden-lg-up">
+<nav class="navbar navbar-expand-md bg-dark navbar-dark hidden-lg-up">
     <div class="container">
 
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between" style="flex-grow: 1;">
         {{-- Logo --}}
         <a class="navbar-brand" href="{{ url('/') }}">
             <img src="{{ asset('images/logo_icon.png') }}" alt="">
@@ -41,9 +41,9 @@
                 <div class="navbar-form">
                     <div class="form-group">
                         <div class="input-group input-group-sm">
-                            <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                            <div class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></div>
                             <input type="text" class="form-control" name="search" placeholder="Search">
-                            <span class="input-group-btn"><button type="submit" class="btn btn-default">Go</button></span>
+                            <span class="input-group-append"><button type="submit" class="btn btn-light">Go</button></span>
                         </div>
                     </div>
                 </div>
@@ -57,10 +57,10 @@
                         <form action="{{ url('search/index') }}" method="get">
                             <div class="navbar-form">
                                 <div class="form-group">
-                                    <div class="input-group input-group-sm">
-                                        <div class="input-group-addon"><span class="fa fa-search"></span></div>
+                                    <div class="input-group input-group-sm flex-nowrap">
+                                        <div class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></div>
                                         <input type="text" class="form-control" name="search" placeholder="Search">
-                                        <span class="input-group-btn"><button type="submit" class="btn btn-default">Go</button></span>
+                                        <span class="input-group-append"><button type="submit" class="btn btn-light">Go</button></span>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
                             @form(auth/login)
-                                <div class="navbar-form">
+                                <div class="navbar-form login-form">
                                     {? $login_form_checked = true; ?}
                                     @text(email placeholder=Email/username) = Email or Username
                                     @password(password) = Password

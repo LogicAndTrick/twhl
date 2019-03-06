@@ -17,7 +17,7 @@
                     <div class="card-header">
                         Custom Title
                     </div>
-                    <div class="card-block">
+                    <div class="card-body">
                         <div class="alert alert-info">If enabled, the custom title appears underneath your avatar on your profile and forum posts.</div>
                         @checkbox(title_custom $user) = Enable Custom Title
                         @text(title_text $user) = Custom Title Text
@@ -29,7 +29,7 @@
                     <div class="card-header">
                         Skills
                     </div>
-                    <div class="card-block">
+                    <div class="card-body">
                         <div class="alert alert-info">Which of these skills are you experienced with?</div>
                         @checkbox(skill_map $user) = Mapping
                         @checkbox(skill_model $user) = Modelling
@@ -46,7 +46,7 @@
             <div class="card-header">
                 Information
             </div>
-            <div class="card-block">
+            <div class="card-body">
                 <div class="alert alert-info">Tell everyone a little bit about yourself. If you don't want to fill something in, just leave it blank!</div>
                 <div class="row">
                     <div class="col-md-6">

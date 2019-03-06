@@ -14,7 +14,7 @@ class PollTableSeeder extends \Illuminate\Database\Seeder
                 'title' => 'Poll '.$i,
                 'content_text' => 'This is poll #'.$i,
                 'content_html' => 'This is poll #'.$i,
-                'close_date' => \Carbon\Carbon::create()->addDay($i)->setTime(0, 0, 0)
+                'close_date' => \Carbon\Carbon::now()->addDay($i)->setTime(0, 0, 0)
             ]);
 
             $ids = [];

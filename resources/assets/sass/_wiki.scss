@@ -3,12 +3,19 @@
   margin: 0 -15px;
   padding: 5px 5px 0;
   flex-wrap: wrap;
+  white-space: nowrap;
 
   .btn {
     padding: 2px 8px;
     overflow: hidden;
     border-radius: 0;
     text-overflow: ellipsis;
+    border: 1px solid $gray-500;
+    background: $white;
+
+    &:hover {
+      background: $gray-200;
+    }
   }
 
   .btn-group {

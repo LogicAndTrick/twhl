@@ -60,7 +60,7 @@
                         </div>
                     @endif
                     <div class="d-flex flex-column flex-lg-row">
-                        <div class="text-center flex-lg-last my-2 ml-0 ml-lg-3 my-lg-0">
+                        <div class="text-center order-lg-2 my-2 ml-0 ml-lg-3 my-lg-0">
                             <div style="display: inline-block;">
                                 <a href="#" class="gallery-button img-thumbnail">
                                     <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">

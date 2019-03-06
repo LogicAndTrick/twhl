@@ -1,15 +1,28 @@
 {
   "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "npm run development -- --watch",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
   "devDependencies": {
-    "gulp": "^3.8.8",
-    "laravel-elixir": "*",
-    "bootstrap": "4.0.0-alpha.6",
-    "tether": "^1.4.0",
+    "bootstrap": "^4.3.1",
+    "cross-env": "^5.1",
     "font-awesome": "^4.7.0",
-    "autoprefixer": "^6.6.1",
-    "clean-css": "^3.4.23",
-    "gulp-sass": "^3.1.0",
-    "require-dir": "^0.3.2",
-    "vue": "^2.5.16"
+    "select2": "4.0.5",
+    "jquery": "^3.2",
+    "jquery.appear": "git+https://github.com/morr/jquery.appear.git",
+    "laravel-mix": "^4.0.7",
+    "lodash": "^4.17.5",
+    "popper.js": "^1.12",
+    "resolve-url-loader": "^2.3.1",
+    "sass": "^1.15.2",
+    "sass-loader": "^7.1.0",
+    "vue": "^2.5.17",
+    "vue-template-compiler": "^2.6.8"
   }
 }

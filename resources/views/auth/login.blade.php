@@ -8,7 +8,7 @@
     </h1>
 
     <div class="row">
-        <div class="col-xl-4 push-xl-4 col-md-6 push-md-3">
+        <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3">
             @form(auth/login)
                 {? $login_form_checked = true; ?}
                 @text(email) = Email or Username

@@ -10,7 +10,7 @@
             <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fa fa-list"></span> Edit Rules</a>
             <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
             @if ($comp->canJudge())
-                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary btn-xs"><span class="fa fa-eye"></span> Manage Entries</a>
+                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-outline-secondary btn-xs"><span class="fa fa-eye"></span> Manage Entries</a>
             @endif
         @endif
     </h1>
@@ -32,7 +32,7 @@
 
     @if ($collapse)
         <p class="text-center">
-            <button id="collapse-button" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#brief-container">
+            <button id="collapse-button" class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#brief-container">
                 Show competition brief
                 <span class="fa fa-chevron-down"></span>
             </button>
@@ -43,7 +43,7 @@
         <div class="slot">
             <div class="slot-main">
                 <div class="row competition-brief">
-                    <div class="col-xl-4 push-xl-8 col-lg-5 push-lg-7">
+                    <div class="col-xl-4 col-lg-5 order-2">
 
                         <div class="competition-status">
                             <span class="comp-status-message">Competition Status:</span>
@@ -86,7 +86,7 @@
                         <hr class="hidden-lg-up" />
 
                     </div>
-                    <div class="col-xl-8 pull-xl-4 col-lg-7 pull-lg-5 brief-column">
+                    <div class="col-xl-8 col-lg-7 order-1 brief-column">
                         <div class="bbcode">{!! $comp->brief_html !!}</div>
                         @if ($comp->brief_attachment)
                             <div class="well well-sm">

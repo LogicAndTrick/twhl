@@ -156,7 +156,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         if ($confirmation != User::DEFINITELY_OBLITERATE_THIS_USER) return false;
 
-        $deleted = Carbon::create();
+        $deleted = Carbon::now();
         $id = $this->id;
 
         $soft_delete_tables = [
