@@ -6,16 +6,19 @@ class PreElement extends Element {
 
     public $parser;
     public $text;
+    public $lang;
 
     function __construct()
     {
 
     }
 
+    protected $supported_languages = ["php", "dos", "css", "cpp", "cs", "ini", "json", "xml", "angelscript", "javascript"];
+
     function Matches($lines)
     {
         $value = $lines->Value();
-        return substr(trim($value), 0, 5) == '[pre]';
+        return substr(trim($value), 0, 4) == '[pre' && preg_match('/\[pre(=[a-z]+)?\]/si', $value);
     }
 
     function Consume($parser, $lines)
@@ -23,7 +26,12 @@ class PreElement extends Element {
         $current = $lines->Current();
 
         $arr = array();
-        $line = substr(trim($lines->Value()), 5);
+
+        $line = trim($lines->Value());
+        preg_match('/\[pre(?:=([a-z]+))?\]/si', $line, $res);
+        $line = substr($line, strlen($res[0]));
+        $lang = isset($res[1]) ? $res[1] : null;
+
         if (substr(trim($line), -6) == '[/pre]') {
             $lines->Next();
             $arr[] = substr(trim($line), 0, -6);
@@ -49,12 +57,13 @@ class PreElement extends Element {
         $el = new PreElement();
         $el->parser = $parser;
         $el->text = implode("\n", $arr);
+        $el->lang = $lang;
         return $el;
     }
 
     function Parse($result, $scope)
     {
         $text = $this->parser->CleanString($this->text);
-        return '<pre><code>' . $text . '</code></pre>';
+        return '<pre' . ($this->lang ? ' class="lang-' . $this->lang . '"' : '') . '><code>' . $text . '</code></pre>';
     }
 }

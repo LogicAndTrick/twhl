@@ -32,6 +32,7 @@ mix.scripts([
         'resources/assets/js/lib/jsdifflib.js',
         'resources/assets/js/lib/jssor.slider.mini.js',
         'resources/assets/js/lib/autolinker.js',
+        'resources/assets/js/lib/highlight.pack.js',
         "resources/assets/js/boot/*.js"
     ], 'public/js/all.js')
     .sass('resources/assets/sass/app.scss', 'public/css')

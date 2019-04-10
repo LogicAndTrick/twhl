@@ -167,6 +167,9 @@ $(function() {
             panel.html('Loading...');
             $.post(window.urls.api.format + '?field=' + name, form.serializeArray(), function(data) {
                 panel.html(data);
+                panel.find('pre code').each(function() {
+                    hljs.highlightBlock(this);
+                });
             });
         };
 
