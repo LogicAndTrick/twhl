@@ -29,7 +29,7 @@ class MdCodeElement extends Element {
         $first_line = rtrim(substr($lines->Value(), 3));
 
         $lang = null;
-        if (array_search($first_line, MdCodeElement::$allowed_languages)) {
+        if (array_search($first_line, MdCodeElement::$allowed_languages) !== false) {
             $lang = $first_line;
             $first_line = '';
         }
