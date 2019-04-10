@@ -9,7 +9,7 @@ class MdCodeElement extends Element {
     public $text;
     public $lang;
 
-    static $allowed_languages = ['php', 'dos', 'bat', 'cmd', 'css', 'cpp', 'c', 'c++', 'cs', 'ini', 'json', 'xml', 'angelscript', 'javascript', 'js'];
+    static $allowed_languages = ['php', 'dos', 'bat', 'cmd', 'css', 'cpp', 'c', 'c++', 'cs', 'ini', 'json', 'xml', 'html', 'angelscript', 'javascript', 'js', 'plaintext'];
 
     function __construct()
     {
