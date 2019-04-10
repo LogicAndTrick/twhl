@@ -7,6 +7,9 @@ class MdCodeElement extends Element {
 
     public $parser;
     public $text;
+    public $lang;
+
+    static $allowed_languages = ['php', 'dos', 'bat', 'cmd', 'css', 'cpp', 'c', 'c++', 'cs', 'ini', 'json', 'xml', 'angelscript', 'javascript', 'js'];
 
     function __construct()
     {
@@ -24,6 +27,12 @@ class MdCodeElement extends Element {
         $current = $lines->Current();
 
         $first_line = rtrim(substr($lines->Value(), 3));
+
+        $lang = null;
+        if (array_search($first_line, MdCodeElement::$allowed_languages)) {
+            $lang = $first_line;
+            $first_line = '';
+        }
 
         $arr = [];
         $arr[] = $first_line;
@@ -71,12 +80,13 @@ class MdCodeElement extends Element {
         $el = new MdCodeElement();
         $el->parser = $parser;
         $el->text = implode("\n", $arr);
+        $el->lang = $lang;
         return $el;
     }
 
     function Parse($result, $scope)
     {
         $text = $this->parser->CleanString($this->text);
-        return '<pre><code>' . $text . '</code></pre>';
+        return '<pre' . ($this->lang ? ' class="lang-' . $this->lang . '"' : '') . '><code>' . $text . '</code></pre>';
     }
 }
