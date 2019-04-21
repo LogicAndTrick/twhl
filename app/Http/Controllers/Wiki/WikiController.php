@@ -208,6 +208,33 @@ class WikiController extends Controller {
         return redirect('wiki/view/'.$id);
     }
 
+    public function getEmbedInfo($id)
+    {
+        $upload = null;
+        $rev = null;
+        if (substr($id, 0, 4) == 'rev:') {
+            $rev = WikiRevision::with(['wiki_revision_metas'])->where('id', '=', substr($id, 4))->first();
+        } else if (substr($id, 0, 3) == 'id:') {
+            $upload = WikiUpload::where('id', '=', substr($id, 3))->first();
+            $rev = $upload->revision;
+        }
+
+        if (!$rev) {
+            $upload = null;
+            $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:'.$id)->first();
+        }
+
+        if ($rev && !$upload) $upload = $rev->getUpload();
+
+        $res = [
+            'exists' => !!$rev && !!$upload,
+            'revision' => $rev,
+            'upload' => $upload,
+            'meta' => $rev ? $rev->wiki_revision_metas : null
+        ];
+        return response()->json($res);
+    }
+
     public function getEmbed($id)
     {
         $upload = null;
@@ -398,11 +425,11 @@ class WikiController extends Controller {
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
-        $max_size = 4096;
-        $allowed_extensions = 'jpeg,jpg,png,gif';
+        $max_size = 1024*4;
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('Admin')) {
-            $max_size = 1024*16;
-            $allowed_extensions .= ',zip,rar';
+            $max_size = 1024*64;
+            $allowed_extensions .= ',zip,rar,exe,msi';
         }
         $rules = [
             'file' => "max:$max_size|valid_extension:$allowed_extensions",
@@ -535,8 +562,8 @@ class WikiController extends Controller {
         $max_size = 1024*4;
         $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('Admin')) {
-            $max_size = 1024*16;
-            $allowed_extensions .= ',zip,rar';
+            $max_size = 1024*64;
+            $allowed_extensions .= ',zip,rar,exe,msi';
         }
 
         $this->validate(Request::instance(), [

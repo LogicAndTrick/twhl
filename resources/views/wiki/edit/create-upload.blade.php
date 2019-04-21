@@ -20,8 +20,8 @@
                 <li>
                     Because you're an admin, you have a bit more freedom:
                     <ul>
-                        <li>Extra file extensions: <strong>.zip, .rar</strong></li>
-                        <li>Increased size limit: <strong>16mb</strong></li>
+                        <li>Extra file extensions: <strong>.zip, .rar, .exe, .msi</strong></li>
+                        <li>Increased size limit: <strong>64mb</strong></li>
                     </ul>
                 </li>
             @else

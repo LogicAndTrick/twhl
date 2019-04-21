@@ -23,6 +23,7 @@ return [
         [ 'class' => 'App\Helpers\BBCode\Tags\LinkTag',      'scopes' => [ 'excerpt' ], 'token' => 'email' ],
         [ 'class' => 'App\Helpers\BBCode\Tags\QuickLinkTag', 'scopes' => [ 'excerpt' ] ],
         [ 'class' => 'App\Helpers\BBCode\Tags\WikiLinkTag',  'scopes' => [ 'excerpt' ] ],
+        [ 'class' => 'App\Helpers\BBCode\Tags\WikiFileTag',  'scopes' => [ 'excerpt' ] ],
 
         // Embedded
         [ 'class' => 'App\Helpers\BBCode\Tags\ImageTag',     'scopes' => [ ], 'token' => 'img' ],
