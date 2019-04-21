@@ -32,8 +32,8 @@ $(function() {
             } else {
                 var sz = d.meta.filter(function (m) { return m.key == 's'; });
                 var size = sz && sz.length > 0 && parseInt(sz[0].value, 10);
-                if (size) $a.addClass('text-success').append(' <span>(' + format_filesize(size) + ')</span>');
-                else $a.addClass('text-success').append(' <span>(Unknown size)</span>');
+                if (size) $a.append(' <span>(' + format_filesize(size) + ')</span>');
+                else $a.append(' <span>(Unknown size)</span>');
             }
         });
     });
