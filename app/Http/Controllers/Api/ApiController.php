@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Events\CommentCreated;
 use App\Http\Controllers\Comments\CommentController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Wiki\WikiController;
 use App\Models\Accounts\ApiKey;
 use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
@@ -31,15 +32,17 @@ use App\Models\Vault\VaultType;
 use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
+use App\Models\Wiki\WikiType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Validation\ValidationException;
-use Input;
-use Request;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller {
 
@@ -217,20 +220,50 @@ class ApiController extends Controller {
         'wiki-revisions' => [
             'description' => 'Wiki Revisions',
             'expand' => ['wiki_object', 'wiki_object.permission', 'wiki_object.current_revision', 'user', 'wiki_revision_metas'],
-            'methods' => ['get'],
+            'methods' => ['get', 'post', 'put'],
             'auth' => [],
             'parameters' => [
                 'get' => [
                     'is_active' => [ 'type' => 'integer', 'enum' => [0,1], 'description' => 'Allows to filter for only active or inactive revisions' ],
                     'object_id' => [ 'type' => 'integer', 'description' => 'The ID of the parent wiki object' ],
                     'user_id' => [ 'type' => 'integer', 'description' => 'The ID of the user' ],
+                ],
+                'post' => [
+                    'title' => [ 'required' => true, 'type' => 'string', 'description' => 'The title of the page to create' ],
+                    'content_text' => [ 'required' => true, 'type' => 'string', 'description' => 'The text of the page to create']
+                ],
+                'put' => [
+                    'id' => [ 'required' => true, 'type' => 'int', 'description' => 'The id of the revision to edit' ],
+                    'title' => [ 'required' => true, 'type' => 'string', 'description' => 'The title of the page to edit' ],
+                    'content_text' => [ 'required' => true, 'type' => 'string', 'description' => 'The new text of the page'],
+                    'message' => [ 'required' => false, 'type' => 'string', 'description' => 'The change message']
                 ]
             ],
             'object' => WikiRevision::class,
             'filter_columns' => ['title', 'content_text'],
             'sort_column' => 'title',
             'allowed_sort_columns' => ['title','created_at'],
-            'default_filters' => []
+            'default_filters' => [],
+            'additional_methods' => [
+                'upload' => [
+                    'method' => 'post',
+                    'operationId' => 'uploadPost',
+                    'parameters' => [
+                        'title' => [ 'required' => true, 'type' => 'string', 'description' => 'The title of the page to create' ],
+                        'file' => [ 'required' => true, 'type' => 'string', 'description' => 'The file to upload' ],
+                        'content_text' => [ 'required' => true, 'type' => 'string', 'description' => 'The text of the page to create']
+                    ],
+                    'response' => [
+                        'description' => 'Revision page',
+                        'schema' => [
+                            'type' => 'array',
+                            'items' => [
+                                '$ref' => '#/definitions/WikiRevision'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
         ],
         'wiki-objects' => [
             'description' => 'Wiki Objects',
@@ -824,7 +857,7 @@ class ApiController extends Controller {
                     $result = $this->$operation();
                     return response()->json($result);
                 } catch (ValidationException $ex) {
-                    return $ex->getResponse();
+                    return response()->json($ex->validator->errors())->setStatusCode(422);
                 } catch (\Exception $ex) {
                     return response()->json([
                         'message' => 'Object not found.'
@@ -1136,6 +1169,139 @@ class ApiController extends Controller {
         $shout = Shout::findOrFail(Request::input('id'));
         $shout->delete();
         return ['success' => true];
+    }
+
+    private function post_wiki_revisions() {
+        if (!permission('Admin')) throw new \Exception();
+
+        Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) {
+            $s = WikiRevision::CreateSlug($value);
+            $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->first();
+            return $rev == null;
+        });
+        Validator::extend('valid_categories', function($attribute, $value, $parameters) {
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
+        });
+        Validator::extend('category_name_must_exist', function($attribute, $value, $parameters) {
+            if (substr($value, 0, 9) != 'category:') return true;
+            $cat_name = WikiRevision::CreateSlug(substr($value, 9));
+            $meta = WikiRevisionMeta::where('key', '=', WikiRevisionMeta::CATEGORY)->where('value', '=', $cat_name)->first();
+            return $meta !== null;
+        });
+        Validator::extend('invalid_title', function($attribute, $value, $parameters) {
+            return substr($value, 0, 7) != 'upload:';
+        });
+        $this->validate(Request::instance(), [
+            'title' => 'required|max:200|unique_wiki_slug|category_name_must_exist|invalid_title',
+            'content_text' => 'required|max:65536|valid_categories',
+            'message' => 'max:200'
+        ], [
+            'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
+            'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
+            'invalid_title' => "A page title cannot start with ':upload'.",
+            'category_name_must_exist' => 'This category name doesn\'t exist. Apply this category to at least one object before creating the category page.'
+        ]);
+
+        $type = WikiType::PAGE;
+        if (substr(Input::get('title'), 0, 9) == 'category:') $type = WikiType::CATEGORY;
+        $object = WikiObject::Create([ 'type_id' => $type ]);
+        $revision = WikiController::createRevision($object);
+        return $revision;
+    }
+
+    private function put_wiki_revisions()
+    {
+        if (!permission('Admin')) throw new \Exception();
+
+        $id = intval(Input::get('id'));
+        $rev = WikiRevision::findOrFail($id);
+        $obj = WikiObject::findOrFail($rev->object_id);
+
+        if (!$obj->canEdit()) return abort(404);
+
+        Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) use ($obj) {
+            $s = WikiRevision::CreateSlug($value);
+            $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->where('object_id', '!=', $obj->id)->first();
+            return $rev == null;
+        });
+        Validator::extend('must_change', function($attribute, $value, $parameters) use ($rev, $obj) {
+            return trim($rev->content_text) != trim(Request::input('content_text'))
+                || trim($rev->title) != trim(Request::input('title'))
+                || ($obj->type_id == WikiType::UPLOAD && Request::file('file')
+                || (permission('WikiAdmin') && $obj->permission_id != Request::input('permission_id')));
+        });
+        Validator::extend('valid_categories', function($attribute, $value, $parameters) {
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
+        });
+        Validator::extend('invalid_title', function($attribute, $value, $parameters) use ($obj, $rev) {
+            return ($obj->type_id != WikiType::PAGE) ||
+                   (substr($value, 0, 9) != 'category:' && substr($value, 0, 7) != 'upload:');
+        });
+        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
+        });
+        $max_size = 1024*4;
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
+        if (permission('Admin')) {
+            $max_size = 1024*64;
+            $allowed_extensions .= ',zip,rar,exe,msi';
+        }
+        $rules = [
+            'file' => "max:$max_size|valid_extension:$allowed_extensions",
+            'content_text' => 'required|max:65536|must_change|valid_categories',
+            'message' => 'max:200'
+        ];
+        if ($obj->type_id == WikiType::PAGE || $obj->type_id == WikiType::UPLOAD) {
+            $rules['title'] = 'required|max:200|unique_wiki_slug|invalid_title';
+        }
+        $this->validate(Request::instance(), $rules, [
+            'must_change' => 'At least one field must be changed to apply an edit.',
+            'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
+            'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
+            'invalid_title' => "A page title cannot start with ':category' or ':upload'.",
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
+        ]);
+        $revision = WikiController::createRevision($obj, $rev);
+        return $revision;
+    }
+
+    private function post_wiki_revisions_upload()
+    {
+        if (!permission('Admin')) throw new \Exception();
+
+        Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) {
+            $s = WikiRevision::CreateSlug('upload:'.$value);
+            $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->first();
+            return $rev == null;
+        });
+        Validator::extend('valid_categories', function($attribute, $value, $parameters) {
+            return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
+        });
+        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
+        });
+
+        $max_size = 1024*4;
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
+        if (permission('Admin')) {
+            $max_size = 1024*64;
+            $allowed_extensions .= ',zip,rar,exe,msi';
+        }
+
+        $this->validate(Request::instance(), [
+            'title' => 'required|max:200|unique_wiki_slug',
+            'file' => "required|max:{$max_size}|valid_extension:{$allowed_extensions}",
+            'content_text' => 'required|max:65536|valid_categories',
+            'message' => 'max:200'
+        ], [
+            'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
+            'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
+            'valid_extension' => 'Only the following file formats are allowed: ' . $allowed_extensions
+        ]);
+        $type = WikiType::UPLOAD;
+        $object = WikiObject::Create([ 'type_id' => $type ]);
+        $revision = WikiController::createRevision($object);
+        return $revision;
     }
 
     private function post_api_key() {

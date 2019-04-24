@@ -266,7 +266,7 @@ class WikiController extends Controller {
      * @param null $existing_revision
      * @return WikiRevision
      */
-    private function createRevision($object, $existing_revision = null) {
+    public static function createRevision($object, $existing_revision = null) {
         $parse_result = app('bbcode')->ParseResult(Request::input('content_text'));
 
         // The title can only change for standard/upload pages
