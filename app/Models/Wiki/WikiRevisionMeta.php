@@ -17,4 +17,8 @@ class WikiRevisionMeta extends Model {
     public $visible = ['id', 'revision_id','key', 'value'];
     public $timestamps = false;
 
+    public function wiki_revision()
+    {
+        return $this->belongsTo('App\Models\Wiki\WikiRevision', 'revision_id');
+    }
 }

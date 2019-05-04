@@ -1220,6 +1220,9 @@ class ApiController extends Controller {
         if (!$obj->canEdit()) return abort(404);
 
         Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) use ($obj) {
+            if ($obj->type_id == WikiType::UPLOAD) {
+                $value = 'upload:'.$value;
+            }
             $s = WikiRevision::CreateSlug($value);
             $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->where('object_id', '!=', $obj->id)->first();
             return $rev == null;

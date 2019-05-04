@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Wiki;
 
 use App\Events\WikiRevisionCreated;
+use App\Events\WikiTitleRenamed;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
@@ -321,6 +322,9 @@ class WikiController extends Controller {
                 $file->move($dir, $name);
             } else {
                 $upload = $existing_revision->getUpload();
+                $upload->update([
+                    'revision_id' => $revision->id
+                ]);
             }
 
             $file_name = $upload->getServerFileName();
@@ -339,6 +343,10 @@ class WikiController extends Controller {
         $revision->wiki_revision_metas()->saveMany($meta);
         DB::statement('CALL update_wiki_object(?);', [$object->id]);
         $object->touch();
+
+        if ($existing_revision && $revision->title != $existing_revision->title) {
+            event(new WikiTitleRenamed($existing_revision->title, $object, $revision));
+        }
 
         event(new WikiRevisionCreated($revision));
 
@@ -405,6 +413,9 @@ class WikiController extends Controller {
         if (!$obj->canEdit()) return abort(404);
 
         Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) use ($obj) {
+            if ($obj->type_id == WikiType::UPLOAD) {
+                $value = 'upload:'.$value;
+            }
             $s = WikiRevision::CreateSlug($value);
             $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->where('object_id', '!=', $obj->id)->first();
             return $rev == null;

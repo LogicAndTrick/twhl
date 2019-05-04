@@ -16,6 +16,7 @@ class EventServiceProvider extends ServiceProvider {
 	    'App\Events\ForumPostCreated' => [ 'App\Listeners\NotifyThreadWatchers', ],
 	    'App\Events\VaultItemCreated' => [ 'App\Listeners\NotifyVaultWatchers', ],
 	    'App\Events\MessageCreated' => [ 'App\Listeners\NotifyMessageThreadUsers', ],
+        'App\Events\WikiTitleRenamed' => [ 'App\Listeners\UpdateWikiTitleLinks', ]
 	];
 
     /**
