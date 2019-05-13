@@ -24,7 +24,7 @@ $(function() {
 
     const c = $('.wiki.bbcode');
     if (c.length === 1) {
-        var pages = Array.from(new Set(c.find('a[href*="://' + window.location.host + '/wiki/page/"]').map(function (i, x) { return x.href.replace(/^.*\//ig, ''); }).filter(function (i, x) { return !x.match(/^category:/ig); })));
+        var pages = Array.from(new Set(c.find('a[href*="://' + window.location.host + '/wiki/page/"]').map(function (i, x) { return x.href.replace(/^.*\//ig, ''); }).filter(function (i, x) { return !x.match(/^category(:|%3A)/ig); })));
         var embeds = Array.from(new Set(c.find('.embedded-inline.download a').map(function (i, x) { return x.href.replace(/^.*\//ig, ''); })));
         if (pages.length > 0 || embeds.length > 0) {
             var data = {pages: pages, embeds: embeds};
