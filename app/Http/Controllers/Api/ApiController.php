@@ -37,6 +37,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
@@ -267,9 +268,25 @@ class ApiController extends Controller {
         ],
         'wiki-objects' => [
             'description' => 'Wiki Objects',
-            'methods' => [],
+            'methods' => ['post'],
             'object' => WikiObject::class,
             'filter_columns' => [],
+            'additional_methods' => [
+                'page-information' => [
+                    'method' => 'post',
+                    'operationId' => 'pageInformationPost',
+                    'parameters' => [
+                        'pages' => [ 'required' => true, 'type' => 'array', 'description' => 'The list of page slugs to check' ],
+                        'embeds' => [ 'required' => true, 'type' => 'array', 'description' => 'The list of embed slugs to check' ]
+                    ],
+                    'response' => [
+                        'description' => 'Page information',
+                        'schema' => [
+                            'type' => 'array'
+                        ]
+                    ]
+                ]
+            ]
         ],
         'wiki-revision-metas' => [
             'description' => 'Wiki Revision Metas',
@@ -1305,6 +1322,43 @@ class ApiController extends Controller {
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = WikiController::createRevision($object);
         return $revision;
+    }
+
+    private function post_wiki_objects_page_information()
+    {
+        $pages = \request()->input('pages');
+        $embeds = \request()->input('embeds');
+
+        $res = [
+            'pages' => [],
+            'embeds' => []
+        ];
+
+        foreach ($pages as $page) $res['pages'][$page] = [ 'exists' => false, 'slug' => $page ];
+        $revs = WikiRevision::where('is_active', '=', 1)->whereIn('slug', $pages)->get();
+        foreach ($revs as $rev) {
+            $res['pages'][$rev->slug] = [
+                'slug' => $rev->slug,
+                'exists' => true,
+                'revision' => $rev
+            ];
+        }
+
+        foreach ($embeds as $embed) $res['embeds'][$embed] = [ 'exists' => false, 'slug' => $embed ];
+        $revs = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->whereIn('slug', array_map(function ($e) { return "upload:$e"; }, $embeds))->get();
+        foreach ($revs as $rev) {
+            $upload = $rev->getUpload();
+            $s = substr($rev->slug, 7);
+            $res['embeds'][$s] = [
+                'slug' => $s,
+                'exists' => !!$rev && !!$upload,
+                'revision' => $rev,
+                'upload' => $upload,
+                'meta' => $rev ? $rev->wiki_revision_metas : null
+            ];
+        }
+
+        return $res;
     }
 
     private function post_api_key() {

@@ -22,20 +22,39 @@ $(function() {
         return round(pbytes, 2) + 'pb';
     }
 
-    $('.embedded-inline.download[data-info]').each(function() {
-        var $t = $(this);
-        var $a = $t.find('a');
-        var iurl = $t.data('info');
-        $.getJSON(iurl, function (d) {
-            if (!d.exists) {
-                $a.addClass('text-danger').append(' <span>(File not found)</span>');
-            } else {
-                var sz = d.meta.filter(function (m) { return m.key == 's'; });
-                var size = sz && sz.length > 0 && parseInt(sz[0].value, 10);
-                if (size) $a.append(' <span>(' + format_filesize(size) + ')</span>');
-                else $a.append(' <span>(Unknown size)</span>');
-            }
-        });
-    });
+    const c = $('.wiki.bbcode');
+    if (c.length === 1) {
+        var pages = Array.from(new Set(c.find('a[href*="://' + window.location.host + '/wiki/page/"]').map(function (i, x) { return x.href.replace(/^.*\//ig, ''); }).filter(function (i, x) { return !x.match(/^category:/ig); })));
+        var embeds = Array.from(new Set(c.find('.embedded-inline.download a').map(function (i, x) { return x.href.replace(/^.*\//ig, ''); })));
+        if (pages.length > 0 || embeds.length > 0) {
+            var data = {pages: pages, embeds: embeds};
+            $.ajax({
+                type: "POST",
+                url: '/api/wiki-objects/page-information',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    for (var po in data.pages) {
+                        var p = data.pages[po];
+                        var pl = c.find('a[href*="://' + window.location.host + '/wiki/page/' + p.slug + '"]');
+                        if (!p.exists) pl.addClass('text-danger').attr('title', 'Page does not exist yet - click to create it');
+                    }
+                    for (var eo in data.embeds) {
+                        var e = data.embeds[eo];
+                        var el = c.find('a[href*="://' + window.location.host + '/wiki/embed/' + e.slug + '"]');
+                        if (!e.exists) {
+                            el.addClass('text-danger').attr('title', 'File does not exist');
+                        } else {
+                            var sz = e.meta.filter(function (m) { return m.key === 's'; });
+                            var size = sz && sz.length > 0 && parseInt(sz[0].value, 10);
+                            if (size) el.append(' <span>(' + format_filesize(size) + ')</span>');
+                            else el.append(' <span>(Unknown size)</span>');
+                        }
+                    }
+                }
+            });
+        }
+    }
 
 });
