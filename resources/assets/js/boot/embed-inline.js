@@ -24,8 +24,8 @@ $(function() {
 
     const c = $('.wiki.bbcode');
     if (c.length === 1) {
-        var pages = Array.from(new Set(c.find('a[href*="://' + window.location.host + '/wiki/page/"]').map(function (i, x) { return x.href.replace(/^.*\//ig, ''); }).filter(function (i, x) { return !x.match(/^category(:|%3A)/ig); })));
-        var embeds = Array.from(new Set(c.find('.embedded-inline.download a').map(function (i, x) { return x.href.replace(/^.*\//ig, ''); })));
+        var pages = Array.from(new Set(c.find('a[href*="://' + window.location.host + '/wiki/page/"]').map(function (i, x) { return decodeURIComponent(x.href.replace(/^.*\//ig, '')); }).filter(function (i, x) { return !x.match(/^category:/ig); })));
+        var embeds = Array.from(new Set(c.find('.embedded-inline.download a').map(function (i, x) { return decodeURIComponent(x.href.replace(/^.*\//ig, '')); })));
         if (pages.length > 0 || embeds.length > 0) {
             var data = {pages: pages, embeds: embeds};
             $.ajax({
@@ -37,12 +37,12 @@ $(function() {
                 success: function (data) {
                     for (var po in data.pages) {
                         var p = data.pages[po];
-                        var pl = c.find('a[href*="://' + window.location.host + '/wiki/page/' + p.slug + '"]');
+                        var pl = c.find('a[href*="://' + window.location.host + '/wiki/page/' + encodeURIComponent(p.slug) + '"]');
                         if (!p.exists) pl.addClass('text-danger').attr('title', 'Page does not exist yet - click to create it');
                     }
                     for (var eo in data.embeds) {
                         var e = data.embeds[eo];
-                        var el = c.find('a[href*="://' + window.location.host + '/wiki/embed/' + e.slug + '"]');
+                        var el = c.find('a[href*="://' + window.location.host + '/wiki/embed/' + encodeURIComponent(e.slug) + '"]');
                         if (!e.exists) {
                             el.addClass('text-danger').attr('title', 'File does not exist');
                         } else {
