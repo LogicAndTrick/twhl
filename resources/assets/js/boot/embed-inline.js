@@ -38,7 +38,7 @@ $(function() {
                     for (var po in data.pages) {
                         var p = data.pages[po];
                         var pl = c.find('a[href*="://' + window.location.host + '/wiki/page/"]').filter(function (i, x) {
-                            var hr = decodeURI(x.href), uc = '://' + window.location.host + '/wiki/page/' + p.slug;
+                            var hr = decodeURIComponent(x.href), uc = '://' + window.location.host + '/wiki/page/' + p.slug;
                             return hr && hr.toLowerCase().indexOf(uc.toLowerCase()) >= 0;
                         });
                         if (!p.exists) pl.addClass('text-danger').attr('title', 'Page does not exist yet - click to create it');
@@ -47,7 +47,7 @@ $(function() {
                     for (var eo in data.embeds) {
                         var e = data.embeds[eo];
                         var el = c.find('a[href*="://' + window.location.host + '/wiki/embed/"]').filter(function (i, x) {
-                            var hr = decodeURI(x.href), uc = '://' + window.location.host + '/wiki/embed/' + e.slug;
+                            var hr = decodeURIComponent(x.href), uc = '://' + window.location.host + '/wiki/embed/' + e.slug;
                             return hr && hr.toLowerCase().indexOf(uc.toLowerCase()) >= 0;
                         });
                         if (!e.exists) {
