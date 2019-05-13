@@ -1334,22 +1334,22 @@ class ApiController extends Controller {
             'embeds' => []
         ];
 
-        foreach ($pages as $page) $res['pages'][$page] = [ 'exists' => false, 'slug' => $page ];
+        foreach ($pages as $page) $res['pages'][strtolower($page)] = [ 'exists' => false, 'slug' => $page ];
         $revs = WikiRevision::where('is_active', '=', 1)->whereIn('slug', $pages)->get();
         foreach ($revs as $rev) {
-            $res['pages'][$rev->slug] = [
+            $res['pages'][strtolower($rev->slug)] = [
                 'slug' => $rev->slug,
                 'exists' => true,
                 'revision' => $rev
             ];
         }
 
-        foreach ($embeds as $embed) $res['embeds'][$embed] = [ 'exists' => false, 'slug' => $embed ];
+        foreach ($embeds as $embed) $res['embeds'][strtolower($embed)] = [ 'exists' => false, 'slug' => $embed ];
         $revs = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->whereIn('slug', array_map(function ($e) { return "upload:$e"; }, $embeds))->get();
         foreach ($revs as $rev) {
             $upload = $rev->getUpload();
             $s = substr($rev->slug, 7);
-            $res['embeds'][$s] = [
+            $res['embeds'][strtolower($s)] = [
                 'slug' => $s,
                 'exists' => !!$rev && !!$upload,
                 'revision' => $rev,
