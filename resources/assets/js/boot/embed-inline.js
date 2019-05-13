@@ -42,6 +42,7 @@ $(function() {
                             return hr && hr.toLowerCase().indexOf(uc.toLowerCase()) >= 0;
                         });
                         if (!p.exists) pl.addClass('text-danger').attr('title', 'Page does not exist yet - click to create it');
+                        else pl.attr('title', p.revision.title);
                     }
                     for (var eo in data.embeds) {
                         var e = data.embeds[eo];

@@ -32,14 +32,11 @@ class UpdateWikiTitleLinks
         $oldTitle = $event->originalTitle;
         $newTitle = $event->revision->title;
 
-        $oldSlug = WikiRevision::CreateSlug($oldTitle);
-        $newSlug = WikiRevision::CreateSlug($newTitle);
-
         $metas = WikiRevisionMeta::with(['wiki_revision'])
             ->join('wiki_revisions as wr', 'wr.id', '=', 'revision_id')
             ->where('key', '=', WikiRevisionMeta::LINK)
             ->where('wr.is_active', '=', 1)
-            ->whereIn('value', [$oldSlug, 'upload:' . $oldSlug])
+            ->whereIn('value', [$oldTitle, 'upload:' . $oldTitle])
             ->get();
         foreach ($metas as $m) {
             $rev = $m->wiki_revision;
@@ -65,7 +62,7 @@ class UpdateWikiTitleLinks
                     'content_html' => $parse_result->text,
                 ]);
                 $m->update([
-                    'value' => $newSlug
+                    'value' => $newTitle
                 ]);
             }
         }
