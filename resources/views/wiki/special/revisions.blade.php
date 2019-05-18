@@ -11,10 +11,6 @@
                 &mdash;
                 <em>{{ $rev->num_revisions }} revision{{ $rev->num_revisions == 1 ? '' : 's' }}</em>
             @endif
-            @if (isset($link_count) && $link_count === true)
-                &mdash;
-                <em>Linked to from {{ $rev->link_count }} other page{{ $rev->link_count == 1 ? '' : 's' }}</em>
-            @endif
             @if (isset($content_length) && $content_length === true)
                 &mdash;
                 <em>{{ $rev->content_length }} character{{ $rev->content_length == 1 ? '' : 's' }}</em>

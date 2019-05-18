@@ -2,15 +2,10 @@
 
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
-use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
-use App\Models\Wiki\WikiUpload;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
 
 class WikiSpecialController extends Controller {
@@ -112,19 +107,20 @@ class WikiSpecialController extends Controller {
 	            select wrm.value, count(*) as c
 	            from wiki_revision_metas wrm
 	            inner join wiki_revisions wr on wrm.revision_id = wr.id
+	            inner join wiki_objects wo on wr.object_id = wo.id
 	            where wr.deleted_at is null and wr.is_active = 1
-	            and wrm.key = 'l' and wr.slug not like 'upload:%' and wr.slug not like 'category:%'
+	            and wrm.key = 'l' and wr.slug not like 'category:%' and wo.type_id = ?
 	            group by wrm.value
 	        ) counts
 	        inner join wiki_revisions wr on wr.title = counts.value
 	        where wr.is_active = 1 and wr.deleted_at is null
 	        order by c desc
 	        limit 20	        
-	    ");
+	    ", [ WikiType::PAGE ]);
         return view('wiki/special/page', [
             'title' => 'Link statistics',
             'sections' => [
-                [ 'title' => 'Most linked pages', 'data' => $most_linked, 'type' => 'revisions', 'link_count' => true ]
+                [ 'title' => 'Most linked pages', 'data' => $most_linked, 'type' => 'links' ]
             ]
         ]);
     }
