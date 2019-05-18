@@ -1,4 +1,4 @@
-@title('Special Pages')
+@title('Special pages')
 @extends('app')
 
 @section('content')
@@ -11,7 +11,7 @@
 
     <ol class="breadcrumb">
         <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-        <li class="active">Special Pages</li>
+        <li class="active">Special pages</li>
     </ol>
 
     <div class="row">

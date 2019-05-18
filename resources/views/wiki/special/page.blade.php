@@ -11,7 +11,7 @@
 
     <ol class="breadcrumb">
         <li><a href="{{ url('/wiki') }}">Wiki</a></li>
-        <li><a href="{{ url('/wiki-special') }}">Special Pages</a></li>
+        <li><a href="{{ url('/wiki-special') }}">Special pages</a></li>
         <li class="active">{{ $title }}</li>
     </ol>
 
