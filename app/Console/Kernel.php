@@ -20,6 +20,8 @@ class Kernel extends ConsoleKernel {
         'App\Console\Commands\DeployFormat',
         'App\Console\Commands\DeployImages',
         'App\Console\Commands\DeployTutorialImages',
+
+        'App\Console\Commands\FormatWiki',
 	];
 
 	/**

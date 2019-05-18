@@ -34,12 +34,11 @@ class WikiLinkTag extends LinkTag {
             $state->Seek($index, true);
             return false;
         }
-        if (preg_match('/^([^#\]]+?)(?:#([^\]]*?))?(?:\|([^\]]*?))?$/i', $str, $regs)) {
+        if (preg_match('/^([^\]]+?)(?:\|([^\]]*?))?$/i', $str, $regs)) {
         	$page = htmlspecialchars_decode($regs[1]);
-            $bkmk = isset($regs[2]) ? trim($regs[2]) : '';
-            $text = isset($regs[3]) && $regs[3] ? $regs[3] : $page;
+            $text = isset($regs[2]) && $regs[2] ? $regs[2] : $page;
             $result->AddMeta('WikiLink', $page);
-            $url = act('wiki', 'page', WikiRevision::CreateSlug($page)) . ($bkmk ? '#' . $bkmk : '');
+            $url = act('wiki', 'page', WikiRevision::CreateSlug($page));
             return '<a href="' . $parser->CleanUrl($url) . '">' . $text . '</a>';
         } else {
             return false;

@@ -42,6 +42,7 @@ $controllers = [
     'vault-review' => 'Vault\VaultReviewController',
 
     'wiki' => 'Wiki\WikiController',
+    'wiki-special' => 'Wiki\WikiSpecialController',
     'comment' => 'Comments\CommentController',
     'news' => 'News\NewsController',
     'journal' => 'Journals\JournalController',
