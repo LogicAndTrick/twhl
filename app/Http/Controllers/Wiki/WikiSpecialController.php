@@ -79,7 +79,7 @@ class WikiSpecialController extends Controller {
    	        select wr.*, wrm.value as missing_link
    	        from wiki_revision_metas wrm
    	        inner join wiki_revisions wr on wrm.revision_id = wr.id
-   	        left join wiki_revisions lwr on lwr.is_active = 1 and lwr.deleted_at is null and concat('upload:', lwr.title) = wrm.value
+   	        left join wiki_revisions lwr on lwr.is_active = 1 and lwr.deleted_at is null and lwr.title = substring(wrm.value, 8)
    	        where wr.is_active = 1 and wr.deleted_at is null
             and wrm.value like 'upload:%'
    	        and wrm.key = ? and lwr.id is null
