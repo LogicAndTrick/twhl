@@ -63,8 +63,18 @@ class WikiSpecialController extends Controller {
    	        where wr.is_active = 1 and wr.deleted_at is null
             and wrm.value not like 'category:%' and wrm.value not like 'upload:%'
    	        and wrm.key = ? and lwr.id is null
-            limit 100
+   	        order by wr.title
+            limit 200
    	    ", [ WikiRevisionMeta::LINK ]);
+        return view('wiki/special/page', [
+            'title' => 'Missing links',
+            'sections' => [
+                [ 'title' => 'Links to missing pages', 'data' => $missing_pages, 'type' => 'revisions', 'missing_link' => true ]
+            ]
+        ]);
+    }
+
+    public function getMaintenanceUploads() {
         $missing_uploads = DB::select("
    	        select wr.*, wrm.value as missing_link
    	        from wiki_revision_metas wrm
@@ -73,12 +83,12 @@ class WikiSpecialController extends Controller {
    	        where wr.is_active = 1 and wr.deleted_at is null
             and wrm.value like 'upload:%'
    	        and wrm.key = ? and lwr.id is null
-            limit 100
+            order by wr.title
+            limit 200
    	    ", [ WikiRevisionMeta::LINK ]);
         return view('wiki/special/page', [
-            'title' => 'Missing links',
+            'title' => 'Missing files',
             'sections' => [
-                [ 'title' => 'Links to missing pages', 'data' => $missing_pages, 'type' => 'revisions', 'missing_link' => true ],
                 [ 'title' => 'Links to missing files', 'data' => $missing_uploads, 'type' => 'revisions', 'missing_link' => true ]
             ]
         ]);

@@ -20,6 +20,7 @@
             <ul>
                 <li><a href="{{ url('wiki-special/maintenance-categories') }}">Pages with no categories</a></li>
                 <li><a href="{{ url('wiki-special/maintenance-links') }}">Links to uncreated pages</a></li>
+                <li><a href="{{ url('wiki-special/maintenance-uploads') }}">Links to missing files</a></li>
             </ul>
         </div>
         <div class="col-4">
