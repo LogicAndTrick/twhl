@@ -36,6 +36,7 @@
             <h4>Queries</h4>
             <ul>
                <li><a href="{{ url('wiki-special/query-links') }}">Links to and from pages</a></li>
+               <li><a href="{{ url('wiki-special/query-search') }}">Search for text</a></li>
             </ul>
         </div>
     </div>

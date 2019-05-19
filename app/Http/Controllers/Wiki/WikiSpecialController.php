@@ -229,4 +229,19 @@ class WikiSpecialController extends Controller {
             'links_from' => $links_from
         ]);
     }
+
+    public function getQuerySearch() {
+	    $search = Input::get('search');
+	    $pages = WikiRevision::with([])
+                ->where('is_active', '=', 1)
+                ->whereRaw("content_text like concat('%', ?, '%')", [ $search ])
+                ->orderBy('title')
+                ->limit(100)
+                ->get();
+
+	    return view('wiki/special/query-search', [
+	        'search' => $search,
+            'pages' => $pages
+        ]);
+    }
 }
