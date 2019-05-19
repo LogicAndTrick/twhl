@@ -286,7 +286,8 @@ class ApiController extends Controller {
                         ]
                     ]
                 ]
-            ]
+            ],
+            'allow_unauthenticated' => true
         ],
         'wiki-revision-metas' => [
             'description' => 'Wiki Revision Metas',

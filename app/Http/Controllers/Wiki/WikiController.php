@@ -10,12 +10,13 @@ use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use App\Models\Wiki\WikiUpload;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Request;
-use Validator;
-use DB;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class WikiController extends Controller {
 
@@ -118,21 +119,30 @@ class WikiController extends Controller {
         if (substr($page, 0, 9) == 'category:') {
             $cat_name = substr($page, 9);
 
-            $cat_names = explode('+', $cat_name);
+            $all_cats = explode('+', $cat_name);
+
+            $cat_names = array_filter($all_cats, function ($c) { return !Str::startsWith($c, '!'); });
+            $notcat_names = array_map(function ($c) { return substr($c, 1); }, array_filter($all_cats, function ($c) { return Str::startsWith($c, '!'); }));
+
             $cat_num = count($cat_names);
+
             $cats_escaped = implode(',', array_map(function($x) {
                 return DB::connection()->getPdo()->quote($x);
             }, $cat_names));
+            $notcats_escaped = implode(',', array_map(function($x) {
+                return DB::connection()->getPdo()->quote($x);
+            }, $notcat_names));
+
+            $key = DB::connection()->getPdo()->quote(WikiRevisionMeta::CATEGORY);
+
+            $catpage_filter = "select m.revision_id from wiki_revision_metas as m where m.key = $key \n";
+            if (strlen($cats_escaped) > 0) $catpage_filter .= "and m.value in ({$cats_escaped}) \n";
+            if (strlen($notcats_escaped) > 0) $catpage_filter .= "and m.revision_id not in (select m2.revision_id from wiki_revision_metas as m2 where m2.key = 'c' and m2.value in ({$notcats_escaped})) \n";
+            $catpage_filter .= "group by m.revision_id \n";
+            if (strlen($cats_escaped) > 0) $catpage_filter .= "having count(*) = $cat_num \n";
 
             $cat_pages = WikiRevision::whereIsActive(true)
-                ->whereRaw("id in (
-                    select m.revision_id
-                    from wiki_revision_metas as m
-                    where m.key = ?
-                    and m.value in ({$cats_escaped})
-                    group by m.revision_id
-                    having count(*) = ?
-                )", [ WikiRevisionMeta::CATEGORY, $cat_num ])
+                ->whereRaw("id in ($catpage_filter)", [ WikiRevisionMeta::CATEGORY, $cat_num ])
                 ->orderBy('title')
                 ->paginate(250);
 
@@ -140,17 +150,11 @@ class WikiController extends Controller {
                     select `value` as name, count(*) as num
                     from wiki_revision_metas as mm
                     where mm.`key` = ?
-                    and `value` not in ({$cats_escaped})
+                    " . (strlen($cats_escaped) > 0 ? "and `value` not in ({$cats_escaped})" : '') . "
                     and mm.revision_id in (
                         select id from `wiki_revisions` as r
                         where r.`is_active` = 1
-                        and r.id in (
-                            select m.revision_id from wiki_revision_metas as m
-                            where m.key = ?
-                            and m.value in ({$cats_escaped})
-                            group by m.revision_id
-                            having count(*) = ?
-                        ) and r.deleted_at is null
+                        and r.id in ($catpage_filter) and r.deleted_at is null
                     )
                     group by `value`
                 ", [ WikiRevisionMeta::CATEGORY, WikiRevisionMeta::CATEGORY, $cat_num ]);
