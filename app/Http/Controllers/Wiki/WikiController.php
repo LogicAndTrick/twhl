@@ -142,8 +142,11 @@ class WikiController extends Controller {
             if (strlen($cats_escaped) > 0) $catpage_filter .= "having count(*) = $cat_num \n";
 
             $cat_pages = WikiRevision::whereIsActive(true)
-                ->whereRaw("id in ($catpage_filter)", [ WikiRevisionMeta::CATEGORY, $cat_num ])
-                ->orderBy('title')
+                ->join('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
+                ->whereRaw("wiki_revisions.id in ($catpage_filter)")
+                ->where('o.type_id', '=', WikiType::PAGE)
+                ->select('wiki_revisions.*')
+                ->orderBy('wiki_revisions.title')
                 ->paginate(250);
 
             $subcats = DB::select("
@@ -152,8 +155,10 @@ class WikiController extends Controller {
                     where mm.`key` = ?
                     " . (strlen($cats_escaped) > 0 ? "and `value` not in ({$cats_escaped})" : '') . "
                     and mm.revision_id in (
-                        select id from `wiki_revisions` as r
+                        select r.id from `wiki_revisions` as r
+                        inner join wiki_objects o on r.object_id = o.id
                         where r.`is_active` = 1
+                        and o.type_id = " . WikiType::PAGE . "
                         and r.id in ($catpage_filter) and r.deleted_at is null
                     )
                     group by `value`
