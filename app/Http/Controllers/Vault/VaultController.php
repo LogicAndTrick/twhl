@@ -206,6 +206,7 @@ class VaultController extends Controller {
         // Set included files
         $includes = Request::input('__includes');
         if (is_array($includes)) {
+            $includes = array_unique($includes);
             $incs = [];
             foreach ($includes as $i) {
                 $incs[] = new VaultItemInclude(['include_id' => $i]);
@@ -346,6 +347,7 @@ class VaultController extends Controller {
         DB::statement('delete from vault_item_includes where item_id = ?', [$item->id]);
         $includes = Request::input('__includes');
         if (is_array($includes)) {
+            $includes = array_unique($includes);
             $incs = [];
             foreach ($includes as $i) {
                 $incs[] = new VaultItemInclude(['include_id' => $i]);
