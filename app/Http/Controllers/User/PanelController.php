@@ -379,9 +379,34 @@ class PanelController extends Controller {
             'confirmed' => 'You must check both boxes if you want to obliterate this user.'
         ]);
 
+        set_time_limit(500);
         $user->obliterate(User::DEFINITELY_OBLITERATE_THIS_USER);
 
         return redirect('/');
+    }
+
+    public function getRemove($id) {
+        $user = PanelController::GetUser($id);
+        return view('user/panel/remove', [
+            'user' => $user
+        ]);
+    }
+
+    public function postRemove() {
+        $id = Request::input('id');
+        $user = PanelController::GetUser($id);
+
+        $this->validate(Request::instance(), [
+            'sure' => 'required|confirmed'
+        ], [
+            'required' => 'You must check both boxes if you want to remove this user.',
+            'confirmed' => 'You must check both boxes if you want to remove this user.'
+        ]);
+
+        set_time_limit(500);
+        $user->remove(User::DEFINITELY_REMOVE_THIS_USER);
+
+        return redirect('/user/view/' . $id);
     }
 
     private static $preset_avatars = [

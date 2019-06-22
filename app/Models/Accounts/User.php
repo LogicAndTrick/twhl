@@ -18,6 +18,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use Notifiable, Authenticatable, CanResetPassword, SoftDeletes;
 
     const DEFINITELY_OBLITERATE_THIS_USER = '79aaca79215e23a4e0c99cdaf96aeb9aa111becadb88b23b00e2b96f32c9ed90';
+    const DEFINITELY_REMOVE_THIS_USER = '6675a05fc096806fa52ed720baea105acb2cbf30732f5ee0a967f89d7a72dcf5';
 
 	protected $table = 'users';
 	protected $fillable = [
@@ -147,6 +148,74 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     /**
+     * Remove this user, which will delete MOST content they have ever posted, and anonymise the rest.
+     * @param $confirmation string If this value doesn't equal User::DEFINITELY_REMOVE_THIS_USER, the user will not be removed
+     * @return bool True if the user is removed, false otherwise
+     */
+    public function remove($confirmation)
+    {
+        if ($confirmation != User::DEFINITELY_REMOVE_THIS_USER) return false;
+
+        $deleted = Carbon::now();
+        $id = $this->id;
+
+        // Not deleted:
+        // competition entries, news, wiki revisions, competition votes, competition judges, poll votes
+
+        $soft_delete_tables = [
+            'comments',
+            'forum_posts',
+            'forum_threads',
+            'journals',
+            'vault_items'
+        ];
+        $tables = [
+            'message_users',
+            'message_thread_users',
+            'messages',
+            'message_threads',
+            'shouts',
+            'user_permissions',
+        ];
+
+        // Clean up PM threads
+        DB::statement("delete u from message_users u where u.message_id IN ( select m.id from messages m where m.user_id = ? )", [$id]);
+        DB::statement("delete u from message_users u where u.thread_id IN ( select t.id from message_threads t where t.user_id = ? )", [$id]);
+        DB::statement("delete u from message_thread_users u where u.thread_id IN ( select m.id from message_threads m where m.user_id = ? )", [$id]);
+        DB::statement("delete m from messages m where m.thread_id IN ( select t.id from message_threads t where t.user_id = ? )", [$id]);
+
+        foreach ($soft_delete_tables as $t) {
+            DB::statement("UPDATE $t SET deleted_at = ? WHERE user_id = ? and deleted_at is null", [$deleted, $id]);
+        }
+        foreach ($tables as $t) {
+            DB::statement("DELETE FROM $t WHERE user_id = ?", [$id]);
+        }
+
+        DB::statement("
+            UPDATE users SET
+            name = ?,
+            email = 'removed', password = 'removed',
+            legacy_password = '', remember_token = '',
+            last_access_page = '', last_access_ip = '',
+            timezone = 0, show_email = 0,
+            avatar_custom = 0, avatar_file = 'user_noavatar1.png',
+            title_custom = 0, title_text = '',
+            info_name = '', info_website = '', info_occupation = '', info_interests = '', info_location = '', info_languages = '', info_steam_profile = '', info_birthday = 0, info_biography_text = '', info_biography_html = '',
+            skill_map = 0, skill_model = 0, skill_code = 0, skill_music = 0, skill_voice = 0, skill_animate = 0, skill_texture = 0,
+            stat_forum_posts = 0, stat_shouts = 0, stat_vault_items = 0, stat_journals = 0, stat_comments = 0
+            WHERE id = ?
+        ", [ 'User#'.$id, $id ]);
+
+        // Fix any statistics that were messed up by deleting the comments
+        $comments = Comment::onlyTrashed()->whereUserId($id)->get();
+        foreach ($comments as $comment) {
+            DB::statement('CALL update_comment_statistics(?, ?, ?);', [$comment->article_type, $comment->article_id, $comment->user_id]);
+        }
+
+        return true;
+    }
+
+    /**
      * Obliterate this user, which will delete ALL content they have ever posted.
      * It will also PERMANENTLY ban them by IP address.
      * @param $confirmation string If this value doesn't equal User::DEFINITELY_OBLITERATE_THIS_USER, the user will not be obliterated
@@ -183,7 +252,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         // Clean up PM threads
         DB::statement("delete u from message_users u where u.message_id IN ( select m.id from messages m where m.user_id = ? )", [$id]);
+        DB::statement("delete u from message_users u where u.thread_id IN ( select t.id from message_threads t where t.user_id = ? )", [$id]);
         DB::statement("delete u from message_thread_users u where u.thread_id IN ( select m.id from message_threads m where m.user_id = ? )", [$id]);
+        DB::statement("delete m from messages m where m.thread_id IN ( select t.id from message_threads t where t.user_id = ? )", [$id]);
 
         foreach ($soft_delete_tables as $t) {
             DB::statement("UPDATE $t SET deleted_at = ? WHERE user_id = ?", [$deleted, $id]);
