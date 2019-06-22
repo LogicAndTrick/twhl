@@ -102,7 +102,7 @@ class WikiSpecialController extends Controller {
            where wr.is_active = 1
            and wr.deleted_at is null
            and wo.deleted_at is null
-           and wr.content_text like '%twhl.info/wiki%'
+           and wr.content_text like '%twhl.info/wiki/%'
            limit 50
        ");
         return view('wiki/special/page', [
