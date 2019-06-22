@@ -94,6 +94,25 @@ class WikiSpecialController extends Controller {
         ]);
     }
 
+    public function getMaintenanceContent() {
+        $pages = DB::select("
+           select wr.*
+           from wiki_revisions wr
+           inner join wiki_objects wo on wr.object_id = wo.id
+           where wr.is_active = 1
+           and wr.deleted_at is null
+           and wo.deleted_at is null
+           and wr.content_text like '%twhl.info/wiki%'
+           limit 50
+       ");
+        return view('wiki/special/page', [
+            'title' => 'Missing files',
+            'sections' => [
+                [ 'title' => 'Long-style links to internal pages', 'data' => $pages, 'type' => 'revisions' ]
+            ]
+        ]);
+    }
+
     // Reports
 
     public function getReportChanges() {
