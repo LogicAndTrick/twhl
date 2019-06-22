@@ -23,7 +23,7 @@ class PanelController extends Controller {
 	public function __construct() {
         $this->permission(['index', 'editAvatar', 'editProfile', 'editSettings', 'editPassword'], true);
         $this->permission(['editName', 'editBans', 'addBan', 'deleteBan', 'editPermissions', 'addPermission', 'deletePermission'], 'Admin');
-        $this->permission(['obliterate'], 'ObliterateAdmin');
+        $this->permission(['obliterate', 'remove'], 'ObliterateAdmin');
 	}
 
     private static function GetUser($id) {
