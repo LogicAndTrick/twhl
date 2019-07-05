@@ -193,8 +193,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         DB::statement("
             UPDATE users SET
-            name = ?,
-            email = 'removed', password = 'removed',
+            name = ?, email = ?, password = 'removed',
             legacy_password = '', remember_token = '',
             last_access_page = '', last_access_ip = '',
             timezone = 0, show_email = 0,
@@ -204,7 +203,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             skill_map = 0, skill_model = 0, skill_code = 0, skill_music = 0, skill_voice = 0, skill_animate = 0, skill_texture = 0,
             stat_forum_posts = 0, stat_shouts = 0, stat_vault_items = 0, stat_journals = 0, stat_comments = 0
             WHERE id = ?
-        ", [ 'User#'.$id, $id ]);
+        ", [ 'User#'.$id, $id.'@removed', $id ]);
 
         // Fix any statistics that were messed up by deleting the comments
         $comments = Comment::onlyTrashed()->whereUserId($id)->get();
