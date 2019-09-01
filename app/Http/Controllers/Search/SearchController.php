@@ -50,6 +50,7 @@ class SearchController extends Controller {
                 ->appends(Request::except('page'));
 
             $posts = ForumPost::with(['user', 'thread', 'forum'])
+                ->leftJoin('forum_threads as t', 't.id', '=', 'forum_posts.thread_id')
                 ->leftJoin('forums as f', 'f.id', '=', 'forum_posts.forum_id')
                 ->whereRaw('(
                     f.permission_id is null
@@ -59,6 +60,7 @@ class SearchController extends Controller {
                         where u.id = ?
                     ))', [ $user_id ])
                 ->whereRaw('MATCH (forum_posts.content_text) AGAINST (?)', [ $search ])
+                ->whereRaw('t.deleted_at is null')
                 ->select('forum_posts.*')
                 ->paginate()
                 ->appends(Request::except('page'));
