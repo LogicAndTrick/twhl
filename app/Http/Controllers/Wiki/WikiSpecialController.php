@@ -5,8 +5,8 @@ use App\Models\Accounts\User;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class WikiSpecialController extends Controller {
 
@@ -223,7 +223,7 @@ class WikiSpecialController extends Controller {
     // Queries
 
     public function getQueryLinks() {
-	    $title = Input::get('title');
+	    $title = Request::input('title');
 	    $links_to = DB::select("
 	        select distinct wr.title
 	        from wiki_revision_metas wrm
@@ -250,7 +250,7 @@ class WikiSpecialController extends Controller {
     }
 
     public function getQuerySearch() {
-	    $search = Input::get('search');
+	    $search = Request::input('search');
 	    $pages = WikiRevision::with([])
                 ->where('is_active', '=', 1)
                 ->whereRaw("content_text like concat('%', ?, '%')", [ $search ])

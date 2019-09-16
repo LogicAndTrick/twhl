@@ -6,10 +6,7 @@ use App\Models\Competitions\CompetitionJudgeType;
 use App\Models\Competitions\CompetitionRestrictionGroup;
 use App\Models\Competitions\CompetitionStatus;
 use Carbon\Carbon;
-use Request;
-use Input;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Request;
 
 class CompetitionAdminController extends Controller {
 

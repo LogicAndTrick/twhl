@@ -16,10 +16,9 @@ use App\Models\Polls\Poll;
 use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiObject;
 use Illuminate\Support\Collection;
-use Request;
-use Auth;
-use DB;
-use Input;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller {
 
@@ -119,7 +118,7 @@ class CommentController extends Controller {
         });
 
         return view('comments/index', [
-            'comments' => $comments->appends(Input::except('page')),
+            'comments' => $comments->appends(Request::except('page')),
             'user' => $user,
             'articles' => $indexed
         ]);

@@ -8,9 +8,8 @@ use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Request;
-use Auth;
-use Input;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller {
 
@@ -76,10 +75,10 @@ class ThreadController extends Controller {
         $thread->save();
         $thread->timestamps = true;
 
-        $page = intval(Input::get('page')) ?: 1;
+        $page = intval(Request::input('page')) ?: 1;
         $post_query = ForumPost::with('user')->where('thread_id', '=', $id)->whereNull('deleted_at')->orderBy('created_at');
         $count = $post_query->getQuery()->getCountForPagination();
-        if (Input::get('page') == 'last') $page = ceil($count / 50);
+        if (Request::input('page') == 'last') $page = ceil($count / 50);
         $posts = $post_query->skip(($page - 1) * 50)->take(50)->get();
         foreach ($posts as $p) {
             if ($p->content_html == '' && $p->content_text != '') {

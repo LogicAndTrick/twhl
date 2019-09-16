@@ -11,12 +11,11 @@ use App\Models\Accounts\UserPermission;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Accounts\UserSubscriptionDetails;
 use Carbon\Carbon;
-use Request;
-use Input;
-use Auth;
-use DB;
-use Validator;
-use Hash;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class PanelController extends Controller {
 

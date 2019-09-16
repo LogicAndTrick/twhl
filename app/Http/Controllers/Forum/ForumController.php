@@ -5,9 +5,8 @@ use App\Models\Forums\Forum;
 use App\Models\Forums\ForumThread;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Request;
-use Input;
-use DB;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\DB;
 
 class ForumController extends Controller {
 
@@ -19,7 +18,7 @@ class ForumController extends Controller {
 	public function getIndex()
 	{
         $forums = Forum::with(['last_post', 'last_post.thread', 'last_post.user'])->orderBy('order_index');
-        $show_deleted = Input::get('deleted') !== null && permission('ForumAdmin');
+        $show_deleted = Request::input('deleted') !== null && permission('ForumAdmin');
         if ($show_deleted) $forums = $forums->withTrashed();
         $forums = $forums->get();
 
@@ -50,7 +49,7 @@ class ForumController extends Controller {
 
     public function getView($slug)
     {
-        $page = intval(Input::get('page')) ?: 1;
+        $page = intval(Request::input('page')) ?: 1;
         $forum = Forum::where('slug', '=', $slug)->firstOrFail();
         $thread_query = ForumThread::where('forum_id', '=', $forum->id)
             ->with(['last_post', 'last_post.user', 'user'])

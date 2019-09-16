@@ -5,10 +5,7 @@ use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionEntry;
 use App\Models\Competitions\CompetitionEntryVote;
 use App\Models\Competitions\CompetitionStatus;
-use Request;
-use Input;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
 
 class CompetitionController extends Controller {
 

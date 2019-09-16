@@ -7,13 +7,11 @@ use App\Models\Comments\Comment;
 use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemInclude;
-use App\Models\Vault\VaultItemReview;
 use App\Models\Vault\VaultScreenshot;
 use Illuminate\Support\Facades\Validator;
-use Request;
-use Input;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VaultController extends Controller {
 

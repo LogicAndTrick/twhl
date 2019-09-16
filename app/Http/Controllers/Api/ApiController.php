@@ -37,9 +37,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -885,14 +883,14 @@ class ApiController extends Controller {
             else if ($method == 'get') {
                 $q = call_user_func($desc['object'] . '::query');
 
-                $exp = explode(',', Input::get('expand'));
+                $exp = explode(',', Request::input('expand'));
                 foreach ($exp as $e) {
                     if (array_search($e, $desc['expand']) !== false) $q->with($e);
                 }
 
                 if (isset($desc['parameters']['get'])) {
                     foreach ($desc['parameters']['get'] as $name => $par) {
-                        $req = Input::get($name);
+                        $req = Request::input($name);
                         if ($req !== null) {
                             $q->where($name, '=', $req);
                         }
@@ -901,14 +899,14 @@ class ApiController extends Controller {
 
                 $sort = $desc['sort_column'];
                 if (!is_array($sort)) $sort = [$sort];
-                $s = Input::get('sort_by');
+                $s = Request::input('sort_by');
                 if ($s && isset($desc['allowed_sort_columns']) && array_search($s, $desc['allowed_sort_columns']) !== false) {
                     $sort = array_merge($s, $sort);
                 }
 
                 $sort_desc = isset($desc['sort_descending']) ? $desc['sort_descending'] : false;
-                if (Input::get('sort_descending') === 'true') $sort_desc = true;
-                else if (Input::get('sort_descending') === 'false') $sort_desc = false;
+                if (Request::input('sort_descending') === 'true') $sort_desc = true;
+                else if (Request::input('sort_descending') === 'false') $sort_desc = false;
 
                 $filtered = $this->filter($q, $desc['filter_columns'], $sort, $sort_desc);
                 $array = $this->toArray($filtered, count($parameters) < 2 || $parameters[1] != 'paged');
@@ -922,7 +920,7 @@ class ApiController extends Controller {
 
     private function filter($query, $filter_cols, $sort_cols = [], $sort_desc = false) {
 
-        $ids = Input::get('id');
+        $ids = Request::input('id');
         if ($ids) {
             $ids = array_filter(array_map(function($x) { return intval($x); }, explode(',', $ids)), function($x) { return $x > 0; });
             if ($ids) $query = $query-> whereIn('id', $ids);
@@ -936,7 +934,7 @@ class ApiController extends Controller {
             $query = $query->orderBy($v, $sort_desc ? 'desc' : 'asc');
         }
 
-        $filter = Input::get('filter');
+        $filter = Request::input('filter');
         if (!$filter || count($filter_cols) == 0) return $query;
         $filter .= '%';
         $args = [];
@@ -951,10 +949,10 @@ class ApiController extends Controller {
 
     private function toArray($query, $force_plain = false) {
 
-        $page = Input::get('page');
+        $page = Request::input('page');
         if (!$page) $page = 1;
 
-        $count = intval(Input::get('count'));
+        $count = intval(Request::input('count'));
         if (!$count || $count < 1 || $count > 100) $count = 10;
 
         $plain = $force_plain;
@@ -1019,8 +1017,8 @@ class ApiController extends Controller {
     }
 
     private function post_posts_format() {
-        $field = Input::get('field') ?: 'text';
-        $text = Input::input($field) ?: '';
+        $field = Request::input('field') ?: 'text';
+        $text = Request::input($field) ?: '';
         return app('bbcode')->Parse($text);
     }
 
@@ -1146,7 +1144,7 @@ class ApiController extends Controller {
     }
 
     private function get_shouts_from() {
-        $last = intval(Input::get('timestamp'));
+        $last = intval(Request::input('timestamp'));
         $car = Carbon::createFromTimestamp($last - 10);
         return Shout::with(['user'])
             ->where('updated_at', '>=', $car)
@@ -1221,7 +1219,7 @@ class ApiController extends Controller {
         ]);
 
         $type = WikiType::PAGE;
-        if (substr(Input::get('title'), 0, 9) == 'category:') $type = WikiType::CATEGORY;
+        if (substr(Request::input('title'), 0, 9) == 'category:') $type = WikiType::CATEGORY;
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = WikiController::createRevision($object);
         return $revision;
@@ -1231,7 +1229,7 @@ class ApiController extends Controller {
     {
         if (!permission('Admin')) throw new \Exception();
 
-        $id = intval(Input::get('id'));
+        $id = intval(Request::input('id'));
         $rev = WikiRevision::findOrFail($id);
         $obj = WikiObject::findOrFail($rev->object_id);
 

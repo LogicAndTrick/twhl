@@ -1,16 +1,14 @@
 <?php namespace App\Http\Controllers\Polls;
 
 use App\Http\Controllers\Controller;
-use App\Models\Accounts\User;
 use App\Models\Comments\Comment;
 use App\Models\Polls\Poll;
 use App\Models\Polls\PollItem;
 use App\Models\Polls\PollItemVote;
 use Carbon\Carbon;
-use Request;
-use Input;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PollController extends Controller {
 

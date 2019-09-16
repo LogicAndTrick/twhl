@@ -5,9 +5,8 @@ use App\Models\Accounts\User;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
 use App\Models\Journal;
-use Request;
-use Input;
-use Auth;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
 
 class JournalController extends Controller {
 
@@ -26,7 +25,7 @@ class JournalController extends Controller {
 
         $journals = $query->paginate();
 		return view('journal/index', [
-            'journals' => $journals->appends(Input::except('page')),
+            'journals' => $journals->appends(Request::except('page')),
             'user' => $user
         ]);
 	}

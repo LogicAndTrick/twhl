@@ -3,10 +3,7 @@
 use App\Http\Controllers\Controller;
 use App\Models\Competitions\CompetitionRestriction;
 use App\Models\Competitions\CompetitionRestrictionGroup;
-use Request;
-use Input;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Request;
 
 class CompetitionRestrictionController extends Controller {
 

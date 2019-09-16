@@ -6,10 +6,9 @@ use App\Models\Accounts\User;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionEntry;
 use App\Models\Competitions\CompetitionEntryScreenshot;
-use Request;
-use Input;
-use Auth;
-use Validator;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class CompetitionEntryController extends Controller {
 

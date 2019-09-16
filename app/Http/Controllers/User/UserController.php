@@ -4,10 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
 use App\Models\Journal;
 use App\Models\Vault\VaultItem;
-use Request;
-use Input;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller {
 

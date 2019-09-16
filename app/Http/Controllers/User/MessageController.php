@@ -6,11 +6,9 @@ use App\Models\Messages\Message as Message;
 use App\Models\Messages\MessageThread;
 use App\Models\Messages\MessageThreadUser;
 use App\Models\Messages\MessageUser;
-use Carbon\Carbon;
-use Request;
-use Input;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller {
 

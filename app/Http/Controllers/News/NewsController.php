@@ -3,11 +3,8 @@
 use App\Http\Controllers\Controller;
 use App\Models\Comments\Comment;
 use App\Models\News;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
-use Request;
-use Input;
-use Auth;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NewsController extends Controller {
 

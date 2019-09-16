@@ -5,12 +5,18 @@
 	"license": "MIT",
 	"type": "project",
 	"require": {
-		"laravel/framework": "5.8.*",
-        "greggilbert/recaptcha": "2.1.*"
+		"laravel/framework": "^6.0",
+        "rosswintle/recaptcha": "dev-master#c73008baf49f70831862040a000e063195c8045c"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "^7.0"
 	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/rosswintle/recaptcha"
+		}
+	],
 	"autoload": {
 		"classmap": [
 			"database"
