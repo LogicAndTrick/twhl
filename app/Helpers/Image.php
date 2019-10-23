@@ -35,7 +35,7 @@ class Image
         return $this->_info[1];
     }
 
-    function SaveResized($location, $max_width, $max_height, $force_size = false)
+    function SaveResized($location, $max_width, $max_height, $force_size = false, $image_type = false)
     {
         if ($this->_image === null) return;
         $new_dims = Image::GetResizeDimensions($this->Width(), $this->Height(), $max_width, $max_height);
@@ -56,10 +56,10 @@ class Image
         $dx = ($actual_dims[0] - $new_dims[0]) / 2;
         $dy = ($actual_dims[1] - $new_dims[1]) / 2;
         imagecopyresampled($new_image, $this->_image, $dx, $dy, 0, 0, $new_dims[0], $new_dims[1], $this->Width(), $this->Height());
-        if ($this->_info[2] == IMAGETYPE_JPEG) {
+        if (!$image_type) $image_type = $this->_info[2];
+        if ($image_type == IMAGETYPE_JPEG) {
             imagejpeg($new_image, $location, 80);
-        }
-        else if ($this->_info[2] == IMAGETYPE_PNG) {
+        } else if ($image_type == IMAGETYPE_PNG) {
             imagepng($new_image, $location);
         }
         imagedestroy($new_image);
@@ -123,8 +123,8 @@ class Image
                 $ret[] = '';
                 continue;
             }
-            $pre = $size['prefix'] == null ? '' : $size['prefix'];
-            $suf = $size['suffix'] == null ? '' : $size['suffix'];
+            $pre = !isset($size['prefix']) || $size['prefix'] == null ? '' : $size['prefix'];
+            $suf = !isset($size['suffix']) || $size['suffix'] == null ? '' : $size['suffix'];
             $name = $pre . $info['filename'] . $suf . '.' . $info['extension'];
             $save = rtrim($destination_folder, '/') . '/' . $name;
             if ($delete_existing && file_exists($save)) {
@@ -135,7 +135,7 @@ class Image
                 mkdir($dir, 0777, true);
             }
             if (!file_exists($save)) {
-                $image->SaveResized($save, $w, $h, isset($size['force-size']) && $size['force-size'] === true);
+                $image->SaveResized($save, $w, $h, isset($size['force-size']) && $size['force-size'] === true, isset($size['type']) ? $size['type'] : false);
             }
             $ret[] = $name;
         }

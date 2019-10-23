@@ -98,6 +98,7 @@
                 smiley_folder: '{{ asset('images/smilies') }}'
             },
             api: {
+                image_upload: '{{ url("api/image-upload") }}',
                 format: '{{ url("api/posts/format") }}'
             },
             wiki: {

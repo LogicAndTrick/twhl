@@ -175,4 +175,61 @@ $(function() {
 
         btn.on('click', refresh);
     });
+
+    document.addEventListener('paste', async event => {
+        const active = document.activeElement;
+        if (!active || !$(active).closest('.wikicode-input').length) return;
+
+        const data = event.clipboardData;
+        if (!data.getData || data.items.length !== 1) return;
+
+        const item = data.items[0];
+
+        const fileData = item.getAsFile();
+        if (!fileData || !(fileData instanceof File)) return;
+
+        let fileName;
+        switch (item.type) {
+            case "image/gif":
+                fileName = "image.gif";
+                break;
+            case "image/png":
+                fileName = "image.png";
+                break;
+            case "image/jpeg":
+                fileName = "image.jpg"
+                break;
+            default:
+                return;
+        }
+
+        event.preventDefault();
+
+        const form = new FormData();
+        form.append('image', fileData, fileName);
+
+        const $t = $(active);
+        const id = Date.now();
+
+        const tempText = 'uploading image ' + id + '...';
+        insertIntoInput($t, '[img:' + tempText + ']', '', '', true);
+
+        const response = await fetch(window.urls.api.image_upload, { method: 'post', body: form });
+        const json = await response.json();
+
+        let replace;
+
+        if (!response.ok) {
+            replace = 'Error: ' + json.image[0];
+        } else {
+            replace = json.url;
+        }
+        let text = $t.val();
+        if (text.indexOf(tempText) >= 0) {
+            text = text.replace(tempText, replace);
+        } else {
+            text += '\n[img:' + replace + ']';
+        }
+        $t.val(text);
+    });
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
  
 use App\Events\CommentCreated;
+use App\Helpers\Image;
 use App\Http\Controllers\Comments\CommentController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Wiki\WikiController;
@@ -37,6 +38,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
@@ -503,6 +505,22 @@ class ApiController extends Controller {
                     ]
                 ]
             ]
+        ],
+        'image-upload' => [
+            'description' => 'Image Upload',
+            'expand' => [],
+            'methods' => ['post'],
+            'auth' => [],
+            'parameters' => [
+                'post' => [
+                    'image' => [ 'required' => true, 'type' => 'binary', 'description' => 'The image data. Maximum size: 2MB' ]
+                ]
+            ],
+            'object' => \stdClass::class,
+            'filter_columns' => [],
+            'sort_column' => 'id',
+            'allowed_sort_columns' => [],
+            'default_filters' => []
         ],
         'api-key' => [
             'description' => 'Api Keys',
@@ -1358,6 +1376,45 @@ class ApiController extends Controller {
         }
 
         return $res;
+    }
+
+    private function post_image_upload() {
+
+        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
+        });
+        Validator::extend('image_size', function($attr, $value, $parameters) {
+            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
+            $info = getimagesize($value->getPathName());
+            return $info[0] <= $max && $info[1] <= $max;
+        });
+
+        $this->validate(Request::instance(), [
+            'image' => 'required|max:2048|valid_extension:jpeg,jpg,png|image_size:3000'
+        ], [
+            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+        ]);
+
+        $image = Request::file('image');
+        $fname = Str::uuid()->toString() . '.' . $image->getClientOriginalExtension();
+
+        // Force jpeg if the image is more than 1mb
+        $override_type = false;
+        if ($image->getSize() >= 1024 * 1024) {
+            $override_type = IMAGETYPE_JPEG;
+            $fname = explode('.', $fname)[0] . '.jpg';
+        }
+
+        // Use 2000 maximum to support 1080p screenshots without resizing
+        $thumbs = Image::MakeThumbnails($image->getPathname(),
+            [ [ 'width' => 2000, 'height' => 2000, 'force' => true, 'type' => $override_type ] ],
+            public_path('uploads/images/' . Auth::id()),
+            $fname, false
+        );
+
+        return [
+            'url' => asset('uploads/images/' . Auth::id() . '/' . $thumbs[0])
+        ];
     }
 
     private function post_api_key() {

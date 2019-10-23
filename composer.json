@@ -6,8 +6,9 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "^6.0",
-        "rosswintle/recaptcha": "dev-master#c73008baf49f70831862040a000e063195c8045c"
-	},
+        "rosswintle/recaptcha": "dev-master#c73008baf49f70831862040a000e063195c8045c",
+        "ext-gd": "*"
+    },
 	"require-dev": {
 		"phpunit/phpunit": "^7.0"
 	},
