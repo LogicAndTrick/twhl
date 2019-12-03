@@ -110,12 +110,6 @@
                     @endif
                     <br />
                 @endif
-                @if ($data['motm'])
-                    {? $motm = $data['motm'] ?}
-                        <span class="hidden-lg-down"><a href="{{ act('vault', 'view', $motm->item_id) }}">{{ $motm->vault_item->name }}</a> is map of the month for {{ $motm->getDateString() }}!</span>
-                        <span class="hidden-xl-up">{{ $motm->getShortDateString() }} MOTM: <a href="{{ act('vault', 'view', $motm->item_id) }}">{{ $motm->vault_item->name }}</a></span>
-                    <br/>
-                @endif
                 @if ($data['user'])
                     {? $user = $data['user'] ?}
                     <span class="hidden-lg-down">Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!</span>

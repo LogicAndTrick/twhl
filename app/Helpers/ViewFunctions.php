@@ -103,12 +103,10 @@ if (!function_exists('header_data')) {
 
             $user = \App\Models\Accounts\User::orderBy('created_at', 'desc')->first();
             $comp = \App\Models\Competitions\Competition::orderBy('created_at', 'desc')->where('status_id', '!=', \App\Models\Competitions\CompetitionStatus::DRAFT)->first();
-            $motm = \App\Models\Vault\Motm::with(['vault_item'])->whereNotNull('item_id')->orderBy('year', 'desc')->orderBy('month', 'desc')->first();
 
             return [
                 'user' => $user,
-                'competition' => $comp,
-                'motm' => $motm
+                'competition' => $comp
             ];
         });
 
