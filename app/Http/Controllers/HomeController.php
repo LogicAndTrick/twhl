@@ -33,7 +33,6 @@ class HomeController extends Controller {
 
         // Vault section
         $new_maps = VaultItem::with(['user', 'vault_screenshots'])
-            ->whereIn('type_id', [1,4]) // Maps and mods
             ->orderBy('updated_at', 'desc')
             ->limit(4)
             ->get();
