@@ -14,7 +14,7 @@
                     <h1>
                         <span class="fa fa-user"></span>
                         Welcome back!
-                        <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('news', 'index') }}">My profile</a>
+                        <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('user', 'view', Auth::user()->id) }}">My profile</a>
                     </h1>
                     <div class="user">
                         <div>
