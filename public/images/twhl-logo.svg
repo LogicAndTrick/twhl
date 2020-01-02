@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="15.001875mm"
+   height="15.00187mm"
+   viewBox="0 0 15.001875 15.00187"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="twhl-logo.svg">
+  <defs
+     id="defs2">
+	
+	
+	
+	
+</defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="173.45682"
+     inkscape:cy="9.9410694"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="414"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(76.798147,-141.3324)">
+    <path
+       style="fill:#e68a27;stroke-width:0.26458332"
+       inkscape:connector-curvature="0"
+       class="st0"
+       d="m -67.765272,152.51898 -1.685396,-4.26773 -2.468562,3.89202 h -1.547813 l 3.450167,-5.56948 -0.386292,-1.10066 h -1.344083 v -1.31234 h 2.299229 l 2.640542,6.71513 1.16152,-0.37836 0.386292,1.30175 z"
+       id="path4520" />
+    <path
+       style="fill:#e68a27;stroke-width:0.26458332"
+       inkscape:connector-curvature="0"
+       class="st0"
+       d="m -69.29721,156.33427 c -4.135437,0 -7.500937,-3.3655 -7.500937,-7.50093 0,-4.13544 3.3655,-7.50094 7.500937,-7.50094 4.135438,0 7.500938,3.3655 7.500938,7.50094 0,4.13543 -3.3655,7.50093 -7.500938,7.50093 z m 0,-13.51756 c -3.317875,0 -6.01927,2.69875 -6.01927,6.01663 0,3.31787 2.69875,6.01662 6.016625,6.01662 3.317875,0 6.016624,-2.69875 6.016624,-6.01662 0,-3.31788 -2.696104,-6.01663 -6.013979,-6.01663 z"
+       id="path4522" />
+  </g>
+  <style
+     id="style4518"
+     type="text/css">
+	.st0{fill:#e68a27;}
+</style>
+</svg>

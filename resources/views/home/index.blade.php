@@ -5,6 +5,79 @@
 <div class="home-page">
 
     <div class="row">
+        <div class="col-md-4">
+            <div class="welcome">
+                @if (Auth::check())
+                    {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
+                    {? $notify_count = Auth::user()->unreadNotificationCount(); ?}
+                    {? $user = Auth::user(); ?}
+                    <h1>
+                        <span class="fa fa-user"></span>
+                        Welcome back!
+                        <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('news', 'index') }}">My profile</a>
+                    </h1>
+                    <div class="user">
+                        <div>
+                            @avatar($user small show_name=false show_border=true)
+                        </div>
+                        <div>
+                            <h3>{{$user->name}}</h3>
+                            <div>
+                                <span class="fa fa-sign-in"></span>
+                                This is your <strong>{{ Auth::user()->stat_logins }}</strong><sup>{{ ordinal(Auth::user()->stat_logins, false) }}</sup> login
+                            </div>
+                            <a href="{{ act('message', 'index') }}" class="d-block {{ $unread_count > 0 ? 'notify-alert' : '' }}">
+                                <span>
+                                    <span class="fa fa-envelope"></span>
+                                    {{ $unread_count == 0 ? 'Private messages' : $unread_count . ' new private message' . ($unread_count == 1 ? '' : 's') }}
+                                </span>
+                            </a>
+                            <a href="{{ act('panel', 'notifications') }}" class="d-block {{ $notify_count > 0 ? 'notify-alert' : '' }}">
+                                <span>
+                                    <span class="fa fa-bell"></span>
+                                    {{ $notify_count == 0 ? 'Notifications' : $notify_count . ' new notification' . ($notify_count == 1 ? '' : 's') }}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                @else
+                    <h1 class="special-welcome">
+                        Welcome to TWHL!
+                    </h1>
+                    <p>
+                        Since the dawn of time, humanity has sought the answer to one simple question:
+                        <em>How do I create content for Half-Life?</em>
+                    </p>
+                    <p>
+                        TWHL is a community which answers that question (and many others) with tutorials, resources, and forums!
+                        Click the <strong>Login/Register</strong> button in the navigation above to get started.
+                    </p>
+                @endif
+
+                <h3>What's New</h3>
+                {? $data = header_data() ?}
+                <ul>
+                    @if ($data['competition'])
+                        {? $comp = $data['competition'] ?}
+                        @if ($comp->isVotingOpen())
+                            <li>Vote for a winner in the <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a> competition!</li>
+                        @elseif ($comp->isOpen())
+                            <li>Enter our newest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</li>
+                        @elseif ($comp->isJudging() || $comp->isVoting())
+                            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results coming soon...</li>
+                        @elseif ($comp->isClosed())
+                            <li>Check out <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results!</li>
+                        @else
+                            <li>Take a look at our latest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</li>
+                        @endif
+                    @endif
+                    @if ($data['user'])
+                        {? $user = $data['user'] ?}
+                        <li>Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!</li>
+                    @endif
+                </ul>
+            </div>
+        </div>
         <div class="col-md-8">
             <h1>
                 <a href="{{ act('news', 'index') }}"><span class="fa fa-newspaper-o"></span> Latest News</a>
@@ -35,78 +108,6 @@
                     </div>
                 @endforeach
             </div>
-        </div>
-        <div class="col-md-4">
-            @if (Auth::check())
-                {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
-                {? $notify_count = Auth::user()->unreadNotificationCount(); ?}
-                <h1>
-                    <span class="fa fa-user"></span>
-                    Welcome back!
-                </h1>
-                <div class="list-group">
-                    <span class="list-group-item">
-                        <span>
-                            <span class="fa fa-sign-in"></span>
-                            This is your <strong>{{ Auth::user()->stat_logins }}</strong><sup>{{ ordinal(Auth::user()->stat_logins, false) }}</sup> login
-                        </span>
-                    </span>
-                    <a href="{{ act('message', 'index') }}" class="list-group-item list-group-item-action justify-content-between {{ $unread_count > 0 ? 'list-group-item-warning' : '' }}">
-                        <span>
-                            <span class="fa fa-envelope"></span>
-                            {{ $unread_count > 0 ? 'New private messages' : 'Private messages' }}
-                        </span>
-                        <span class="badge badge-secondary badge-pill">{{  $unread_count }}</span>
-                    </a>
-                    <a href="{{ act('panel', 'notifications') }}" class="list-group-item list-group-item-action justify-content-between {{ $notify_count > 0 ? 'list-group-item-warning' : '' }}">
-                        <span>
-                            <span class="fa fa-bell"></span>
-                            {{ $notify_count > 0 ? 'New notifications' : 'Notifications' }}
-                        </span>
-                        <span class="badge badge-secondary badge-pill">{{  $notify_count }}</span>
-                    </a>
-                    <a href="https://discord.gg/NgN6JBu" class="list-group-item list-group-item-action justify-content-between list-group-item-info">
-                        <span>
-                            <img src="images/discord.svg" alt="discord" class="discord-icon" style="height: 1.3em; margin: -10px 0 -10px -3px;" />
-                            TWHL Discord
-                        </span>
-                    </a>
-                    <a href="{{ act('auth', 'logout') . '?_token=' . csrf_token() }}" class="list-group-item list-group-item-action">
-                        <span>
-                            <span class="fa fa-sign-out"></span>
-                            Logout
-                        </span>
-                  </a>
-                </div>
-            @else
-                <h1>
-                    <span class="fa fa-sign-in"></span>
-                    Log in
-                </h1>
-                @form(auth/login)
-                    {? $login_form_checked = true; ?}
-                    @text(email placeholder=Email/username) = Email or Username
-                    @password(password) = Password
-                    <div class="row">
-                        <div class="col-8">
-                            @checkbox(remember $login_form_checked) = Remember Me
-                        </div>
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-sm">Login</button>
-                        </div>
-                    </div>
-                @endform
-                <div class="text-center mt-3">
-                    <a class="btn btn-outline-primary btn-sm" href="{{ url('/auth/register') }}">Register</a>
-                    <a class="btn btn-secondary btn-sm" href="{{ url('/password/email') }}">Forgot password</a>
-                </div>
-                <div class="text-center mt-3">
-                    <a href="https://discord.gg/NgN6JBu" class="btn btn-info btn-sm">
-                        <img src="images/discord-white.svg" alt="discord" class="discord-icon" style="height: 1.3em; margin: -10px 0 -10px -3px;" />
-                        TWHL Discord
-                    </a>
-                </div>
-            @endif
         </div>
     </div>
 

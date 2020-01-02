@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title>{{ isset($page_title) && !!$page_title ? $page_title . ' - ' : '' }}TWHL: Half-Life and Source Mapping Tutorials and Resources</title>
 
-        <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+        <link href="{{ mix('/css/app.css') }}?sl" rel="stylesheet">
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 
         @yield('styles', '')
@@ -22,7 +22,7 @@
         <![endif]-->
 
         <!-- Scripts -->
-        <script type="text/javascript" src="{{ asset('/js/all.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('/js/all.js') }}"></script>
     </head>
 <body class="{{ egg() }}">
 
@@ -43,10 +43,9 @@
     </div>
 
     <footer>
-        Site and non-dynamic content copyright &copy; 2018, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
+        Site and non-dynamic content copyright &copy; {{\Carbon\Carbon::now()->year}}, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
         All member-submitted resources copyright their respective authors unless otherwise specified.<br/>
-        If you are looking for web hosting and would like to support TWHL's hosting fees please consider using these referral links:
-        <a href="https://m.do.co/c/05508760a38a">DigitalOcean</a> &bull; <a href="https://www.dreamhost.com/r.cgi?666215">DreamHost</a><br/>
+        TWHL is a fan site and is not affiliated with Valve Corporation. Views expressed by users are the individuals's own and do not represent the opinions of any other entity.<br/>
         {{ render_time() }}
     </footer>
 

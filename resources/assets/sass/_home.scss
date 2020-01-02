@@ -1,8 +1,41 @@
 .home-page {
 
-  .discord-icon {
-    height: 1.3em; margin: -10px 0 -10px -3px;
+  .welcome {
+    .user {
+      display: flex;
+      flex-flow: row nowrap;
+
+      .avatar {
+        padding: 0.25rem;
+        width: auto;
+        margin: 0.5rem;
+
+        img {
+          margin: 0;
+        }
+      }
+
+      h3 {
+        margin: 0;
+      }
+
+      .notify-alert {
+        .fa {
+          color: $brand-danger;
+        }
+      }
+    }
+
+    .special-welcome {
+      background: none;
+      color: $twhl-brand;
+      font-size: 1.8rem;
+      font-weight: normal;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
+
   .forum {
     .bbcode {
       max-height: 8em;
