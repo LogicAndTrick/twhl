@@ -5,80 +5,7 @@
 <div class="home-page">
 
     <div class="row">
-        <div class="col-md-4">
-            <div class="welcome">
-                @if (Auth::check())
-                    {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
-                    {? $notify_count = Auth::user()->unreadNotificationCount(); ?}
-                    {? $user = Auth::user(); ?}
-                    <h1>
-                        <span class="fa fa-user"></span>
-                        Welcome back!
-                        <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('user', 'view', Auth::user()->id) }}">My profile</a>
-                    </h1>
-                    <div class="user">
-                        <div>
-                            @avatar($user small show_name=false show_border=true)
-                        </div>
-                        <div>
-                            <h3>{{$user->name}}</h3>
-                            <div>
-                                <span class="fa fa-sign-in"></span>
-                                This is your <strong>{{ Auth::user()->stat_logins }}</strong><sup>{{ ordinal(Auth::user()->stat_logins, false) }}</sup> login
-                            </div>
-                            <a href="{{ act('message', 'index') }}" class="d-block {{ $unread_count > 0 ? 'notify-alert' : '' }}">
-                                <span>
-                                    <span class="fa fa-envelope"></span>
-                                    {{ $unread_count == 0 ? 'Private messages' : $unread_count . ' new private message' . ($unread_count == 1 ? '' : 's') }}
-                                </span>
-                            </a>
-                            <a href="{{ act('panel', 'notifications') }}" class="d-block {{ $notify_count > 0 ? 'notify-alert' : '' }}">
-                                <span>
-                                    <span class="fa fa-bell"></span>
-                                    {{ $notify_count == 0 ? 'Notifications' : $notify_count . ' new notification' . ($notify_count == 1 ? '' : 's') }}
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                @else
-                    <h1 class="special-welcome">
-                        Welcome to TWHL!
-                    </h1>
-                    <p>
-                        Since the dawn of time, humanity has sought the answer to one simple question:
-                        <em>How do I create content for Half-Life?</em>
-                    </p>
-                    <p>
-                        TWHL is a community which answers that question (and many others) with tutorials, resources, and forums!
-                        Click the <strong>Login/Register</strong> button in the navigation above to get started.
-                    </p>
-                @endif
-
-                <h3>What's New</h3>
-                {? $data = header_data() ?}
-                <ul>
-                    @if ($data['competition'])
-                        {? $comp = $data['competition'] ?}
-                        @if ($comp->isVotingOpen())
-                            <li>Vote for a winner in the <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a> competition!</li>
-                        @elseif ($comp->isOpen())
-                            <li>Enter our newest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</li>
-                        @elseif ($comp->isJudging() || $comp->isVoting())
-                            <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results coming soon...</li>
-                        @elseif ($comp->isClosed())
-                            <li>Check out <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results!</li>
-                        @else
-                            <li>Take a look at our latest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</li>
-                        @endif
-                    @endif
-                    @if ($data['user'])
-                        {? $user = $data['user'] ?}
-                        <li>Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!</li>
-                    @endif
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-8">
+        <div class="col-md-8 order-last order-md-first">
             <h1>
                 <a href="{{ act('news', 'index') }}"><span class="fa fa-newspaper-o"></span> Latest News</a>
                 <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('news', 'index') }}">See all</a>
@@ -107,6 +34,89 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="welcome">
+                @if (Auth::check())
+                    <h1>
+                        <span class="fa fa-user"></span>
+                        Welcome back!
+                        <a class="btn btn-outline-primary btn-xs hidden-md-down" href="{{ act('user', 'view', Auth::user()->id) }}">My profile</a>
+                    </h1>
+                @endif
+                <div class="slot">
+                    @if (Auth::check())
+                        {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
+                        {? $notify_count = Auth::user()->unreadNotificationCount(); ?}
+                        {? $user = Auth::user(); ?}
+                        <div class="user slot-heading">
+                            <div>
+                                @avatar($user small show_name=false show_border=true)
+                            </div>
+                            <div>
+                                <h3>{{$user->name}}</h3>
+                                <a href="{{ act('message', 'index') }}" class="{{ $unread_count > 0 ? 'notify-alert' : '' }}">
+                                    <span>
+                                        <span class="fa fa-envelope"></span>
+                                        {{ $unread_count == 0 ? 'Private messages' : $unread_count . ' new private message' . ($unread_count == 1 ? '' : 's') }}
+                                    </span>
+                                </a>
+                                <span class="hidden-md-only hidden-lg-only">&bull;</span>
+                                <br class="hidden-sm-down hidden-xl-up" />
+                                <a href="{{ act('panel', 'notifications') }}" class="d-inline-block pb-1 {{ $notify_count > 0 ? 'notify-alert' : '' }}">
+                                    <span>
+                                        <span class="fa fa-bell"></span>
+                                        {{ $notify_count == 0 ? 'Notifications' : $notify_count . ' new notification' . ($notify_count == 1 ? '' : 's') }}
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    @else
+                        <div class="special-welcome">
+                            <h1>
+                                Welcome to TWHL!
+                            </h1>
+                            <p>
+                                Since the dawn of time, humanity has sought the answer to one simple question:
+                                <em>How do I create content for Half-Life?</em>
+                            </p>
+                            <p>
+                                TWHL is a community which answers that question (and many others) with tutorials, resources, and forums!
+                                Click the <strong>Login/Register</strong> button in the navigation above to get started.
+                            </p>
+                        </div>
+                    @endif
+
+                    <h3 class="pl-4 mb-0">What's New</h3>
+                    {? $data = header_data() ?}
+                    <ul class="pl-4">
+                        @if (Auth::check())
+                            <li style="list-style-type: none; margin-left: -1rem;">
+                                <span class="fa fa-sign-in"></span>
+                                This is your <strong>{{ Auth::user()->stat_logins }}</strong><sup>{{ ordinal(Auth::user()->stat_logins, false) }}</sup> login
+                            </li>
+                        @endif
+                        @if ($data['competition'])
+                            {? $comp = $data['competition'] ?}
+                            @if ($comp->isVotingOpen())
+                                <li>Vote for a winner in the <a href="{{ act('competition', 'vote', $comp->id) }}">{{ $comp->name }}</a> competition!</li>
+                            @elseif ($comp->isOpen())
+                                <li>Enter our newest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</li>
+                            @elseif ($comp->isJudging() || $comp->isVoting())
+                                <li><a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results coming soon...</li>
+                            @elseif ($comp->isClosed())
+                                <li>Check out <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a> competition results!</li>
+                            @else
+                                <li>Take a look at our latest competition, <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>!</li>
+                            @endif
+                        @endif
+                        @if ($data['user'])
+                            {? $user = $data['user'] ?}
+                            <li>Say hello to <a href="{{ act('user', 'view', $user->id) }}">{{ $user->name }}</a>, our newest member!</li>
+                        @endif
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
