@@ -271,7 +271,7 @@ class Comment extends Model {
         $last = $comments->last();
 
         // The last comment in a thread is always editable
-        if ($this->id == $last->od) return true;
+        if ($this->id == $last->id) return true;
 
         return false;
     }
