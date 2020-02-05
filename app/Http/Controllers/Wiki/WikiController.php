@@ -173,7 +173,7 @@ class WikiController extends Controller {
         }
 
         $books = [];
-        if ($rev->wiki_revision_books->count() > 0) {
+        if ($rev && $rev->wiki_revision_books->count() > 0) {
             $names = $rev->wiki_revision_books->map(function ($c) { return $c->book_name; })->unique()->toArray();
             $books = DB::table('wiki_revision_books as wrb')
                 ->join('wiki_revisions as wr', 'wr.id', '=', 'revision_id')
