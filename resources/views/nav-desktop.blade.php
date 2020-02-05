@@ -2,7 +2,7 @@
     <div class="header-image header-{{ rand(1, 8) }}">
         <div class="wrapper">
             <a href="{{ url('/') }}">
-                <img src="{{ asset('images/twhl-logo.svg') }}" alt="">
+                <img src="{{ asset('images/twhl-logo.png') }}" alt="">
                 <div class="logo-text">
                     <div class="title">The Whole Half-Life</div>
                     <div class="subtitle">Level design resources for GoldSource, Source, and beyond</div>

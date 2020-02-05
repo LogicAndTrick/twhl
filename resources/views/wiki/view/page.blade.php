@@ -8,7 +8,7 @@
         @elseif ($revision->wiki_object->isProtected())
             <span class="fa fa-lock faded" title="This page is protected."></span>
         @endif
-        Last edited @date($revision->created_at) by @avatar($revision->user inline)
+        Last edited @date($revision->created_at)
     </small>
 </h1>
 
@@ -28,3 +28,4 @@
 
 @include('wiki.view.revision-content', ['revision' => $revision])
 @include('wiki.view.revision-categories', ['revision' => $revision])
+@include('wiki.view.revision-credits', ['revision' => $revision])

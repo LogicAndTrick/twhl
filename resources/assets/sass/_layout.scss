@@ -116,6 +116,7 @@ ul.inline-bullet {
 
     &:first-child::before {
       content: '';
+      padding: 0;
     }
   }
 }

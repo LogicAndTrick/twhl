@@ -8,7 +8,7 @@ class WikiRevision extends Model {
 	//
     protected $table = 'wiki_revisions';
     protected $fillable = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'content_html', 'message'];
-    public $visible = ['id', 'object_id', 'user_id', 'is_active', 'slug', 'title', 'content_text', 'content_html', 'message', 'created_at', 'wiki_object', 'user', 'wiki_revision_metas'];
+    public $visible = ['id', 'object_id', 'user_id', 'is_active', 'slug', 'title', 'content_text', 'content_html', 'message', 'created_at', 'wiki_object', 'user', 'wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits'];
 
     public $appends = [ 'escaped_slug' ];
 
@@ -27,6 +27,16 @@ class WikiRevision extends Model {
     public function wiki_revision_metas()
     {
         return $this->hasMany('App\Models\Wiki\WikiRevisionMeta', 'revision_id');
+    }
+
+    public function wiki_revision_books()
+    {
+        return $this->hasMany('App\Models\Wiki\WikiRevisionBook', 'revision_id');
+    }
+
+    public function wiki_revision_credits()
+    {
+        return $this->hasMany('App\Models\Wiki\WikiRevisionCredit', 'revision_id');
     }
 
     public function hasCategories() {

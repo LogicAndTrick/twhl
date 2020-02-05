@@ -3,6 +3,7 @@
 namespace App\Helpers\BBCode\Tags;
 
 use App\Helpers\BBCode\Parser;
+use App\Helpers\BBCode\ParseResult;
 use App\Helpers\BBCode\State;
 
 class Tag
@@ -17,13 +18,18 @@ class Tag
     public $nested = false;
 
 
+    /**
+     * @param $state State
+     * @param $token string
+     * @return bool
+     */
     public function Matches($state, $token)
     {
         return strtolower($token) == $this->token;
     }
 
     /**
-     * @param $result
+     * @param $result ParseResult
      * @param $parser Parser
      * @param $state State
      * @param $scope

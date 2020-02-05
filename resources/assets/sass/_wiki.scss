@@ -48,13 +48,82 @@ ul.wiki-categories {
   @extend .inline-bullet;
 
   border: 1px solid $gray-lighter;
-  margin-top: 10px;
-  padding: 5px;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
 
   .header {
     font-weight: bold;
   }
 
+}
+
+ul.wiki-credits {
+  list-style: none;
+
+  border: 1px solid $gray-lighter;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+
+  li {
+    padding: 0.125rem;
+    border-top: 1px solid $gray-lightest;
+  }
+
+  .header {
+    font-weight: bold;
+    border: 0;
+  }
+}
+
+.wiki-book {
+  margin-bottom: 0.5rem;
+
+  .card-header {
+    padding: 0.5rem 1rem;
+    
+    h3 {
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+  }
+
+  .card-body {
+    padding: 0.5rem 1rem;
+  }
+  
+  nav {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $gray-lighter;
+
+    .previous {
+      text-align: left;
+      flex: 1;
+    }
+    .current {
+      text-align: center;
+      font-weight: bold;
+      font-size: 1rem;
+      line-height: 1rem;
+      flex: 1;
+    }
+    .next {
+      text-align: right;
+      flex: 1;
+    }
+  }
+
+  ul {
+    margin-bottom: 0;
+
+    .current {
+      font-weight: bold;
+    }
+  }
 }
 
 .wiki-image {

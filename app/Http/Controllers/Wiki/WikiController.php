@@ -2,11 +2,13 @@
 
 use App\Events\WikiRevisionCreated;
 use App\Events\WikiTitleRenamed;
+use App\Helpers\BBCode\ParseResult;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
 use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
+use App\Models\Wiki\WikiRevisionBook;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use App\Models\Wiki\WikiUpload;
@@ -107,9 +109,9 @@ class WikiController extends Controller {
     public function getPage($page, $revision = 0) {
         $rev = null;
         if (!$revision) {
-            $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_object', 'user'])->where('is_active', '=', 1)->where('slug', '=', $page)->first();
+            $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits', 'wiki_revision_credits.user', 'wiki_object', 'user'])->where('is_active', '=', 1)->where('slug', '=', $page)->first();
         } else {
-            $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_object', 'user'])->findOrFail($revision);
+            $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits', 'wiki_revision_credits.user', 'wiki_object', 'user'])->findOrFail($revision);
         }
 
         // A category will always have the list of pages at the bottom, even if the page doesn't exist
@@ -170,6 +172,18 @@ class WikiController extends Controller {
             $upload = $rev->getUpload();
         }
 
+        $books = [];
+        if ($rev->wiki_revision_books->count() > 0) {
+            $names = $rev->wiki_revision_books->map(function ($c) { return $c->book_name; })->unique()->toArray();
+            $books = DB::table('wiki_revision_books as wrb')
+                ->join('wiki_revisions as wr', 'wr.id', '=', 'revision_id')
+                ->whereIn('book_name', $names)
+                ->where('wr.is_active', '=', 1)
+                ->whereNull('wr.deleted_at')
+                ->select(['wrb.*', 'wr.slug', 'wr.title'])
+                ->get();
+        }
+
         $comments = [];
         $sub = null;
         $obj_sub = null;
@@ -190,7 +204,8 @@ class WikiController extends Controller {
             'subcats' => $subcats,
             'upload' => $upload,
             'comments' => $comments,
-            'subscription' => $sub
+            'subscription' => $sub,
+            'books' => $books
         ]);
     }
 
@@ -216,6 +231,19 @@ class WikiController extends Controller {
             $sub->delete();
         }
         return redirect('wiki/view/'.$id);
+    }
+
+    public function getBookInfo()
+    {
+        $book = Request::input('book');
+        $books = DB::table('wiki_revision_books as wrb')
+            ->join('wiki_revisions as wr', 'wr.id', '=', 'revision_id')
+            ->where('book_name', '=', $book)
+            ->where('wr.is_active', '=', 1)
+            ->whereNull('wr.deleted_at')
+            ->select(['wrb.*', 'wr.slug', 'wr.title'])
+            ->get();
+        return response()->json($books);
     }
 
     public function getEmbedInfo($id)
@@ -277,6 +305,9 @@ class WikiController extends Controller {
      * @return WikiRevision
      */
     public static function createRevision($object, $existing_revision = null) {
+        /**
+         * @var $parse_result ParseResult
+         */
         $parse_result = app('bbcode')->ParseResult(Request::input('content_text'));
 
         // The title can only change for standard/upload pages
@@ -293,6 +324,9 @@ class WikiController extends Controller {
         }
 
         // Create the revision
+        /**
+         * @var $revision WikiRevision
+         */
         $revision = WikiRevision::Create([
             'object_id' => $object->id,
             'user_id' => Auth::user()->id,
@@ -350,6 +384,8 @@ class WikiController extends Controller {
 
         // Save meta & update the object
         $revision->wiki_revision_metas()->saveMany($meta);
+        $revision->wiki_revision_books()->saveMany($parse_result->GetMeta('WikiBook'));
+        $revision->wiki_revision_credits()->saveMany($parse_result->GetMeta('WikiCredit'));
         DB::statement('CALL update_wiki_object(?);', [$object->id]);
         $object->touch();
 
@@ -530,6 +566,8 @@ class WikiController extends Controller {
             else $meta[] = new WikiRevisionMeta(['key' => $m->key, 'value' => $m->value]);
         }
         $revision->wiki_revision_metas()->saveMany($meta);
+        $revision->wiki_revision_books()->saveMany($parse_result->GetMeta('WikiBook'));
+        $revision->wiki_revision_credits()->saveMany($parse_result->GetMeta('WikiCredit'));
         DB::statement('CALL update_wiki_object(?);', [$obj->id]);
         return redirect('wiki/page/'.$revision->escaped_slug);
     }
