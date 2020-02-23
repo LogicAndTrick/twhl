@@ -134,3 +134,19 @@ ul.wiki-credits {
     margin: 10px auto;
   }
 }
+
+.autoplay-overlay {
+  width: 200px;
+  overflow: visible;
+  z-index: 1;
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: 20px;
+  left: calc(50% - 100px);
+  right: auto;
+  background: rgba(0, 0, 0, 0.5);
+  line-height: 2rem;
+  border-radius: 0.25rem;
+  pointer-events: none;
+}

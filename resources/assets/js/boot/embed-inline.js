@@ -64,4 +64,12 @@ $(function() {
         }
     }
 
+    $('video[autoplay]').each((i, t) => {
+        if (!t.paused) return;
+        const ol = $('<div class="autoplay-overlay">Video - Click to play</div>');
+        ol.insertBefore(t);
+    }).one('play', event => {
+        $(event.currentTarget).siblings('.autoplay-overlay').remove();
+    });
+
 });
