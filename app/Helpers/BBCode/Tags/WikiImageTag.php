@@ -57,11 +57,13 @@ class WikiImageTag extends LinkTag {
             }
             $url = null;
             $caption = null;
+            $loop = false;
             $classes = ['embedded', 'image'];
             if ($this->element_class) $classes[] = $this->element_class;
             foreach ($params as $p) {
                 $l = strtolower($p);
                 if ($this->IsClass($l)) $classes[] = $l;
+                else if ($l === 'loop') $loop = true;
                 else if (strlen($l) > 4 && substr($l, 0, 4) == 'url:') $url = trim(substr($p, 4));
                 else $caption = trim($p);
             }
@@ -86,7 +88,7 @@ class WikiImageTag extends LinkTag {
             return ' <' . $el . ' class="' . implode(' ', $classes) . '"'.($caption ? ' title="'. $caption . '"' : '').'>'
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'
-                 . $this->getEmbedObject($tag, $parser, $src, $caption)
+                 . $this->getEmbedObject($tag, $parser, $src, $caption, $loop)
                  . ($caption ? '<span class="caption">' . $caption . '</span>' : '')
                  . '</span>'
                  . ($url ? '</a>' : '')
@@ -96,14 +98,16 @@ class WikiImageTag extends LinkTag {
         }
     }
 
-    private function getEmbedObject($tag, $parser, $url, $caption)
+    private function getEmbedObject($tag, $parser, $url, $caption, $loop)
     {
         switch ($tag) {
             case 'img':
                 return '<img class="caption-body" src="' . $parser->CleanUrl($url) . '" alt="' . ($caption ? htmlspecialchars($caption) : 'User posted image') . '" />';
             case 'video':
             case 'audio':
-                return "<$tag class=\"caption-body\" src=\"$url\" controls>Your browser doesn't support embedded $tag.</$tag>";
+                $auto = '';
+                if ($loop) $auto = 'autoplay loop muted';
+                return "<$tag class=\"caption-body\" src=\"$url\" playsinline controls $auto>Your browser doesn't support embedded $tag.</$tag>";
         }
         return '';
     }
