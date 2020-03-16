@@ -3,6 +3,7 @@
 namespace App\Helpers\BBCode;
 
 use App\Helpers\BBCode\Elements\DefaultElement;
+use Illuminate\Support\Str;
 
 /**
  * Class Parser
@@ -72,9 +73,9 @@ class Parser
     }
 
     public function ParseExcerpt($text, $length = 200, $scope = 'excerpt') {
-        $len = strlen($text);
+        $len = Str::length($text);
         if ($len > $length) {
-            $text = substr($text, 0, $length);
+            $text = Str::substr($text, 0, $length);
         }
         $parsed = $this->Parse($text, $scope);
         if ($len > $length) {

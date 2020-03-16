@@ -94,7 +94,7 @@ class WikiRevision extends Model {
 
     public static function CreateSlug($text) {
         $text = str_ireplace(' ', '_', $text);
-        $text = preg_replace('%[^!"$-~]%si', '', $text);
+        $text = preg_replace('/[^-$_.+!*\'"(),:;<>^{}|~0-9a-z[\]]/si', '', $text);
         return $text;
     }
 }
