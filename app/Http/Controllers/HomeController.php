@@ -80,7 +80,11 @@ class HomeController extends Controller {
             ->get();
 
         // Onliners section
-        $onliners = User::with([])->orderBy('last_access_time', 'desc')->take(7)->get();
+        $onliners = User::with([])
+            ->whereNotNull('last_access_time')
+            ->orderBy('last_access_time', 'desc')
+            ->take(7)
+            ->get();
 
         $user_votes = [];
         $user_polls = [];
