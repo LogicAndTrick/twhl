@@ -1,6 +1,10 @@
 @title('Register Account')
 @extends('app')
 
+@section('scripts')
+    {!! ReCaptcha::htmlScriptTagJsApi() !!}
+@endsection
+
 @section('content')
 
     <h1>
@@ -27,8 +31,11 @@
                 <hr/>
 
                 <div class="d-flex justify-content-center">
-                    {!! Recaptcha::render() !!}
+                    {!! ReCaptcha::htmlFormSnippet() !!}
                 </div>
+                @error('g-recaptcha-response')
+                    <p class="help-block text-danger">Please check the box to prove that you're not a robot.</p>
+                @enderror
                 <hr/>
                 <p>
                     TWHL has some simple rules that we expect our users to follow.

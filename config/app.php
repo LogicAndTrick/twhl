@@ -149,7 +149,7 @@ return [
          * Package Service Providers...
          */
 
-        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
+        Biscolab\ReCaptcha\ReCaptchaServiceProvider::class,
 
 		/*
 		 * Application Service Providers...
@@ -213,7 +213,7 @@ return [
 
         'Date'      => App\Helpers\Date::class,
 
-        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
+        'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
 
 	],
 
