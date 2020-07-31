@@ -43,16 +43,18 @@ in the Laravel docs, but here's the basic steps:
 9. We're almost there. Find the `.env.example` file in the root folder, and copy it to
    a new file called simply `.env`. The default settings should be fine, but you can
    change them if you have a different setup for your DB server and so on.
+    - After creating the .env file, you should run `php artisan key:generate` in order to
+      create an encryption key.
 10. At this point, [http://localhost:82/](http://localhost:82/) should give you the
    Laravel splash screen. If it doesn't, something's gone wrong. Otherwise, carry on...
 11. In the git repo root folder, run:
-   - `php artisan migrate --seed` (requires php on path)
-      - I got an error doing this and had to run `mysql/bin/mysql_upgrade.exe`, but
-	    this may be because I had an older version of MySQL installed. If you get an error
-		about "Cannot load from mysql.proc", try doing this. Drop and re-create the twhl
-		database before trying again.
-   - `npm install`
-   - `npm run development`
+    - `php artisan migrate --seed` (requires php on path)
+        - I got an error doing this and had to run `mysql/bin/mysql_upgrade.exe`, but
+	      this may be because I had an older version of MySQL installed. If you get an error
+		  about "Cannot load from mysql.proc", try doing this. Drop and re-create the twhl
+		  database before trying again.
+    - `npm install`
+    - `npm run development`
 12. Hopefully, you're done! Go to [http://localhost:82/auth/login](http://localhost:82/auth/login)
    to log in. User: `admin@twhl.info` // Pass: `admin`.
 
