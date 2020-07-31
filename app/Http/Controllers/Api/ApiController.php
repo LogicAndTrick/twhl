@@ -581,7 +581,8 @@ class ApiController extends Controller {
             $expl = explode('\\', $desc['object']);
             $name = $expl[count($expl) - 1];
             $props = [];
-            foreach ($obj->visible as $prop) {
+            $visible = isset($obj->visible) && is_array($obj->visible) ? $obj->visible : [];
+            foreach ($visible as $prop) {
 
                 $props[$prop] = [];
 
