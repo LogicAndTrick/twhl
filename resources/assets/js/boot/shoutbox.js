@@ -179,8 +179,8 @@ var shoutbox = new Vue({
             var newStore = [];
             for (i = 0; i < this.store.length; i++) {
                 obj = this.store[i];
-                if (!obj.updated) obj.updated = Date.parse(obj.updated_at.replace(/ /ig, 'T') + 'Z');
-                if (!obj.created) obj.created = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
+                if (!obj.updated) obj.updated = Date.parse(obj.updated_at);
+                if (!obj.created) obj.created = Date.parse(obj.created_at);
                 if (ids[obj.id] !== undefined) {
                     var orig = newStore[ids[obj.id]];
                     if (orig.updated < obj.updated) newStore[ids[obj.id]] = obj;
@@ -189,7 +189,7 @@ var shoutbox = new Vue({
                     newStore.push(obj);
                 }
                 obj.formatted_content = this.format(obj.content);
-                obj.time = Date.parse(obj.created_at.replace(/ /ig, 'T') + 'Z');
+                obj.time = Date.parse(obj.created_at);
                 obj.date = new Date(obj.time).toLocaleString();
                 obj.user.url = template(this.userUrl, { id: obj.user.id });
             }
