@@ -920,7 +920,7 @@ class ApiController extends Controller {
                 if (!is_array($sort)) $sort = [$sort];
                 $s = Request::input('sort_by');
                 if ($s && isset($desc['allowed_sort_columns']) && array_search($s, $desc['allowed_sort_columns']) !== false) {
-                    $sort = array_merge($s, $sort);
+                    $sort = array_merge([$s], $sort);
                 }
 
                 $sort_desc = isset($desc['sort_descending']) ? $desc['sort_descending'] : false;
