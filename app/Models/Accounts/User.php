@@ -30,8 +30,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'skill_map', 'skill_model', 'skill_code', 'skill_music', 'skill_voice', 'skill_animate', 'skill_texture'
     ];
 	protected $hidden = ['password', 'remember_token'];
-    public $visible = [ 'id', 'name', 'avatar_custom', 'avatar_file', 'title_custom', 'title_text', 'avatar_full', 'avatar_small', 'avatar_inline' ];
-    protected $dates = ['deleted_at', 'last_login_time', 'last_access_time'];
+    public $visible = [ 'id', 'name', 'avatar_custom', 'avatar_file', 'title_custom', 'title_text', 'avatar_full', 'avatar_small', 'avatar_inline', 'last_login_time', 'last_access_time' ];
+    public $dates = ['deleted_at', 'last_login_time', 'last_access_time'];
     protected $attributes = [ 'avatar_file' => 'user_noavatar1.png' ];
 
     protected $appends = ['avatar_full', 'avatar_small', 'avatar_inline', 'info_birthday_formatted'];
