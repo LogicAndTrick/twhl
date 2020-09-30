@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use \App\Models\Accounts\Permission;
 use \App\Models\Accounts\User;
 

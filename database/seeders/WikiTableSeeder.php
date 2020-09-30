@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use \App\Models\Wiki\WikiObject;
 use \App\Models\Wiki\WikiRevision;
 use \App\Models\Wiki\WikiRevisionMeta;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 class ForumTableSeeder extends \Illuminate\Database\Seeder
 {
 

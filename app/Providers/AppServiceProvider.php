@@ -3,6 +3,7 @@
 use App\Helpers\TwhlUserProvider;
 use App\Models\Accounts\User;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Auth;
 
 class AppServiceProvider extends ServiceProvider {
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider {
         {
             return new TwhlUserProvider($app['hash'], User::class);
         });
+        Paginator::useBootstrap();
 	}
 
 	/**

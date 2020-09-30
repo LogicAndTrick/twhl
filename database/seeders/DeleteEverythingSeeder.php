@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 class DeleteEverythingSeeder extends \Illuminate\Database\Seeder
 {
 
