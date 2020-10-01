@@ -9,7 +9,7 @@ TWHL is a mapping and modding resource website for the Half-Life and Source engi
 TWHL4 uses the [Laravel](http://laravel.com/) framework. Detailed instructions can be found
 in the Laravel docs, but here's the basic steps:
 
-1. Get an Apache environment with MySQL (5.5+) and PHP (7.1+)
+1. Get an Apache environment with MySQL (5.5+) and PHP (7.3+)
    - The easiest way to do this is to download [XAMPP](https://www.apachefriends.org/index.html)
    for your platform and follow the install instructions.
    - Put the **php**/**php.exe** executable path into your system's environment variables
@@ -62,7 +62,7 @@ in the Laravel docs, but here's the basic steps:
 
 Some general notes if you're not used to Laravel/Composer:
 
-- If `composer.json` changes, run `composer install` to get the latest library versions.
+- If `composer.json` (or `composer.lock`) changes, run `composer install` to get the latest library versions.
 - Run `composer self-update` if it nags you, it's a good idea to stay up to date.
 - When making changes to `*.css`, `*.scss` and `*.js` files, you need to run `npm run development` to bundle
   those changes into the compiled CSS and JS files. The easiest way to do this is to run
