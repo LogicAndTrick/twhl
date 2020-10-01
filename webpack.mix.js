@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.scripts([
+mix.js([
         'node_modules/jquery/dist/jquery.js',
         'node_modules/jquery.appear/jquery.appear.js',            // Lazy loading vault embeds
         'resources/assets/js/lib/jquery.cookie.js',
@@ -22,7 +22,15 @@ mix.scripts([
         'resources/assets/js/lib/jssor.slider.mini.js',
         'resources/assets/js/lib/autolinker.js',
         'resources/assets/js/lib/highlight.pack.js',
-        "resources/assets/js/boot/*.js"
+        "resources/assets/js/boot/comment-meta-rating.js",
+        "resources/assets/js/boot/embed.js",
+        "resources/assets/js/boot/embed-inline.js",
+        "resources/assets/js/boot/highlight.js",
+        "resources/assets/js/boot/home.js",
+        "resources/assets/js/boot/shoutbox.js",
+        "resources/assets/js/boot/util.js",
+        "resources/assets/js/boot/wiki-contents.js",
+        "resources/assets/js/boot/wikicode-preview.js"
     ], 'public/js/all.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
          .options({
