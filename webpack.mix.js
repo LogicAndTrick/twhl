@@ -1,6 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.js([
+mix.scripts([
         'node_modules/jquery/dist/jquery.js',
         'node_modules/jquery.appear/jquery.appear.js',            // Lazy loading vault embeds
         'resources/assets/js/lib/jquery.cookie.js',
