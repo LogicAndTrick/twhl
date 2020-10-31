@@ -195,7 +195,7 @@ class WikiController extends Controller {
         }
 
         $latest_rev = $rev;
-        if ($rev->wiki_object->current_revision_id != $rev->id) {
+        if ($rev && $rev->wiki_object && $rev->wiki_object->current_revision_id != $rev->id) {
             $latest_rev = $rev->wiki_object->current_revision;
             if (!$latest_rev) $latest_rev = $rev;
         }
