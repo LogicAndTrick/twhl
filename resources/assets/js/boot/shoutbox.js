@@ -148,7 +148,7 @@ var shoutbox = new Vue({
         },
         loadCookie: function() {
             try {
-                var c = JSON.parse($.cookie('shoutbox.settings'));
+                var c = JSON.parse(Cookies.get('shoutbox.settings'));
                 if (c.state === 'open' || c.state === 'closed') this.state = c.state;
                 if (c.position === 'left' || c.position === 'right') this.position = c.position;
             } catch (ex) {
@@ -156,7 +156,7 @@ var shoutbox = new Vue({
             }
         },
         saveCookie: function() {
-            $.cookie('shoutbox.settings', JSON.stringify({ state: this.state, position: this.position }), { expires: 365, path: '/' });
+            Cookies.set('shoutbox.settings', JSON.stringify({ state: this.state, position: this.position }), { expires: 365, path: '/', sameSite: 'lax' });
         },
         fetch: function(full) {
             var self = this;

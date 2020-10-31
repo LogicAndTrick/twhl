@@ -26,6 +26,7 @@
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
-    "jquery-appear-original": "git+https://github.com/morr/jquery.appear.git"
+    "jquery-appear-original": "git+https://github.com/morr/jquery.appear.git",
+    "js-cookie": "^2.2.1"
   }
 }
