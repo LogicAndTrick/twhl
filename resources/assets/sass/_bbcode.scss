@@ -10,6 +10,21 @@ pre {
   border: 1px solid $gray-400;
   background-color: $gray-100;
   padding: 1rem;
+  position: relative;
+  line-height: 1.15rem;
+
+  .line-highlight {
+    position: absolute;
+    height: 1em;
+    left: 0;
+    right: 0;
+    background: #FF8800;
+    margin-top: 1rem;
+    top: 0;
+    font-size: 1.15rem;
+    opacity: 0.25;
+    pointer-events: none;
+  }
 }
 
 .bbcode {
