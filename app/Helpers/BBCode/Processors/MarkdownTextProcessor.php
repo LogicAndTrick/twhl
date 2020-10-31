@@ -27,6 +27,9 @@ class MarkdownTextProcessor extends Processor {
         // post-condition: end of a line OR one of: !?^()+=[]{}"'<>,.:; OR whitespace
         $post = "(?=$break_chars|\$|[:;])%imu";
 
+        // Code
+        $text = preg_replace("{$pre}`{$mid}`{$post}", '<code>$1</code>', $text);
+
         // Bold
         $text = preg_replace("{$pre}\*{$mid}\*{$post}", '<strong>$1</strong>', $text);
 
@@ -38,9 +41,6 @@ class MarkdownTextProcessor extends Processor {
 
         // Strikethrough
         $text = preg_replace("{$pre}~{$mid}~{$post}", '<span class="strikethrough">$1</span>', $text);
-
-        // Code
-        $text = preg_replace("{$pre}`{$mid}`{$post}", '<code>$1</code>', $text);
 
         return $text;
     }
