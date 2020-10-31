@@ -85,6 +85,7 @@ class WikiController extends Controller {
         $revisions = WikiRevision::with(['user'])->where('object_id', '=', $rev->object_id)->orderBy('created_at', 'desc')->paginate(50);
         return view('wiki/list/revisions', [
             'revision' => $rev,
+            'latest_revision' => $rev,
             'object' => $rev->wiki_object,
             'history' => $revisions,
             'next_id' => count($revisions) > 1 ? $revisions[1]->id : 0
@@ -193,11 +194,18 @@ class WikiController extends Controller {
             $obj_sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $rev->object_id, true);
         }
 
+        $latest_rev = $rev;
+        if ($rev->wiki_object->current_revision_id != $rev->id) {
+            $latest_rev = $rev->wiki_object->current_revision;
+            if (!$latest_rev) $latest_rev = $rev;
+        }
+
         return view('wiki/view/object', [
             'slug' => $page,
             'slug_title' => str_replace('_', ' ', $page),
             'object' => $rev ? $rev->wiki_object : null,
             'revision' => $rev,
+            'latest_revision' => $latest_rev,
             'obj_subscription' => $obj_sub,
             'cat_name' => $cat_name,
             'cat_pages' => $cat_pages,
@@ -446,7 +454,8 @@ class WikiController extends Controller {
         if (!$rev->wiki_object->canEdit()) return abort(404);
 
         return view('wiki/edit/page', [
-            'revision' => $rev
+            'revision' => $rev,
+            'latest_revision' => $rev
         ]);
     }
 
@@ -520,7 +529,8 @@ class WikiController extends Controller {
 
         return view('wiki/edit/revert', [
             'object' => $obj,
-            'revision' => $rev
+            'revision' => $rev,
+            'latest_revision' => $rev
         ]);
     }
 
@@ -579,7 +589,8 @@ class WikiController extends Controller {
 
         return view('wiki/edit/delete', [
             'object' => $obj,
-            'revision' => $obj->current_revision
+            'revision' => $obj->current_revision,
+            'latest_revision' => $obj->current_revision
         ]);
     }
 

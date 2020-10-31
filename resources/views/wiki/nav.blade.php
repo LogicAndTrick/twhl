@@ -1,11 +1,11 @@
 <div class="btn-toolbar wiki-navigation">
     @if (isset($revision) && $revision)
         <div class="btn-group" role="group">
-            <a class="btn btn-light" href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a>
+            <a class="btn btn-light" href="{{ act('wiki', 'page', $latest_revision->slug) }}">{{ $latest_revision->getNiceTitle() }}</a>
             @if (permission('WikiCreate') && $revision->wiki_object->canEdit())
-                <a class="btn btn-light" href="{{ act('wiki', 'edit', $revision->slug) }}"><span class="fa fa-pencil"></span> Edit</a>
+                <a class="btn btn-light" href="{{ act('wiki', 'edit', $latest_revision->slug) }}"><span class="fa fa-pencil"></span> Edit</a>
             @endif
-            <a class="btn btn-light" href="{{ act('wiki', 'history', $revision->slug) }}"><span class="fa fa-clock-o"></span> History</a>
+            <a class="btn btn-light" href="{{ act('wiki', 'history', $latest_revision->slug) }}"><span class="fa fa-clock-o"></span> History</a>
         </div>
     @elseif (isset($cat_name) && strpos($cat_name, '+') !== false)
         <div class="btn-group" role="group">
