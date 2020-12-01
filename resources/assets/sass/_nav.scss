@@ -84,6 +84,9 @@ header {
 
   .header-image {
 
+    position: relative;
+    overflow: hidden;
+
     .wrapper {
       display: flex;
       flex-flow: row nowrap;
@@ -94,15 +97,11 @@ header {
 
     background: #333 url("/images/header/header-1.jpg") center center;
 
-    @for $i from 1 through 20 {
-        &.header-#{$i} { background: url("/images/header/header-#{$i}.jpg") center center; }
-    }
-
     a {
       display: flex;
       flex-flow: row nowrap;
-      padding: 1rem;
       color: $twhl-brand;
+      padding-left: 1rem;
 
       &:hover {
         text-shadow: $twhl-brand 0 0 2px;
@@ -110,14 +109,16 @@ header {
       }
 
       img {
-        flex: 1 1 auto;
-        height: 100%;
-        margin-right: 0.5rem;
+        flex: 1 1 auto;width: auto;
+        display: inline-block;
+        align-self: center;
       }
 
       .logo-text {
         display: flex;
         flex-flow: column nowrap;
+        padding: 1rem 1rem 1rem 0.5rem;
+        white-space: nowrap;
       }
 
       .title {
@@ -130,6 +131,21 @@ header {
         font-size: 0.8rem;
         line-height: 0.8rem;
       }
+    }
+
+    .header-info {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.4);
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        color: white;
+
+        a {
+          padding: 0;
+          display: inline;
+        }
     }
   }
 

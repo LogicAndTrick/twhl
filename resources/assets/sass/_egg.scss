@@ -6,3 +6,34 @@ body {
     background-image: url('../images/egg/antlovesyou.gif');
   }
 }
+
+.header-desktop .snowfield {
+  position: absolute;
+  top: -1rem;
+  bottom: -1rem;
+  left: -1rem;
+  right: -1rem;
+
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px white);
+
+  .snowflake {
+    position: absolute;
+    width: 0.4rem;
+    height: 0.4rem;
+    background: white;
+    border-radius: 50%;
+  }
+
+  .snow-corner-left {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
+  .snow-corner-right {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+  }
+}

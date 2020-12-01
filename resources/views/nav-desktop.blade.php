@@ -1,13 +1,22 @@
 <header class="header-desktop hidden-md-down">
-    <div class="header-image header-{{ rand(1, 8) }}">
+    <?php $header = \App\Helpers\TwhlHeader::HeaderInfo(); ?>
+    <div class="header-image" style="background-image: url({{asset('/images/header/'.$header['image'])}});">
         <div class="wrapper">
             <a href="{{ url('/') }}">
-                <img src="{{ asset('images/twhl-logo.png') }}" alt="">
+                <img class="logo-image" src="{{ asset('images/twhl-logo-64.png') }}" alt="">
                 <div class="logo-text">
                     <div class="title">The Whole Half-Life</div>
                     <div class="subtitle">Level design resources for GoldSource, Source, and beyond</div>
                 </div>
             </a>
+            <div class="header-info">
+                <span>
+                    Featured {{$header['type']}}:
+                    <a href="{{$header['name_link']}}">{{$header['name']}}</a>
+                    by
+                    <a href="{{$header['author_link']}}">{{$header['author']}}</a>
+                </span>
+            </div>
         </div>
     </div>
     <nav class="header-nav navbar navbar-expand navbar-dark bg-theme">

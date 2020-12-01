@@ -55,9 +55,7 @@ class Egg
             'format' => 'm',
             'match' => '12',
             'classes' => [
-                'christmas-1',
-                'christmas-2',
-                'christmas-3'
+                'christmas'
             ]
         ],
         'ninja' => [
