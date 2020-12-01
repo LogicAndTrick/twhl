@@ -1,4 +1,4 @@
-$(function() {
+window.addEventListener('DOMContentLoaded', function () {
     var isChristmas = document.body.classList.contains('egg-christmas');
     if (!isChristmas) return;
 
@@ -92,4 +92,6 @@ $(function() {
     }
     header.append(snowContainer);
 
+    animating = true;
+    window.requestAnimationFrame(animateSnowflakes);
 });
