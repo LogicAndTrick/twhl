@@ -41,6 +41,7 @@ class TwhlHeader
         // Conditional
         [ 'image' => 'santasrevenge_01.jpg' , 'type' => 'mod' , 'name' => 'Santa\'s Revenge'  , 'name_link' => 'https://twhl.info/vault/view/4332'              , 'author' => 'hlife_hotdog'  , 'author_link' => 'https://twhl.info/user/view/3749', 'conditional' => 'christmas' ],
         [ 'image' => 'santasrevenge_02.jpg' , 'type' => 'mod' , 'name' => 'Santa\'s Revenge'  , 'name_link' => 'https://twhl.info/vault/view/4332'              , 'author' => 'hlife_hotdog'  , 'author_link' => 'https://twhl.info/user/view/3749', 'conditional' => 'christmas' ],
+        [ 'image' => 'kitten.jpg'           , 'type' => 'map' , 'name' => 'Kitten'            , 'name_link' => 'https://twhl.info/vault/view/6466'              , 'author' => 'Alabastor_Twob', 'author_link' => 'https://twhl.info/user/view/3920', 'conditional' => 'christmas' ],
     ];
 }
 
