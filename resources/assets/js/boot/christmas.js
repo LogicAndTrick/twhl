@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', function () {
         else flake.top = 0;
         flake.left = Math.random() * 100;
         flake.drift = Math.random() * 2;
-        flake.vspeed = 0.25 + Math.random() * 0.3;
+        flake.vspeed = 0.25 + Math.random() * 0.25;
         flake.hspeed = Math.random();
         flake.direction = Math.random() < 0.5 ? -1 : 1;
         flake.element.css({
@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', function () {
         for (var i = 0; i < flakes.length; i++) {
             var flake = flakes[i];
 
-            flake.top += flake.vspeed;
+            flake.top += flake.vspeed * (elapsed * 60); // run at 60fps
             if (flake.top > 100) {
                 repositionSnowflake(flake);
             } else {
