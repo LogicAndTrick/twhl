@@ -51,9 +51,14 @@ window.addEventListener('DOMContentLoaded', function () {
         for (var i = 0; i < flakes.length; i++) {
             var flake = flakes[i];
 
-            flake.top += flake.vspeed * (elapsed * 60); // run at 60fps
+            flake.top += flake.vspeed * elapsed * 60;
             if (flake.top > 100) {
+                // If the tab is in the background or hasn't got animation frames for a while,
+                // all the snowflakes will get reset to the top of the container, and it looks
+                // bad. So retain the top value so flakes respawn in a nice random position.
+                var tt = flake.top % 100;
                 repositionSnowflake(flake);
+                flake.top = tt;
             } else {
                 var distance = flake.hspeed * elapsed;
                 flake.left += distance * flake.direction;
