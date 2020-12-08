@@ -339,6 +339,11 @@ class VaultController extends Controller {
         $item->flag_notify = !!Request::input('flag_notify');
         $item->flag_ratings = !!Request::input('flag_ratings');
 
+        // Don't update the timestamps if it's not the author making the change
+        if ($item->user_id != Auth::user()->id) {
+            $item->timestamps = false;
+        }
+
         $item->save();
 
         // Set included files
