@@ -303,6 +303,11 @@ class VaultController extends Controller {
         if (!$location) $location = '';
         $size = -1;
 
+        // Don't update the timestamps if it's not the author making the change
+        if ($item->user_id != Auth::user()->id) {
+            $item->timestamps = false;
+        }
+
         // Upload the map file
         if ($uploaded) {
             $file = Request::file('file');
@@ -338,11 +343,6 @@ class VaultController extends Controller {
 
         $item->flag_notify = !!Request::input('flag_notify');
         $item->flag_ratings = !!Request::input('flag_ratings');
-
-        // Don't update the timestamps if it's not the author making the change
-        if ($item->user_id != Auth::user()->id) {
-            $item->timestamps = false;
-        }
 
         $item->save();
 
