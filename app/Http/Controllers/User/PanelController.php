@@ -74,6 +74,7 @@ class PanelController extends Controller {
             'skill_texture' => !!Request::input('skill_texture'),
 
             'info_name' => Request::input('info_name'),
+            'info_pronouns' => Request::input('info_pronouns'),
             'info_website' => Request::input('info_website'),
             'info_occupation' => Request::input('info_occupation'),
             'info_interests' => Request::input('info_interests'),

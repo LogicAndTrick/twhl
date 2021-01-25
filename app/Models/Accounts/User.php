@@ -26,7 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         'show_email', 'timezone',
         'avatar_custom', 'avatar_file',
         'title_custom', 'title_text',
-        'info_name', 'info_website', 'info_occupation', 'info_interests', 'info_location', 'info_languages', 'info_steam_profile', 'info_birthday', 'info_biography_text', 'info_biography_html',
+        'info_name', 'info_pronouns', 'info_website', 'info_occupation', 'info_interests', 'info_location', 'info_languages', 'info_steam_profile', 'info_birthday', 'info_biography_text', 'info_biography_html',
         'skill_map', 'skill_model', 'skill_code', 'skill_music', 'skill_voice', 'skill_animate', 'skill_texture'
     ];
 	protected $hidden = ['password', 'remember_token'];

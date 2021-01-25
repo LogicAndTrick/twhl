@@ -29,6 +29,9 @@
             @if ($user->info_name)
                 <dt>Name</dt><dd>{{ $user->info_name }}</dd>
             @endif
+            @if ($user->info_pronouns)
+                <dt>Preferred Pronouns</dt><dd>{{ $user->info_pronouns }}</dd>
+            @endif
             <dt>Joined</dt><dd>{{ $user->created_at->format('jS F Y') }} (@date($user->created_at))</dd>
             <dt>Last Visited</dt><dd>@date($user->last_access_time)</dd>
             @if ($user->show_email || permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))

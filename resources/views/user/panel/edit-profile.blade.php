@@ -51,6 +51,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         @text(info_name $user) = Your real name
+                        @text(info_pronouns $user) = Preferred pronouns
                         @text(info_website $user) = Website/blog URL
                         @text(info_occupation $user) = Your occupation (or field of study)
                         @text(info_interests $user) = What interests you
