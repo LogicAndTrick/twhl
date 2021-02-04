@@ -42,6 +42,7 @@
                     but the basic summary is:
                 </p>
                 <ol>
+                    <li>Be respectful and inclusive.</li>
                     <li>Be nice.</li>
                     <li>No piracy.</li>
                     <li>No spam.</li>
