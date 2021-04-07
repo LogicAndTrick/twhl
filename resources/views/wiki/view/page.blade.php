@@ -25,6 +25,12 @@
         @endif
     </li>
 </ol>
+@if(Request::session()->get('wiki.redirected'))
+    <div class="ml-2 mb-2" style="margin-top: -0.75rem">
+        <span class="fa fa-share fa-flip-vertical"></span>
+        Redirected from <a href="{{act('wiki', 'page', Request::session()->get('wiki.redirected')) . '?no_redirect=true'}}">{{Request::session()->get('wiki.redirected')}}</a>
+    </div>
+@endif
 
 @include('wiki.view.revision-content', ['revision' => $revision])
 @include('wiki.view.revision-categories', ['revision' => $revision])

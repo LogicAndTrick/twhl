@@ -111,6 +111,14 @@ class WikiController extends Controller {
         $rev = null;
         if (!$revision) {
             $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits', 'wiki_revision_credits.user', 'wiki_object', 'user'])->where('is_active', '=', 1)->where('slug', '=', $page)->first();
+            if (!$rev && !Request::input('no_redirect')) {
+                // Try to find a page that had this slug but was renamed
+                $redirect = WikiRevision::with(['wiki_object', 'wiki_object.current_revision'])->where('is_active', '=', 0)->where('slug', '=', $page)->first();
+                if ($redirect && $redirect->wiki_object && !$redirect->wiki_object->deleted_at && $redirect->wiki_object->current_revision && $redirect->wiki_object->current_revision->is_active) {
+                    Request::session()->flash('wiki.redirected', $page);
+                    return redirect('wiki/page/'.$redirect->wiki_object->current_revision->escaped_slug);
+                }
+            }
         } else {
             $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits', 'wiki_revision_credits.user', 'wiki_object', 'user'])->findOrFail($revision);
         }
