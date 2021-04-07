@@ -6,6 +6,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title>{{ isset($page_title) && !!$page_title ? $page_title . ' - ' : '' }}TWHL: Half-Life and Source Mapping Tutorials and Resources</title>
 
+        @if (isset($meta_description) && strlen($meta_description) > 0)
+            <?php $meta_description = str_replace("\n", ' ', substr($meta_description, 0, 300)) . (strlen($meta_description) > 300 ? '...' : ''); ?>
+            <meta name="description" property="og:description" content="{{$meta_description}}">
+        @else
+            <meta name="description" property="og:description" content="View this page on TWHL">
+        @endif
+        <meta property="og:type" content="website">
+        @if (isset($meta_title) && strlen($meta_title) > 0)
+            <meta property="og:title" content="{{$meta_title}}">
+        @else
+            <meta property="og:title" content="{{$page_title}}">
+        @endif
+        @if (isset($meta_images) && count($meta_images) > 0)
+            @foreach ($meta_images as $img)
+                <meta property="og:image" content="{{asset($img)}}">
+            @endforeach
+        @else
+            <meta property="og:image" content="{{asset('images/twhl-logo.png')}}">
+        @endif
+        <meta property="og:url" content="{{Request::url()}}">
+
         <link href="{{ mix('/css/app.css') }}?sl" rel="stylesheet">
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
 

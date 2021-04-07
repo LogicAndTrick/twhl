@@ -1,4 +1,4 @@
-@title('Edit wiki page: ')
+@title('Edit wiki page: ' . $revision->getNiceTitle())
 @extends('app')
 
 @section('content')

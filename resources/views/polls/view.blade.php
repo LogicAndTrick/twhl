@@ -1,6 +1,10 @@
 @title('Poll: '.$poll->title)
 @extends('app')
 
+<?php
+    $meta_description = $poll->content_text;
+?>
+
 @section('content')
     <h1>
         {{ $poll->title }}

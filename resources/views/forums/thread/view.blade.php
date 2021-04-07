@@ -1,6 +1,10 @@
 @title($thread->title)
 @extends('app')
 
+<?php
+    if ($posts->onFirstPage() && $posts->count() > 0) $meta_description = $posts[0]->content_text;
+?>
+
 @section('content')
 
     <h1>

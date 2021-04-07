@@ -1,6 +1,10 @@
 @title('Competition: '.$comp->name)
 @extends('app')
 
+<?php
+    $meta_description = $comp->brief_text;
+?>
+
 @section('content')
     <h1>
         Competition: {{ $comp->name }}

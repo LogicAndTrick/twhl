@@ -1,6 +1,11 @@
 @title('Journal: '.$journal->getTitle().' by '.$journal->user->name)
 @extends('app')
 
+<?php
+    $meta_title = $journal->getTitle().' by '.$journal->user->name;
+    $meta_description = $journal->content_text;
+?>
+
 @section('content')
     <h1>
         {{ $journal->getTitle() }}

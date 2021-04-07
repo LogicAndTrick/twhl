@@ -1,6 +1,14 @@
 @title($item->name)
 @extends('app')
 
+<?php
+    if (count($item->vault_screenshots) > 0) {
+        $meta_images = $item->vault_screenshots->sortBy('order_index')->map(function ($sshot) { return 'uploads/vault/'.$sshot->image_large; });
+    }
+    $meta_description = $item->content_text;
+    $meta_title = $item->name . ' by ' . $item->user->name;
+?>
+
 @section('content')
 
     <h1>

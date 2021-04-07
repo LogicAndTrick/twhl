@@ -1,6 +1,11 @@
 @title('News post: '.$news->title)
 @extends('app')
 
+<?php
+    $meta_title = $news->title;
+    $meta_description = $news->content_text;
+?>
+
 @section('content')
     <h1>
         {{ $news->title }}

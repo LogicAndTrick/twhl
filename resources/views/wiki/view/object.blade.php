@@ -1,9 +1,12 @@
 @extends('app')
+<?php
+    if ($revision) $meta_description = $revision->content_text;
+?>
 
 @section('content')
     @include('wiki.nav', ['revision' => $revision, 'cat_name' => $cat_name])
     @if ($cat_name !== null)
-        @title('Wiki: Category: ' . $cat_name)
+        @title('Wiki: Category: ' . str_replace('_', ' ', str_replace('+', ' > ', $cat_name)))
         @include('wiki.view.category', ['object' => $object, 'revision' => $revision, 'cat_name' => $cat_name, 'cat_pages' => $cat_pages])
     @elseif ($object == null)
         @title('Page Not Found')
