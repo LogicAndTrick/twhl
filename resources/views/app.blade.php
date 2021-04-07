@@ -23,10 +23,12 @@
             @foreach ($meta_images as $img)
                 <meta property="og:image" content="{{asset($img)}}">
             @endforeach
+            <meta name="twitter:card" content="summary_large_image">
         @else
             <meta property="og:image" content="{{asset('images/twhl-logo.png')}}">
         @endif
         <meta property="og:url" content="{{Request::url()}}">
+        <meta name="theme-color" content="#e68a27">
 
         <link href="{{ mix('/css/app.css') }}?sl" rel="stylesheet">
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
