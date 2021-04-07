@@ -9,9 +9,9 @@
         <meta content="The Whole Half-Life" property="og:site_name">
         @if (isset($meta_description) && strlen($meta_description) > 0)
             <?php $meta_description = str_replace("\n", ' ', substr($meta_description, 0, 300)) . (strlen($meta_description) > 300 ? '...' : ''); ?>
-            <meta name="description" property="og:description" content="{{$meta_description}}">
+            <meta property="og:description" content="{{$meta_description}}">
         @else
-            <meta name="description" property="og:description" content="View this page on TWHL">
+            <meta property="og:description" content="View this page on TWHL">
         @endif
         <meta property="og:type" content="website">
         @if (isset($meta_title) && strlen($meta_title) > 0)
