@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title>{{ isset($page_title) && !!$page_title ? $page_title . ' - ' : '' }}TWHL: Half-Life and Source Mapping Tutorials and Resources</title>
 
+        <meta content="The Whole Half-Life" property="og:site_name">
         @if (isset($meta_description) && strlen($meta_description) > 0)
             <?php $meta_description = str_replace("\n", ' ', substr($meta_description, 0, 300)) . (strlen($meta_description) > 300 ? '...' : ''); ?>
             <meta name="description" property="og:description" content="{{$meta_description}}">
