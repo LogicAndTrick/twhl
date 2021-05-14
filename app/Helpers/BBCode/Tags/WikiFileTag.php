@@ -52,6 +52,7 @@ class WikiFileTag extends Tag {
             $info_url = act('wiki', 'embed-info', $slug);
             return '<span class="embedded-inline download" data-info="' . $info_url . '"><a href="' . $parser->CleanUrl($url) . '"><span class="fa fa-download"></span> ' . $text . '</a></span>';
         } else {
+            $state->Seek($index, true);
             return false;
         }
     }

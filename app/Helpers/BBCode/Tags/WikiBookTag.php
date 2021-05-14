@@ -16,7 +16,7 @@ class WikiBookTag extends LinkTag {
     {
         $peekTag = $state->Peek(6);
         $pt = $state->PeekTo(']');
-        return $peekTag == '[book:' && $pt && strlen($pt) > 5 && strstr($pt, "\n") === false;
+        return $peekTag == '[book:' && $pt && strlen($pt) > 6 && strstr($pt, "\n") === false;
     }
 
     public function Parse($result, $parser, $state, $scope)
@@ -57,6 +57,7 @@ class WikiBookTag extends LinkTag {
                     break;
             }
         }
+        $state->SkipWhitespace();
         $result->AddMeta('WikiBook', $book);
         return '';
     }

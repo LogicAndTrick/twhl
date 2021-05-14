@@ -16,7 +16,7 @@ class WikiCreditTag extends LinkTag {
     {
         $peekTag = $state->Peek(8);
         $pt = $state->PeekTo(']');
-        return $peekTag == '[credit:' && $pt && strlen($pt) > 5 && strstr($pt, "\n") === false;
+        return $peekTag == '[credit:' && $pt && strlen($pt) > 8 && strstr($pt, "\n") === false;
     }
 
     public function Parse($result, $parser, $state, $scope)
@@ -58,6 +58,7 @@ class WikiCreditTag extends LinkTag {
                     break;
             }
         }
+        $state->SkipWhitespace();
         $result->AddMeta('WikiCredit', $credit);
         return '';
     }

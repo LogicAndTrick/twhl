@@ -41,6 +41,7 @@ class WikiLinkTag extends LinkTag {
             $url = act('wiki', 'page', WikiRevision::CreateSlug($page));
             return '<a href="' . $parser->CleanUrl($url) . '">' . $text . '</a>';
         } else {
+            $state->Seek($index, true);
             return false;
         }
     }

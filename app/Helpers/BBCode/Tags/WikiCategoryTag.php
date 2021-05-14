@@ -30,6 +30,7 @@ class WikiCategoryTag extends LinkTag {
             $state->Seek($index, true);
             return false;
         }
+        $state->SkipWhitespace();
         $result->AddMeta('WikiCategory', $str);
         return '';
     }

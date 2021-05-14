@@ -17,7 +17,7 @@ class WikiArchiveTag extends LinkTag {
     {
         $peekTag = $state->Peek(9);
         $pt = $state->PeekTo(']');
-        return $peekTag == '[archive:' && $pt && strlen($pt) > 5 && strstr($pt, "\n") === false;
+        return $peekTag == '[archive:' && $pt && strlen($pt) > 9 && strstr($pt, "\n") === false;
     }
 
     public function Parse($result, $parser, $state, $scope)
@@ -64,6 +64,7 @@ class WikiArchiveTag extends LinkTag {
         if ($credit->wayback_url && $credit->url && !Str::startsWith($credit->wayback_url, ['http://', 'https://'])) {
             $credit->wayback_url = "https://web.archive.org/web/{$credit->wayback_url}/{$credit->url}";
         }
+        $state->SkipWhitespace();
         $result->AddMeta('WikiCredit', $credit);
         return '';
     }
