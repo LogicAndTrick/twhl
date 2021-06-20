@@ -183,7 +183,7 @@ class Parser
             foreach ($inscope as $t) {
                 if ($t->Matches($state, $token)) {
                     $parsed = $t->Parse($result, $this, $state, $scope);
-                    if ($parsed) {
+                    if ($parsed !== false && $parsed !== null) {
                         $str .= $parsed;
                         $found = true;
                         break;
