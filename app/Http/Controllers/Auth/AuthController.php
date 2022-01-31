@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller {
 
@@ -26,7 +27,15 @@ class AuthController extends Controller {
 	public function getLogin() { return $this->showLoginForm(); }
 	public function postLogin(Request $request) { return $this->login($request); }
 
-	public function getLogout(Request $request) {
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        throw ValidationException::withMessages([
+            $this->username() => [trans('auth.failed')],
+        ])->redirectTo("/auth/login");
+    }
+
+
+    public function getLogout(Request $request) {
         // Verify CSRF token to avoid trolls (aka potatis_invalid)
         $token = $request->input('_token');
 
