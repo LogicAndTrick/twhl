@@ -12,7 +12,7 @@
     "cross-env": "^7.0.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",
-    "jquery.appear": "git+https://github.com/morr/jquery.appear.git",
+    "jquery-appear-original": "^0.6.2",
     "laravel-mix": "^6.0.24",
     "lodash": "^4.17.21",
     "popper.js": "^1.16.1",
@@ -25,7 +25,6 @@
     "vue-template-compiler": "^2.6.14"
   },
   "dependencies": {
-    "jquery-appear-original": "git+https://github.com/morr/jquery.appear.git",
     "js-cookie": "^2.2.1"
   }
 }

@@ -2,7 +2,7 @@ const mix = require('laravel-mix');
 
 mix.scripts([
         'node_modules/jquery/dist/jquery.js',
-        'node_modules/jquery.appear/jquery.appear.js',            // Lazy loading vault embeds
+        'node_modules/jquery-appear-original/index.js',            // Lazy loading vault embeds
         'node_modules/js-cookie/src/js.cookie.js',
         'resources/assets/js/lib/jquery.plugin.js',               // Required for countdown
         'resources/assets/js/lib/jquery.countdown.js',            // Compo pages
