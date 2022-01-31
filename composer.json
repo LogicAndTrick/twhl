@@ -7,7 +7,7 @@
 	"require": {
 		"laravel/framework": "^8.0",
 		"laravel/ui": "^3.0",
-        "biscolab/laravel-recaptcha": "^4.2",
+        "biscolab/laravel-recaptcha": "^5.0",
         "ext-gd": "*"
     },
 	"require-dev": {
