@@ -24,6 +24,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/wiki') }}">Wiki</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vault') }}">Vault</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/competition') }}">Competitions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://discord.gg/jEw8EqD">Discord</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{{ url('/') }}" data-toggle="dropdown">
                             More...
