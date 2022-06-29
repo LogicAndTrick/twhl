@@ -10,7 +10,7 @@ mix.scripts([
         'resources/assets/js/lib/jquery.ba-throttle-debounce.js',
         'resources/assets/js/lib/Chart.js',                       // Poll results
         'node_modules/bootstrap/dist/js/bootstrap.bundle.js',
-        'node_modules/vue/dist/vue.js',
+        'node_modules/vue/dist/vue.min.js',
         'resources/assets/js/lib/bootbox.js',
         'resources/assets/js/lib/dropzone.js',
         'node_modules/select2/dist/js/select2.js',
@@ -34,7 +34,7 @@ mix.scripts([
         "resources/assets/js/boot/wikicode-preview.js"
     ], 'public/js/all.js')
     .sass('resources/assets/sass/app.scss', 'public/css')
-         .options({
-              processCssUrls: false
-           })
+    .options({
+        processCssUrls: false
+    })
     .version();
