@@ -1,5 +1,7 @@
 <?php namespace App\Helpers;
 
+use Carbon\Carbon;
+
 class Egg
 {
     static function GetEggClass()
@@ -71,7 +73,7 @@ class Egg
         $adv = Egg::$words['adverbs'];
         $adj = Egg::$words['adjectives'];
         $uni = Egg::$words['units'];
-        $time = floor(2 + pow(mt_rand() / mt_getrandmax(), 2.5) * 1998);
+        $time = round((microtime(true) - LARAVEL_START) * 1000);
         return 'Processed in ' . $adv[array_rand($adv)] . ' ' . $adj[array_rand($adj)] . ' ' . $time . ' ' . $uni[array_rand($uni)] . '.';
     }
 
