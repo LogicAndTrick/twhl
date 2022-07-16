@@ -101,7 +101,7 @@
             {{ $thread->getUnpostableReason() }}
         </div>
     @else
-        @if (Date::DiffDays(Date::Now(), $thread->last_post->updated_at) > 90)
+        @if (Date::DiffDays(Date::Now(), $thread->last_post ? $thread->last_post->updated_at : $thread->updated_at) > 90)
             <div class="alert alert-warning">
                 Careful! This thread is over 90 days old, and bumping it will cause it to become postable again.
             </div>
