@@ -61,14 +61,17 @@ class WikiController extends Controller {
     }
 
     public function getCategories() {
-        $sql = 'from wiki_revision_metas as m inner join wiki_revisions as r on m.revision_id = r.id where r.is_active = ? and m.key = ?';
-        $param = [ true, WikiRevisionMeta::CATEGORY ];
+        $sql = 'from wiki_revision_metas as m
+                inner join wiki_revisions as r on m.revision_id = r.id
+                inner join wiki_objects as o on o.id = r.object_id
+                where r.is_active = ? and m.key = ? and o.type_id = ?';
+        $param = [ true, WikiRevisionMeta::CATEGORY, WikiType::PAGE ];
         $count = DB::select("select COUNT(distinct m.value) as count $sql", $param)[0]->count;
 
         $page = intval(Request::get('page')) ?: 1;
         $offset = ($page - 1) * 50;
 
-        $cats = DB::select("select distinct m.value as value $sql order by r.title limit 50 offset $offset", $param);
+        $cats = DB::select("select distinct m.value as value $sql order by m.value limit 50 offset $offset", $param);
         $categories = new LengthAwarePaginator($cats, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);
 
         foreach ($cats as $c) {
