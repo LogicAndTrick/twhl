@@ -30,8 +30,11 @@
 @else
     <div class="card card-outline-info">
         <div class="card-body">
-            No information for this category has been entered yet. You can change this by creating the category page by
-            <a href="{{ act('wiki', 'create', 'category:'.$cat_name) }}">clicking here</a>.
+            No information for this category has been entered yet.
+            @auth
+                You can change this by creating the category page by
+                <a href="{{ act('wiki', 'create', 'category:'.$cat_name) }}">clicking here</a>.
+            @endauth
         </div>
     </div>
 @endif
