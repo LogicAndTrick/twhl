@@ -173,7 +173,7 @@ class WikiController extends Controller {
                         and r.id in ($catpage_filter) and r.deleted_at is null
                     )
                     group by `value`
-                ", [ WikiRevisionMeta::CATEGORY, WikiRevisionMeta::CATEGORY, $cat_num ]);
+                ", [ WikiRevisionMeta::CATEGORY ]);
         }
 
         $upload = null;

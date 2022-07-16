@@ -39,7 +39,7 @@ $(function() {
                         var p = data.pages[po];
                         var pl = c.find('a[href*="://' + window.location.host + '/wiki/page/"]').filter(function (i, x) {
                             var hr = decodeURIComponent(x.href), uc = '://' + window.location.host + '/wiki/page/' + p.slug;
-                            return hr && hr.toLowerCase().indexOf(uc.toLowerCase()) >= 0;
+                            return hr && hr.toLowerCase().endsWith(uc.toLowerCase());
                         });
                         if (!p.exists) pl.addClass('text-danger').attr('title', 'Page does not exist yet - click to create it');
                         else pl.attr('title', p.revision.title);
