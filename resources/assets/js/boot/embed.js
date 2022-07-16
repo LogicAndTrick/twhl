@@ -46,7 +46,7 @@ var embed_callbacks = {
                 user_url: template(window.urls.view.user, data.user),
                 user_avatar: data.user.avatar_inline,
                 user_name: data.user.name,
-                created: readableTime(Date.parse(data.updated_at)),
+                created: readableTime(Date.parse(data.created_at)),
                 category: data.vault_category.name,
                 game_abbr: data.game.abbreviation,
                 game_name: data.game.name,
