@@ -1,33 +1,48 @@
 
 $(function() {
 
-    var round = function (val, num)
+    const round = function (val, num)
     {
-        var pow = Math.pow(10, num);
+        const pow = Math.pow(10, num);
         return Math.round(val * pow) / pow;
     }
 
-    var format_filesize = function(bytes)
+    const format_filesize = function(bytes)
     {
         if (bytes < 1024) return bytes + 'b';
-        var kbytes = bytes / 1024;
+        const kbytes = bytes / 1024;
         if (kbytes < 1024) return round(kbytes, 2) + 'kb';
-        var mbytes = kbytes / 1024;
+        const mbytes = kbytes / 1024;
         if (mbytes < 1024) return round(mbytes, 2) + 'mb';
-        var gbytes = mbytes / 1024;
+        const gbytes = mbytes / 1024;
         if (gbytes < 1024) return round(gbytes, 2) + 'gb';
-        var tbytes = gbytes / 1024;
+        const tbytes = gbytes / 1024;
         if (tbytes < 1024) return round(tbytes, 2) + 'tb';
-        var pbytes = tbytes / 1024;
+        const pbytes = tbytes / 1024;
         return round(pbytes, 2) + 'pb';
     }
 
     const c = $('.wiki.bbcode');
     if (c.length === 1) {
-        var pages = Array.from(new Set(c.find('a[href*="://' + window.location.host + '/wiki/page/"]').map(function (i, x) { return decodeURIComponent(x.href.replace(/^.*\//ig, '')); }).filter(function (i, x) { return !x.match(/^category:/ig); })));
-        var embeds = Array.from(new Set(c.find('.embedded-inline.download a').map(function (i, x) { return decodeURIComponent(x.href.replace(/^.*\//ig, '')); })));
+        const pages = Array.from(new Set(c.find('a[href*="://' + window.location.host + '/wiki/page/"]')
+            .map(function (i, x) {
+                /** @var string */
+                let url = x.href;
+                if (url.indexOf('#') >= 0) {
+                    const spl = url.split('#');
+                    url = spl[0];
+                }
+                return decodeURIComponent(url.replace(/^.*\//ig, ''));
+            })
+            .filter(function (i, x) {
+                return !x.match(/^category:/ig);
+            })));
+        const embeds = Array.from(new Set(c.find('.embedded-inline.download a')
+            .map(function (i, x) {
+                return decodeURIComponent(x.href.replace(/^.*\//ig, ''));
+            })));
         if (pages.length > 0 || embeds.length > 0) {
-            var data = {pages: pages, embeds: embeds};
+            const data = {pages: pages, embeds: embeds};
             $.ajax({
                 type: "POST",
                 url: '/api/wiki-objects/page-information',
