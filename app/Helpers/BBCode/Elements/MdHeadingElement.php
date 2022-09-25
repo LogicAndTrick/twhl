@@ -2,6 +2,9 @@
 
 namespace App\Helpers\BBCode\Elements;
  
+use App\Helpers\BBCode\ParseResult;
+use Illuminate\Support\Arr;
+
 class MdHeadingElement extends Element {
 
     public $parser;
@@ -32,9 +35,24 @@ class MdHeadingElement extends Element {
         return $el;
     }
 
+    static function getUniqueAnchor(ParseResult $result, int $level, string $text) : string
+    {
+        $id = preg_replace('%[^\da-z?/:@\-._~!$&\'()*+,;=]%i', '_', $text);
+        $anchor = $id;
+        $inc = 1;
+        do {
+            // Find duplicate
+            $dup = Arr::first($result->GetMeta('Heading'), fn($x) => $x['id'] === $anchor);
+            if (!$dup) break;
+            $inc++;
+            $anchor = "{$id}_{$inc}";
+        } while (true);
+        return $anchor;
+    }
+
     function Parse($result, $scope)
     {
-        $id = uniqid('h');
+        $id = MdHeadingElement::getUniqueAnchor($result, $this->level, $this->text);
         $result->AddMeta('Heading', [
             'level' => $this->level,
             'text' => $this->text,
