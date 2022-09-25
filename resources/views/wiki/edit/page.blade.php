@@ -18,6 +18,7 @@
     </ol>
 
     @form(wiki/edit upload=true)
+        <span class="d-none" id="promptForm"></span>
         @hidden(id $revision)
         @if ($revision->wiki_object->type_id == \App\Models\Wiki\WikiType::PAGE)
             @text(title $revision) = Page Title
@@ -34,4 +35,9 @@
         @endif
         @submit = Edit Page
     @endform
+
+    <script>
+        const form = document.getElementById('promptForm');
+        if (form) promptWhenClosing(form.closest('form'));
+    </script>
 @endsection

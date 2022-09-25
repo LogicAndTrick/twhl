@@ -28,6 +28,7 @@ function insertIntoInput(textarea, template, cursor, cursor2, force_newline) {
     textarea[0].setSelectionRange(cstart, cend);
 }
 
+// noinspection JSAnnotator
 var buttons = [
     [
         { icon: 'bold', title: 'Bold text', template: '*CUR1*', cur1: 'bold text', cur2: '' },
@@ -233,3 +234,29 @@ $(function() {
         $t.val(text);
     });
 });
+
+const promptWhenClosing = function (form) {
+    const names = ['title', 'file', 'content_text'];
+    let changed = new Set();
+
+    const watch = function (input) {
+        const initial = input.value || '';
+        input.addEventListener('input', () => {
+            const current = input.value || '';
+            if (initial === current) changed.delete(input);
+            else changed.add(input);
+        });
+    };
+
+    for (const name of names) {
+        const el = form.querySelector(`[name="${name}"]`);
+        if (el) watch(el);
+    }
+
+    window.addEventListener('beforeunload', event => {
+        if (changed.size > 0) {
+            event.preventDefault();
+            event.returnValue = "Your changes to the page have not been saved. Close anyway?";
+        }
+    });
+};
