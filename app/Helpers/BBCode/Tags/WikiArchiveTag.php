@@ -39,7 +39,7 @@ class WikiArchiveTag extends LinkTag {
         $credit = new WikiRevisionCredit();
         $credit->type = WikiRevisionCredit::ARCHIVE;
 
-        $sections = explode('|', $str);
+        $sections = explode('|', htmlspecialchars_decode($str));
         foreach ($sections as $section) {
             $spl = explode(':', $section, 2);
             $key = $spl[0];
@@ -55,7 +55,7 @@ class WikiArchiveTag extends LinkTag {
                     $credit->url = $val;
                     break;
                 case 'wayback':
-                    $credit->wayback_url = intval($val);
+                    $credit->wayback_url = is_numeric($val) ? intval($val) : $val;
                     break;
                 case 'full':
                     $credit->type = WikiRevisionCredit::FULL;

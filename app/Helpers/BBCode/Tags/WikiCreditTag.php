@@ -38,7 +38,7 @@ class WikiCreditTag extends LinkTag {
         $credit = new WikiRevisionCredit();
         $credit->type = WikiRevisionCredit::CREDIT;
 
-        $sections = explode('|', $str);
+        $sections = explode('|', htmlspecialchars_decode($str));
         foreach ($sections as $section) {
             $spl = explode(':', $section, 2);
             $key = $spl[0];
