@@ -31,7 +31,7 @@ class WikiCategoryTag extends LinkTag {
             return false;
         }
         $state->SkipWhitespace();
-        $result->AddMeta('WikiCategory', $str);
+        $result->AddMeta('WikiCategory', trim($str));
         return '';
     }
 }
