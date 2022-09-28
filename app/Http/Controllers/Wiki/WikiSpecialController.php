@@ -106,9 +106,53 @@ class WikiSpecialController extends Controller {
            limit 50
        ");
         return view('wiki/special/page', [
-            'title' => 'Missing files',
+            'title' => 'Content warnings',
             'sections' => [
                 [ 'title' => 'Long-style links to internal pages', 'data' => $pages, 'type' => 'revisions' ]
+            ]
+        ]);
+    }
+
+    public function getMaintenanceCredits() {
+        $archived_text = "TWHL only archives articles from defunct websites. For more information on TWHL's archiving efforts";
+        $old_archive_pages = DB::select("
+            select wr.*
+            from wiki_revisions wr
+            inner join wiki_objects wo on wr.object_id = wo.id
+            where wr.is_active = 1
+            and wr.deleted_at is null
+            and wo.deleted_at is null
+            and wr.content_text like CONCAT('%', ?, '%')
+            limit 50
+        ", [ $archived_text ]);
+        $book_pages_nocredits = DB::select("
+            select wr.*
+            from wiki_revisions wr
+            inner join wiki_objects wo on wr.object_id = wo.id
+            where wr.is_active = 1
+            and wr.deleted_at is null
+            and wo.deleted_at is null
+            and wr.content_text like '%[book:%'
+            and wr.content_text not like '%[credit:%'
+            limit 50
+        ");
+        $tutorials_nocredits = DB::select("
+            select wr.*
+            from wiki_revisions wr
+            inner join wiki_objects wo on wr.object_id = wo.id
+            where wr.is_active = 1
+            and wr.deleted_at is null
+            and wo.deleted_at is null
+            and wr.title like 'Tutorial:%'
+            and wr.content_text not like '%[credit:%'
+            limit 50
+        ");
+        return view('wiki/special/page', [
+            'title' => 'Missing credits',
+            'sections' => [
+                [ 'title' => 'Archived articles not using new archive credits tag', 'data' => $old_archive_pages, 'type' => 'revisions' ],
+                [ 'title' => 'Book pages with no credits', 'data' => $book_pages_nocredits, 'type' => 'revisions' ],
+                [ 'title' => 'Tutorials with no credits', 'data' => $tutorials_nocredits, 'type' => 'revisions' ],
             ]
         ]);
     }
