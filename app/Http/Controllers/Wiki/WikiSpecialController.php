@@ -114,7 +114,6 @@ class WikiSpecialController extends Controller {
     }
 
     public function getMaintenanceCredits() {
-        $archived_text = "TWHL only archives articles from defunct websites. For more information on TWHL's archiving efforts";
         $old_archive_pages = DB::select("
             select wr.*
             from wiki_revisions wr
@@ -122,9 +121,9 @@ class WikiSpecialController extends Controller {
             where wr.is_active = 1
             and wr.deleted_at is null
             and wo.deleted_at is null
-            and wr.content_text like CONCAT('%', ?, '%')
+            and wr.content_text like '%TWHL only archives articles from defunct websites. For more information on TWHL\'s archiving efforts%'
             limit 50
-        ", [ $archived_text ]);
+        ");
         $book_pages_nocredits = DB::select("
             select wr.*
             from wiki_revisions wr
