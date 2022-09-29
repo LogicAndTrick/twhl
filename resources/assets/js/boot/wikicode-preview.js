@@ -239,6 +239,13 @@ const promptWhenClosing = function (form) {
     const names = ['title', 'file', 'content_text'];
     let changed = new Set();
 
+    const promptBeforeUnloadListener = event => {
+        if (changed.size > 0) {
+            event.preventDefault();
+            event.returnValue = "Your changes to the page have not been saved. Close anyway?";
+        }
+    };
+
     const watch = function (input) {
         const initial = input.value || '';
         input.addEventListener('input', () => {
@@ -253,10 +260,10 @@ const promptWhenClosing = function (form) {
         if (el) watch(el);
     }
 
-    window.addEventListener('beforeunload', event => {
-        if (changed.size > 0) {
-            event.preventDefault();
-            event.returnValue = "Your changes to the page have not been saved. Close anyway?";
-        }
+    window.addEventListener('beforeunload', promptBeforeUnloadListener);
+
+    // Remove the prompt if submitting the form
+    form.addEventListener('submit', () => {
+        window.removeEventListener('beforeunload', promptBeforeUnloadListener);
     });
 };
