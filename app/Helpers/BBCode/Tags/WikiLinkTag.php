@@ -41,7 +41,7 @@ class WikiLinkTag extends LinkTag {
             if (str_contains($page, '#')) {
                 $spl = explode('#', $page, 2);
                 $page = $spl[0];
-                $hash = '#' . $spl[1];
+                $hash = '#' . preg_replace('%[^\da-z?/:@\-._~!$&\'()*+,;=]%i', '_', $spl[1]);
             }
             $result->AddMeta('WikiLink', $page);
             $url = act('wiki', 'page', WikiRevision::CreateSlug($page)) . $hash;
