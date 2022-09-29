@@ -37,16 +37,16 @@ class WikiFileTag extends Tag {
             $state->Seek($index, true);
             return false;
         }
-        $str = $state->ScanTo(']');
+        $str = htmlspecialchars_decode($state->ScanTo(']'));
         if ($state->Next() != ']') {
             $state->Seek($index, true);
             return false;
         }
 
         if (preg_match('/^([^#\]]+?)(?:\|([^\]]*?))?$/i', $str, $regs)) {
-        	$page = htmlspecialchars_decode($regs[1]);
+        	$page = $regs[1];
             $result->AddMeta('WikiUpload', $page);
-            $text = isset($regs[2]) && $regs[2] ? $regs[2] : $page;
+            $text = isset($regs[2]) && $regs[2] ? $regs[2] : htmlspecialchars($page);
             $slug = WikiRevision::CreateSlug($page);
             $url = act('wiki', 'embed', $slug);
             $info_url = act('wiki', 'embed-info', $slug);
