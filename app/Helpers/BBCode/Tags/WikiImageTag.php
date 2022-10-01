@@ -89,7 +89,7 @@ class WikiImageTag extends LinkTag {
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'
                  . $this->getEmbedObject($tag, $parser, $src, $caption, $loop)
-                 . ($caption ? '<span class="caption">' . $caption . '</span>' : '')
+                 . ($caption ? '<span class="caption">' . htmlspecialchars($caption) . '</span>' : '')
                  . '</span>'
                  . ($url ? '</a>' : '')
                  . '</' . $el . '> ';
