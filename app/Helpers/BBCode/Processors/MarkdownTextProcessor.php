@@ -27,8 +27,8 @@ class MarkdownTextProcessor extends Processor {
         // post-condition: end of a line OR one of: !?^()+=[]{}"'<>,.:; OR whitespace
         $post = "(?=$break_chars|\$|[:;])%imu";
 
-        // Code
-        $text = preg_replace("{$pre}`{$mid}`{$post}", '<code>$1</code>', $text);
+        // Code (base64 it to prevent additional processing)
+        $text = preg_replace_callback("{$pre}`{$mid}`{$post}", function($g){ $e=base64_encode($g[1]); return "<code mdtpb64>{$e}</code>"; }, $text);
 
         // Bold
         $text = preg_replace("{$pre}\*{$mid}\*{$post}", '<strong>$1</strong>', $text);
@@ -41,6 +41,9 @@ class MarkdownTextProcessor extends Processor {
 
         // Strikethrough
         $text = preg_replace("{$pre}~{$mid}~{$post}", '<span class="strikethrough">$1</span>', $text);
+
+        // Un-base64 the md code blocks
+        $text = preg_replace_callback('%<code mdtpb64>(.*?)</code>%si', function($g){ $d=base64_decode($g[1]); return "<code>{$d}</code>"; }, $text);
 
         return $text;
     }
