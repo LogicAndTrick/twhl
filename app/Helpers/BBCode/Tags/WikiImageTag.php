@@ -65,7 +65,7 @@ class WikiImageTag extends LinkTag {
                 if ($this->IsClass($l)) $classes[] = $l;
                 else if ($l === 'loop') $loop = true;
                 else if (strlen($l) > 4 && substr($l, 0, 4) == 'url:') $url = trim(substr($p, 4));
-                else $caption = trim($p);
+                else $caption = htmlspecialchars_decode(trim($p));
             }
             if ($tag == 'img' && $url && $this->ValidateUrl($url)) {
                 if (!preg_match('%^[a-z]{2,10}://%i', $url)) {
@@ -85,7 +85,7 @@ class WikiImageTag extends LinkTag {
                 $el = 'div';
             }
 
-            return ' <' . $el . ' class="' . implode(' ', $classes) . '"'.($caption ? ' title="'. $caption . '"' : '').'>'
+            return ' <' . $el . ' class="' . implode(' ', $classes) . '"'.($caption ? ' title="'. htmlspecialchars($caption) . '"' : '').'>'
                  . ($url ? '<a href="' . $parser->CleanUrl($url) . '">' : '')
                  . '<span class="caption-panel">'
                  . $this->getEmbedObject($tag, $parser, $src, $caption, $loop)
