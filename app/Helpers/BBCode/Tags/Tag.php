@@ -52,7 +52,7 @@ class Tag
                 $options[$this->main_option] = substr($optionsString, 1);
             } else {
                 if ($optionsString[0] == '=') $optionsString = $this->main_option . $optionsString;
-                preg_match_all('/(?=\s|^)\s*([^ ]+?)=([^\s]*)\b(?!=)/sim', $optionsString, $res, PREG_SET_ORDER);
+                preg_match_all('/(?=\s|^)\s*([^ ]+?)=([^\s]*)(?=\s|$)(?!=)/sim', $optionsString, $res, PREG_SET_ORDER);
                 for ($i = 0; $i < count($res); $i++) {
                     $name = trim($res[$i][1]);
                     $value = trim($res[$i][2]);
