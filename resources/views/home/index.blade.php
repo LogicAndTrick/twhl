@@ -117,6 +117,24 @@
                         @endif
                     </ul>
                 </div>
+                <div class="slot px-3">
+                    <h3>Let's get started!</h3>
+                    <p class="mb-1">Ready to start modding? Our <a href="{{ act('wiki', 'index') }}">wiki</a> has all the information you need! Start here:</p>
+                    <ul class="mb-2">
+                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('Tools and Resources')) }}"><span class="fa fa-rocket"></span> Tools and Resources</a></li>
+                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Tutorials')) }}"><span class="fa fa-book"></span> Tutorials</a></li>
+                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Entity Guides')) }}"><span class="fa fa-info-circle"></span> Entity Guides</a></li>
+                    </ul>
+<?php
+                    $wiki_spotlight = $wiki_articles['featured_tutorials'][0];
+?>
+                    @if ($wiki_spotlight)
+                        <div class="text-center">
+                            <span class="fa fa-star"></span> Today's featured tutorial:<br/>
+                            <a href="{{ act('wiki', 'page', $wiki_spotlight->slug) }}">{{ $wiki_spotlight->title }}</a>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
