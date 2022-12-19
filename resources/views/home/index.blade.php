@@ -44,6 +44,7 @@
                         Welcome back!
                         <a class="btn btn-outline-primary btn-xs hidden-md-down" href="{{ act('user', 'view', Auth::user()->id) }}">My profile</a>
                     </h1>
+                    <div class="slot d-none"></div>
                 @endif
                 <div class="slot">
                     @if (Auth::check())
@@ -117,7 +118,7 @@
                         @endif
                     </ul>
                 </div>
-                <div class="slot px-3">
+                <div class="slot px-3" style="border-width: 4px;">
                     <h3>Let's get started!</h3>
                     <p class="mb-1">Ready to start modding? Our <a href="{{ act('wiki', 'index') }}">wiki</a> has all the information you need! Start here:</p>
                     <ul class="mb-2">
