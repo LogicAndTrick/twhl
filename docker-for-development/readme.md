@@ -2,6 +2,7 @@ Delete your `.env` file if you have one and run this in Bash or PowerShell to bu
 ```
 docker compose up
 ```
+The web server can then be reached at http://localhost:82 .
 
 To install the Composer dependencies and create the `.env` file (if it does not exist), run:
 ```
