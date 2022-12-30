@@ -1,5 +1,6 @@
-/vendor
-/node_modules
 /.idea
+/docker-for-development/mysql-data
+/node_modules
+/vendor
 .env
 composer.phar

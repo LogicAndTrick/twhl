@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use DB;
+
 class DeleteEverythingSeeder extends \Illuminate\Database\Seeder
 {
 

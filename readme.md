@@ -9,7 +9,8 @@ TWHL is a mapping and modding resource website for the Half-Life and Source engi
 TWHL4 uses the [Laravel](http://laravel.com/) framework. Detailed instructions can be found
 in the Laravel docs, but here's the basic steps:
 
-1. Get an Apache environment with MySQL (5.5+) and PHP (7.3+)
+0. If you know how to use Docker, see the [docker-for-development](docker-for-development/readme.md) folder and skip many of the following steps.
+1. Get an Apache environment with MySQL (5.5+) and PHP (8+)
    - The easiest way to do this is to download [XAMPP](https://www.apachefriends.org/index.html)
    for your platform and follow the install instructions.
    - Put the **php**/**php.exe** executable path into your system's environment variables
