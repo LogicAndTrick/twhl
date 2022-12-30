@@ -13,17 +13,17 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 
-        $this->call('DeleteEverythingSeeder');
-        $this->call('UserTableSeeder');
-        $this->call('WikiTableSeeder');
-        $this->call('VaultTableSeeder');
-        $this->call('ShoutTableSeeder');
-        $this->call('PollTableSeeder');
-        $this->call('NewsTableSeeder');
-        $this->call('MessageTableSeeder');
-        $this->call('ForumTableSeeder');
-        $this->call('JournalTableSeeder');
-        $this->call('CompetitionTableSeeder');
+        $this->call(\Database\Seeders\DeleteEverythingSeeder::class);
+        $this->call(\Database\Seeders\UserTableSeeder::class);
+        $this->call(\Database\Seeders\WikiTableSeeder::class);
+        $this->call(\Database\Seeders\VaultTableSeeder::class);
+        $this->call(\Database\Seeders\ShoutTableSeeder::class);
+        $this->call(\Database\Seeders\PollTableSeeder::class);
+        $this->call(\Database\Seeders\NewsTableSeeder::class);
+        $this->call(\Database\Seeders\MessageTableSeeder::class);
+        $this->call(\Database\Seeders\ForumTableSeeder::class);
+        $this->call(\Database\Seeders\JournalTableSeeder::class);
+        $this->call(\Database\Seeders\CompetitionTableSeeder::class);
 	}
 
 }
