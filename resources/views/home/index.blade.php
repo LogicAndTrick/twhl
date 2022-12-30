@@ -127,7 +127,7 @@
                         <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Entity Guides')) }}"><span class="fa fa-info-circle"></span> Entity Guides</a></li>
                     </ul>
 <?php
-                    $wiki_spotlight = $wiki_articles['featured_tutorials'][0];
+                    $wiki_spotlight = count($wiki_articles['featured_tutorials']) > 0 ? $wiki_articles['featured_tutorials'][0] : null;
 ?>
                     @if ($wiki_spotlight)
                         <div class="text-center">
