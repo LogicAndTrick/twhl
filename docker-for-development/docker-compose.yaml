@@ -1,0 +1,37 @@
+name: twhl-dev
+services:
+  db:
+    container_name: twhl-dev-mysql
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=twhl
+      - MYSQL_ROOT_PASSWORD=cs_canbunk2
+    image: mysql:8.0
+#    ports:
+#      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+  node:
+    container_name: twhl-dev-node
+    build:
+      context: ./node
+    image: twhl-dev/node
+    volumes:
+       - ../:/var/twhl
+  php-apache:
+    build:
+      context: ./php-apache
+    container_name: twhl-dev-php-apache
+    environment:
+      - DB_DATABASE=twhl
+      - DB_HOST=twhl-mysql-db
+      - DB_PASSWORD=cs_canbunk2
+      - DB_USER=root
+    image: twhl-dev/php-apache
+    links:
+      - "db:twhl-mysql-db"
+    ports:
+      - "82:80"
+    volumes:
+      - ../:/var/www/html/twhl
+      - ./php-apache/twhl-dev-php-conf.d:/usr/local/etc/php/conf.d
