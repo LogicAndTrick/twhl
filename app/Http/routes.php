@@ -49,7 +49,8 @@ $controllers = [
     'poll' => 'Polls\PollController',
 
     'api' => 'Api\ApiController',
-    'search' => 'Search\SearchController'
+    'search' => 'Search\SearchController',
+    'opensearch.xml' => 'Search\OpenSearchDescriptionController'
 ];
 
 \App\Helpers\Routing::controllers($controllers);
