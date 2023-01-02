@@ -25,13 +25,18 @@ use App\Models\Forums\ForumThread;
 use App\Models\Game;
 use App\Models\License;
 use App\Models\Shout;
+use App\Models\Vault\Motm;
 use App\Models\Vault\VaultCategory;
 use App\Models\Vault\VaultInclude;
 use App\Models\Vault\VaultItem;
+use App\Models\Vault\VaultItemReview;
 use App\Models\Vault\VaultScreenshot;
 use App\Models\Vault\VaultType;
 use App\Models\Wiki\WikiObject;
+use App\Models\Wiki\WikiPageInformation;
 use App\Models\Wiki\WikiRevision;
+use App\Models\Wiki\WikiRevisionBook;
+use App\Models\Wiki\WikiRevisionCredit;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use Carbon\Carbon;
@@ -234,7 +239,7 @@ class ApiController extends Controller {
                     'content_text' => [ 'required' => true, 'type' => 'string', 'description' => 'The text of the page to create']
                 ],
                 'put' => [
-                    'id' => [ 'required' => true, 'type' => 'int', 'description' => 'The id of the revision to edit' ],
+                    'id' => [ 'required' => true, 'type' => 'integer', 'description' => 'The id of the revision to edit' ],
                     'title' => [ 'required' => true, 'type' => 'string', 'description' => 'The title of the page to edit' ],
                     'content_text' => [ 'required' => true, 'type' => 'string', 'description' => 'The new text of the page'],
                     'message' => [ 'required' => false, 'type' => 'string', 'description' => 'The change message']
@@ -282,12 +287,17 @@ class ApiController extends Controller {
                     'response' => [
                         'description' => 'Page information',
                         'schema' => [
-                            'type' => 'array'
+                            'type' => 'array',
+                            'items'=> [ '$ref' => '#/definitions/WikiPageInformation' ],
                         ]
                     ]
                 ]
             ],
             'allow_unauthenticated' => true
+        ],
+        'wiki-page-information' => [
+            'description' => 'Wiki Page Information',
+            'object' => WikiPageInformation::class,
         ],
         'wiki-revision-metas' => [
             'description' => 'Wiki Revision Metas',
@@ -306,6 +316,14 @@ class ApiController extends Controller {
             'sort_column' => 'id',
             'allowed_sort_columns' => [],
             'default_filters' => []
+        ],
+        'wiki-revision-book' => [
+            'description' => 'Wiki Revision Books',
+            'object' => WikiRevisionBook::class,
+        ],
+        'wiki-revision-credit' => [
+            'description' => 'Wiki Revision Credits',
+            'object' => WikiRevisionCredit::class,
         ],
         'vault-categories' => [
             'description' => 'Vault Categories',
@@ -377,6 +395,14 @@ class ApiController extends Controller {
             'allowed_sort_columns' => ['updated_at'],
             'default_filters' => []
         ],
+        'vault-item-review' => [
+            'description' => 'Vault Item Reviews',
+            'object' => VaultItemReview::class,
+        ],
+        'motm' => [
+            'description' => 'Map of the Month',
+            'object' => Motm::class,
+        ],
         'competitions' => [
             'description' => 'Competitions',
             'expand' => ['status', 'type', 'judge_type'],
@@ -384,7 +410,7 @@ class ApiController extends Controller {
             'auth' => [],
             'parameters' => [
                 'get' => [
-                    'status_id' => [ 'type' => 'integer', 'description', 'The status ID of the competition']
+                    'status_id' => [ 'type' => 'integer', 'description' => 'The status ID of the competition']
                 ]
             ],
             'object' => Competition::class,
@@ -513,7 +539,7 @@ class ApiController extends Controller {
             'auth' => [],
             'parameters' => [
                 'post' => [
-                    'image' => [ 'required' => true, 'type' => 'binary', 'description' => 'The image data. Maximum size: 2MB' ]
+                    'image' => [ 'required' => true, 'type' => 'string', 'format' => 'binary', 'description' => 'The image data. Maximum size: 2MB' ]
                 ]
             ],
             'object' => \stdClass::class,
@@ -591,7 +617,7 @@ class ApiController extends Controller {
                 if ($prop == 'id' || $prop == 'orderindex' || $prop == 'order_index' || substr($prop, -3) == '_id') {
                     $type = 'integer';
                 }
-                else if ($prop == 'created_at' || $prop == 'updated_at' || $prop == 'deleted_at' || ($obj->dates && array_search($prop, $obj->dates) !== false)) {
+                else if ($prop == 'created_at' || $prop == 'updated_at' || $prop == 'deleted_at' || (isset($obj->dates) && $obj->dates && array_search($prop, $obj->dates) !== false)) {
                     $props[$prop]['format'] = 'date-time';
                 }
                 else {
@@ -609,7 +635,7 @@ class ApiController extends Controller {
             }
             $defs[$name] = [
                 'type' => 'object',
-                'properties' => $props
+                'properties' => count($props) == 0 ? new \stdClass() : $props
             ];
         }
 
@@ -625,150 +651,152 @@ class ApiController extends Controller {
         $name = $expl[count($expl) - 1];
         $single_name = $name;
         $plural_name = $name . 's';
-        $filterCols = implode(', ', $desc['filter_columns']);
+        $filterCols = isset($desc['filter_columns']) ? implode(', ', $desc['filter_columns']) : [];
 
         if (isset($desc['object_names'])) {
             $name = $desc['object_names'][0];
             $plural_name = $desc['object_names'][1];
         }
 
-        foreach ($desc['methods'] as $method) {
-            $auth = isset($desc['auth'][$method]) ? $desc['auth'][$method] : null;
-            $params = isset($desc['parameters'][$method]) ? $desc['parameters'][$method] : [];
-            $pars = [];
-            $reqr = [];
-            foreach ($params as $k => $v) {
-                if (isset($v['required']) && $v['required'] === true) $reqr[] = $k;
-                unset($v['required']);
-                $pars[$k] = $v;
-            }
-            if ($method == 'get') {
-                $items["/$key"]['get'] = [
-                    'tags' => [$key],
-                    'operationId' => "get{$plural_name}",
-                    'consumes' => ['application/json'],
-                    'produces' => ['application/json'],
-                    'parameters' => [
-                        [ 'name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return' ],
-                        [ 'name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: '.$filterCols ],
-                        [ 'name' => 'count', 'in' => 'query', 'type' => 'integer', 'description' => 'Maximum number of results to return. Maximum is 100, default is 10' ],
-                        [ 'name' => 'sort_descending', 'in' => 'query', 'type' => 'boolean', 'description' => 'Set to true to sort in reverse order' ]
-                    ],
-                    'responses' => [
-                        200 => [
-                            'description' => 'Query result',
-                            'schema' => [
-                                'type' => 'array',
-                                'items' => [
+        if (isset($desc['methods'])) {
+            foreach ($desc['methods'] as $method) {
+                $auth = isset($desc['auth'][$method]) ? $desc['auth'][$method] : null;
+                $params = isset($desc['parameters'][$method]) ? $desc['parameters'][$method] : [];
+                $pars = [];
+                $reqr = [];
+                foreach ($params as $k => $v) {
+                    if (isset($v['required']) && $v['required'] === true) $reqr[] = $k;
+                    unset($v['required']);
+                    $pars[$k] = $v;
+                }
+                if ($method == 'get') {
+                    $items["/$key"]['get'] = [
+                        'tags' => [$key],
+                        'operationId' => "get{$plural_name}",
+                        'consumes' => ['application/json'],
+                        'produces' => ['application/json'],
+                        'parameters' => [
+                            ['name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return'],
+                            ['name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: ' . $filterCols],
+                            ['name' => 'count', 'in' => 'query', 'type' => 'integer', 'description' => 'Maximum number of results to return. Maximum is 100, default is 10'],
+                            ['name' => 'sort_descending', 'in' => 'query', 'type' => 'boolean', 'description' => 'Set to true to sort in reverse order']
+                        ],
+                        'responses' => [
+                            200 => [
+                                'description' => 'Query result',
+                                'schema' => [
+                                    'type' => 'array',
+                                    'items' => [
+                                        '$ref' => "#/definitions/$name"
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ];
+                    $items["/$key/paged"]['get'] = [
+                        'tags' => [$key],
+                        'operationId' => "get{$plural_name}Paged",
+                        'consumes' => ['application/json'],
+                        'produces' => ['application/json'],
+                        'parameters' => [
+                            ['name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return'],
+                            ['name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: ' . $filterCols],
+                            ['name' => 'count', 'in' => 'query', 'type' => 'integer', 'description' => 'Maximum number of results to return. Maximum is 100, default is 10'],
+                            ['name' => 'page', 'in' => 'query', 'type' => 'integer', 'description' => 'The page of results to return. Works alongside `count`'],
+                            ['name' => 'sort_descending', 'in' => 'query', 'type' => 'boolean', 'description' => 'Set to true to sort in reverse order']
+                        ],
+                        'responses' => [
+                            200 => [
+                                'description' => 'Paged query result',
+                                'schema' => [
+                                    'type' => 'object',
+                                    'title' => "PagedList[$name]",
+                                    'properties' => [
+                                        'items' => [
+                                            'type' => 'array',
+                                            'description' => 'The array of results',
+                                            'items' => [
+                                                '$ref' => "#/definitions/$name"
+                                            ]
+                                        ],
+                                        'total' => ['type' => 'integer', 'description' => 'The total number of items'],
+                                        'pages' => ['type' => 'integer', 'description' => 'The total number of pages'],
+                                        'page' => ['type' => 'integer', 'description' => 'The current page number']
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ];
+                    foreach ($pars as $k => $v) {
+                        $items["/$key"]['get']['parameters'][] = array_merge(['name' => $k, 'in' => 'query'], $v);
+                        $items["/$key/paged"]['get']['parameters'][] = array_merge(['name' => $k, 'in' => 'query'], $v);
+                    }
+                    if (isset($desc['allowed_sort_columns']) && count($desc['allowed_sort_columns']) > 0) {
+                        $exp = [
+                            'name' => 'sort_by',
+                            'in' => 'query',
+                            'type' => 'string',
+                            'enum' => $desc['allowed_sort_columns'],
+                            'description' => 'The column to sort the results by'
+                        ];
+                        $items["/$key"]['get']['parameters'][] = $exp;
+                        $items["/$key/paged"]['get']['parameters'][] = $exp;
+                    }
+                    if (count($desc['expand']) > 0) {
+                        $exp = [
+                            'name' => 'expand',
+                            'in' => 'query',
+                            'type' => 'string',
+                            'description' => 'CSV list of relations to expand. Expandable relationships are: ' . implode(', ', $desc['expand'])
+                        ];
+                        $items["/$key"]['get']['parameters'][] = $exp;
+                        $items["/$key/paged"]['get']['parameters'][] = $exp;
+                    }
+                    if ($auth) {
+                        $items["/$key"]['get']['x-requires-permission'] = $auth;
+                        $items["/$key/paged"]['get']['x-requires-permission'] = $auth;
+                    }
+                } else {
+
+                    $schm = [
+                        'type' => 'object',
+                        'properties' => count($pars) == 0 ? new \stdClass() : $pars
+                    ];
+                    if (count($reqr) > 0) $schm['required'] = $reqr;
+
+                    $op = $method;
+                    if ($method == 'put') $op = 'edit';
+                    else if ($method == 'post') $op = 'create';
+
+                    $items["/$key"][$method] = [
+                        'tags' => [$key],
+                        'operationId' => "{$op}{$single_name}",
+                        'consumes' => ['application/json'],
+                        'produces' => ['application/json'],
+                        'parameters' => [
+                            [
+                                'name' => "{$op}{$name}Body",
+                                'in' => 'body',
+                                'description' => 'Posted data',
+                                'schema' => $schm
+                            ]
+                        ],
+                        'responses' => [
+                            200 => [
+                                'description' => 'Operation successful',
+                                'schema' => [
                                     '$ref' => "#/definitions/$name"
                                 ]
+                            ],
+                            404 => [
+                                'description' => 'Resource not found or insufficient permissions',
+                            ],
+                            422 => [
+                                'description' => 'Validation failed'
                             ]
                         ]
-                    ]
-                ];
-                $items["/$key/paged"]['get'] = [
-                    'tags' => [$key],
-                    'operationId' => "get{$plural_name}Paged",
-                    'consumes' => ['application/json'],
-                    'produces' => ['application/json'],
-                    'parameters' => [
-                        [ 'name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return' ],
-                        [ 'name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: '.$filterCols ],
-                        [ 'name' => 'count', 'in' => 'query', 'type' => 'integer', 'description' => 'Maximum number of results to return. Maximum is 100, default is 10' ],
-                        [ 'name' => 'page', 'in' => 'query', 'type' => 'integer', 'description' => 'The page of results to return. Works alongside `count`' ],
-                        [ 'name' => 'sort_descending', 'in' => 'query', 'type' => 'boolean', 'description' => 'Set to true to sort in reverse order' ]
-                    ],
-                    'responses' => [
-                        200 => [
-                            'description' => 'Paged query result',
-                            'schema' => [
-                                'type' => 'object',
-                                'title' => "PagedList[$name]",
-                                'properties' => [
-                                    'items' => [
-                                        'type' => 'array',
-                                        'description' => 'The array of results',
-                                        'items' => [
-                                            '$ref' => "#/definitions/$name"
-                                        ]
-                                    ],
-                                    'total' => [ 'type' => 'integer', 'description' => 'The total number of items' ],
-                                    'pages' => [ 'type' => 'integer', 'description' => 'The total number of pages' ],
-                                    'page' => [ 'type' => 'integer', 'description' => 'The current page number']
-                                ]
-                            ]
-                        ]
-                    ]
-                ];
-                foreach ($pars as $k => $v) {
-                    $items["/$key"]['get']['parameters'][] = array_merge(['name' => $k, 'in' => 'query'], $v);
-                    $items["/$key/paged"]['get']['parameters'][] = array_merge(['name' => $k, 'in' => 'query'], $v);
-                }
-                if (isset($desc['allowed_sort_columns']) && count($desc['allowed_sort_columns']) > 0) {
-                    $exp = [
-                        'name' => 'sort_by',
-                        'in' => 'query',
-                        'type' => 'string',
-                        'enum' => $desc['allowed_sort_columns'],
-                        'description' => 'The column to sort the results by'
                     ];
-                    $items["/$key"]['get']['parameters'][] = $exp;
-                    $items["/$key/paged"]['get']['parameters'][] = $exp;
                 }
-                if (count($desc['expand']) > 0) {
-                    $exp = [
-                        'name' => 'expand',
-                        'in' => 'query',
-                        'type' => 'string',
-                        'description' => 'CSV list of relations to expand. Expandable relationships are: '.implode(', ', $desc['expand'])
-                    ];
-                    $items["/$key"]['get']['parameters'][] = $exp;
-                    $items["/$key/paged"]['get']['parameters'][] = $exp;
-                }
-                if ($auth) {
-                    $items["/$key"]['get']['x-requires-permission'] = $auth;
-                    $items["/$key/paged"]['get']['x-requires-permission'] = $auth;
-                }
-            } else {
-
-                $schm = [
-                    'type' => 'object',
-                    'properties' => $pars
-                ];
-                if (count($reqr) > 0) $schm['required'] = $reqr;
-
-                $op = $method;
-                if ($method == 'put') $op = 'edit';
-                else if ($method == 'post') $op = 'create';
-
-                $items["/$key"][$method] = [
-                    'tags' => [$key],
-                    'operationId' => "{$op}{$single_name}",
-                    'consumes' => ['application/json'],
-                    'produces' => ['application/json'],
-                    'parameters' => [
-                        [
-                            'name' => "{$op}{$name}Body",
-                            'in' => 'body',
-                            'description' => 'Posted data',
-                            'schema' => $schm
-                        ]
-                    ],
-                    'responses' => [
-                        200 => [
-                            'description' => 'Operation successful',
-                            'schema' => [
-                                '$ref' => "#/definitions/$name"
-                            ]
-                        ],
-                        404 => [
-                            'description' => 'Resource not found or insufficient permissions',
-                        ],
-                        422 => [
-                            'description' => 'Validation failed'
-                        ]
-                    ]
-                ];
             }
         }
         if (isset($desc['additional_methods'])) {
@@ -783,7 +811,7 @@ class ApiController extends Controller {
                 }
                 $schm = [
                     'type' => 'object',
-                    'properties' => $pars
+                    'properties' => count($pars) == 0 ? new \stdClass() : $pars
                 ];
                 if (count($reqr) > 0) $schm['required'] = $reqr;
                 $items["/$key/$n"][$add['method']] = [
