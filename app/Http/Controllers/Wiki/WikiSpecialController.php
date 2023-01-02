@@ -69,7 +69,7 @@ class WikiSpecialController extends Controller {
         return view('wiki/special/page', [
             'title' => 'Missing links',
             'sections' => [
-                [ 'title' => 'Links to missing pages', 'data' => $missing_pages, 'type' => 'revisions', 'missing_link' => true ]
+                [ 'title' => 'Links to missing pages', 'data' => $missing_pages, 'type' => 'revisions', 'missing_link' => true ],
             ]
         ]);
     }
@@ -105,10 +105,21 @@ class WikiSpecialController extends Controller {
            and wr.content_text like '%twhl.info/wiki/%'
            limit 50
        ");
+        $coza_links = DB::select("
+           select wr.*
+           from wiki_revisions wr
+           inner join wiki_objects wo on wr.object_id = wo.id
+           where wr.is_active = 1
+           and wr.deleted_at is null
+           and wo.deleted_at is null
+           and wr.content_text like '%twhl.co.za%'
+           limit 50
+       ");
         return view('wiki/special/page', [
             'title' => 'Content warnings',
             'sections' => [
-                [ 'title' => 'Long-style links to internal pages', 'data' => $pages, 'type' => 'revisions' ]
+                [ 'title' => 'Long-style links to internal pages', 'data' => $pages, 'type' => 'revisions' ],
+                [ 'title' => 'Links to twhl.co.za (old domain)', 'data' => $coza_links, 'type' => 'revisions' ],
             ]
         ]);
     }
@@ -152,6 +163,33 @@ class WikiSpecialController extends Controller {
                 [ 'title' => 'Archived articles not using new archive credits tag', 'data' => $old_archive_pages, 'type' => 'revisions' ],
                 [ 'title' => 'Book pages with no credits', 'data' => $book_pages_nocredits, 'type' => 'revisions' ],
                 [ 'title' => 'Tutorials with no credits', 'data' => $tutorials_nocredits, 'type' => 'revisions' ],
+            ]
+        ]);
+    }
+
+    public function getMaintenanceInsecure() {
+        $missing_pages = DB::select("
+            select wr.*
+            from wiki_revisions wr
+            inner join wiki_objects wo on wr.object_id = wo.id
+            where wr.is_active = 1
+            and wr.deleted_at is null
+            and wo.deleted_at is null
+            and wr.content_text like '%http://%'
+            limit 50
+   	    ");
+        return view('wiki/special/page', [
+            'title' => 'Links and embeds to non-https urls',
+            'sections' => [
+                [
+                    'title' => 'Links to non-https urls',
+                    'data' => $missing_pages,
+                    'type' => 'revisions',
+                    'details_callable' => function($x) {
+                        preg_match_all('/\bhttp:\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/im', $x->content_text, $result, PREG_PATTERN_ORDER);
+                        return $result[0];
+                    }
+                ],
             ]
         ]);
     }

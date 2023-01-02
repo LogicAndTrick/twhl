@@ -28,6 +28,18 @@
                     <em>{{ $rev->message }}</em>
                 @endif
             @endif
+            @if(isset($details_callable))
+<?php
+                    $details = call_user_func($details_callable, $rev);
+?>
+                @if ($details && count($details) > 0)
+                    <ul>
+                        @foreach($details as $d)
+                            <li>{{$d}}</li>
+                        @endforeach
+                    </ul>
+                @endif
+            @endif
         </li>
     @endforeach
 </ul>

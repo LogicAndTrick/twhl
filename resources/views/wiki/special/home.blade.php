@@ -23,6 +23,7 @@
                 <li><a href="{{ url('wiki-special/maintenance-uploads') }}">Links to missing files</a></li>
                 <li><a href="{{ url('wiki-special/maintenance-content') }}">Pages with content warnings</a></li>
                 <li><a href="{{ url('wiki-special/maintenance-credits') }}">Pages with missing credits</a></li>
+                <li><a href="{{ url('wiki-special/maintenance-insecure') }}">Links/embeds to non-https urls</a></li>
             </ul>
         </div>
         <div class="col-4">
