@@ -503,7 +503,7 @@ class WikiController extends Controller {
         });
         $max_size = 1024*4;
         $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
-        if (permission('Admin')) {
+        if (permission('WikiAdmin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';
         }
@@ -641,7 +641,7 @@ class WikiController extends Controller {
 
         $max_size = 1024*4;
         $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
-        if (permission('Admin')) {
+        if (permission('WikiAdmin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';
         }

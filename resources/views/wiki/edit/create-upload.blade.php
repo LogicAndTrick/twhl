@@ -16,7 +16,7 @@
         <ul>
             <li>Only files with these extensions can be uploaded: <strong>.jpg, .png, .gif, .mp3, .mp4</strong></li>
             <li>The size limit is <strong>4mb</strong></li>
-            @if (permission('Admin'))
+            @if (permission('WikiAdmin'))
                 <li>
                     Because you're an admin, you have a bit more freedom:
                     <ul>
