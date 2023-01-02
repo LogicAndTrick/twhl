@@ -34,7 +34,7 @@ class UpdateMotmWinners extends Command {
                             ->whereFlagRatings(true)
                             ->whereRaw('(MONTH(created_at) = ? AND YEAR(created_at) = ?)', [$month, $year])
                             ->where('stat_ratings', '>=', 5)
-                            ->orderBy('stat_average_rating', true)
+                            ->orderBy('stat_average_rating', 'desc')
                             ->limit(1)
                             ->first();
                 $winner_id = null;
