@@ -175,7 +175,7 @@ class WikiSpecialController extends Controller {
             where wr.is_active = 1
             and wr.deleted_at is null
             and wo.deleted_at is null
-            and wr.content_text like '%http://%'
+            and wr.content_html regexp '\\\\b(?<!/)http:\\\\/\\\\/[-A-Z0-9+&@#\\\\/%?=~_$!:,.;]*[A-Z0-9+&@#\\\\/%=~_$]'
             limit 50
    	    ");
         return view('wiki/special/page', [
@@ -186,7 +186,7 @@ class WikiSpecialController extends Controller {
                     'data' => $missing_pages,
                     'type' => 'revisions',
                     'details_callable' => function($x) {
-                        preg_match_all('/\bhttp:\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/im', $x->content_text, $result, PREG_PATTERN_ORDER);
+                        preg_match_all('/\b(?<!\/)http:\/\/[-A-Z0-9+&@#\/%?=~_$!:,.;]*[A-Z0-9+&@#\/%=~_$]/im', $x->content_html, $result, PREG_PATTERN_ORDER);
                         return $result[0];
                     }
                 ],
