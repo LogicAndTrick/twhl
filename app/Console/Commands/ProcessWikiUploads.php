@@ -8,7 +8,7 @@ use App\Models\Wiki\WikiUpload;
 use Illuminate\Console\Command;
 use DB;
 
-class ProcessWikiuploads extends Command {
+class ProcessWikiUploads extends Command {
 
 	protected $name = 'process:wiki_uploads';
 	protected $description = 'Process any images in the uploads/wiki/process folder and create uploads from them.';

@@ -18,7 +18,10 @@ class ApiKey extends Model {
 	protected $table = 'api_keys';
 	protected $fillable = [ 'user_id', 'key', 'app', 'ip' ];
     public $visible = [ 'user_id', 'key', 'app', 'created_at' ];
-    protected $dates = ['created_at', 'updated_at'];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime'
+    ];
 
     public function user()
     {

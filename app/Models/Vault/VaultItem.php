@@ -31,7 +31,11 @@ class VaultItem extends Model {
         'created_at', 'updated_at',
         'vault_screenshots', 'user', 'engine', 'game', 'license', 'vault_category', 'vault_type', 'vault_includes', 'vault_item_reviews', 'motms'
     ];
-    protected $dates = ['created_at', 'updated_at'];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
 
     public function user()
     {

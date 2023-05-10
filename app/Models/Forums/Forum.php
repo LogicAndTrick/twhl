@@ -13,7 +13,11 @@ class Forum extends Model {
     use SoftDeletes;
     use ForumPermission;
 
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
     protected $fillable = ['name', 'description', 'slug', 'permission_id'];
     public $visible = [ 'id', 'slug', 'name', 'description', 'stat_threads', 'stat_posts', 'last_post_id', 'order_index', 'last_post' ];
 

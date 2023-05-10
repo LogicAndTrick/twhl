@@ -8,7 +8,11 @@ use Auth;
 class ForumPost extends Model {
 
     use SoftDeletes;
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
     protected $fillable = ['forum_id', 'thread_id', 'user_id', 'content_text', 'content_html'];
     public $visible = ['id', 'forum_id', 'thread_id', 'user_id', 'content_text', 'content_html', 'created_at', 'updated_at', 'forum', 'thread', 'user'];
 

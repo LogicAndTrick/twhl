@@ -17,7 +17,11 @@ class VaultItemReview extends Model
         'score_architecture', 'score_texturing', 'score_ambience', 'score_lighting', 'score_gameplay',
         'stat_comments', 'flag_locked'
     ];
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
 
     public function user()
     {
