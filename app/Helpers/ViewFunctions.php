@@ -115,26 +115,32 @@ if (!function_exists('header_data')) {
     }
 }
 
-function bbcode($text, $scope = '') {
-    /** @var LogicAndTrick\WikiCodeParser\Parser $parser */
-    $parser = app('bbcode');
-    $result = $parser->ParseResult($text, $scope);
-    return $result->ToHtml();
+if (!function_exists('bbcode')) {
+    function bbcode($text, $scope = '') {
+        /** @var LogicAndTrick\WikiCodeParser\Parser $parser */
+        $parser = app('bbcode');
+        $result = $parser->ParseResult($text, $scope);
+        return $result->ToHtml();
+    }
 }
 
-function bbcode_result($text, $scope = '') {
-    /** @var LogicAndTrick\WikiCodeParser\Parser $parser */
-    $parser = app('bbcode');
-    $result = $parser->ParseResult($text, $scope);
-    return $result;
+if (!function_exists('bbcode_result')) {
+    function bbcode_result($text, $scope = '') {
+        /** @var LogicAndTrick\WikiCodeParser\Parser $parser */
+        $parser = app('bbcode');
+        $result = $parser->ParseResult($text, $scope);
+        return $result;
+    }
 }
 
-function bbcode_excerpt($text, $length = 200, $scope = 'excerpt') {
-    /** @var LogicAndTrick\WikiCodeParser\Parser $parser */
-    $parser = app('bbcode');
-    $len = Str::length($text);
-    if ($len > $length) $text = Str::substr($text, 0, $length);
-    $parsed = $parser->ParseResult($text, $scope)->ToHtml();
-    if ($len > $length) $parsed .= '...';
-    return $parsed;
+if (!function_exists('bbcode_excerpt')) {
+    function bbcode_excerpt($text, $length = 200, $scope = 'excerpt') {
+        /** @var LogicAndTrick\WikiCodeParser\Parser $parser */
+        $parser = app('bbcode');
+        $len = Str::length($text);
+        if ($len > $length) $text = Str::substr($text, 0, $length);
+        $parsed = $parser->ParseResult($text, $scope)->ToHtml();
+        if ($len > $length) $parsed .= '...';
+        return $parsed;
+    }
 }
