@@ -1040,7 +1040,7 @@ class ApiController extends Controller {
             'forum_id' => $thread->forum_id,
             'user_id' => Auth::user()->id,
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
         ]);
         return $post;
     }
@@ -1059,7 +1059,7 @@ class ApiController extends Controller {
         ]);
         $post->update([
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
         ]);
         return $post;
     }
@@ -1067,7 +1067,7 @@ class ApiController extends Controller {
     private function post_posts_format() {
         $field = Request::input('field') ?: 'text';
         $text = Request::input($field) ?: '';
-        return app('bbcode')->Parse($text);
+        return bbcode($text);
     }
 
     private function post_threads() {
@@ -1090,7 +1090,7 @@ class ApiController extends Controller {
             'forum_id' => $id,
             'user_id' => Auth::user()->id,
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
         ]);
         return $thread;
     }
@@ -1118,7 +1118,7 @@ class ApiController extends Controller {
             'article_id' => $id,
             'user_id' => Auth::user()->id,
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
         ]);
         if (array_key_exists('meta', $config) && is_array($config['meta'])) {
             $metas = [];
@@ -1165,7 +1165,7 @@ class ApiController extends Controller {
         $article = call_user_func($config['model'] . '::findOrFail', $id);
         $comment->update([
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
         ]);
 
         DB::statement('DELETE FROM comment_metas WHERE comment_id = ?', [$comment->id]);

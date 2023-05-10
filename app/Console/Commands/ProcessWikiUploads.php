@@ -24,7 +24,7 @@ class ProcessWikiUploads extends Command {
         foreach ($files as $file) {
             $object = WikiObject::Create([ 'type_id' => WikiType::UPLOAD ]);
             $text = 'This image was automatically converted from the TWHL3 tutorials database.';
-            $parse_result = app('bbcode')->ParseResult($text);
+            $parse_result = bbcodeResult($text);
             $info = pathinfo($file);
 
             // The title can only change for standard pages

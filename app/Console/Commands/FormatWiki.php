@@ -55,7 +55,7 @@ class FormatWiki extends Command
                 if ($rev->wiki_object && $rev->wiki_object->type_id == WikiType::UPLOAD) $rev->slug = 'upload:'.$rev->slug;
 
                 if (!$slugs_only) {
-                    $result = app('bbcode')->ParseResult($rev->content_text);
+                    $result = bbcodeResult($rev->content_text);
                     $rev->content_html = $result->text;
                     $rev->timestamps = false;
 

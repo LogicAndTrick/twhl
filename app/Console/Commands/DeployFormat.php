@@ -135,7 +135,7 @@ class DeployFormat extends Command
                 $last_reported = 0;
                 foreach ($query_result as $q) {
                     try {
-                        $parse_result = app('bbcode')->ParseResult($q->$source);
+                        $parse_result = bbcodeResult($q->$source);
                         $q->$target = $parse_result->text;
                         $q->timestamps = false;
                         $q->save();

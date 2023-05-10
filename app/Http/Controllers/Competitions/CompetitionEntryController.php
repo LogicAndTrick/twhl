@@ -93,7 +93,7 @@ class CompetitionEntryController extends Controller {
         $entry->update([
             'title' => Request::input('title'),
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
             'is_hosted_externally' => !$uploaded,
             'file_location' => $location
         ]);

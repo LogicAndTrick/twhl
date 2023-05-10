@@ -185,7 +185,7 @@ class VaultController extends Controller {
             'name' => Request::input('item_name'),
 
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
 
             'is_hosted_externally' => !$uploaded,
             'file_location' => $location,
@@ -337,7 +337,7 @@ class VaultController extends Controller {
         $item->name = Request::input('item_name');
 
         $item->content_text = Request::input('content_text');
-        $item->content_html = app('bbcode')->Parse(Request::input('content_text'));
+        $item->content_html = bbcode(Request::input('content_text'));
 
         $item->is_hosted_externally = !$uploaded;
 

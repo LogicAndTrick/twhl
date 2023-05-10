@@ -41,7 +41,7 @@ class CompetitionAdminController extends Controller {
             'judge_type_id' => Request::input('judge_type_id'),
             'name' => Request::input('competition_name'),
             'brief_text' => Request::input('brief_text'),
-            'brief_html' => app('bbcode')->Parse(Request::input('brief_text')),
+            'brief_html' => bbcode(Request::input('brief_text')),
             'open_date' => Carbon::createFromFormat('d/m/Y', Request::input('open_date')),
             'close_date' => Carbon::createFromFormat('d/m/Y', Request::input('close_date')),
             'voting_close_date' => Request::input('voting_close_date') ? Carbon::createFromFormat('d/m/Y', Request::input('voting_close_date')) : null,
@@ -118,15 +118,15 @@ class CompetitionAdminController extends Controller {
             'judge_type_id' => Request::input('judge_type_id'),
             'name' => Request::input('competition_name'),
             'brief_text' => Request::input('brief_text'),
-            'brief_html' => app('bbcode')->Parse(Request::input('brief_text')),
+            'brief_html' => bbcode(Request::input('brief_text')),
             'brief_attachment' => $brief_attachment,
             'open_date' => Carbon::createFromFormat('d/m/Y', Request::input('open_date')),
             'close_date' => Carbon::createFromFormat('d/m/Y', Request::input('close_date')),
             'voting_close_date' => Request::input('voting_close_date') ? Carbon::createFromFormat('d/m/Y', Request::input('voting_close_date')) : null,
             'results_intro_text' => $in,
-            'results_intro_html' => app('bbcode')->Parse($in),
+            'results_intro_html' => bbcode($in),
             'results_outro_text' => $out,
-            'results_outro_html' => app('bbcode')->Parse($out),
+            'results_outro_html' => bbcode($out),
         ]);
 
         $engines = Request::input('engines');

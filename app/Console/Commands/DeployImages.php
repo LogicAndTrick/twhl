@@ -268,7 +268,7 @@ class DeployImages extends Command
                         'slug' => 'upload:'.$name,
                         'title' => $name,
                         'content_text' => $rev_desc,
-                        'content_html' => app('bbcode')->Parse($rev_desc),
+                        'content_html' => bbcode($rev_desc),
                         'message' => 'Automatically migrated from TWHL3'
                     ]);
 
@@ -412,7 +412,7 @@ class DeployImages extends Command
                         'slug' => 'upload:'.$name,
                         'title' => $name,
                         'content_text' => $rev_desc,
-                        'content_html' => app('bbcode')->Parse($rev_desc),
+                        'content_html' => bbcode($rev_desc),
                         'message' => 'Automatically migrated from TWHL3'
                     ]);
 
@@ -468,7 +468,7 @@ class DeployImages extends Command
                         'slug' => 'upload:'.$name,
                         'title' => $name,
                         'content_text' => $rev_desc,
-                        'content_html' => app('bbcode')->Parse($rev_desc),
+                        'content_html' => bbcode($rev_desc),
                         'message' => 'Automatically migrated from TWHL3'
                     ]);
 

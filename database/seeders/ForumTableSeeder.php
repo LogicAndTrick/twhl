@@ -24,7 +24,7 @@ class ForumTableSeeder extends \Illuminate\Database\Seeder
             'forum_id' => $forum->id,
             'user_id' => 1,
             'content_text' => $this->get_post_text(),
-            'content_html' => app('bbcode')->Parse($this->get_post_text())
+            'content_html' => bbcode($this->get_post_text())
         ]);
 
         $post = $thread->posts()->save($post);

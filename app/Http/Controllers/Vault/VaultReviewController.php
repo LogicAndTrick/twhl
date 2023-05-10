@@ -56,7 +56,7 @@ class VaultReviewController extends Controller {
             'comment_id' => null,
 
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
 
             'score_architecture' => Request::input('score_architecture'),
             'score_texturing' => Request::input('score_texturing'),
@@ -134,7 +134,7 @@ class VaultReviewController extends Controller {
 
         $review->update([
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
 
             'score_architecture' => Request::input('score_architecture'),
             'score_texturing' => Request::input('score_texturing'),

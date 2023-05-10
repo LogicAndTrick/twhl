@@ -93,7 +93,7 @@
                                 @date($journal->created_at)
                             </span>
                             <span class="bbcode d-block">
-                                {!! app('bbcode')->ParseExcerpt($journal->content_text, 200, 'inline') !!}
+                                {!! bbcode_excerpt($journal->content_text, 200, 'inline') !!}
                             </span>
                         </span>
                     </a>

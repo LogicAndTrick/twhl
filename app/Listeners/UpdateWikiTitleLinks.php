@@ -56,7 +56,7 @@ class UpdateWikiTitleLinks
 
             // Don't create a new revision, just change the existing one
             if ($text != $rev->content_text) {
-                $parse_result = app('bbcode')->ParseResult($text);
+                $parse_result = bbcodeResult($text);
                 $rev->update([
                     'content_text' => $text,
                     'content_html' => $parse_result->text,

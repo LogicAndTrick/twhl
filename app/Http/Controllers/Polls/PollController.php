@@ -87,7 +87,7 @@ class PollController extends Controller {
             'title' => Request::input('title'),
             'close_date' => Carbon::createFromFormat('d/m/Y', Request::input('close_date')),
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text'))
+            'content_html' => bbcode(Request::input('content_text'))
         ]);
         $items = explode("\n", trim(Request::input('items')));
         foreach ($items as $i) {
@@ -123,7 +123,7 @@ class PollController extends Controller {
             'title' => Request::input('title'),
             'close_date' => Carbon::createFromFormat('d/m/Y', Request::input('close_date')),
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text'))
+            'content_html' => bbcode(Request::input('content_text'))
         ]);
         $items = explode("\n", trim(Request::input('items')));
         $loop = max(count($items), count($poll['items']));

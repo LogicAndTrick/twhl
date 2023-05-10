@@ -327,7 +327,7 @@ class WikiController extends Controller {
         /**
          * @var $parse_result ParseResult
          */
-        $parse_result = app('bbcode')->ParseResult(Request::input('content_text'));
+        $parse_result = bbcodeResult(Request::input('content_text'));
 
         // The title can only change for standard/upload pages
         $title = Request::input('title');
@@ -560,7 +560,7 @@ class WikiController extends Controller {
         $same_slug = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $rev->slug)->where('object_id', '!=', $obj->id)->first();
 
         // Copy the old revision and apply it over the top of the current revision
-        $parse_result = app('bbcode')->ParseResult($rev->content_text);
+        $parse_result = bbcodeResult($rev->content_text);
         $revision = WikiRevision::Create([
             'object_id' => $obj->id,
             'user_id' => Auth::user()->id,

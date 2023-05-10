@@ -75,7 +75,7 @@ class CreateCompetitionRestrictionsTable extends Migration {
             \App\Models\Competitions\CompetitionRestriction::Create([
                 'group_id' => $rs[0],
                 'content_text' => $rs[1],
-                'content_html' => app('bbcode')->Parse($rs[1])
+                'content_html' => bbcode($rs[1])
             ]);
         }
 	}

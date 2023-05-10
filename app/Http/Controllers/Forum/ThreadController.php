@@ -82,7 +82,7 @@ class ThreadController extends Controller {
         $posts = $post_query->skip(($page - 1) * 50)->take(50)->get();
         foreach ($posts as $p) {
             if ($p->content_html == '' && $p->content_text != '') {
-                $p->content_html = app('bbcode')->Parse($p->content_text);
+                $p->content_html = bbcode($p->content_text);
                 $p->timestamps = false;
                 $p->save();
             }
@@ -147,7 +147,7 @@ class ThreadController extends Controller {
             'forum_id' => $id,
             'user_id' => Auth::user()->id,
             'content_text' => Request::input('text'),
-            'content_html' => app('bbcode')->Parse(Request::input('text')),
+            'content_html' => bbcode(Request::input('text')),
         ]);
         $sub = UserSubscription::Create([
             'user_id' => Auth::user()->id,

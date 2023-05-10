@@ -119,7 +119,7 @@ class MessageController extends Controller {
             'user_id' => Auth::user()->id,
             'thread_id' => $thread->id,
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text'))
+            'content_html' => bbcode(Request::input('content_text'))
         ]);
 
         // Send the message to all the users

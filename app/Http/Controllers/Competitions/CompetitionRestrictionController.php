@@ -32,7 +32,7 @@ class CompetitionRestrictionController extends Controller {
         CompetitionRestriction::Create([
             'group_id' => Request::input('group_id'),
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text'))
+            'content_html' => bbcode(Request::input('content_text'))
         ]);
         return redirect('competition-restriction/index');
     }
@@ -55,7 +55,7 @@ class CompetitionRestrictionController extends Controller {
         $restriction->update([
             'group_id' => Request::input('group_id'),
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text'))
+            'content_html' => bbcode(Request::input('content_text'))
         ]);
         return redirect('competition-restriction/index');
     }

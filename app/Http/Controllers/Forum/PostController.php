@@ -60,7 +60,7 @@ class PostController extends Controller {
             'forum_id' => $thread->forum_id,
             'user_id' => Auth::user()->id,
             'content_text' => Request::input('text'),
-            'content_html' => app('bbcode')->Parse(Request::input('text')),
+            'content_html' => bbcode(Request::input('text')),
         ]);
         event(new ForumPostCreated($post));
         return redirect('thread/view/'.$thread->id.'?page=last#post-' . $post->id);
@@ -89,7 +89,7 @@ class PostController extends Controller {
         ]);
         $post->update([
             'content_text' => Request::input('content_text'),
-            'content_html' => app('bbcode')->Parse(Request::input('content_text')),
+            'content_html' => bbcode(Request::input('content_text')),
         ]);
         if(permission('ForumAdmin')) {
             $post->user_id = intval(Request::input('user_id'));

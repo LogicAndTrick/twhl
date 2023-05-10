@@ -56,7 +56,7 @@ class JournalController extends Controller {
             'user_id' => Auth::user()->id,
             'title' => Request::input('title'),
             'content_text' => Request::input('text'),
-            'content_html' => app('bbcode')->Parse(Request::input('text')),
+            'content_html' => bbcode(Request::input('text')),
             'stat_comments' => 0,
             'flag_locked' => false
         ]);
@@ -90,7 +90,7 @@ class JournalController extends Controller {
         $journal->update([
             'title' => Request::input('title'),
             'content_text' => Request::input('text'),
-            'content_html' => app('bbcode')->Parse(Request::input('text')),
+            'content_html' => bbcode(Request::input('text')),
         ]);
         return redirect('journal/view/'.$journal->id);
     }

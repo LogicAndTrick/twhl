@@ -6,7 +6,7 @@ class BBCodeTest extends TestCase {
     public function testDatabase() {
         $post = \App\Models\Forums\ForumPost::find(3);
         $input = $post->content_text;
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('', $output);
     }
     */
@@ -15,7 +15,7 @@ class BBCodeTest extends TestCase {
     {
         $input = "asd [pre]<b>test</b>[/pre] asd";
         $expected = 'asd <pre><code>&lt;b&gt;test&lt;/b&gt;</code></pre> asd';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals($expected, $output);
     }
 
@@ -23,7 +23,7 @@ class BBCodeTest extends TestCase {
     {
         $input = "[img:test|right] \r\ntest";
         $expected = '<div class="embedded image right"><span class="caption-panel"><img class="caption-body" src="http://localhost:82/wiki/embed/test" alt="User posted image" /></span></div> test';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals($expected, $output);
     }
 
@@ -31,7 +31,7 @@ class BBCodeTest extends TestCase {
     {
         $input = "* * * * *";
         $expected = "<ul><li>* * * *</li></ul>";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals($expected, $output);
     }
 
@@ -39,7 +39,7 @@ class BBCodeTest extends TestCase {
     {
         $input = "*";
         $expected = "*";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals($expected, $output);
     }
 
@@ -47,7 +47,7 @@ class BBCodeTest extends TestCase {
     {
         $input = "* 1\n------------------------------------------------------";
         $expected = "<ul><li>1</li></ul>\n<hr />";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals($expected, $output);
     }
 
@@ -55,7 +55,7 @@ class BBCodeTest extends TestCase {
     {
         $input = '[b]#include "userdata.h"[/b]';
         $expected = '<strong>#include &quot;userdata.h&quot;</strong>';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals($expected, $output);
     }
 
@@ -68,7 +68,7 @@ class BBCodeTest extends TestCase {
             '<table class="table table-bordered"><tr><th>Heading</th></tr><tr><td>Cell</td></tr></table>',
         ];
         for ($i = 0; $i < count($input); $i++) {
-            $output = app('bbcode')->Parse($input[$i]);
+            $output = bbcode($input[$i]);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -84,7 +84,7 @@ class BBCodeTest extends TestCase {
             '<span class="embedded image"><span class="caption-panel"><img class="caption-body" src="http://localhost:82/wiki/embed/test.png" alt="caption" /><span class="caption">caption</span></span></span>',
         ];
         for ($i = 0; $i < count($input); $i++) {
-            $output = app('bbcode')->Parse($input[$i]);
+            $output = bbcode($input[$i]);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -104,7 +104,7 @@ class BBCodeTest extends TestCase {
             '<a href="' . url('/wiki/page/example') . '#bookmark">this is an example</a>',
         ];
         for ($i = 0; $i < count($input); $i++) {
-            $output = app('bbcode')->Parse($input[$i]);
+            $output = bbcode($input[$i]);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -120,7 +120,7 @@ class BBCodeTest extends TestCase {
             '<a href="http://example.com">example</a>',
         ];
         for ($i = 0; $i < count($input); $i++) {
-            $output = app('bbcode')->Parse($input[$i]);
+            $output = bbcode($input[$i]);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -128,14 +128,14 @@ class BBCodeTest extends TestCase {
     public function testInlineList()
     {
         $input = '* [s]Projects[/s] [b]put on hold until after release[/b]';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('<ul><li><span class="strikethrough">Projects</span> <strong>put on hold until after release</strong></li></ul>', $output);
     }
 
     public function testEmpty()
     {
         $input = '';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('', $output);
     }
 
@@ -176,54 +176,54 @@ class BBCodeTest extends TestCase {
     public function testMdQuote() {
 
         $input = "1\n> 2\n3\n\n4";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals("1\n<blockquote>2</blockquote>\n3<br>\n<br>\n4", $output);
     }
 
     public function testSimple()
     {
         $input = '1 [b]2[/b] 3';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('1 <strong>2</strong> 3', $output);
 
         $input = '[b]2[/b] 3';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('<strong>2</strong> 3', $output);
 
         $input = '[b]2[/b] 3';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('<strong>2</strong> 3', $output);
     }
 
     public function testScope()
     {
         $input = '1[quote]2[b]3[/b]4[/quote]5';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('1<blockquote>2<strong>3</strong>4</blockquote>5', $output);
 
         $input = '1[b]2[quote]3[/quote]4[/b]5';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('1<strong>2[quote]3[/quote]4</strong>5', $output);
     }
 
     public function testNested()
     {
         $input = '1[quote]2[quote]3[/quote]4[/quote]5';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('1<blockquote>2<blockquote>3</blockquote>4</blockquote>5', $output);
     }
 
     public function testOptions()
     {
         $input = '1[quote=2]3[/quote]4';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('1<blockquote><strong>2 said:</strong>3</blockquote>4', $output);
     }
 
     public function testBadNested()
     {
         $input = '1[quote]2[quote]3[quote]4[/quote]5';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('1[quote]2[quote]3<blockquote>4</blockquote>5', $output);
     }
 
@@ -246,7 +246,7 @@ class BBCodeTest extends TestCase {
             '<a href="mailto:test@example.com">test@example.com</a>'
         ];
         for ($i = 0; $i < count($input); $i++) {
-            $output = app('bbcode')->Parse($input[$i]);
+            $output = bbcode($input[$i]);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -278,7 +278,7 @@ class BBCodeTest extends TestCase {
             "<ul><li>one<ol><li>two<ul><li>three</li></ul></li></ol></li></ul>",
         ];
         for ($i = 0; $i < count($input); $i++) {
-            $output = app('bbcode')->Parse($input[$i]);
+            $output = bbcode($input[$i]);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -286,7 +286,7 @@ class BBCodeTest extends TestCase {
     public function testEmptyList()
     {
         $input = '*';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('*', $output);
     }
 
@@ -313,7 +313,7 @@ class BBCodeTest extends TestCase {
             "<h1><em>1</em></h1>",
         ];
         for ($i = 0; $i < count($input); $i++) {
-            $output = app('bbcode')->Parse($input[$i]);
+            $output = bbcode($input[$i]);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -321,26 +321,26 @@ class BBCodeTest extends TestCase {
     public function testMdCode()
     {
         $input = " 1";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals("<pre><code>1</code></pre>", $output);
 
         $input = " 1\n  2";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals("<pre><code>1\n 2</code></pre>", $output);
 
         $input = " 1\n2\n 3";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals("<pre><code>1</code></pre>\n2\n<pre><code>3</code></pre>", $output);
 
         $input = " [b]1[/b]";
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals("<pre><code>[b]1[/b]</code></pre>", $output);
     }
 
     public function testLine()
     {
         $input = '---';
-        $output = app('bbcode')->Parse($input);
+        $output = bbcode($input);
         $this->assertEquals('<hr />', $output);
     }
 }

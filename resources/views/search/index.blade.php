@@ -49,7 +49,7 @@
                                     by @avatar($wiki->user inline)
                                 </td>
                                 <td class="hidden-md-down">
-                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($wiki->content_text) !!}</div>
+                                    <div class="bbcode">{!! bbcode_excerpt($wiki->content_text) !!}</div>
                                 </td>
                             </tr>
                         @endforeach
@@ -118,7 +118,7 @@
                                     by @avatar($post->user inline)
                                 </td>
                                 <td class="hidden-md-down">
-                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($post->content_text) !!}</div>
+                                    <div class="bbcode">{!! bbcode_excerpt($post->content_text) !!}</div>
                                 </td>
                             </tr>
                         @endforeach
@@ -157,7 +157,7 @@
                                     by @avatar($vault->user inline)
                                 </td>
                                 <td class="hidden-md-down">
-                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($vault->content_text) !!}</div>
+                                    <div class="bbcode">{!! bbcode_excerpt($vault->content_text) !!}</div>
                                 </td>
                             </tr>
                         @endforeach
@@ -187,7 +187,7 @@
                                     @avatar($user inline)
                                 </td>
                                 <td class="hidden-sm-down">
-                                    <div class="bbcode">{!! app('bbcode')->ParseExcerpt($user->info_biography_text) !!}</div>
+                                    <div class="bbcode">{!! bbcode_excerpt($user->info_biography_text) !!}</div>
                                 </td>
                             </tr>
                         @endforeach

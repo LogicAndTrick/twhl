@@ -146,7 +146,7 @@ class CommentController extends Controller {
             'article_id' => $id,
             'user_id' => Auth::user()->id,
             'content_text' => Request::input('text'),
-            'content_html' => app('bbcode')->Parse(Request::input('text')),
+            'content_html' => bbcode(Request::input('text')),
         ]);
         if (array_key_exists('meta', $config) && is_array($config['meta'])) {
             $metas = [];
@@ -199,7 +199,7 @@ class CommentController extends Controller {
         $article = call_user_func($config['model'] . '::findOrFail', $id);
         $comment->update([
             'content_text' => Request::input('text'),
-            'content_html' => app('bbcode')->Parse(Request::input('text')),
+            'content_html' => bbcode(Request::input('text')),
         ]);
 
         DB::statement('DELETE FROM comment_metas WHERE comment_id = ?', [$comment->id]);

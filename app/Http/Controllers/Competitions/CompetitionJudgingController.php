@@ -42,7 +42,7 @@ class CompetitionJudgingController extends Controller {
         $text = Request::input('content_text');
         $rank = intval(Request::input('rank'));
         $create = $text || $rank;
-        $values = ['content_text' => $text, 'content_html' => app('bbcode')->Parse($text), 'rank' => $rank];
+        $values = ['content_text' => $text, 'content_html' => bbcode($text), 'rank' => $rank];
         $result = $entry->result;
         if ($result) {
             if ($create) $result->update($values);

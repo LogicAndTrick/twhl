@@ -1,18 +1,19 @@
 <?php namespace App\Providers;
 
-use App\Helpers\BBCode\Parser;
 use Illuminate\Support\ServiceProvider;
+use LogicAndTrick\WikiCodeParser\Parser;
+use LogicAndTrick\WikiCodeParser\ParserConfiguration;
 
 class BBCodeServiceProvider extends ServiceProvider {
 
     protected $defer = true;
 
-	public function register()
-	{
+    public function register()
+    {
         $this->app->singleton('bbcode', function($app) {
-            return new Parser(app('config')->get('bbcode'));
+            return new Parser($this->getConfig());
         });
-	}
+    }
 
     public function provides()
     {
@@ -21,5 +22,7 @@ class BBCodeServiceProvider extends ServiceProvider {
         ];
     }
 
-
+    private function getConfig() : ParserConfiguration {
+        return ParserConfiguration::Twhl();
+    }
 }

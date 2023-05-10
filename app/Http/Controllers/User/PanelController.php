@@ -83,7 +83,7 @@ class PanelController extends Controller {
             'info_steam_profile' => $steam_user,
 
             'info_biography_text' => Request::input('info_biography_text'),
-            'info_biography_html' => app('bbcode')->Parse(Request::input('info_biography_text'))
+            'info_biography_html' => bbcode(Request::input('info_biography_text'))
         ]);
 
         return redirect('panel/index/'.$id);
