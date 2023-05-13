@@ -48,6 +48,7 @@
 
         <!-- Scripts -->
         <script type="text/javascript" src="{{ mix('/js/all.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('/js/compiled.js') }}"></script>
     </head>
 <body class="{{ egg() }}">
 

@@ -1,3 +1,4 @@
+const parser = window.parser;
 
 function insertIntoInput(textarea, template, cursor, cursor2, force_newline) {
     var val = textarea.val() || '',
@@ -26,6 +27,7 @@ function insertIntoInput(textarea, template, cursor, cursor2, force_newline) {
     }
 
     textarea[0].setSelectionRange(cstart, cend);
+    textarea[0].dispatchEvent(new Event('change', { bubbles: true }))
 }
 
 // noinspection JSAnnotator
@@ -147,13 +149,14 @@ $(function() {
         var $t = $(this),
             group = $('<div class="form-group"></div>'),
             heading = $('<h4>Message preview</h4>)'),
-            btn = $('<button type="button" class="btn btn-info btn-xs">Update Preview</button>'),
+            btn = $('<button type="button" class="btn btn-info btn-xs preview-button">Update Preview</button>'),
             card = $('<div class="card"></div>'),
             panel = $('<div class="card-body bbcode"></div>'),
             form = $t.closest('form'),
             ta = $t.find('textarea'),
             name = ta.attr('name'),
             help = $('<a class="pull-right" target="_blank" href="' + window.urls.wiki.formatting_guide + '">Formatting help</a>'),
+            fullscreen = $('<a href="#" class="ml-2 hidden-lg-down"><span class="fa fa-arrows-alt"></span> Full screen editor</a>'),
             btnCon = $('<div class="mb-1"></div>');
         heading.append(btn);
         card.append(panel);
@@ -164,17 +167,61 @@ $(function() {
         ta.before(btnCon);
         addButtons(btnCon, ta);
 
-        var refresh = function() {
-            panel.html('Loading...');
-            $.post(window.urls.api.format + '?field=' + name, form.serializeArray(), function(data) {
-                panel.html(data);
-                panel.find('pre code').each(function() {
-                    hljs.highlightBlock(this);
-                });
+        const tb = btnCon.find('.btn-toolbar');
+        tb.append($('<div></div>').append(fullscreen));
+        fullscreen.click(event => {
+            event.preventDefault();
+            $t.toggleClass('full-screen-wikicode-editor');
+            ta.trigger('change');
+        });
+
+        const refresh = async function() {
+            const formData = new FormData(form[0]);
+            let text = formData.get(name);
+            text = text.replace(/^\w/img, function(match, index) {
+                return "\2" + index + "\3" + match;
             });
+
+            // do some string replace stuffs
+            const result = window.parser.ParseResult(text);
+            const data = result.ToHtml();
+
+            const event = new CustomEvent('bbcode-preview-updating', {
+                detail: { html: data, element: panel[0] }
+            });
+            ta[0].dispatchEvent(event);
+            panel[0].innerHTML = await Promise.resolve(event.detail.html);
+            panel[0].querySelectorAll('pre code').forEach(x => {
+                hljs.highlightBlock(x);
+            });
+            ta[0].dispatchEvent(new CustomEvent('bbcode-preview-updated', {
+                detail: { element: panel[0] }
+            }));
+
+            const active = document.activeElement;
+            if (active && active === ta[0] && $t[0].classList.contains('full-screen-wikicode-editor')) {
+                const idx = active.selectionStart;
+                let marker = null;
+                for (const el of panel[0].querySelectorAll('[data-position]')) {
+                    const pos = parseInt(el.getAttribute('data-position'), 10);
+                    if (pos > idx) break;
+                    marker = el;
+                }
+                if (marker) {
+                    marker.classList.add('current-cursor');
+                    marker.scrollIntoView({block: "center"});
+                }
+            }
         };
 
         btn.on('click', refresh);
+
+        const throttledRefresh = $.throttle(250, () => {
+            if (!$t.hasClass('full-screen-wikicode-editor')) return;
+            refresh();
+        });
+        ta.on('input change', throttledRefresh);
+        document.addEventListener('selectionchange', throttledRefresh);
     });
 
     document.addEventListener('paste', async event => {

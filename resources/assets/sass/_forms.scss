@@ -37,3 +37,67 @@ $btn-border-radius-xs: .15rem;
     background-color: #dedede;
   }
 }
+
+// fullscreen wikicode editor
+.full-screen-wikicode-editor {
+  position: fixed;
+  inset: 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--light);
+  z-index: 999;
+  border: 1px solid var(--dark);
+  padding: 0.5rem;
+  display: flex;
+  flex-flow: row;
+  gap: 1rem;
+
+  & > * {
+    flex-basis: 50%;
+    flex-grow: 0;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  & > .form-group {
+    display: flex;
+    flex-flow: column;
+    margin-bottom: 0;
+
+    & > textarea, & > .card {
+      flex-grow: 1;
+    }
+    & > a, & > label {
+      display: none;
+    }
+    & > h4 {
+      margin: 0;
+      padding: 0;
+      line-height: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+    & > .card {
+      overflow: auto;
+      & > .card-body {
+        overflow: visible;
+        &::after {
+          height: 1.5rem;
+        }
+      }
+    }
+  }
+  & [data-position].current-cursor {
+    margin-right: 0.5rem;
+    position: relative;
+    &::after {
+      content: '';
+      width: 0.25rem;
+      background: red;
+      height: 1.6em;
+      position: absolute;
+    }
+  }
+
+  .preview-button {
+    display: none;
+  }
+}
