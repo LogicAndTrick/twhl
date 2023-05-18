@@ -55,18 +55,20 @@ class FormatWiki extends Command
                 if ($rev->wiki_object && $rev->wiki_object->type_id == WikiType::UPLOAD) $rev->slug = 'upload:'.$rev->slug;
 
                 if (!$slugs_only) {
-                    $result = bbcodeResult($rev->content_text);
-                    $rev->content_html = $result->text;
+                    $result = bbcode_result($rev->content_text);
+                    $rev->content_html = $result->ToHtml();
                     $rev->timestamps = false;
 
                     $meta = [];
-                    foreach ($result->meta as $c => $v) {
+                    foreach ($result->GetMetadata() as $md) {
+                        $c = $md['key'];
+                        $v = $md['value'];
                         if ($c == 'WikiLink') {
-                            foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $val]);
+                            $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v]);
                         } else if ($c == 'WikiUpload') {
-                            foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val]);
+                            $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v]);
                         } else if ($c == 'WikiCategory') {
-                            foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $val)]);
+                            $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v)]);
                         }
                     }
                     $rev->wiki_revision_metas()->whereIn('key', [WikiRevisionMeta::LINK, WikiRevisionMeta::CATEGORY])->delete();

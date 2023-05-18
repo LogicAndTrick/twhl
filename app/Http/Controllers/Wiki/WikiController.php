@@ -9,9 +9,11 @@ use App\Models\Comments\Comment;
 use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionBook;
+use App\Models\Wiki\WikiRevisionCredit;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use App\Models\Wiki\WikiUpload;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -318,16 +320,52 @@ class WikiController extends Controller {
     // Create/Edit/Delete
 
     /**
+     * @param \LogicAndTrick\WikiCodeParser\ParseResult $result
+     * @return \App\Models\Wiki\WikiRevisionBook[]
+     */
+    public static function wikiBooksFromResult(\LogicAndTrick\WikiCodeParser\ParseResult $result) {
+        return Collection::make($result->GetMetadata())
+            ->where('key', 'WikiBook')
+            ->pluck('value')
+            ->map(function (\LogicAndTrick\WikiCodeParser\Models\WikiRevisionBook $book, int $key) {
+                return new WikiRevisionBook([
+                    'book_name' => $book->BookName,
+                    'chapter_name' => $book->ChapterName,
+                    'chapter_number' => $book->ChapterNumber,
+                    'page_number' => $book->PageNumber
+                ]);
+            })
+            ->all();
+    }
+    /**
+     * @param \LogicAndTrick\WikiCodeParser\ParseResult $result
+     * @return \App\Models\Wiki\WikiRevisionCredit[]
+     */
+    public static function wikiCreditsFromResult(\LogicAndTrick\WikiCodeParser\ParseResult $result) {
+        return Collection::make($result->GetMetadata())
+            ->where('key', 'WikiCredit')
+            ->pluck('value')
+            ->map(function (\LogicAndTrick\WikiCodeParser\Models\WikiRevisionCredit $credit) {
+                return new WikiRevisionCredit([
+                    'type' => $credit->Type,
+                    'description' => $credit->Description ?? '',
+                    'user_id' => $credit->UserID,
+                    'name' => $credit->Name,
+                    'url' => $credit->Url,
+                    'wayback_url' => $credit->WaybackUrl
+                ]);
+            })
+            ->all();
+    }
+
+    /**
      * Creates a revision for the given object from the request data
      * @param $object
      * @param null $existing_revision
      * @return WikiRevision
      */
     public static function createRevision($object, $existing_revision = null) {
-        /**
-         * @var $parse_result ParseResult
-         */
-        $parse_result = bbcodeResult(Request::input('content_text'));
+        $parse_result = bbcode_result(Request::input('content_text'));
 
         // The title can only change for standard/upload pages
         $title = Request::input('title');
@@ -352,19 +390,21 @@ class WikiController extends Controller {
             'slug' => $slug,
             'title' => $title,
             'content_text' => Request::input('content_text'),
-            'content_html' => $parse_result->text,
+            'content_html' => $parse_result->ToHtml(),
             'message' => Request::input('message') ?: ''
         ]);
 
         // Parse meta from the content
         $meta = [];
-        foreach ($parse_result->meta as $c => $v) {
+        foreach ($parse_result->GetMetadata() as $md) {
+            $c = $md['key'];
+            $v = $md['value'];
             if ($c == 'WikiLink') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $val ]);
+                $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $v ]);
             } else if ($c == 'WikiUpload') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val ]);
+                $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v ]);
             } else if ($c == 'WikiCategory') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $val) ]);
+                $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v) ]);
             }
         }
 
@@ -403,8 +443,8 @@ class WikiController extends Controller {
 
         // Save meta & update the object
         $revision->wiki_revision_metas()->saveMany($meta);
-        $revision->wiki_revision_books()->saveMany($parse_result->GetMeta('WikiBook'));
-        $revision->wiki_revision_credits()->saveMany($parse_result->GetMeta('WikiCredit'));
+        $revision->wiki_revision_books()->saveMany(WikiController::wikiBooksFromResult($parse_result));
+        $revision->wiki_revision_credits()->saveMany(WikiController::wikiCreditsFromResult($parse_result));
         DB::statement('CALL update_wiki_object(?);', [$object->id]);
         $object->touch();
 
@@ -560,26 +600,28 @@ class WikiController extends Controller {
         $same_slug = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $rev->slug)->where('object_id', '!=', $obj->id)->first();
 
         // Copy the old revision and apply it over the top of the current revision
-        $parse_result = bbcodeResult($rev->content_text);
+        $parse_result = bbcode_result($rev->content_text);
         $revision = WikiRevision::Create([
             'object_id' => $obj->id,
             'user_id' => Auth::user()->id,
             'slug' => $same_slug ? $current_rev->slug : $rev->slug,
             'title' => $same_slug ? $current_rev->title : $rev->title,
             'content_text' => $rev->content_text,
-            'content_html' => $parse_result->text,
+            'content_html' => $parse_result->ToHtml(),
             'message' => 'Reverting to revision #' . $rev->id .
                          ($rev->message ? " ({$rev->message})" : '') .
                          (Request::input('reason') ? ' - ' . Request::input('reason') : '')
         ]);
         $meta = [];
-        foreach ($parse_result->meta as $c => $v) {
+        foreach ($parse_result->GetMetadata() as $md) {
+            $c = $md['key'];
+            $v = $md['value'];
             if ($c == 'WikiLink') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $val]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v ]);
             } else if ($c == 'WikiUpload') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v ]);
             } else if ($c == 'WikiCategory') {
-                foreach ($v as $val) $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => $val]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => $v ]);
             }
         }
         foreach ($rev->wiki_revision_metas as $m) {
@@ -587,8 +629,8 @@ class WikiController extends Controller {
             else $meta[] = new WikiRevisionMeta(['key' => $m->key, 'value' => $m->value]);
         }
         $revision->wiki_revision_metas()->saveMany($meta);
-        $revision->wiki_revision_books()->saveMany($parse_result->GetMeta('WikiBook'));
-        $revision->wiki_revision_credits()->saveMany($parse_result->GetMeta('WikiCredit'));
+        $revision->wiki_revision_books()->saveMany(WikiController::wikiBooksFromResult($parse_result));
+        $revision->wiki_revision_credits()->saveMany(WikiController::wikiCreditsFromResult($parse_result));
         DB::statement('CALL update_wiki_object(?);', [$obj->id]);
         return redirect('wiki/page/'.$revision->escaped_slug);
     }

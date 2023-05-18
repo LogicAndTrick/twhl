@@ -24,7 +24,7 @@ class ProcessWikiUploads extends Command {
         foreach ($files as $file) {
             $object = WikiObject::Create([ 'type_id' => WikiType::UPLOAD ]);
             $text = 'This image was automatically converted from the TWHL3 tutorials database.';
-            $parse_result = bbcodeResult($text);
+            $parse_result = bbcode_result($text);
             $info = pathinfo($file);
 
             // The title can only change for standard pages
@@ -38,19 +38,21 @@ class ProcessWikiUploads extends Command {
                 'slug' => $slug,
                 'title' => $title,
                 'content_text' => $text,
-                'content_html' => $parse_result->text,
+                'content_html' => $parse_result->ToHtml(),
                 'message' => 'Automatic TWHL3 conversion'
             ]);
 
             // Parse meta from the content
             $meta = [];
-            foreach ($parse_result->meta as $c => $v) {
+            foreach ($parse_result->GetMetadata() as $md) {
+                $c = $md['key'];
+                $v = $md['value'];
                 if ($c == 'WikiLink') {
-                    foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $val ]);
+                    $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $v ]);
                 } else if ($c == 'WikiUpload') {
-                    foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $val ]);
+                    $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v ]);
                 } else if ($c == 'WikiCategory') {
-                    foreach ($v as $val) $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $val) ]);
+                    $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v) ]);
                 }
             }
 
