@@ -37,7 +37,8 @@
                                 @endforeach
                             </div>
                         @else
-                            {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($comp->getCloseTime()) ({{ $comp->getCloseTime()->format('jS F Y') }})
+                            <?php $close_time = $comp->getCloseTime(); ?>
+                            {{ $comp->isActive() ? 'Closes' : 'Closed' }} @date($close_time) ({{ $close_time->format('jS F Y') }})
                         @endif
                     </div>
                     <div class="col-xl-8 col-lg-7 order-1 brief-column">
