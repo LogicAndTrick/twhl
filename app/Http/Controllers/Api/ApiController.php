@@ -281,8 +281,18 @@ class ApiController extends Controller {
                     'method' => 'post',
                     'operationId' => 'pageInformationPost',
                     'parameters' => [
-                        'pages' => [ 'required' => true, 'type' => 'array', 'description' => 'The list of page slugs to check' ],
-                        'embeds' => [ 'required' => true, 'type' => 'array', 'description' => 'The list of embed slugs to check' ]
+                        'pages' => [
+                            'required' => true,
+                            'type' => 'array',
+                            'items' => [ 'type' => 'string' ],
+                            'description' => 'The list of page slugs to check'
+                        ],
+                        'embeds' => [
+                            'required' => true,
+                            'type' => 'array',
+                            'items' => [ 'type' => 'string' ],
+                            'description' => 'The list of embed slugs to check'
+                        ]
                     ],
                     'response' => [
                         'description' => 'Page information',
@@ -875,6 +885,7 @@ class ApiController extends Controller {
             ],
             'paths' => $api_desc,
             'host' => preg_replace('%https?://([^/]*)/.*%', '\1', asset('/')),
+            'schemes' => [ preg_replace('%(https?):.*%', '\1', asset('/')) ],
             'basePath' => '/api',
             'definitions' => $this->getDefinitions(),
             'securityDefinitions' => [
