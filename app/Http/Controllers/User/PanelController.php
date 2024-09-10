@@ -240,8 +240,9 @@ class PanelController extends Controller {
         $id = Request::input('id');
         $key = ApiKey::findOrFail($id);
         $user = PanelController::GetUser($key->user_id);
+        if ($user->id !== $key->user_id) abort(404);
         $key->delete();
-        return redirect('panel/edit-keys/'.$key->user_id);
+        return redirect('panel/edit-keys/'.$user->id);
     }
 
     public function getNotifications($id = 0) {
@@ -264,6 +265,7 @@ class PanelController extends Controller {
     public function getDeleteSubscription($id) {
 	    $sub = UserSubscription::findOrFail($id);
         $user = PanelController::GetUser($sub->user_id);
+        if ($user->id !== $sub->user_id) abort(404);
         $sub->delete();
         return redirect('panel/notifications/'.$user->id);
     }
