@@ -64,7 +64,7 @@ class WikiSpecialController extends Controller {
             and wrm.value not like 'category:%' and wrm.value not like 'upload:%'
    	        and wrm.key = ? and lwr.id is null
    	        order by wr.title
-            limit 200
+            limit 300
    	    ", [ WikiRevisionMeta::LINK ]);
         return view('wiki/special/page', [
             'title' => 'Missing links',
@@ -84,7 +84,7 @@ class WikiSpecialController extends Controller {
             and wrm.value like 'upload:%'
    	        and wrm.key = ? and lwr.id is null
             order by wr.title
-            limit 200
+            limit 300
    	    ", [ WikiRevisionMeta::LINK ]);
         return view('wiki/special/page', [
             'title' => 'Missing files',
