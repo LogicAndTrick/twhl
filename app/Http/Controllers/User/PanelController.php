@@ -228,12 +228,12 @@ class PanelController extends Controller {
 
         $key = ApiKey::create([
             'user_id' => $user->id,
-            'key' => ApiKey::GenerateKey($id),
+            'key' => ApiKey::GenerateKey($user->id),
             'app' => Request::input('app'),
             'ip' => Request::ip(),
         ]);
 
-        return redirect('panel/edit-keys/'.$id);
+        return redirect('panel/edit-keys/'.$user->id);
     }
 
     public function postDeleteKey() {
