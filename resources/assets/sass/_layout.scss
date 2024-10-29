@@ -2,6 +2,10 @@
 
 body {
     background: url(../images/body-background.png) #f4f4f4;
+
+    // Removes the bright background image for users of the Dark Reader
+    // browser extension
+    background-blend-mode: darken;
 }
 
 body > .container {
