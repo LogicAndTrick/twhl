@@ -59,10 +59,12 @@ $(function() {
         e.stopPropagation();
     });
     $(document).on('click', '.nice-date', function (e) {
+        e.preventDefault();
         e.stopPropagation();
         $(e.currentTarget).toggleClass('on');
     });
     $(document).on('click', '.spoiler', function (e) {
+        e.preventDefault();
         e.stopPropagation();
         $(e.currentTarget).toggleClass('on');
     });
