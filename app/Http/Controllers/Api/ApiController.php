@@ -1420,7 +1420,7 @@ class ApiController extends Controller {
         });
 
         $this->validate(Request::instance(), [
-            'image' => 'required|max:2048|valid_extension:jpeg,jpg,png|image_size:3000'
+            'image' => 'required|max:2048|valid_extension:gif,jpeg,jpg,png|image_size:3000'
         ], [
             'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
         ]);
