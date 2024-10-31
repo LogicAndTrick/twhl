@@ -21,7 +21,7 @@
                 This search uses basic full-word matching to try and find relevant results
                 for a search. However, it's not a very powerful search engine. If you are having
                 trouble finding something, you may get better results if you
-                <a href="https://www.google.com/#q=site:{{ url('/') }}+{{ urlencode($search) }}">
+                <a href="https://www.google.com/search?q={{ urlencode('site:' . url('/') . ' ' . $search) }}">
                 click here to repeat your search on TWHL using Google</a>.
             </p>
 
