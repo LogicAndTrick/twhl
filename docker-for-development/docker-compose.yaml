@@ -1,6 +1,8 @@
 name: twhl-dev
 services:
   db:
+    command:
+      --collation-server=utf8mb4_unicode_ci
     container_name: twhl-dev-mysql
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
