@@ -1,9 +1,6 @@
 const mix = require('laravel-mix');
 
-mix.js([
-        'resources/assets/js/compiled/parser.js'
-    ], 'public/js/compiled.js')
-    .scripts([
+mix.scripts([
         'node_modules/jquery/dist/jquery.js',
         'node_modules/jquery-appear-original/index.js',            // Lazy loading vault embeds
         'node_modules/js-cookie/src/js.cookie.js',
@@ -34,9 +31,26 @@ mix.js([
         "resources/assets/js/boot/shoutbox.js",
         "resources/assets/js/boot/util.js",
         "resources/assets/js/boot/wiki-contents.js",
+        'node_modules/@logicandtrick/twhl-wikicode-parser/build/browser/twhl-wikicode-parser.js',
+        'resources/assets/js/compiled/parser.js',
         "resources/assets/js/boot/wikicode-preview.js"
     ], 'public/js/all.js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
+    // I'm stuck on sass 1.x until I upgrade to bootstrap 5, I don't see that happening any time soon, so...
+    .sass('resources/assets/sass/app.scss', 'public/css', {
+        sassOptions: {
+            quietDeps: true,
+            silenceDeprecations: [
+                'color-functions',
+                'slash-div',
+                'import',
+                'global-builtin',
+                'legacy-js-api'
+            ]
+        }
+    })
+    .webpackConfig({
+        stats: { children: true }
+    })
     .options({
         processCssUrls: false
     })

@@ -1,4 +1,4 @@
-const wcp = require('@logicandtrick/twhl-wikicode-parser');
+const wcp = window.TwhlWikiCodeParser;
 const config = wcp.ParserConfiguration.Twhl();
 
 class LineMarkersProcessor {

@@ -9,7 +9,7 @@
 		"laravel/ui": "^4.0",
         "biscolab/laravel-recaptcha": "^6.0",
         "ext-gd": "*",
-		"logicandtrick/wikicodeparser": "^0.9.3"
+		"logicandtrick/wikicodeparser": "^0.9.6"
     },
 	"require-dev": {
 		"phpunit/phpunit": "^10.0"
@@ -48,9 +48,9 @@
 			"type": "package",
 			"package": {
 				"name": "logicandtrick/wikicodeparser",
-				"version": "0.9.3",
+				"version": "0.9.6",
 				"dist": {
-					"url": "https://github.com/LogicAndTrick/WikiCodeParser/releases/download/v0.9.3/wikicodeparser-php.zip",
+					"url": "https://github.com/LogicAndTrick/WikiCodeParser/releases/download/v0.9.6/wikicodeparser-php.zip",
 					"type": "zip"
 				},
 				"autoload": {
