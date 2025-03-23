@@ -1,7 +1,7 @@
 // Stuff that's everywhere
 
 body {
-    background: url(../images/body-background.png) #f4f4f4;
+    background: url('../images/body-background.png') #f4f4f4;
 
     // Removes the bright background image for users of the Dark Reader
     // browser extension
@@ -9,9 +9,9 @@ body {
 }
 
 body > .container {
-  background: $content-background-color;
+  background: var(--bs-body-bg);
   padding-bottom: 1rem;
-  border: 1px solid $twhl-brand;
+  border: 1px solid var(--twhl-brand);
   margin-top: 1rem;
 }
 
@@ -30,10 +30,10 @@ body > footer {
 
   }
   tr.unread {
-    background-color: lighten(theme-color-level('success', $alert-bg-level), 6%) !important;
+    background-color: rgb(from var(--bs-success) r g b / 0.2) !important;
   }
   > thead > tr > th {
-    border-bottom-color: $twhl-brand;
+    border-bottom-color: var(--twhl-brand);
   }
 
   .col-5p  { width:  5%; }

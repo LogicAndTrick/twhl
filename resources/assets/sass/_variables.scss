@@ -1,7 +1,6 @@
+@use 'functions' as *;
 
 $twhl-brand: #e68a27;
-
-$content-background-color: #fff;
 
 $tile-background-color: #f9f9f9;
 $tile-foreground-color: #000000;
@@ -9,7 +8,15 @@ $tile-foreground-color: #000000;
 $tile-background-color-alt: #FFFCF9;
 $tile-foreground-color-alt: #000000;
 
-$tile-border: 1px solid darken($tile-background-color, 20%);
-$tile-border-alt: 1px solid darken($tile-background-color-alt, 20%);
+$tile-border: 1px solid darker($tile-background-color, 0.2);
+$tile-border-alt: 1px solid darker($tile-background-color-alt, 0.2);
 
-$heading-foreground-color: #2b2b2b;
+:root {
+  --twhl-brand: #{$twhl-brand};
+  --tile-border: #{$tile-border};
+  --away-direction: 1;
+}
+
+[data-bs-theme="dark"] {
+  --away-direction: -1;
+}

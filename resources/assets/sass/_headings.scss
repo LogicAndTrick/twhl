@@ -1,12 +1,14 @@
-h1,h2,h3,h4,h5,h6 {
-  color: $heading-foreground-color;
+@import 'functions';
+
+h1, h2, h3, h4, h5, h6 {
+  color: away(var(--bs-body-color), 0.15);
   text-align: left;
   padding: 0.3rem 0;
   margin: 0.3rem 0;
 
   small {
     font-size: 75%;
-    color: darken($heading-foreground-color, 25%);
+    color: away(var(--bs-body-color));
   }
 
   .btn {
@@ -31,10 +33,12 @@ h1,h2,h3,h4,h5,h6 {
   }
 }
 
-$h1-color: $twhl-brand;
-
 h1 {
   font-size: 1.4rem;
+  background-color: var(--twhl-brand);
+  color: white;
+  padding: 0.3rem 0.4rem;
+  margin-top: 10px;
 
   small {
     font-size: 60%;
@@ -45,15 +49,10 @@ h1 {
     color: white;
 
     &:hover {
-      color: lighten($twhl-brand, 40%);
+      color: lighter(var(--twhl-brand), 0.4);
       text-decoration: none;
     }
   }
-
-  background-color: $h1-color;
-  color: white;
-  padding: 0.3rem 0.4rem;
-  margin-top: 10px;
 
   .btn-outline-primary,
   .btn-outline-secondary,
@@ -71,27 +70,27 @@ h2 {
 
 h3 {
   font-size: 1.2rem;
-  color: lighten($heading-foreground-color, 6%);
+  color: towards(var(--bs-body-color), 0.06);
 }
 
 h4 {
   font-size: 1.1rem;
   font-weight: normal;
-  color: lighten($heading-foreground-color, 9%);
+  color: towards(var(--bs-body-color), 0.09);
 }
 
 h5 {
   font-size: 1.0rem;
   font-weight: normal;
   text-decoration: underline;
-  color: lighten($heading-foreground-color, 12%);
+  color: towards(var(--bs-body-color), 0.12);
 }
 
 h6 {
   font-variant: small-caps;
   font-weight: normal;
   font-size: 0.9rem;
-  color: lighten($heading-foreground-color, 15%);
+  color: towards(var(--bs-body-color), 0.15);
 }
 
 .alert {
@@ -105,12 +104,15 @@ h6 {
 hr[title] {
   position: relative;
   text-align: center;
+  overflow: visible;
+  color: rgb(127 127 127);
+  opacity: 1;
 
   &::before {
     content: attr(title);
     position: relative;
     top: -0.7em;
-    background: white;
+    background: var(--bs-body-bg);
     padding: 0 15px;
   }
 }

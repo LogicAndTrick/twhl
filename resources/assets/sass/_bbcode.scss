@@ -238,12 +238,12 @@ pre {
   // JS lazy-loading video / Bootstrap responsive video embed
   .video-content {
 
-    @extend .embed-responsive;
-    @extend .embed-responsive-16by9;
+    /* todo
+    @extend .ratio;
+    @extend .ratio-16by9;
 
     .uninitialised {
-      @extend .embed-responsive;
-      @extend .embed-responsive-item;
+      @extend .ratio;
 
       cursor: pointer;
       background-size: cover;
@@ -263,7 +263,7 @@ pre {
         background-repeat: no-repeat;
         background-size: 15% auto;
       }
-    }
+    }*/
   }
 
   // Other lazy-loading embedded content

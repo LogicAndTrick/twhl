@@ -3,6 +3,7 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 
+/*
 // Stuff I use that bootstrap used to have
 $gray-dark:     #292b2c !default;
 $gray:          #464a4c !default;
@@ -49,14 +50,15 @@ $navbar-inverse-color: rgba($white, .75);
 $table-cell-padding: 0.5rem;
 $breadcrumb-bg: transparent;
 
-
+*/
 // Bootstrap scss
 @import '~bootstrap/scss/bootstrap';
 
+/*
 // Bootstrap 4 fixes
 
 // Buttons in input groups shouldn't have border radius
 .input-group .btn {
   border-radius: 0;
 }
-
+*/

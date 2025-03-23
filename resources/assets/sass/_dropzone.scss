@@ -9,7 +9,7 @@
   }
 
   &.dz-drag-hover {
-    border-color: $brand-primary;
-    background-color: $gray-lighter;
+    border-color: var(--bs-primary);
+    background-color: var(--bs-gray-200);
   }
 }

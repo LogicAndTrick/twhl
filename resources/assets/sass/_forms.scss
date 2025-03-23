@@ -1,4 +1,6 @@
 
+@use 'bootstrap/scss/mixins/buttons';
+
 textarea.form-control {
   height: 350px;
   &.gargantuan { height: 1200px; }
@@ -15,11 +17,11 @@ $btn-padding-y-xs: .15rem;
 $btn-border-radius-xs: .15rem;
 
 .btn-xs {
-  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, 1.5, $btn-border-radius-xs);
+  @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $btn-border-radius-xs);
 }
 
 .btn-xxs {
-  @include button-size(0, 0, 0.625rem, 1.4em, 10rem);
+  @include button-size(0, 0, 0.625rem, 10rem);
   width: 1.5em;
   height: 1.5em;
 }

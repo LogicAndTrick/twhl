@@ -20,7 +20,7 @@
         </div>
     </div>
     <nav class="header-nav navbar navbar-expand navbar-dark bg-theme">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav me-auto">
             <li class="nav-item"><a class="nav-link" href="{{ url('/forum') }}">Forums</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/wiki') }}">Wiki</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('/vault') }}">Vault</a></li>
@@ -96,6 +96,11 @@
                         </div>
                     </div>
                 </form>
+            </li>
+            <li class="nav-item ms-auto">
+                <button type="button" class="nav-link" id="theme-toggle">
+                    <span class="fa fa-lightbulb-o"></span>
+                </button>
             </li>
         </ul>
     </nav>

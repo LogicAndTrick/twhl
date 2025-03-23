@@ -1,3 +1,5 @@
+@use 'bootstrap/scss/mixins/pagination';
+
 .search-results {
   h2 {
     display: inline-block;
@@ -7,7 +9,7 @@
     display: inline-flex;
     margin: 0px 20px 5px;
     vertical-align: middle;
-    @include pagination-size($pagination-padding-y-sm, $pagination-padding-x-sm, $font-size-sm, $line-height-sm, $border-radius-sm);
+    @include pagination-size($pagination-padding-y-sm, $pagination-padding-x-sm, $font-size-sm, $border-radius-sm);
   }
   .table {
     margin-top: 5px;

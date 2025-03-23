@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@logicandtrick/twhl-wikicode-parser": "^0.9.4",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^5.3.3",
     "cross-env": "^7.0.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.0",
@@ -26,6 +26,7 @@
     "vue-template-compiler": "^2.6.14"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "js-cookie": "^2.2.1"
   }
 }

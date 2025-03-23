@@ -1,2 +1,3 @@
-
-@include bg-variant(".bg-theme", $twhl-brand, true);
+.bg-theme {
+  background-color: $twhl-brand;
+}

@@ -33,19 +33,15 @@ mix.scripts([
         "resources/assets/js/boot/wiki-contents.js",
         'node_modules/@logicandtrick/twhl-wikicode-parser/build/browser/twhl-wikicode-parser.js',
         'resources/assets/js/compiled/parser.js',
-        "resources/assets/js/boot/wikicode-preview.js"
+        "resources/assets/js/boot/wikicode-preview.js",
+        "resources/assets/js/boot/theme.js"
     ], 'public/js/all.js')
     // I'm stuck on sass 1.x until I upgrade to bootstrap 5, I don't see that happening any time soon, so...
+    // Well I updated to bootstrap 5 but I still need these deprecations because bs5 hasn't migrated yet
     .sass('resources/assets/sass/app.scss', 'public/css', {
         sassOptions: {
             quietDeps: true,
-            silenceDeprecations: [
-                'color-functions',
-                'slash-div',
-                'import',
-                'global-builtin',
-                'legacy-js-api'
-            ]
+            silenceDeprecations: ['import', 'legacy-js-api']
         }
     })
     .webpackConfig({

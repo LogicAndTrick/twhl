@@ -70,7 +70,7 @@ header {
     .dropdown-item {
       color: $navbar-inverse-color;
 
-      @include hover-focus {
+      &:hover, &:focus {
         color: $navbar-dark-active-color;
         text-decoration: none;
         background-color: darken($gray-dark, 5%);

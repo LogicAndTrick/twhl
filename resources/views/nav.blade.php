@@ -19,7 +19,7 @@
             <div class="collapse navbar-collapse" id="navbar-mobile-collapse">
 
                 {{-- Main nav --}}
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url('/forum') }}">Forums</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/wiki') }}">Wiki</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vault') }}">Vault</a></li>

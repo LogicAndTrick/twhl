@@ -1,0 +1,16 @@
+
+@function lighter($color, $amount: 0.25) {
+  @return oklch(from $color calc(l * (1 + $amount)) c h);
+}
+
+@function darker($color, $amount: 0.25) {
+  @return oklch(from $color calc(l * (1 - $amount)) c h);
+}
+
+@function towards($color, $amount: 0.25) {
+  @return oklch(from $color calc(l * (1 + $amount * var(--away-direction))) c h);
+}
+
+@function away($color, $amount: 0.25) {
+  @return oklch(from $color calc(l * (1 - $amount * -1 * var(--away-direction))) c h);
+}
