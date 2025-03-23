@@ -123,8 +123,8 @@ function addButtons(container, textarea) {
         }
     }
 
-    var ddm = $('<div class="dropdown-menu dropdown-menu-right p-1 smiley-dropdown" style="width: 300px;"></div>');
-    var smiley = $('<button type="button" class="btn btn-outline-dark btn-xs dropdown-toggle" data-toggle="dropdown"></button>');
+    var ddm = $('<div class="dropdown-menu dropdown-menu-end p-1 smiley-dropdown" style="width: 300px;"></div>');
+    var smiley = $('<button type="button" class="btn btn-outline-dark btn-xs dropdown-toggle" data-bs-toggle="dropdown"></button>');
     smiley.append('<span class="fa fa-smile-o"></span>');
 
     for (i = 0; i < smilies.length; i++) {

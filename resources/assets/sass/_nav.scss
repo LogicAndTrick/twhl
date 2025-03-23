@@ -1,6 +1,13 @@
+@use 'sass:map';
+@use 'bootstrap/scss/mixins/breakpoints' as *;
+
 header {
 
-  @media (max-width: map_get($grid-breakpoints, 'sm') - 1px) {
+  .navbar {
+    --bs-navbar-padding-y: 0.125rem;
+  }
+
+  @media (max-width: map.get($grid-breakpoints, 'sm') - 1px) {
     .container {
       width: 100%;
     }
@@ -46,9 +53,6 @@ header {
   }
 
   .navbar-form {
-    .input-group {
-      background: #fff;
-    }
     &.login-form {
       min-width: 250px;
     }
@@ -60,30 +64,41 @@ header {
   }
 
   > nav.bg-dark .dropdown-menu {
-    background: $dark;
-    color: $navbar-inverse-color;
-
-    a {
-      color: $navbar-inverse-color;
-    }
+    background: var(--bs-gray-800);
 
     .dropdown-item {
-      color: $navbar-inverse-color;
+      color: var(--bs-nav-link-color);
 
       &:hover, &:focus {
-        color: $navbar-dark-active-color;
-        text-decoration: none;
-        background-color: darken($gray-dark, 5%);
+        color: var(--bs-nav-link-hover-color);
+        background-color: var(--bs-dark);
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      border: 0;
+      background: var(--bs-dark);
+
+      .dropdown-item {
+        --bs-dropdown-item-padding-y: 0.5rem;
+
+        &::before {
+          content: '\2022';
+          margin-right: 0.6rem;
+        }
+
+        &:hover, &:focus {
+          background-color: transparent;
+        }
       }
     }
   }
 }
 
 .header-desktop {
-  margin: 0 -15px;
+  margin: 0 calc(var(--bs-gutter-x) * -0.5);
 
   .header-image {
-
     position: relative;
     overflow: hidden;
 
@@ -100,11 +115,11 @@ header {
     a {
       display: flex;
       flex-flow: row nowrap;
-      color: $twhl-brand;
+      color: var(--twhl-brand);
       padding-left: 1rem;
 
       &:hover {
-        text-shadow: $twhl-brand 0 0 2px;
+        text-shadow: var(--twhl-brand) 0 0 2px;
         text-decoration: none;
       }
 
@@ -156,6 +171,11 @@ header {
     .nav-link {
       color: white;
       font-size: 0.95rem;
+
+      &:hover {
+        opacity: 0.8;
+        text-decoration: none;
+      }
     }
 
     .nav-avatar {

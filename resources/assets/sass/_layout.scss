@@ -1,12 +1,16 @@
+@use 'sass:map';
+@use 'functions' as *;
+
 // Stuff that's everywhere
 
 body {
     background: url('../images/body-background.png') #f4f4f4;
 
-    // Removes the bright background image for users of the Dark Reader
-    // browser extension
-    background-blend-mode: darken;
+    [data-bs-theme="dark"] & {
+      background: url('../images/body-background-dark.png') #333;
+    }
 }
+
 
 body > .container {
   background: var(--bs-body-bg);
@@ -21,7 +25,7 @@ body > footer {
   font-size: .9em;
 
   a {
-    color: #006ba5;
+    color: away(var(--bs-link-color), 0.2);
   }
 }
 
@@ -30,9 +34,9 @@ body > footer {
 
   }
   tr.unread {
-    background-color: rgb(from var(--bs-success) r g b / 0.2) !important;
+    --bs-table-bg: rgb(from var(--bs-success) r g b / 0.2);
   }
-  > thead > tr > th {
+  > thead > tr:last-of-type {
     border-bottom-color: var(--twhl-brand);
   }
 
@@ -91,7 +95,7 @@ dl.dl-horizontal {
     dd { @extend .col-6; }
   }
 
-  @media (max-width: map_get($grid-breakpoints, 'sm') - 1px) {
+  @media (max-width: map.get($grid-breakpoints, 'sm') - 1px) {
     dt {
       text-align: left;
       max-width: 100%;
@@ -141,14 +145,14 @@ ul.inline-bullet {
   }
 }
 
-@media screen and (min-width: map_get($grid-breakpoints, 'md')) {
+@media screen and (min-width: map.get($grid-breakpoints, 'md')) {
   .columns-3, .columns-4 {
     column-count: 2;
     column-gap: 20px;
   }
 }
 
-@media screen and (min-width: map_get($grid-breakpoints, 'lg')) {
+@media screen and (min-width: map.get($grid-breakpoints, 'lg')) {
   .columns-2 {
     column-count: 2;
     column-gap: 20px;

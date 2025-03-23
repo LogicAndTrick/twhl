@@ -30,7 +30,8 @@
     }
   }
   .hidden-#{$bp}-down {
-    @include media-breakpoint-down($bp) {
+    $next: breakpoint-next($bp);
+    @include media-breakpoint-down($next) {
       display: none !important;
     }
   }

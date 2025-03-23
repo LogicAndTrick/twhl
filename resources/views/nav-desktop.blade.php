@@ -27,7 +27,7 @@
             <li class="nav-item"><a class="nav-link" href="{{ url('/competition') }}">Competitions</a></li>
             <li class="nav-item"><a class="nav-link" href="https://discord.gg/jEw8EqD">Discord</a></li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="{{ url('/') }}" data-toggle="dropdown">
+                <a class="nav-link dropdown-toggle" href="{{ url('/') }}" data-bs-toggle="dropdown">
                     Community
                 </a>
                 <div class="dropdown-menu">
@@ -39,12 +39,17 @@
             </li>
         </ul>
         <ul class="navbar-nav">
+            <li class="nav-item">
+                <button type="button" class="nav-link" id="theme-toggle">
+                    <span class="fa fa-lightbulb-o"></span>
+                </button>
+            </li>
             @if (Auth::guest())
                 <li class="navbar-login-dropdown nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"  href="{{ url('/auth/login') }}" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle"  href="{{ url('/auth/login') }}" data-bs-toggle="dropdown">
                         Login/Register
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-end">
                         @form(auth/login)
                             <div class="navbar-form login-form">
                                 {? $login_form_checked = true; ?}
@@ -64,7 +69,7 @@
                 {? $unread_count = Auth::user()->unreadPrivateMessageCount(); ?}
                 {? $notify_count = Auth::user()->unreadNotificationCount(); ?}
                 <li class="nav-item dropdown {{ $unread_count + $notify_count > 0 ? 'has-notification' : '' }}">
-                    <a class="nav-link dropdown-toggle nav-avatar" href="{{ act('panel', 'index') }}" data-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle nav-avatar" href="{{ act('panel', 'index') }}" data-bs-toggle="dropdown">
                         <img src="{{ Auth::user()->getAvatarUrl('inline') }}" alt="{{ Auth::user()->name }}"/>
                         @if ($unread_count + $notify_count > 0)
                             <span class="fa fa-exclamation-triangle"></span>
@@ -72,7 +77,7 @@
                         <span class="name">{{ Auth::user()->name }}</span>
                         <span class="caret"></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item {{ $notify_count > 0 ? 'has-notification' : '' }}" href="{{ act('panel', 'notifications') }}">
                             <span class="fa fa-bell"></span> {{ $notify_count != 0 ? $notify_count : '' }} Notification{{ $notify_count == 1 ? '' : 's' }}
                         </a>
@@ -90,17 +95,12 @@
                     <div class="navbar-form navbar-search-form">
                         <div class="form-group">
                             <div class="input-group input-group-sm">
-                                <div class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></div>
+                                <span class="input-group-text"><span class="fa fa-search"></span></span>
                                 <input type="text" class="form-control" name="search" placeholder="Search">
                             </div>
                         </div>
                     </div>
                 </form>
-            </li>
-            <li class="nav-item ms-auto">
-                <button type="button" class="nav-link" id="theme-toggle">
-                    <span class="fa fa-lightbulb-o"></span>
-                </button>
             </li>
         </ul>
     </nav>

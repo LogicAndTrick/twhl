@@ -36,37 +36,37 @@
             <input name="search" type="text" value="{{ Request::get('search') }}" placeholder="Type here to search" class="form-control">
             <div class="input-group-append vault-filter-container">
                 <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span></button>
                     <ul class="dropdown-menu vault-filter filter-games">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span></button>
                     <ul class="dropdown-menu vault-filter filter-categories">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span></button>
                     <ul class="dropdown-menu vault-filter filter-types">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span></button>
                     <ul class="dropdown-menu vault-filter remove-item filter-users">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-includes">
                         <li class="loading">Loading...</li>
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-one filter-rating">
                         <li class="filter-action" data-filter-value="5">5</li>
                         <li class="filter-action" data-filter-value="4.5">4.5</li>
@@ -82,7 +82,7 @@
                     </ul>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown"><span class="filter-info">Sort: Created</span></button>
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Sort: Created</span></button>
                     <ul class="dropdown-menu pull-right vault-filter filter-one filter-sort">
                         <li class="filter-action" data-filter-value="date" data-text="Created">Date Created</li>
                         <li class="filter-action" data-filter-value="update" data-text="Updated">Date Updated</li>
@@ -213,7 +213,7 @@
             $('.filter-games').parent().on('show.bs.dropdown', function() {
                 var s = $('.vault-filter-form [name=search]'),
                     fg = $('.filter-games'),
-                    bt = fg.siblings('[data-toggle="dropdown"]'),
+                    bt = fg.siblings('[data-bs-toggle="dropdown"]'),
                     w = s.outerWidth() + s.siblings('.input-group-addon').outerWidth(),
                     cw = fg.outerWidth(),
                     bw = bt.outerWidth(),

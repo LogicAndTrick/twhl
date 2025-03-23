@@ -53,7 +53,7 @@
 
     @include('nav')
 
-    @if (!app()->environment('production'))
+    @if (!app()->environment('production') && false && '<- temp, delete that')
         <div class="alert alert-warning">
             <div class="container">
                 This is the public beta version of TWHL and any content posted here will be deleted once the database is refreshed.

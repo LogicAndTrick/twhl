@@ -18,7 +18,7 @@
         @foreach ($thread->messages->sortBy('created_at') as $message)
             {? $expand = $message->id == $thread->last_message_id || array_search($message->id, $unread) !== false; ?}
             <div class="message">
-                <div class="sender-info {{ $expand ? '' : 'collapsed' }}" data-toggle="collapse" data-target="#message-{{ $message->id }}">
+                <div class="sender-info {{ $expand ? '' : 'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#message-{{ $message->id }}">
                     @avatar($message->user inline)
                     @date($message->created_at)
                     <span class="collapsed-only"></span>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <script type="text/javascript">
-                $('[data-target="#message-{{ $message->id }}"] .collapsed-only').text($('#message-{{ $message->id }}').text());
+                $('[data-bs-target="#message-{{ $message->id }}"] .collapsed-only').text($('#message-{{ $message->id }}').text());
             </script>
         @endforeach
     </div>

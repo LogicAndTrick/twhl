@@ -36,7 +36,7 @@
 
     @if ($collapse)
         <p class="text-center">
-            <button id="collapse-button" class="btn btn-outline-secondary" type="button" data-toggle="collapse" data-target="#brief-container">
+            <button id="collapse-button" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#brief-container">
                 Show competition brief
                 <span class="fa fa-chevron-down"></span>
             </button>
