@@ -1,0 +1,5 @@
+@mixin dark-mode {
+  [data-bs-theme="dark"] {
+    @content;
+  }
+}
