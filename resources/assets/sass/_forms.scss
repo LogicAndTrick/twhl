@@ -1,8 +1,9 @@
-
-@use 'bootstrap/scss/mixins/buttons';
+@use 'bootstrap/scss/mixins/buttons' as *;
+@use 'functions' as *;
 
 textarea.form-control {
   height: 350px;
+  font-family: Consolas, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Liberation Mono', 'Nimbus Mono L', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace;
   &.gargantuan { height: 1200px; }
   &.massive { height: 800px; }
   &.huge { height: 600px; }
@@ -15,6 +16,7 @@ textarea.form-control {
 $btn-padding-x-xs: .4rem;
 $btn-padding-y-xs: .15rem;
 $btn-border-radius-xs: .15rem;
+$font-size-xs: .75rem;
 
 .btn-xs {
   @include button-size($btn-padding-y-xs, $btn-padding-x-xs, $font-size-xs, $btn-border-radius-xs);
@@ -28,15 +30,16 @@ $btn-border-radius-xs: .15rem;
 
 .btn-minimal {
   @extend .btn-link;
-  color: $secondary;
+  color: var(--bs-body-color);
 
   &, &:active, &.active, &[disabled], fieldset[disabled] & {
-    background-color: #f6f6f6;
+    background-color: away(var(--bs-body-bg), 0.125);
   }
 
   &:hover, &:focus {
+    color: away(var(--bs-body-color), 0.5);
     text-decoration: none;
-    background-color: #dedede;
+    background-color: away(var(--bs-body-bg), 0.25);
   }
 }
 
@@ -45,9 +48,9 @@ $btn-border-radius-xs: .15rem;
   position: fixed;
   inset: 0.5rem;
   border-radius: 0.25rem;
-  background: var(--light);
+  background: var(--bs-body-bg);
   z-index: 999;
-  border: 1px solid var(--dark);
+  border: 1px solid var(--bs-border-color);
   padding: 0.5rem;
   display: flex;
   flex-flow: row;
@@ -72,13 +75,13 @@ $btn-border-radius-xs: .15rem;
       display: none;
     }
     & > h4 {
-      margin: 0;
       padding: 0;
       line-height: 1.5rem;
-      margin-bottom: 0.25rem;
+      margin: 0 0 0.25rem;
     }
     & > .card {
       overflow: auto;
+      max-height: calc(100vh - 60px);
       & > .card-body {
         overflow: visible;
         &::after {
