@@ -51,7 +51,7 @@
     transition: background-color ease 0.2s;
 
     &:hover {
-      background-color: #dedede;
+      background-color: var(--bs-border-color);
     }
 
     &.active {
@@ -92,7 +92,7 @@
       cursor: pointer;
 
       &:hover {
-        background-color: #dedede;
+        background-color: var(--bs-border-color);
       }
     }
   }
@@ -119,7 +119,7 @@
         cursor: pointer;
 
         &:hover {
-          background: #dedede;
+          background: var(--bs-border-color);
         }
 
         .fa {

@@ -1,15 +1,18 @@
+@use 'functions' as *;
+@use 'sass:map';
+
 .shoutbox {
   position: fixed;
   top: auto;
   bottom: 0;
   left: auto;
   right: 20px;
-  border: 1px solid #aaa;
+  border: 1px solid darker(var(--bs-border-color), 0.25);
   border-bottom: 0;
   width: 150px;
   max-height: 50%;
   height: 24px;
-  background-color: white;
+  background-color: var(--bs-body-bg);
   z-index: 500;
 
   transition: all 0.3s ease;
@@ -84,7 +87,7 @@
     .shout {
       padding: 5px 0;
       margin: 0 5px;
-      border-bottom: 1px solid #dedede;
+      border-bottom: 1px solid var(--bs-border-color);
       min-height: 55px;
 
       &:last-child {
@@ -113,7 +116,7 @@
         float: right;
         font-size: 12px;
         font-style: italic;
-        color: #555;
+        opacity: 0.7;
         line-height: 20px;
       }
 
@@ -135,7 +138,11 @@
     flex: 0 0 auto;
     padding: 0;
     transition: height 0.2s ease;
-    background-color: #f5f5f5;
+    background-color: var(--bs-body-bg);
+
+    .btn {
+      --bs-btn-border-radius: 0;
+    }
 
     input {
       margin-left: -1px;
@@ -150,7 +157,7 @@
 }
 
 // Responsive
-@media (max-width: map_get($grid-breakpoints, 'sm') - 1px) {
+@media (max-width: map.get($grid-breakpoints, 'sm') - 1px) {
   .shoutbox {
     left: 0 !important;
     right: 0 !important;
@@ -182,8 +189,9 @@
       font-size: 1.3rem;
       line-height: 1.6rem;
       padding: 0.2rem;
+
       a {
-        background: darken($twhl-brand, 10%);
+        background: darker(var(--twhl-brand), 0.1);
         margin: 0px 3px;
         padding: 2px 15px;
         border-radius: 4px;

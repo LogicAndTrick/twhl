@@ -118,7 +118,7 @@
                                 </span>
                             @endif
                             @if ($item->license_id == 1)
-                                <button type="button" class="btn btn-block btn-outline-dark license-button" data-bs-toggle="tooltip" data-placement="top" title="{{ $item->license->description }}">
+                                <button type="button" class="btn btn-block btn-outline-inverse license-button" data-bs-toggle="tooltip" data-placement="top" title="{{ $item->license->description }}">
                                     <span class="fa fa-copyright"></span>
                                     License: {{ $item->license->name }}
                                 </button>

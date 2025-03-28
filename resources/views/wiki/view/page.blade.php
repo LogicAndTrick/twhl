@@ -18,9 +18,9 @@
     <li class="ml-auto no-breadcrumb">
         @if (Auth::check())
             @if ($obj_subscription)
-                <a href="{{ act('wiki', 'unsubscribe', $revision->object_id) }}" class="btn btn-xs btn-outline-dark"><span class="fa fa-bell"></span> Unsubscribe</a>
+                <a href="{{ act('wiki', 'unsubscribe', $revision->object_id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</a>
             @else
-                <a href="{{ act('wiki', 'subscribe', $revision->object_id) }}" class="btn btn-xs btn-outline-dark"><span class="fa fa-bell"></span> Subscribe</a>
+                <a href="{{ act('wiki', 'subscribe', $revision->object_id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</a>
             @endif
         @endif
     </li>

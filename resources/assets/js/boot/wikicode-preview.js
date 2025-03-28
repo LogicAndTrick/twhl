@@ -114,7 +114,7 @@ function addButtons(container, textarea) {
         var a = buttons[j];
         for (var i = 0; i < a.length; i++) {
             var btn = a[i];
-            var b = $('<button type="button" class="btn btn-outline-dark btn-xs"></button>');
+            var b = $('<button type="button" class="btn btn-outline-inverse btn-xs"></button>');
             b.attr('title', btn.title);
             if (btn.icon) b.append($('<span></span>').addClass('fa fa-' + btn.icon));
             if (btn.text) b.append($('<span></span>').text(' ' + btn.text));
@@ -124,7 +124,7 @@ function addButtons(container, textarea) {
     }
 
     var ddm = $('<div class="dropdown-menu dropdown-menu-end p-1 smiley-dropdown" style="width: 300px;"></div>');
-    var smiley = $('<button type="button" class="btn btn-outline-dark btn-xs dropdown-toggle" data-bs-toggle="dropdown"></button>');
+    var smiley = $('<button type="button" class="btn btn-outline-inverse btn-xs dropdown-toggle" data-bs-toggle="dropdown"></button>');
     smiley.append('<span class="fa fa-smile-o"></span>');
 
     for (i = 0; i < smilies.length; i++) {

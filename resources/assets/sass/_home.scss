@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 .home-page {
 
   .welcome {
@@ -21,7 +23,7 @@
 
       .notify-alert {
         .fa {
-          color: $brand-danger;
+          color: var(--bs-danger);
         }
       }
     }
@@ -39,7 +41,7 @@
 
       h1 {
         background: none;
-        color: $twhl-brand;
+        color: var(--twhl-brand);
         font-size: 1.8rem;
         font-weight: normal;
         padding-left: 0;
@@ -59,7 +61,7 @@
   }
 
   .vault-items {
-    @media (max-width: map_get($grid-breakpoints, 'md') - 1px) {
+    @media (max-width: map.get($grid-breakpoints, 'md') - 1px) {
       position: relative;
 
       &::before, &::after {
@@ -75,12 +77,12 @@
 
       &::before {
         left: 0;
-        background: linear-gradient(to right, rgba(255,255,255,1) 10%,rgba(255,255,255,0) 100%);
+        background: linear-gradient(to right, var(--bs-body-bg) 10%, rgb(from var(--bs-body-bg) r g b / 0) 100%);
       }
 
       &::after {
         right: 0;
-        background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 90%);
+        background: linear-gradient(to right, rgb(from var(--bs-body-bg) r g b / 0) 0%, var(--bs-body-bg) 90%);
       }
 
       &.scroll-left::before {
@@ -101,9 +103,10 @@
 
       li {
         margin-bottom: 2px;
-        border-bottom: 1px solid #dedede;
+        border-bottom: 1px solid var(--bs-border-color);
         padding: 0 5px 2px;
       }
+
       li:last-child {
         margin: 0;
         padding: 0 5px;
@@ -127,9 +130,10 @@
 
       li {
         margin-bottom: 2px;
-        border-bottom: 1px solid #dedede;
+        border-bottom: 1px solid var(--bs-border-color);
         padding: 0 5px 2px;
       }
+
       li:last-child {
         margin: 0;
         padding: 0 5px;

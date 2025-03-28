@@ -21,7 +21,7 @@
 
     <form action="{{ url('wiki-special/query-links') }}" method="get">
         <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></div>
+            <span class="input-group-text"><span class="fa fa-search"></span></span>
             <input type="text" class="form-control" name="title" placeholder="Enter page title" value="{{ $title }}">
             <button type="submit" class="btn btn-primary">Go</button>
         </div>

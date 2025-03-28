@@ -22,7 +22,7 @@
 
     <form action="{{ url('wiki-special/query-search') }}" method="get">
         <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></div>
+            <span class="input-group-text"><span class="fa fa-search"></span></span>
             <input type="text" class="form-control" name="search" placeholder="Enter search text" value="{{ $search }}">
             <button type="submit" class="btn btn-primary">Go</button>
         </div>

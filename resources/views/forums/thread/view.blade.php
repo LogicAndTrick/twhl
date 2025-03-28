@@ -28,9 +28,9 @@
         <li class="ml-auto no-breadcrumb">
             @if (Auth::check())
                 @if ($subscription)
-                    <a href="{{ act('thread', 'unsubscribe', $thread->id) }}" class="btn btn-xs btn-outline-dark"><span class="fa fa-bell"></span> Unsubscribe</a>
+                    <a href="{{ act('thread', 'unsubscribe', $thread->id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</a>
                 @else
-                    <a href="{{ act('thread', 'subscribe', $thread->id) }}" class="btn btn-xs btn-outline-dark"><span class="fa fa-bell"></span> Subscribe</a>
+                    <a href="{{ act('thread', 'subscribe', $thread->id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</a>
                 @endif
             @endif
         </li>

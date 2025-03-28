@@ -1,0 +1,57 @@
+@use 'mixins' as *;
+@use 'sass:map';
+@use 'bootstrap/scss/mixins/buttons' as *;
+@use 'bootstrap/scss/functions' as *;
+
+$light: shade-color(map.get($theme-colors, 'light'), 10%);
+$dark: tint-color(map.get($theme-colors, 'dark'), 10%);
+
+.btn-near {
+  @include button-variant(
+                  $light,
+                  $light,
+          $hover-background: shade-color($light, $btn-hover-bg-shade-amount),
+          $hover-border: shade-color($light, $btn-hover-border-shade-amount),
+          $active-background: shade-color($light, $btn-active-bg-shade-amount),
+          $active-border: shade-color($light, $btn-active-border-shade-amount)
+  );
+}
+.btn-inverse {
+  @include button-variant(
+                  $dark,
+                  $dark,
+          $hover-background: tint-color($dark, $btn-hover-bg-tint-amount),
+          $hover-border: tint-color($dark, $btn-hover-border-tint-amount),
+          $active-background: tint-color($dark, $btn-active-bg-tint-amount),
+          $active-border: tint-color($dark, $btn-active-border-tint-amount)
+  );
+}
+.btn-outline-inverse {
+  @include button-outline-variant($dark);
+}
+
+@include dark-mode {
+  .btn-near {
+    @include button-variant(
+                    $dark,
+                    $dark,
+            $hover-background: tint-color($dark, $btn-hover-bg-tint-amount),
+            $hover-border: tint-color($dark, $btn-hover-border-tint-amount),
+            $active-background: tint-color($dark, $btn-active-bg-tint-amount),
+            $active-border: tint-color($dark, $btn-active-border-tint-amount)
+    );
+  }
+  .btn-inverse {
+    @include button-variant(
+                    $light,
+                    $light,
+            $hover-background: shade-color($light, $btn-hover-bg-shade-amount),
+            $hover-border: shade-color($light, $btn-hover-border-shade-amount),
+            $active-background: shade-color($light, $btn-active-bg-shade-amount),
+            $active-border: shade-color($light, $btn-active-border-shade-amount)
+    );
+  }
+  .btn-outline-inverse {
+    @include button-outline-variant($light);
+  }
+}

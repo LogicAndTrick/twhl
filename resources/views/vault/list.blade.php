@@ -31,71 +31,69 @@
         <input type="hidden" data-filter="filter-includes" name="incs" value="{{ Request::get('incs') }}"/>
         <input type="hidden" data-filter="filter-rating" name="rate" value="{{ Request::get('rate') }}"/>
         <input type="hidden" data-filter="filter-sort" name="sort" value="{{ Request::get('sort') }}"/>
-        <div class="input-group">
-            <span class="input-group-prepend"><span class="input-group-text"><span class="fa fa-search"></span></span></span>
+        <div class="input-group vault-filter-container">
+            <span class="input-group-text"><span class="fa fa-search"></span></span>
             <input name="search" type="text" value="{{ Request::get('search') }}" placeholder="Type here to search" class="form-control">
-            <div class="input-group-append vault-filter-container">
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span></button>
-                    <ul class="dropdown-menu vault-filter filter-games">
-                        <li class="loading">Loading...</li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span></button>
-                    <ul class="dropdown-menu vault-filter filter-categories">
-                        <li class="loading">Loading...</li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span></button>
-                    <ul class="dropdown-menu vault-filter filter-types">
-                        <li class="loading">Loading...</li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span></button>
-                    <ul class="dropdown-menu vault-filter remove-item filter-users">
-                        <li class="loading">Loading...</li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span></button>
-                    <ul class="dropdown-menu pull-right vault-filter filter-includes">
-                        <li class="loading">Loading...</li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span></button>
-                    <ul class="dropdown-menu pull-right vault-filter filter-one filter-rating">
-                        <li class="filter-action" data-filter-value="5">5</li>
-                        <li class="filter-action" data-filter-value="4.5">4.5</li>
-                        <li class="filter-action" data-filter-value="4">4</li>
-                        <li class="filter-action" data-filter-value="3.5">3.5</li>
-                        <li class="filter-action" data-filter-value="3">3</li>
-                        <li class="filter-action" data-filter-value="2.5">2.5</li>
-                        <li class="filter-action" data-filter-value="2">2</li>
-                        <li class="filter-action" data-filter-value="1.5">1.5</li>
-                        <li class="filter-action" data-filter-value="1">1</li>
-                        <li class="filter-action" data-filter-value="0.5">0.5</li>
-                        <li class="filter-action" data-filter-value="0">0</li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Sort: Created</span></button>
-                    <ul class="dropdown-menu pull-right vault-filter filter-one filter-sort">
-                        <li class="filter-action" data-filter-value="date" data-text="Created">Date Created</li>
-                        <li class="filter-action" data-filter-value="update" data-text="Updated">Date Updated</li>
-                        <li class="filter-action" data-filter-value="rating">Rating</li>
-                        <li class="filter-action" data-filter-value="num_ratings" data-text="Ratings">Number of Ratings</li>
-                        <li class="filter-action" data-filter-value="num_views" data-text="Views">Number of Views</li>
-                        <li class="filter-action" data-filter-value="num_downloads" data-text="Downloads">Number of Downloads</li>
-                    </ul>
-                </div>
-                <button type="submit" class="btn btn-info">
-                    Search
-                </button>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span></button>
+                <ul class="dropdown-menu vault-filter filter-games">
+                    <li class="loading">Loading...</li>
+                </ul>
             </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span></button>
+                <ul class="dropdown-menu vault-filter filter-categories">
+                    <li class="loading">Loading...</li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span></button>
+                <ul class="dropdown-menu vault-filter filter-types">
+                    <li class="loading">Loading...</li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span></button>
+                <ul class="dropdown-menu vault-filter remove-item filter-users">
+                    <li class="loading">Loading...</li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span></button>
+                <ul class="dropdown-menu pull-right vault-filter filter-includes">
+                    <li class="loading">Loading...</li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span></button>
+                <ul class="dropdown-menu pull-right vault-filter filter-one filter-rating">
+                    <li class="filter-action" data-filter-value="5">5</li>
+                    <li class="filter-action" data-filter-value="4.5">4.5</li>
+                    <li class="filter-action" data-filter-value="4">4</li>
+                    <li class="filter-action" data-filter-value="3.5">3.5</li>
+                    <li class="filter-action" data-filter-value="3">3</li>
+                    <li class="filter-action" data-filter-value="2.5">2.5</li>
+                    <li class="filter-action" data-filter-value="2">2</li>
+                    <li class="filter-action" data-filter-value="1.5">1.5</li>
+                    <li class="filter-action" data-filter-value="1">1</li>
+                    <li class="filter-action" data-filter-value="0.5">0.5</li>
+                    <li class="filter-action" data-filter-value="0">0</li>
+                </ul>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Sort: Created</span></button>
+                <ul class="dropdown-menu pull-right vault-filter filter-one filter-sort">
+                    <li class="filter-action" data-filter-value="date" data-text="Created">Date Created</li>
+                    <li class="filter-action" data-filter-value="update" data-text="Updated">Date Updated</li>
+                    <li class="filter-action" data-filter-value="rating">Rating</li>
+                    <li class="filter-action" data-filter-value="num_ratings" data-text="Ratings">Number of Ratings</li>
+                    <li class="filter-action" data-filter-value="num_views" data-text="Views">Number of Views</li>
+                    <li class="filter-action" data-filter-value="num_downloads" data-text="Downloads">Number of Downloads</li>
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-info">
+                Search
+            </button>
         </div>
     </form>
 
