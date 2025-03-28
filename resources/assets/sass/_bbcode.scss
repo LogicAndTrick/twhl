@@ -1,3 +1,7 @@
+@use 'sass:map';
+@use 'functions' as *;
+@use 'mixins' as *;
+
 audio[controls] {
   min-height: 38px;
   width: 500px;
@@ -6,9 +10,7 @@ audio[controls] {
 pre {
   tab-size: 4;
   -moz-tab-size: 4;
-  -o-tab-size: 4;
-  border: 1px solid $gray-400;
-  background-color: $gray-100;
+  border: 1px solid var(--bs-border-color);
   padding: 1rem;
   position: relative;
   line-height: 1.15rem;
@@ -24,6 +26,7 @@ pre {
     font-size: 1.15rem;
     opacity: 0.25;
     pointer-events: none;
+    transform: translateY(-0.1rem);
   }
 }
 
@@ -42,8 +45,8 @@ pre {
 
   h1 {
     background-color: initial;
-    color: $heading-foreground-color;
-    border-bottom: 1px solid $twhl-brand;
+    color: away(var(--bs-body-color), 0.15);
+    border-bottom: 1px solid var(--twhl-brand);
     padding: 0.3rem 0;
   }
 
@@ -53,6 +56,7 @@ pre {
     .card-header {
       padding: 0.5rem 1rem;
     }
+
     .card-body {
       padding: 0.75rem 1rem;
     }
@@ -71,41 +75,70 @@ pre {
   span.strikethrough {
     text-decoration: line-through;
   }
+
   span.underline {
     text-decoration: underline;
   }
+
   span.blue {
     color: blue;
   }
+
   span.green {
     color: green;
   }
+
   span.purple {
     color: purple;
   }
+
   span.red {
     color: red;
   }
+
   span.yellow {
-    color: orange; // this class is just a straight-up liar
+    color: #df9800; // this class is just a straight-up liar
   }
+
+  [data-bs-theme="dark"] & {
+    span.blue {
+      color: #4f87ff;
+    }
+
+    span.green {
+      color: #18c60e;
+    }
+
+    span.purple {
+      color: #a86afa;
+    }
+
+    span.red {
+      color: #ff5b5b;
+    }
+
+    span.yellow {
+      color: #ffa642;
+    }
+  }
+
   span.spoiler {
     color: transparent;
-    background-color: #333;
-    border: 1px solid #333;
+    background-color: towards(var(--bs-body-color), 0.25);
+    border: 1px solid towards(var(--bs-body-color), 0.25);
     padding-right: 3px;
 
     &::before {
       display: inline;
-      color: black;
-      background-color: white;
+      color: var(--bs-body-color);
+      background-color: var(--bs-body-bg);
       content: attr(title);
       padding: 0 3px;
       margin-right: 3px;
     }
 
     &:hover, &.on {
-      color: white;
+      color: towards(var(--bs-body-bg), 0.25);
     }
   }
 
@@ -144,10 +177,10 @@ pre {
 
   blockquote {
     padding: 10px 20px;
-    border-left: 5px solid #eee;
+    border-left: 5px solid var(--bs-border-color);
 
     margin: 15px 0;
-    color: #666;
+    color: rgb(from var(--bs-body-color) r g b / 0.75);
 
     .quote-name {
       display: block;
@@ -165,8 +198,14 @@ pre {
       max-width: 200px;
       vertical-align: middle;
       margin: 0;
-      .caption-panel { border : 0; }
-      .caption-body { padding: 0; }
+
+      .caption-panel {
+        border: 0;
+      }
+
+      .caption-body {
+        padding: 0;
+      }
     }
 
     &.left, &.right {
@@ -174,18 +213,48 @@ pre {
       margin: 0 0 20px;
     }
 
-    &.left { float: left; clear: left; margin-right: 20px; }
-    &.right { float: right; clear: right; margin-left: 20px; }
+    &.left {
+      float: left;
+      clear: left;
+      margin-right: 20px;
+    }
 
-    &.large {  }
-    &.medium { max-width: 400px;  }
-    &.small { max-width: 200px; }
-    &.thumb { max-width: 100px; }
+    &.right {
+      float: right;
+      clear: right;
+      margin-left: 20px;
+    }
 
-    &.large .caption { font-size: 1.3em; }
-    &.medium .caption { font-size: 1.1em; }
-    &.small .caption { font-size: 1em; }
-    &.thumb .caption { font-size: 0.8em; }
+    &.large {
+    }
+
+    &.medium {
+      max-width: 400px;
+    }
+
+    &.small {
+      max-width: 200px;
+    }
+
+    &.thumb {
+      max-width: 100px;
+    }
+
+    &.large .caption {
+      font-size: 1.3em;
+    }
+
+    &.medium .caption {
+      font-size: 1.1em;
+    }
+
+    &.small .caption {
+      font-size: 1em;
+    }
+
+    &.thumb .caption {
+      font-size: 0.8em;
+    }
   }
 
   table .embedded {
@@ -193,43 +262,37 @@ pre {
   }
 
   // panels
-
   .card-block {
     @extend .card-body;
   }
 
-  .card-primary {
-    //background-color: lighten($card-border-color, 10%);
-  }
   .card-success {
-    background-color: lighten($brand-success, 40%);
-
-    .card-header {
-      background-color: lighten($brand-success, 35%);
-    }
+    --bs-card-bg: var(--bs-success-bg-subtle);
+    --bs-card-color: var(--bs-success-text-emphasis);
+    --bs-card-cap-bg: var(--bs-success-border-subtle);
+    --bs-card-cap-color: var(--bs-body-color);
   }
+
   .card-info {
-    background-color: lighten($brand-info, 50%);
-
-    .card-header {
-      background-color: lighten($brand-info, 45%);
-    }
+    --bs-card-bg: var(--bs-info-bg-subtle);
+    --bs-card-color: var(--bs-info-text-emphasis);
+    --bs-card-cap-bg: var(--bs-info-border-subtle);
+    --bs-card-cap-color: var(--bs-body-color);
   }
+
   .card-warning {
-    background-color: lighten($brand-warning, 35%);
-
-    .card-header {
-      background-color: lighten($brand-warning, 30%);
-    }
+    --bs-card-bg: var(--bs-warning-bg-subtle);
+    --bs-card-color: var(--bs-warning-text-emphasis);
+    --bs-card-cap-bg: var(--bs-warning-border-subtle);
+    --bs-card-cap-color: var(--bs-body-color);
   }
+
   .card-danger {
-    background-color: lighten($brand-danger, 35%);
-
-    .card-header {
-      background-color: lighten($brand-danger, 30%);
-    }
+    --bs-card-bg: var(--bs-danger-bg-subtle);
+    --bs-card-color: var(--bs-danger-text-emphasis);
+    --bs-card-cap-bg: var(--bs-danger-border-subtle);
+    --bs-card-cap-color: var(--bs-body-color);
   }
-
 
   .video .caption-panel {
     display: block;
@@ -238,13 +301,10 @@ pre {
   // JS lazy-loading video / Bootstrap responsive video embed
   .video-content {
 
-    /* todo
     @extend .ratio;
-    @extend .ratio-16by9;
+    --bs-aspect-ratio: calc(9 / 16 * 100%);
 
     .uninitialised {
-      @extend .ratio;
-
       cursor: pointer;
       background-size: cover;
       background-position: center center;
@@ -263,13 +323,12 @@ pre {
         background-repeat: no-repeat;
         background-size: 15% auto;
       }
-    }*/
+    }
   }
 
   // Other lazy-loading embedded content
 
   .embed-container {
-
     display: block;
 
     @extend .card;
@@ -298,25 +357,42 @@ pre {
       line-height: 500px;
       font-size: 2em;
       padding: 30px;
-      background-color: #bbb;
+      background-color: away(var(--bs-body-bg), 0.25);
     }
 
-     .slider, &.slider { height: 340px; }
-     .slides { height: 250px; }
-
-     @media (min-width: map_get($grid-breakpoints, 'md')) {
-       .slider, &.slider { height: 440px; }
-       .slides { height: 350px; }
-     }
-
-    @media (min-width: map_get($grid-breakpoints, 'lg')) {
-      .slider, &.slider { height: 540px; }
-      .slides { height: 450px; }
+    .slider, &.slider {
+      height: 340px;
     }
 
-    @media (min-width: map_get($grid-breakpoints, 'xl')) {
-      .slider, &.slider { height: 640px; }
-      .slides { height: 550px; }
+    .slides {
+      height: 250px;
+    }
+
+    @media (min-width: map.get($grid-breakpoints, 'md')) {
+      .slider, &.slider {
+        height: 440px;
+      }
+      .slides {
+        height: 350px;
+      }
+    }
+
+    @media (min-width: map.get($grid-breakpoints, 'lg')) {
+      .slider, &.slider {
+        height: 540px;
+      }
+      .slides {
+        height: 450px;
+      }
+    }
+
+    @media (min-width: map.get($grid-breakpoints, 'xl')) {
+      .slider, &.slider {
+        height: 640px;
+      }
+      .slides {
+        height: 550px;
+      }
     }
   }
 
@@ -324,25 +400,43 @@ pre {
     h2 {
       margin: 0 0 2px;
       padding: 0 0 4px;
-      border-bottom: 1px solid $gray-lighter;
+      border-bottom: 1px solid var(--bs-border-color);
       font-size: 15px;
       text-align: center;
     }
+
     ul {
-      border: 1px solid $twhl-brand;
+      border: 1px solid var(--twhl-brand);
       display: inline-block;
       list-style: none;
       padding: 10px 20px;
       margin-top: 0;
     }
-    .level-1 { margin-left:  0px; }
-    .level-2 { margin-left:  8px; }
-    .level-3 { margin-left: 16px; }
-    .level-4 { margin-left: 24px; }
-    .level-5 { margin-left: 32px; }
-    .level-6 { margin-left: 40px; }
-  }
 
+    .level-1 {
+      margin-left: 0px;
+    }
+
+    .level-2 {
+      margin-left: 8px;
+    }
+
+    .level-3 {
+      margin-left: 16px;
+    }
+
+    .level-4 {
+      margin-left: 24px;
+    }
+
+    .level-5 {
+      margin-left: 32px;
+    }
+
+    .level-6 {
+      margin-left: 40px;
+    }
+  }
 }
 
 span.bbcode {
@@ -352,6 +446,6 @@ span.bbcode {
 
 .smiley-dropdown {
   .btn-link:hover {
-      background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
   }
 }
