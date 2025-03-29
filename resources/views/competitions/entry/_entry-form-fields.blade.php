@@ -6,10 +6,10 @@
     <div class="card-header">
         <span>File upload method:</span>
         <span class="form-check form-check-inline d-inline-block mb-0">
-            <label class="form-check-label ml-2">
+            <label class="form-check-label ms-2">
                 <input class="form-check-input" type="radio" name="__upload_method" value="file" {{ $method != 'link' ? 'checked' : '' }} /> Upload file
             </label>
-            <label class="form-check-label ml-1">
+            <label class="form-check-label ms-1">
                 <input class="form-check-input" type="radio" name="__upload_method" value="link" {{ $method == 'link' ? 'checked' : '' }} /> Link to file
             </label>
         </span>

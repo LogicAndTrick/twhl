@@ -51,7 +51,7 @@
 
                 <div class="slot-main d-flex flex-column flex-md-row">
 
-                    <div class="text-center mr-md-3">
+                    <div class="text-center me-md-3">
                         <a href="#" class="gallery-button img-thumbnail">
                             <img class="main" src="{{asset( $shot ? 'uploads/competition/'.$shot->image_thumb : 'images/no-screenshot-320.png' ) }}" alt="Entry">
                             @foreach($entry->screenshots->slice(1, 3) as $sh)

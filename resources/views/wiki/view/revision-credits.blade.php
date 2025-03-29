@@ -48,12 +48,12 @@
                         This article was originally published on <strong>{{$cred->name}}</strong>@if($cred->description) as <em>{{$cred->description}}</em>@endif.
                     </div>
                     @if ($cred->url)
-                        <div class="ml-3">
+                        <div class="ms-3">
                             <span class="fa fa-link"></span> The original URL of the article was <a href="{{$cred->url}}">{{$cred->url}}</a>.
                         </div>
                     @endif
                     @if ($cred->wayback_url)
-                        <div class="ml-3">
+                        <div class="ms-3">
                             <span class="fa fa-archive"></span> The archived page is available <a href="{{$cred->wayback_url}}">here</a>.
                         </div>
                     @endif

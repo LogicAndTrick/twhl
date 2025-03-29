@@ -110,7 +110,7 @@ function addButtons(container, textarea) {
     var toolbar = $('<div class="btn-toolbar hidden-xs-only"></div>').appendTo(container);
 
     for (var j = 0; j < buttons.length; j++) {
-        var group = $('<div class="btn-group btn-group-xs mr-2"></div>').appendTo(toolbar);
+        var group = $('<div class="btn-group btn-group-xs me-2"></div>').appendTo(toolbar);
         var a = buttons[j];
         for (var i = 0; i < a.length; i++) {
             var btn = a[i];
@@ -156,7 +156,7 @@ $(function() {
             ta = $t.find('textarea'),
             name = ta.attr('name'),
             help = $('<a class="pull-right" target="_blank" href="' + window.urls.wiki.formatting_guide + '">Formatting help</a>'),
-            fullscreen = $('<a href="#" class="ml-2 hidden-lg-down"><span class="fa fa-arrows-alt"></span> Full screen editor</a>'),
+            fullscreen = $('<a href="#" class="ms-2 hidden-lg-down"><span class="fa fa-arrows-alt"></span> Full screen editor</a>'),
             btnCon = $('<div class="mb-1"></div>');
         heading.append(btn);
         card.append(panel);

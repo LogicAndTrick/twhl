@@ -25,7 +25,7 @@
         <li><a href="{{ act('forum', 'index') }}">Forums</a></li>
         <li><a href="{{ act('forum', 'view', $forum->slug) }}">{{ $forum->name }}</a></li>
         <li class="active">View Thread</li>
-        <li class="ml-auto no-breadcrumb">
+        <li class="ms-auto no-breadcrumb">
             @if (Auth::check())
                 @if ($subscription)
                     <a href="{{ act('thread', 'unsubscribe', $thread->id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</a>

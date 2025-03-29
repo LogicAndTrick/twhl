@@ -28,7 +28,7 @@
             <div class="card-body">
                 <div class="form-check form-check-inline">
                     @foreach ($includes as $inc)
-                        <label class="form-check-label mr-1 {{ $type_id != $inc->type_id ? 'inactive' : '' }}" title="{{ $inc->description }}">
+                        <label class="form-check-label me-1 {{ $type_id != $inc->type_id ? 'inactive' : '' }}" title="{{ $inc->description }}">
                             <input class="form-check-input" type="checkbox" name="__includes[]" value="{{ $inc->id }}" data-type="{{ $inc->type_id }}" {{
                                 $type_id != $inc->type_id ? 'disabled' : ''
                             }} {{
@@ -45,10 +45,10 @@
             <div class="card-header">
                 <span>File upload method:</span>
                 <span class="form-check form-check-inline d-inline-block mb-0">
-                    <label class="form-check-label ml-2">
+                    <label class="form-check-label ms-2">
                         <input class="form-check-input" type="radio" name="__upload_method" value="file" {{ $__upload_method != 'link' ? 'checked' : '' }} /> Upload file to TWHL
                     </label>
-                    <label class="form-check-label ml-1">
+                    <label class="form-check-label ms-1">
                         <input class="form-check-input" type="radio" name="__upload_method" value="link" {{ $__upload_method == 'link' ? 'checked' : '' }} /> Link to file on another website
                     </label>
                 </span>

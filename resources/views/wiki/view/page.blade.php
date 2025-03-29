@@ -15,7 +15,7 @@
 <ol class="breadcrumb">
     <li><a href="{{ url('/wiki') }}">Wiki</a></li>
     <li class="active">View Page</li>
-    <li class="ml-auto no-breadcrumb">
+    <li class="ms-auto no-breadcrumb">
         @if (Auth::check())
             @if ($obj_subscription)
                 <a href="{{ act('wiki', 'unsubscribe', $revision->object_id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</a>
@@ -26,7 +26,7 @@
     </li>
 </ol>
 @if(Request::session()->get('wiki.redirected'))
-    <div class="ml-2 mb-2" style="margin-top: -0.75rem">
+    <div class="ms-2 mb-2" style="margin-top: -0.75rem">
         <span class="fa fa-share fa-flip-vertical"></span>
         Redirected from <a href="{{act('wiki', 'page', Request::session()->get('wiki.redirected')) . '?no_redirect=true'}}">{{Request::session()->get('wiki.redirected')}}</a>
     </div>

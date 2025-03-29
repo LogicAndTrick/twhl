@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+@use 'functions' as *;
 @import "../css/select2";
 
 // Pagination Plugin
@@ -19,6 +21,40 @@
 }
 .select2-pagination-info {}
 
+// Dark mode compatibility
+
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--multiple {
+  background-color: var(--bs-body-bg);
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--bs-body-color);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: var(--bs-border-color);
+  border-color: var(--bs-border-color);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+  color: away(var(--bs-border-color), 0.5);
+}
+
+.select2-container--default .select2-results__option[aria-selected="true"] {
+  background-color: away(var(--bs-body-bg), 0.25);
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  // re-apply this since the above rule would have overridden it
+  background-color: #5897fb;
+  color: white;
+}
+
+.select2-dropdown {
+  background-color: var(--bs-body-bg);
+  border-color: var(--bs-border-color);
+}
 
 // TWHL Styles
 
@@ -47,10 +83,14 @@
 .select2-container--default .select2-selection--multiple {
   border: $input-btn-border-width solid $input-border-color;
   border-radius: 0;
-  height: 2rem;
+  min-height: 2rem;
 }
 
 .select2-container--open .select2-dropdown--below {
   border-radius: 0;
-  box-shadow: 0 0 10px #ccc;
+  box-shadow: 0 0 10px var(--bs-border-color);
+}
+
+@include dark-mode {
+
 }
