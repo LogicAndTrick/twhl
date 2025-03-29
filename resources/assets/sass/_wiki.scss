@@ -1,20 +1,28 @@
+@use 'sass:map';
+@use 'functions' as *;
+
 .wiki-navigation {
   background: #c2e5ff;
-  margin: 0 -15px;
+  margin: 0 calc(var(--bs-gutter-x) * -0.5);
   padding: 5px 5px 0;
   flex-wrap: wrap;
   white-space: nowrap;
+
+  [data-bs-theme="dark"] & {
+    background: #004370;
+  }
 
   .btn {
     padding: 2px 8px;
     overflow: hidden;
     border-radius: 0;
     text-overflow: ellipsis;
-    border: 1px solid $gray-500;
-    background: $white;
+    border: 1px solid away(var(--bs-border-color), 0.25);
+    background: var(--bs-body-bg);
 
     &:hover {
-      background: $gray-200;
+      background: rgb(from var(--bs-body-bg) r g b / 0.5);
+
     }
   }
 
@@ -24,13 +32,13 @@
     margin-bottom: 5px;
   }
 
-  @media (max-width: map_get($grid-breakpoints, 'xl') - 1px) and (min-width: map-get($grid-breakpoints, 'lg')) {
+  @media (max-width: map.get($grid-breakpoints, 'xl') - 1px) and (min-width: map.get($grid-breakpoints, 'lg')) {
     .btn {
       max-width: 160px;
     }
   }
 
-  @media (max-width: map_get($grid-breakpoints, 'md') - 1px) {
+  @media (max-width: map.get($grid-breakpoints, 'md') - 1px) {
     .btn-group {
       display: flex;
       width: 100%;
@@ -47,7 +55,7 @@
 ul.wiki-categories {
   @extend .inline-bullet;
 
-  border: 1px solid $gray-lighter;
+  border: 1px solid var(--bs-border-color);
   margin-top: 0.5rem;
   padding: 0.25rem 0.5rem;
 
@@ -60,13 +68,13 @@ ul.wiki-categories {
 ul.wiki-credits {
   list-style: none;
 
-  border: 1px solid $gray-lighter;
+  border: 1px solid var(--bs-border-color);
   margin-top: 0.5rem;
   padding: 0.25rem 0.5rem;
 
   li {
     padding: 0.125rem;
-    border-top: 1px solid $gray-lightest;
+    border-top: 1px solid var(--bs-border-color);
   }
 
   .header {
@@ -98,7 +106,7 @@ ul.wiki-credits {
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid $gray-lighter;
+    border-bottom: 1px solid var(--bs-border-color);
 
     .previous {
       text-align: left;
