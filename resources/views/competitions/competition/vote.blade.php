@@ -53,7 +53,7 @@
                         @endif
                     </a>
                     @if ($entry->screenshots->count() > 1)
-                        <button class="btn btn-info btn-block gallery-button" type="button">
+                        <button class="btn btn-info d-block w-100 gallery-button" type="button">
                             <span class="fa fa-picture-o"></span>
                             + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
                         </button>
@@ -71,7 +71,7 @@
 
                     </div>
                     @if ($comp->canVote())
-                        <button class="btn btn-info btn-block btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
+                        <button class="btn btn-info d-block w-100 btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
                             <span class="fa fa-check"></span>
                             <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
                         </button>

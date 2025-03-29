@@ -3,6 +3,13 @@
 .dropzone {
   border: 2px solid var(--bs-border-color);
   border-radius: 10px;
+  background: var(--bs-body-bg);
+  background-image: linear-gradient(135deg,rgba(0,0,0,.05) 25%,transparent 25%,transparent 50%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.05) 75%,transparent 75%,transparent);
+  background-size: 4rem 4rem;
+
+  [data-bs-theme="dark"] & {
+    background-image: linear-gradient(135deg,rgba(255,255,255,.05) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.05) 50%,rgba(255,255,255,.05) 75%,transparent 75%,transparent);
+  }
 
   .dz-message {
     font-size: 20px;

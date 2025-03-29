@@ -12,13 +12,11 @@
     <div class="row">
         @foreach ($users as $user)
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="media">
-                    <div class="media-left">
-                        <div class="media-object">
-                            @avatar($user small show_name=false)
-                        </div>
+                <div class="d-flex flex-row">
+                    <div>
+                        @avatar($user small show_name=false)
                     </div>
-                    <div class="media-body">
+                    <div>
                         @avatar($user text)<br/>
                         Joined: @date($user->created_at)
                         @if (permission('Admin'))

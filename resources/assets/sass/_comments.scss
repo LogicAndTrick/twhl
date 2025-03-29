@@ -1,3 +1,4 @@
+@use 'functions' as *;
 
 .comment-meta-rating {
   .stars img {
@@ -6,7 +7,7 @@
     margin-right: 2px;
 
     &:hover {
-      background: radial-gradient(circle at center, #f0f0f0 0%, rgba(0, 0, 0, 0) 50%);
+      background: radial-gradient(circle at center, towards(var(--bs-body-color), 0.25) 0%, rgb(from var(--bs-body-color) r g b / 0) 50%);
     }
   }
   .stars button {

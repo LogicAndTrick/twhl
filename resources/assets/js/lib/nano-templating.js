@@ -13,3 +13,10 @@ function template(template_string, obj) {
         return obj[name] || '';
     });
 }
+
+function htmlTemplate(template_string, obj) {
+    const el = document.createElement('template');
+    el.innerHTML = template(template_string, obj);
+    const count = el.content.childNodes.length;
+    return count === 1 ? el.content.firstChild : null;
+}

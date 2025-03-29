@@ -335,11 +335,11 @@
             <div class="slot active-users">
                 <ul class="list-unstyled">
                     @foreach ($onliners as $o)
-                        <li>
-                            <em class="float-right">
+                        <li class="d-flex flex-row">
+                            @avatar($o inline)
+                            <em class="ms-auto">
                                 {{ $o->last_access_time->diffForHumans() }}
                             </em>
-                            @avatar($o inline)
                         </li>
                     @endforeach
                 </ul>

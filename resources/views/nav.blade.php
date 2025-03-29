@@ -86,7 +86,7 @@
                                         @password(password) = Password
                                         @checkbox(remember $login_form_checked) = Remember Me
                                         <div>
-                                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                                            <button type="submit" class="btn btn-primary d-block w-100">Login</button>
                                             <a class="btn btn-link" href="{{ url('/password/email') }}">Forgot Your Password? </a>
                                         </div>
                                     </div>

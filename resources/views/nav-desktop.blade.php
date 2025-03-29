@@ -56,11 +56,11 @@
                                 <input type="text" class="form-control mb-2" name="email" placeholder="Email or username">
                                 <input type="password" class="form-control mb-1" name="password" placeholder="Password">
                                 @checkbox(remember $login_form_checked) = Remember Me
-                                <button type="submit" class="btn btn-primary btn-block mb-1">Login</button>
+                                <button type="submit" class="btn btn-primary d-block w-100 mb-1">Login</button>
                                 <a href="{{ url('/password/email') }}">Forgot Your Password?</a>
                                 <hr />
                                 <div>New user?</div>
-                                <a class="btn btn-success btn-block mt-1" href="{{ url('/auth/register') }}">Create an account</a>
+                                <a class="btn btn-success d-block w-100 mt-1" href="{{ url('/auth/register') }}">Create an account</a>
                             </div>
                         @endform
                     </div>

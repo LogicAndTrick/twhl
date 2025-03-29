@@ -118,19 +118,19 @@
                                 </span>
                             @endif
                             @if ($item->license_id == 1)
-                                <button type="button" class="btn btn-block btn-outline-inverse license-button" data-bs-toggle="tooltip" data-placement="top" title="{{ $item->license->description }}">
+                                <button type="button" class="btn d-block w-100 btn-outline-inverse license-button" data-bs-toggle="tooltip" data-placement="top" title="{{ $item->license->description }}">
                                     <span class="fa fa-copyright"></span>
                                     License: {{ $item->license->name }}
                                 </button>
                             @else
-                                <a href="{{ preg_replace('%.*(http://[^ ]*).*%i', '$1', $item->license->description) }}" target="_blank" class="btn btn-block btn-outline-secondary license-button" data-bs-toggle="tooltip" data-placement="top" title="{{
+                                <a href="{{ preg_replace('%.*(http://[^ ]*).*%i', '$1', $item->license->description) }}" target="_blank" class="btn d-block w-100 btn-outline-secondary license-button" data-bs-toggle="tooltip" data-placement="top" title="{{
                                     preg_replace('%\s*(http://[^ ]*)\s*%i', '', $item->license->description)
                                 }}">
                                     <span class="fa fa-copyright"></span>
                                     License: {{ $item->license->name }}
                                 </a>
                             @endif
-                            <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn btn-block btn-success">
+                            <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn d-block w-100 btn-success">
                                 <span class="fa fa-download"></span>
                                 Download
                                 @if ($item->file_size > 0)

@@ -20,7 +20,7 @@
         <span class="fa fa-arrow-down"></span>
     </div>
 
-    <ul class="list-unstyled screenshot-list">
+    <ul class="list-unstyled screenshot-list container">
         <li>
             <img src="{{ asset('images/loading.gif') }}" alt="Loading" /> Please wait...
         </li>
@@ -38,11 +38,11 @@
 
 @section('scripts')
     <script type="text/template" id="vault-screenshot-template">
-        <li class="media mb-3" data-id="{id}">
-            <div class="media-left">
-                <img class="media-object" src="{{ asset('uploads/vault/{image_thumb}') }}" alt="Screenshot">
+        <li class="row mb-3" data-id="{id}">
+            <div class="col-3">
+                <img src="{{ asset('uploads/vault/{image_thumb}') }}" alt="Screenshot">
             </div>
-            <div class="media-body">
+            <div class="col-9">
                 <div class="drag-handle">
                     <span class="fa fa-bars"></span>
                 </div>

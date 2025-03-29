@@ -11,13 +11,13 @@
     </ol>
 
     @if (count($entry->screenshots) > 0)
-        <ul class="list-unstyled screenshot-list">
+        <ul class="list-unstyled screenshot-list container">
             @foreach ($entry->screenshots as $shot)
-                <li class="media mb-3">
-                    <div class="media-left">
-                        <img class="media-object" src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot">
+                <li class="row mb-3">
+                    <div class="col-3">
+                        <img src="{{ asset('uploads/competition/'.$shot->image_thumb) }}" alt="Screenshot">
                     </div>
-                    <div class="media-body">
+                    <div class="col-9">
                         <p>
                             <a href="{{ asset('uploads/competition/'.$shot->image_full) }}" target="_blank">See full image</a>
                         </p>
