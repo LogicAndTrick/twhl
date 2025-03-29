@@ -283,9 +283,10 @@ a.tile {
   }
 
   &:nth-child(2n) {
-    background-color: var(--tile-background-color-alt);
     border: var(--tile-border-alt);
-    color: var(--tile-foreground-color-alt);
+
+    --tile-background-color: var(--tile-background-color-alt);
+    --tile-foreground-color: var(--tile-foreground-color-alt);
   }
 
   .slot-hover-only {
