@@ -6,6 +6,7 @@
                 <a class="btn btn-near" href="{{ act('wiki', 'edit', $latest_revision->slug) }}"><span class="fa fa-pencil"></span> Edit</a>
             @endif
             <a class="btn btn-near" href="{{ act('wiki', 'history', $latest_revision->slug) }}"><span class="fa fa-clock-o"></span> History</a>
+            <a class="btn btn-near" href="{{ act('wiki-special', 'query-links') . '?title=' . urlencode($latest_revision->title) }}"><span class="fa fa-link"></span> Links</a>
         </div>
     @elseif (isset($cat_name) && strpos($cat_name, '+') !== false)
         <div class="btn-group" role="group">
@@ -21,8 +22,8 @@
     @endif
     @if (permission('ForumCreate'))
         <div class="btn-group" role="group">
-            <a class="btn btn-near" href="{{ act('wiki', 'create') }}"><span class="fa fa-plus"></span> Create a new page</a>
-            <a class="btn btn-near" href="{{ act('wiki', 'create-upload') }}"><span class="fa fa-arrow-up"></span> Upload a new file</a>
+            <a class="btn btn-near" href="{{ act('wiki', 'create') }}"><span class="fa fa-plus"></span> New page</a>
+            <a class="btn btn-near" href="{{ act('wiki', 'create-upload') }}"><span class="fa fa-arrow-up"></span> New file</a>
         </div>
     @endif
     <div class="btn-group" role="group">

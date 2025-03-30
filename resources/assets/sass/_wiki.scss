@@ -88,7 +88,7 @@ ul.wiki-credits {
 
   .card-header {
     padding: 0.5rem 1rem;
-    
+
     h3 {
       margin: 0;
       padding: 0;
@@ -99,7 +99,7 @@ ul.wiki-credits {
   .card-body {
     padding: 0.5rem 1rem;
   }
-  
+
   nav {
     display: flex;
     flex-flow: row nowrap;
@@ -112,6 +112,7 @@ ul.wiki-credits {
       text-align: left;
       flex: 1;
     }
+
     .current {
       text-align: center;
       font-weight: bold;
@@ -119,6 +120,7 @@ ul.wiki-credits {
       line-height: 1rem;
       flex: 1;
     }
+
     .next {
       text-align: right;
       flex: 1;
@@ -157,4 +159,50 @@ ul.wiki-credits {
   line-height: 2rem;
   border-radius: 0.25rem;
   pointer-events: none;
+}
+
+@media (min-width: map.get($grid-breakpoints, 'xl') - 1px) {
+  .wiki {
+    --reading-mode-width: 55rem;
+
+    &.reading-mode {
+      max-width: var(--reading-mode-width);
+      margin: 0 auto;
+      font-size: 1rem;
+      line-height: 1.6em;
+    }
+  }
+}
+
+@media (min-width: 1900px) {
+  // floating table of contents for large screens
+  .wiki {
+    .contents {
+      position: fixed;
+      top: 1rem;
+      max-width: 14vw;
+      background-color: var(--bs-body-bg);
+      transform: translateX(calc(-100% - 1.5rem));
+      max-height: calc(100vh - 2rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+
+      > ul {
+        overflow-y: auto;
+        margin: 0;
+      }
+    }
+
+    &.reading-mode {
+      .contents {
+        // translate the difference between the reading mode width and the screen width
+        // 1320 = container width, bs-gutter-x = container padding, 2px = border
+        // divide by 2 since we only want the left side
+        transform: translateX(calc(-100% - 1.5rem - (1320px - var(--reading-mode-width) - var(--bs-gutter-x) - 2px) / 2));
+        font-size: var(--bs-body-font-size);
+        line-height: var(--bs-body-line-height);
+      }
+    }
+  }
 }

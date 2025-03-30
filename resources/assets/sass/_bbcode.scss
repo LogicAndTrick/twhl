@@ -206,6 +206,9 @@ pre {
       .caption-body {
         padding: 0;
       }
+      img[src^="https://twhl.info/images/games/"] {
+        height: 1.4em;
+      }
     }
 
     &.left, &.right {
