@@ -9,7 +9,7 @@
     </h1>
 
     <div class="alert alert-info">
-        <p>
+        <p class="mb-0">
             Welcome back to TWHL! Please take a moment to confirm your details.
             <strong>For security reasons, your password must be reset to use the site,</strong>
             but you can use the same password if you want to.

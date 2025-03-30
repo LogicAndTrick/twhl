@@ -5,14 +5,12 @@
 <div class="card mb-3 option-panel">
     <div class="card-header">
         <span>File upload method:</span>
-        <span class="form-check form-check-inline d-inline-block mb-0">
-            <label class="form-check-label ms-2">
-                <input class="form-check-input" type="radio" name="__upload_method" value="file" {{ $method != 'link' ? 'checked' : '' }} /> Upload file
-            </label>
-            <label class="form-check-label ms-1">
-                <input class="form-check-input" type="radio" name="__upload_method" value="link" {{ $method == 'link' ? 'checked' : '' }} /> Link to file
-            </label>
-        </span>
+        <label class="form-check-label ms-2">
+            <input class="form-check-input" type="radio" name="__upload_method" value="file" {{ $method != 'link' ? 'checked' : '' }} /> Upload file
+        </label>
+        <label class="form-check-label ms-1">
+            <input class="form-check-input" type="radio" name="__upload_method" value="link" {{ $method == 'link' ? 'checked' : '' }} /> Link to file
+        </label>
     </div>
     <div class="card-body">
         @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
@@ -31,12 +29,12 @@
 </div>
 @submit = Submit Entry
 
-<script type="text/javascript">
-    $(function() {
-        $('[name=__upload_method]').on('change', function() {
-            var sel = $('[name=__upload_method]:checked').attr('value');
-            $('.option-panel .card-body > div').addClass('d-none');
-            $('[name="' + sel + '"]').parent().removeClass('d-none');
-        }).change();
+<script type="text/javascript" defer>
+    const optionPanels = document.querySelectorAll('.option-panel .card-body > div');
+    document.body.filteredEventListener('change', '[name=__upload_method]', () => {
+        const checked = document.querySelector('[name=__upload_method]:checked');
+        if (!checked) return;
+        optionPanels.forEach(x => x.classList.add('d-none'));
+        document.querySelector(`[name="${checked.value}"]`).parentElement.classList.remove('d-none');
     });
 </script>

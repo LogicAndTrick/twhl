@@ -17,7 +17,7 @@
                 ?>
                 <div class="form-group comment-meta-rating">
                     <label for="rating_val">Rating</label>
-                    <select class="form-control" id="rating_val" name="meta_rating">
+                    <select class="form-select" id="rating_val" name="meta_rating">
                         <option value="0" {{ $rating == 0 ? 'selected' : ''}}>Do not rate</option>
                         <option value="1" {{ $rating == 1 ? 'selected' : ''}}>1</option>
                         <option value="2" {{ $rating == 2 ? 'selected' : ''}}>2</option>

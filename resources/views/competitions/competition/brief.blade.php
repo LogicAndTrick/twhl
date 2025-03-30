@@ -139,7 +139,7 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
         $('#countdown').countdown({until: new Date({{ $comp->getCloseTime()->format('U') }} * 1000), description: 'Closes in:'});
         $('#brief-container').on('show.bs.collapse', function() {
             $('#collapse-button').parent().slideUp(function() {

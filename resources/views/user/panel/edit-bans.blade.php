@@ -53,7 +53,7 @@
         @text(duration) = Number of units
         <div class="form-group">
             <label for="unit">Unit</label>
-            <select class="form-control" id="unit" name="unit">
+            <select class="form-select" id="unit" name="unit">
                 <option value="1">Hour</option>
                 <option value="24" selected>Day</option>
                 <option value="{{ 24 * 7 }}">Week</option>

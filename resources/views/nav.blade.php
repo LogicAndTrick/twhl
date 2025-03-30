@@ -25,6 +25,11 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('/vault') }}">Vault</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/competition') }}">Competitions</a></li>
                     <li class="nav-item"><a class="nav-link" href="https://discord.gg/jEw8EqD">Discord</a></li>
+                    <li class="nav-item">
+                        <button class="nav-link theme-toggle d-md-none">
+                            <span class="fa fa-lightbulb-o"></span> Toggle theme
+                        </button>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="{{ url('/') }}" data-bs-toggle="dropdown">
                             More...
@@ -34,6 +39,9 @@
                             <a class="dropdown-item" href="{{ url('/news') }}">News</a>
                             <a class="dropdown-item" href="{{ url('/poll') }}">Polls</a>
                             <a class="dropdown-item" href="{{ url('/user') }}">Members</a>
+                            <button class="dropdown-item theme-toggle d-none d-md-block d-lg-none">
+                                <span class="fa fa-lightbulb-o"></span> Toggle theme
+                            </button>
                         </div>
                     </li>
                 </ul>

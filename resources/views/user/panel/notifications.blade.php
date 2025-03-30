@@ -28,7 +28,7 @@
                 <tr class="{{ $notify->is_unread ? 'unread' : '' }}">
                     <td class="col-30p">
                         @if ($notify->is_unread)
-                            <span class="badge badge-success">{{ $notify->stat_hits }}</span>
+                            <span class="badge bg-success">{{ $notify->stat_hits }}</span>
                         @endif
                         {{ $notify->type_description }}
                     </td>
@@ -55,7 +55,7 @@
                     <td class="col-30p">{{ $subscription->type_description }}</td>
                     <td><a href="{{ $subscription->link }}">{{ $subscription->title && strlen($subscription->title) > 0 ? $subscription->title : '[No title]' }}</a></td>
                     <!--td class="col-15p">{{ $subscription->send_email ? 'Yes' : 'No' }}</td-->
-                    <td class="text-right col-15p">
+                    <td class="text-end col-15p">
                         <a href="{{ act('panel', 'delete-subscription', $subscription->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span> Unsubscribe</a>
                     </td>
                 </tr>

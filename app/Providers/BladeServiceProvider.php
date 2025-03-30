@@ -204,7 +204,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<select class='form-control' id='$id' name='$mapped_name'>$print</select>" .
+                "<select class='form-select' id='$id' name='$mapped_name'>$print</select>" .
                 "$error_message</div>";
             }, $view);
         });
@@ -343,7 +343,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='file' id='$id' name='$mapped_name' class='form-control-file' />" .
+                "<input type='file' id='$id' name='$mapped_name' class='form-control' />" .
                 "$error_message</div>";
             }, $view);
         });

@@ -21,10 +21,10 @@ function setTheme(theme) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const toggle = document.getElementById('theme-toggle');
-    if (!toggle) return;
-
-    toggle.addEventListener('click', () => {
-        setTheme(document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark');
+    document.querySelectorAll('.theme-toggle').forEach(toggle => {
+        toggle.addEventListener('click', e => {
+            e.preventDefault();
+            setTheme(document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark');
+        })
     });
 });

@@ -13,10 +13,11 @@
                 title: title || 'View Entry Screenshots',
                 message: '<div class="text-center"><img src="{{ asset("images/loading.gif") }}" alt="Loading..." /> Loading...</div>',
                 size: 'large',
+                backdrop: true,
                 buttons: {
                     ok: {
                         label: "Close",
-                        className: "btn-light"
+                        className: "btn-inverse"
                     }
                 },
                 callback: function() {

@@ -40,7 +40,7 @@
         </ul>
         <ul class="navbar-nav">
             <li class="nav-item">
-                <button type="button" class="nav-link" id="theme-toggle">
+                <button type="button" class="nav-link theme-toggle">
                     <span class="fa fa-lightbulb-o"></span>
                 </button>
             </li>

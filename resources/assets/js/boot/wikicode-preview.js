@@ -156,7 +156,7 @@ $(function() {
             ta = $t.find('textarea'),
             name = ta.attr('name'),
             help = $('<a class="pull-right" target="_blank" href="' + window.urls.wiki.formatting_guide + '">Formatting help</a>'),
-            fullscreen = $('<a href="#" class="ms-2 hidden-lg-down"><span class="fa fa-arrows-alt"></span> Full screen editor</a>'),
+            fullscreen = $('<a href="#" class="ms-2 hidden-sm-down"><span class="fa fa-arrows-alt"></span> Full screen editor</a>'),
             btnCon = $('<div class="mb-1"></div>');
         heading.append(btn);
         card.append(panel);
