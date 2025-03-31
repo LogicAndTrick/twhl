@@ -136,6 +136,10 @@ class WikiController extends Controller {
             $cat_name = substr($page, 9);
 
             $all_cats = explode('+', $cat_name);
+            if (count($all_cats) > 3) {
+                // too many categories, reject request
+                abort(422);
+            }
 
             $cat_names = array_filter($all_cats, function ($c) { return !Str::startsWith($c, '!'); });
             $notcat_names = array_map(function ($c) { return substr($c, 1); }, array_filter($all_cats, function ($c) { return Str::startsWith($c, '!'); }));
