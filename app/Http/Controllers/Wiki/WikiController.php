@@ -112,6 +112,8 @@ class WikiController extends Controller {
         return redirect('wiki/page/'.$rev->escaped_slug);
     }
 
+    const MAX_COMBINED_CATEGORIES = 3;
+
     public function getPage($page, $revision = 0) {
         $rev = null;
         if (!$revision) {
@@ -136,7 +138,7 @@ class WikiController extends Controller {
             $cat_name = substr($page, 9);
 
             $all_cats = explode('+', $cat_name);
-            if (count($all_cats) > 3) {
+            if (count($all_cats) > self::MAX_COMBINED_CATEGORIES) {
                 // too many categories, reject request
                 abort(422);
             }
@@ -169,7 +171,7 @@ class WikiController extends Controller {
                 ->orderBy('wiki_revisions.title')
                 ->paginate(250);
 
-            $subcats = DB::select("
+            $subcats = count($all_cats) >= self::MAX_COMBINED_CATEGORIES ? [] : DB::select("
                     select `value` as name, count(*) as num
                     from wiki_revision_metas as mm
                     where mm.`key` = ?
