@@ -1,5 +1,6 @@
 <?php namespace App\Http;
 
+use App\Http\Middleware\ExtractCloudflareIpAddress;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
@@ -16,6 +17,7 @@ class Kernel extends HttpKernel {
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
+        ExtractCloudflareIpAddress::class,
 		'App\Http\Middleware\VerifyCsrfToken',
         'App\Http\Middleware\UpdateUserAccessDetails',
 		'App\Http\Middleware\ApiKeyAuthenticate',
