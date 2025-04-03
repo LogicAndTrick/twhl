@@ -49,6 +49,9 @@ mix.scripts([
         stats: { children: true }
     })
     .options({
-        processCssUrls: false
+        processCssUrls: false,
+        cssNano: {
+            calc: false
+        }
     })
     .version();

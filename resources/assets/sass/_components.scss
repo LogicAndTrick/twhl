@@ -350,17 +350,18 @@ a.tile {
   &:nth-child(2n) {
     background-color: towards(var(--tile-background-color), 0.03);
   }
-}
 
-a.slip {
-  transition: background-color 0.2s ease;
+  .stretched-link {
+    &::after {
+      transition: background-color 0.2s ease;
+    }
+    &:hover::after {
+      background-color: rgb(127 127 127 / 0.125);
+      text-decoration: none;
 
-  &:hover {
-    background-color: away(var(--tile-background-color), 0.05);
-    text-decoration: none;
-
-    padding-left: 2px;
-    border-left: 4px solid var(--twhl-brand);
+      padding-left: 2px;
+      border-left: 4px solid var(--twhl-brand);
+    }
   }
 }
 

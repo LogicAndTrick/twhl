@@ -80,23 +80,24 @@
 
             <div class="journals">
                 @forelse ($journals as $journal)
-                    <a href="{{ act('journal', 'view', $journal->id) }}" class="slip">
-                        <span class="slip-avatar">
+                    <div class="slip position-relative">
+                        <div class="slip-avatar">
                             @avatar($journal->user small link=false show_name=false)
-                        </span>
-                        <span class="slip-content">
-                            <span class="slip-title">
+                        </div>
+                        <div class="slip-content">
+                            <div class="slip-title">
                                 {{ $journal->getTitle() }}
-                            </span>
-                            <span class="slip-subtitle">
+                            </div>
+                            <div class="slip-subtitle">
                                 @avatar($journal->user text link=false) &bull;
                                 @date($journal->created_at)
-                            </span>
-                            <span class="bbcode d-block">
+                            </div>
+                            <div class="bbcode">
                                 {!! bbcode_excerpt($journal->content_text, 200, 'inline') !!}
-                            </span>
-                        </span>
-                    </a>
+                            </div>
+                            <a href="{{ act('journal', 'view', $journal->id) }}" class="stretched-link"></a>
+                        </div>
+                    </div>
                 @empty
                     <div class="col text-center">
                         <em>None!</em>
