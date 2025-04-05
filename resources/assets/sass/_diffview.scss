@@ -1,12 +1,44 @@
+@use 'functions' as *;
+
 .diff-image-container {
   img {
     width: 100%;
-    border: 1px solid #aaa;
+    border: 1px solid var(--bs-border-color);
     padding: 6px;
     margin: 10px 0;
   }
 }
+
 .diff-container {
+
+  --diff-table-border: rgb(127 127 127 / 0.5);
+  --diff-inner-border: var(--diff-table-border);
+
+  --diff-header-background: rgb(127 127 127 / 0.2);
+  --diff-header-text: var(--bs-body-color);
+
+  --diff-skip-background: rgb(127 127 127 / 0.2);
+  --diff-skip-border: var(--diff-table-border);
+
+  --diff-line-numbers-background: rgb(248 184 90 / 0.1);
+  --diff-line-numbers-text: #ae7837;
+  --diff-line-numbers-border: var(--diff-table-border);
+
+  --diff-empty: #DDD;
+  --diff-replace: #FD8;
+  --diff-delete: #E99;
+  --diff-insert: #9E9;
+
+  [data-bs-theme="dark"] & {
+    --diff-line-numbers-text: #9f7f56;
+
+    --diff-empty: #575757;
+    --diff-replace: #735801;
+    --diff-delete: #731d1d;
+    --diff-insert: #196a19;
+  }
+
+
   /*
   This is part of jsdifflib v1.0. <http://github.com/cemerick/jsdifflib>
 
@@ -37,63 +69,76 @@
   or implied, of Chas Emerick.
   */
   table.diff {
-    border-collapse:collapse;
-    border:1px solid darkgray;
+    border-collapse: collapse;
+    border: 1px solid var(--diff-table-border);
   }
+
   table.diff tbody {
-    font-family:Courier, monospace
+    font-family: Consolas, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Liberation Mono', 'Nimbus Mono L', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier, monospace;
   }
+
   table.diff tbody th {
-    font-family:verdana,arial,'Bitstream Vera Sans',helvetica,sans-serif;
-    background:#EED;
-    font-size:11px;
-    font-weight:normal;
-    border:1px solid #BBC;
-    color:#886;
-    padding:.3em .5em .1em 2em;
-    text-align:right;
-    vertical-align:top
+    font-family: verdana, arial, 'Bitstream Vera Sans', helvetica, sans-serif;
+    background: var(--diff-line-numbers-background);
+    font-size: 11px;
+    font-weight: normal;
+    border: 1px solid var(--diff-line-numbers-border);
+    color: var(--diff-line-numbers-text);
+    padding: .3em .5em .1em 2em;
+    text-align: right;
+    vertical-align: top
   }
+
   table.diff thead {
-    border-bottom:1px solid #BBC;
-    background:#EFEFEF;
-    font-family:Verdana
+    border-bottom: 1px solid var(--diff-inner-border);
+    background: var(--diff-header-background);
+    color: var(--diff-header-text);
+    font-family: verdana, arial, Bitstream Vera Sans, helvetica, sans-serif;
   }
+
   table.diff thead th.texttitle {
-    text-align:left
+    text-align: left
   }
+
   table.diff tbody td {
-    padding:0px .4em;
-    padding-top:.4em;
-    vertical-align:top;
+    padding: .4em .4em 0;
+    vertical-align: top;
   }
+
   table.diff .empty {
-    background-color:#DDD;
+    background-color: var(--diff-empty);
   }
+
   table.diff .replace {
-    background-color:#FD8
+    background-color: var(--diff-replace);
   }
+
   table.diff .delete {
-    background-color:#E99;
+    background-color: var(--diff-delete);
   }
-  table.diff .skip {
-    background-color:#EFEFEF;
-    border:1px solid #AAA;
-    border-right:1px solid #BBC;
-  }
+
   table.diff .insert {
-    background-color:#9E9
+    background-color: var(--diff-insert);
   }
+
+  table.diff .skip {
+    background-color: var(--diff-skip-background);
+    border: 1px solid var(--diff-skip-border);
+    border-right: 1px solid var(--diff-inner-border);
+  }
+
   table.diff th.author {
-    text-align:right;
-    border-top:1px solid #BBC;
-    background:#EFEFEF
+    text-align: right;
+    border-top: 1px solid var(--diff-inner-border);
+    background: var(--diff-header-background);
+    color: var(--diff-header-text);
   }
 
   // Custom
   table.diff {
     width: 100%;
   }
+
   table.diff tbody th {
     width: 40px;
   }

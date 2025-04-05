@@ -56,8 +56,8 @@
         <button type="button" class="btn btn-info" id="compare-button">Compare selected revisions</button>
     </p>
     <div class="row diff-image-container">
-        <div class="col-xs-6" id="compare-image-left"></div>
-        <div class="col-xs-6" id="compare-image-right"></div>
+        <div class="col-6" id="compare-image-left"></div>
+        <div class="col-6" id="compare-image-right"></div>
     </div>
     <div id="compare" class="diff-container"></div>
 @endsection

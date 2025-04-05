@@ -101,6 +101,11 @@ header {
   .header-image {
     position: relative;
     overflow: hidden;
+    background: #333 url("/images/header/header-1.jpg") center center;
+
+    @media (min-width: map.get($grid-breakpoints, 'xxl')) {
+      background-size: cover;
+    }
 
     .wrapper {
       display: flex;
@@ -109,8 +114,6 @@ header {
       height: 80px;
       background: linear-gradient(to left, rgba(0,0,0,0) 50%,rgba(0,0,0,0.5) 75%);
     }
-
-    background: #333 url("/images/header/header-1.jpg") center center;
 
     a {
       display: flex;
