@@ -440,6 +440,52 @@ pre {
       margin-left: 40px;
     }
   }
+
+  // user safety features
+  &.deleted-user {
+    .caption-panel {
+      filter: opacity(25%) blur(50px);
+    }
+  }
+
+  &.new-user {
+    .caption-panel {
+      position: relative;
+      border-color: var(--bs-danger-text-emphasis);
+
+      img {
+        filter: blur(15px);
+        transform: scale(0.5);
+      }
+
+      &::after {
+        content: 'Image from newly registered user. Click to reveal.';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--bs-danger-bg-subtle);
+        color: var(--bs-danger-text-emphasis);
+        font-weight: bold;
+        pointer-events: none;
+        padding: 1rem;
+      }
+
+      &:focus {
+        img {
+          filter: blur(0);
+          transform: scale(1);
+        }
+
+        &::after {
+          content: '';
+          display: none;
+        }
+      }
+    }
+  }
 }
 
 span.bbcode {

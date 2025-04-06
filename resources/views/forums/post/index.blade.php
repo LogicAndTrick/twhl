@@ -51,7 +51,7 @@
                     </div>
                     <div class="slot-row">
                         <div class="slot-main">
-                            <div class="bbcode post-content">{!! $post->content_html !!}</div>
+                            <div class="bbcode post-content {{$post->user->getClasses()}}">{!! $post->content_html !!}</div>
                         </div>
                         <div class="slot-right hidden-sm-down">
                             @avatar($post->user full)

@@ -16,7 +16,7 @@
         <p>Are you sure you want to delete this post?</p>
         <div class="form-group">
             <div class="card card-body">
-                <div class="bbcode">{!! $post->content_html !!}</div>
+                <div class="bbcode {{$post->user->getClasses()}}">{!! $post->content_html !!}</div>
             </div>
         </div>
         @submit = Delete Post

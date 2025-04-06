@@ -15,7 +15,7 @@
         @hidden(id $post)
         <p>Restoring this post will make it visible again. Are you sure?</p>
         <div class="card card-body">
-            <div class="bbcode">{!! $post->content_html !!}</div>
+            <div class="bbcode {{$post->user->getClasses()}}">{!! $post->content_html !!}</div>
         </div>
         @submit = Restore Post
     @endform

@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="slot-main">
-                    <div class="bbcode">{!! $journal->content_html !!}</div>
+                    <div class="bbcode {{$journal->user->getClasses()}}">{!! $journal->content_html !!}</div>
                 </div>
             </div>
         @endforeach

@@ -66,7 +66,7 @@
 </dl>
 
 <h3>Upload Information</h3>
-<div class="wiki bbcode">
+<div class="wiki bbcode {{$revision->user->getClasses()}}">
     {!! $revision->content_html !!}
 </div>
 @include('wiki.view.revision-categories', ['revision' => $revision])

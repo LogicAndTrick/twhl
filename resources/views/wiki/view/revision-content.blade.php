@@ -46,6 +46,6 @@
     </div>
 @endforeach
 
-<div class="wiki bbcode">
+<div class="wiki bbcode {{$revision->user->getClasses()}}">
     {!! $revision->content_html !!}
 </div>

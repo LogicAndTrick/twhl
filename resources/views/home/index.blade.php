@@ -230,7 +230,7 @@
                             </div>
                         </div>
                         <div class="slot-main">
-                            <div class="bbcode">{!! bbcode_excerpt($thread->last_post->content_text) !!}</div>
+                            <div class="bbcode {{$thread->last_post->user->getClasses()}}">{!! bbcode_excerpt($thread->last_post->content_text) !!}</div>
                         </div>
                     </div>
                 @endforeach

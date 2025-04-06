@@ -45,7 +45,7 @@
                 @if ($comment->hasTemplate())
                     @include('comments.templates.'.$comment->getTemplate(), [ 'comment' => $comment, 'obj' => $comment->getTemplateArticleObject() ])
                 @else
-                    <div class="bbcode">{!! $comment->content_html !!}</div>
+                    <div class="bbcode {{$comment->user->getClasses()}}">{!! $comment->content_html !!}</div>
                 @endif
             </div>
         </div>

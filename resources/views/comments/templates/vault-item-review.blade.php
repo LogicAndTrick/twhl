@@ -23,4 +23,4 @@
 
     <hr/>
 
-    <div class="bbcode">{!! $obj->content_html !!}</div>
+    <div class="bbcode {{$obj->user->getClasses()}}">{!! $obj->content_html !!}</div>

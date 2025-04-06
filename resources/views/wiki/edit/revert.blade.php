@@ -31,7 +31,7 @@
           Page appearance after reverting
         </div>
         <div class="card-body">
-            <div class="bbcode">{!! $revision->content_html !!}</div>
+            <div class="bbcode {{$revision->user->getClasses()}}">{!! $revision->content_html !!}</div>
             @include('wiki.view.revision-categories', ['revision' => $revision])
         </div>
     </div>

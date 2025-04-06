@@ -24,7 +24,7 @@
                     <span class="collapsed-only"></span>
                 </div>
                 <div class="message-content collapse {{ $expand ? 'show' : '' }}" id="message-{{ $message->id }}">
-                    <div class="bbcode">{!! $message->content_html !!}</div>
+                    <div class="bbcode {{$message->user->getClasses()}}">{!! $message->content_html !!}</div>
                 </div>
             </div>
             <script type="text/javascript">

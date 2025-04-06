@@ -12,7 +12,7 @@
     </h1>
 
     <p>Are you sure you want to delete this comment?</p>
-    <div class="bbcode">{!! $comment->content_html !!}</div>
+    <div class="bbcode {{$comment->user->getClasses()}}">{!! $comment->content_html !!}</div>
     @form(comment/delete)
         @hidden(id $comment)
         @submit = Delete Comment

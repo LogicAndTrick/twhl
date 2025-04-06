@@ -92,7 +92,7 @@
                                 @avatar($journal->user text link=false) &bull;
                                 @date($journal->created_at)
                             </div>
-                            <div class="bbcode">
+                            <div class="bbcode {{$journal->user->getClasses()}}">
                                 {!! bbcode_excerpt($journal->content_text, 200, 'inline') !!}
                             </div>
                             <a href="{{ act('journal', 'view', $journal->id) }}" class="stretched-link"></a>

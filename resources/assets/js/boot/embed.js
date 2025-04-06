@@ -6,6 +6,13 @@ $(document).on('click', '.video-content .uninitialised', function(event) {
     $t.replaceWith(frame);
 });
 
+$(function() {
+    $('.caption-panel').attr('tabindex', -1);
+    $(document).on('click', '.caption-panel', function(event) {
+        $(this).focus();
+    });
+});
+
 
 var embed_templates = {
     vault_slider_screenshot: '<div><img data-u="image" data-src2="{image_large}" alt="Screenshot" /><img data-u="thumb" data-src2="{image_thumb}" alt="Thumbnail" /></div>',

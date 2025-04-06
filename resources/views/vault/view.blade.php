@@ -167,7 +167,7 @@
                         </div>
                     @endforeach
                     <hr/>
-                    <div class="bbcode">{!! $item->content_html !!}</div>
+                    <div class="bbcode {{$item->user->getClasses()}}">{!! $item->content_html !!}</div>
                 </div>
             </div>
         </div>

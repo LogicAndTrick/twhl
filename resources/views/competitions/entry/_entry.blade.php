@@ -34,7 +34,7 @@
         </div>
 
         <div>
-            <div class="bbcode">
+            <div class="bbcode {{$entry->user->getClasses()}}">
                 {!! $entry->content_html ? $entry->content_html : '<em>No Description</em>' !!}
             </div>
 

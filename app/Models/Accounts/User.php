@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
@@ -149,6 +150,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         if ($this->skill_animate) $skills[] = 'Model animation';
         if ($this->skill_texture) $skills[] = 'Texture creation';
         return $skills;
+    }
+
+    public function getClasses() {
+        if ($this->id == Auth::user()->id) {
+            return '';
+        } else if ($this->deleted_at) {
+            return 'deleted-user';
+        } else if ($this->created_at->diffInDays() < 7) {
+            return 'new-user';
+        }
+        return '';
     }
 
     /**

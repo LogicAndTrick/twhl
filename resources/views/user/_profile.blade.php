@@ -90,5 +90,5 @@
 </div>
 @if ($user->info_biography_text)
     <hr title="Biography"/>
-    <div class="bbcode">{!! $user->info_biography_html !!}</div>
+    <div class="bbcode {{$user->getClasses()}}">{!! $user->info_biography_html !!}</div>
 @endif
