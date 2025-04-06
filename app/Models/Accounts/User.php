@@ -153,7 +153,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     }
 
     public function getClasses() {
-        if ($this->id == Auth::user()->id) {
+        $curr = Auth::user();
+        if ($curr && $this->id == $curr->id) {
             return '';
         } else if ($this->deleted_at) {
             return 'deleted-user';
