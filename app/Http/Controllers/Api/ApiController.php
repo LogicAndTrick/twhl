@@ -11,6 +11,7 @@ use App\Models\Accounts\ApiKey;
 use App\Models\Accounts\Permission;
 use App\Models\Accounts\User;
 use App\Models\Comments\Comment;
+use App\Models\Comments\CommentDetail;
 use App\Models\Comments\CommentMeta;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionJudgeType;
@@ -212,7 +213,7 @@ class ApiController extends Controller {
                     'meta_rating' => [ 'required' => false, 'type' => 'integer', 'description' => '[Vault only] If supported, the rating attached to the comment.'],
                 ]
             ],
-            'object' => Comment::class,
+            'object' => CommentDetail::class,
             'filter_columns' => ['content_text'],
             'sort_column' => 'updated_at',
             'default_filters' => []
