@@ -42,6 +42,7 @@ class WikiController extends Controller {
         $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)->whereNull('wiki_revisions.deleted_at')
             ->leftJoin('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
             ->where('o.type_id', '=', WikiType::PAGE)
+            ->whereNull('o.deleted_at')
             ->orderBy('title')
             ->paginate(50);
         return view('wiki/list/pages', [
@@ -54,6 +55,7 @@ class WikiController extends Controller {
         $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)
             ->leftJoin('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
             ->where('o.type_id', '=', WikiType::UPLOAD)
+            ->whereNull('o.deleted_at')
             ->orderBy('title')
             ->paginate(50);
         return view('wiki/list/uploads', [
