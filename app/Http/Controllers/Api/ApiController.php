@@ -878,8 +878,8 @@ class ApiController extends Controller {
                     'url' => asset('/forum/view/meta')
                 ],
                 'license' => [
-                    'name' => 'CC BY-NC-ND',
-                    'url' => 'https://creativecommons.org/licenses/by-nc-nd/4.0/'
+                    'name' => 'MIT',
+                    'url' => 'https://opensource.org/license/MIT'
                 ],
                 'version' => 'latest'
             ],
