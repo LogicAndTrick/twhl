@@ -70,7 +70,7 @@
     <footer>
         Site and non-dynamic content copyright &copy; {{\Carbon\Carbon::now()->year}}, <a href="http://logic-and-trick.com/">Logic & Trick</a>. Original site by atom. All rights reserved.<br/>
         All member-submitted resources copyright their respective authors unless otherwise specified.<br/>
-        TWHL is a fan site and is not affiliated with Valve Corporation. Views expressed by users are the individuals's own and do not represent the opinions of any other entity.<br/>
+        TWHL is a fan site and is not affiliated with Valve Corporation. Views expressed by users are the individual's own and do not represent the opinions of any other entity.<br/>
         {{ render_time() }}
     </footer>
 

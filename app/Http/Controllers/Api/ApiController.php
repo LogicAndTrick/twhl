@@ -872,7 +872,7 @@ class ApiController extends Controller {
             'info' => [
                 'title' => 'THWL JSON API',
                 'description' => 'An unnecessarily feature-complete JSON API for TWHL.',
-                'termsOfService' => asset('/wiki/page/TWHL:_Site_Rules'),
+                'termsOfService' => asset('/wiki/page/TWHL:_Terms_of_Service'),
                 'contact' => [
                     'name' => 'TWHL Staff',
                     'url' => asset('/forum/view/meta')
