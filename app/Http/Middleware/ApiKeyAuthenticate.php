@@ -22,6 +22,7 @@ class ApiKeyAuthenticate
             if (!$api_key) {
                 $headers = getallheaders();
                 if (isset($headers['Authorization'])) $api_key = $headers['Authorization'];
+                else if (isset($headers['authorization'])) $api_key = $headers['authorization'];
             }
             if ($api_key) {
                 $key = ApiKey::where('key', '=', $api_key)
