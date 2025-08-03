@@ -66,7 +66,9 @@
                     </div>
                     <div class="slot-subtitle">
                         Posted @date($post->created_at)
-                        <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
+                        @auth
+                            <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
+                        @endauth
                     </div>
                 </div>
                 <div class="slot-row">
