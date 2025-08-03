@@ -114,7 +114,8 @@ class WikiController extends Controller {
         return redirect('wiki/page/'.$rev->escaped_slug);
     }
 
-    const MAX_COMBINED_CATEGORIES = 3;
+    const MAX_COMBINED_CATEGORIES_UNAUTHENTICATED = 1;
+    const MAX_COMBINED_CATEGORIES_AUTHENTICATED = 3;
 
     public function getPage($page, $revision = 0) {
         $rev = null;
@@ -133,6 +134,7 @@ class WikiController extends Controller {
         }
 
         // A category will always have the list of pages at the bottom, even if the page doesn't exist
+        $max_combined_cats = Auth::check() ? self::MAX_COMBINED_CATEGORIES_AUTHENTICATED : self::MAX_COMBINED_CATEGORIES_UNAUTHENTICATED;
         $cat_name = null;
         $cat_pages = null;
         $subcats = null;
@@ -140,7 +142,7 @@ class WikiController extends Controller {
             $cat_name = substr($page, 9);
 
             $all_cats = explode('+', $cat_name);
-            if (count($all_cats) > self::MAX_COMBINED_CATEGORIES) {
+            if (count($all_cats) > $max_combined_cats) {
                 // too many categories, reject request
                 abort(422);
             }
@@ -173,7 +175,7 @@ class WikiController extends Controller {
                 ->orderBy('wiki_revisions.title')
                 ->paginate(250);
 
-            $subcats = count($all_cats) >= self::MAX_COMBINED_CATEGORIES ? [] : DB::select("
+            $subcats = count($all_cats) >= $max_combined_cats ? [] : DB::select("
                     select `value` as name, count(*) as num
                     from wiki_revision_metas as mm
                     where mm.`key` = ?
