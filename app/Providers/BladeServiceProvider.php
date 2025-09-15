@@ -46,12 +46,12 @@ class BladeServiceProvider extends ServiceProvider {
                 $title = $class == 'full' && $parameters['show_title'] == 'true';
                 $link = $parameters['link'] == 'true';
                 $extra_classes = $parameters['classes'];
-                return "{$matches[1]}<span class=\"avatar $class $border $extra_classes\" title=\"<?php echo {$user}->name; ?>\">" .
-                ($link ? "\n<a href=\"<?php echo act('user', 'view', {$user}->id); ?>\">" : '') .
-                ($img ? "\n<img src=\"<?php echo {$user}->getAvatarUrl('$class'); ?>\" alt=\"<?php echo {$user}->name; ?>\"/>" : '') .
-                ($name ? "\n<span class=\"name\"><?php echo {$user}->name; ?></span>" : "") .
+                return "{$matches[1]}<span class=\"avatar $class $border $extra_classes\" title=\"<?php echo e({$user}->name); ?>\">" .
+                ($link ? "\n<a href=\"<?php echo e(act('user', 'view', {$user}->id)); ?>\">" : '') .
+                ($img ? "\n<img src=\"<?php echo e({$user}->getAvatarUrl('$class')); ?>\" alt=\"<?php echo e({$user}->name); ?>\"/>" : '') .
+                ($name ? "\n<span class=\"name\"><?php echo e({$user}->name); ?></span>" : "") .
                 ($link ? "</a>" : '').
-                ($title ? "<?php if ({$user}->title_custom) { ?><span class=\"title\"><?php echo {$user}->title_text; ?></span><?php } ?>" : "") .
+                ($title ? "<?php if ({$user}->title_custom) { ?><span class=\"title\"><?php echo e({$user}->title_text); ?></span><?php } ?>" : "") .
                 "</span>";
             }, $view);
         });
