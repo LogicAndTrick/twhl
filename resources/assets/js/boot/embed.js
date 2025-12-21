@@ -2,7 +2,12 @@ $(document).on('click', '.video-content .uninitialised', function(event) {
     var $t = $(this),
       ytid = $t.data('youtube-id'),
        url = 'https://www.youtube.com/embed/' + ytid + '?autoplay=1&rel=0',
-     frame = $('<iframe></iframe>').attr({ src: url, frameborder: 0, allowfullscreen: ''}).addClass('caption-body');
+     frame = $('<iframe></iframe>').attr({
+        allowfullscreen: '',
+        frameborder: 0,
+        referrerpolicy: 'strict-origin-when-cross-origin',
+        src: url,
+    }).addClass('caption-body');
     $t.replaceWith(frame);
 });
 
