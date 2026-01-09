@@ -23,6 +23,9 @@ class ApiKeyAuthenticate
                 $headers = getallheaders();
                 if (isset($headers['Authorization'])) $api_key = $headers['Authorization'];
                 else if (isset($headers['authorization'])) $api_key = $headers['authorization'];
+                if ($api_key) { // Extract the API key from a Bearer Token
+                    $api_key = preg_replace('/^Bearer /', '', $api_key);
+                }
             }
             if ($api_key) {
                 $key = ApiKey::where('key', '=', $api_key)
