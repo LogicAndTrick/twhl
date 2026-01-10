@@ -1320,7 +1320,7 @@ class ApiController extends Controller {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
         $max_size = 1024*4;
-        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
+        $allowed_extensions = 'avif,gif,jpeg,jpg,png,webp,mp3,mp4';
         if (permission('Admin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';
@@ -1338,7 +1338,7 @@ class ApiController extends Controller {
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
             'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
             'invalid_title' => "A page title cannot start with ':category' or ':upload'.",
-            'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
+            'valid_extension' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp'
         ]);
         $revision = WikiController::createRevision($obj, $rev);
         return $revision;
@@ -1361,7 +1361,7 @@ class ApiController extends Controller {
         });
 
         $max_size = 1024*4;
-        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
+        $allowed_extensions = 'avif,gif,jpeg,jpg,png,webp,mp3,mp4';
         if (permission('Admin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';
@@ -1432,26 +1432,25 @@ class ApiController extends Controller {
         });
 
         $this->validate(Request::instance(), [
-            'image' => 'required|max:2048|valid_extension:gif,jpeg,jpg,png|image_size:3000'
+            'image' => 'required|max:2048|valid_extension:avif,gif,jpeg,jpg,png,webp|image_size:3000'
         ], [
             'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
         ]);
 
         $image = Request::file('image');
-        $fname = Str::uuid()->toString() . '.' . $image->getClientOriginalExtension();
+        $name = Str::uuid()->toString();
 
-        // Force jpeg if the image is more than 1mb
-        $override_type = false;
+        // Force lossy compression if the image is more than 1MiB
+        $force_lossy_compression = false;
         if ($image->getSize() >= 1024 * 1024) {
-            $override_type = IMAGETYPE_JPEG;
-            $fname = explode('.', $fname)[0] . '.jpg';
+            $force_lossy_compression = true;
         }
 
         // Use 2000 maximum to support 1080p screenshots without resizing
         $thumbs = Image::MakeThumbnails($image->getPathname(),
-            [ [ 'width' => 2000, 'height' => 2000, 'force' => true, 'type' => $override_type ] ],
+            [ [ 'width' => 2000, 'height' => 2000, 'force' => true ] ],
             public_path('uploads/images/' . Auth::id()),
-            $fname, false
+            $name, false, $force_lossy_compression
         );
 
         return [
