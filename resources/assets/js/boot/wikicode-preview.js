@@ -224,41 +224,74 @@ $(function() {
         document.addEventListener('selectionchange', throttledRefresh);
     });
 
-    const imageTypeToExtension = {
-        "image/avif": "avif",
-        "image/gif": "gif",
-        "image/jpeg": "jpg",
-        "image/png": "png",
-        "image/webp": "webp",
+    const imageTypesAcceptedServerSide = new Set([
+        "image/avif",
+        "image/gif",
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ]);
+
+    // Note: When changing `maxImageUploadSize` you need to also change the `max:` value in
+    // `ApiController.php` post_image_upload()'s validation rules to the same value divided by 1024
+    const maxImageUploadSize = 2048 * 1024;
+
+    const findImageFileInClipboard = (clipboardData) => Iterator.from(clipboardData?.items).find(
+        ({ kind, type }) => kind === 'file' && type.startsWith("image/")
+    )?.getAsFile() ?? undefined;
+
+    const renderImageInCanvas = async (image) => {
+        const bitmap = await createImageBitmap(image, { premultiplyAlpha: 'none' });
+        const canvas = new OffscreenCanvas(0, 0);
+        canvas.getContext("bitmaprenderer").transferFromImageBitmap(bitmap);
+        return canvas;
+    };
+    const compressImageFromCanvas = async (canvas, quality) => {
+        const compressedBlob = await canvas.convertToBlob({ type: 'image/webp', quality });
+        const name = quality === 1 ? 'losslessly-recompressed' : 'lossily-recompressed';
+        return new File([compressedBlob], name, { type: compressedBlob.type });
     };
 
-    const findImageClipboardData = (clipboardData) => {
-        for (const item of Array.from(clipboardData?.items ?? [])) {
-            const { kind, type } = item;
-            if (kind !== 'file' || !(type in imageTypeToExtension)) continue;
-
-            const fileData = item.getAsFile();
-            if (fileData) { 
-                return {
-                    fileData,
-                    fileExtension: imageTypeToExtension[type],
+    const recompressImageIfNeeded = async (imageFile) => {
+        const fileTooLarge = imageFile.size > maxImageUploadSize;
+        const unsupportedImageFormat = !imageTypesAcceptedServerSide.has(imageFile.type);
+        if (fileTooLarge || unsupportedImageFormat) {
+            const canvas = await renderImageInCanvas(imageFile).catch((error) => {
+                console.error("Image loading failed. Original error: %o", error);
+                throw new Error("Image loading failed. Your image file may be corrupted or in an unsupported file format");
+            });
+            for (let quality = 1; quality > 0; quality -= 0.08) {
+                const recompressed = await compressImageFromCanvas(canvas, quality);
+                if (recompressed.size <= maxImageUploadSize) {
+                    return recompressed;
                 }
             }
+            throw new Error("The image file is too large and could not be compressed enough to allow an upload");
         }
+        if (imageFile.type === 'image/png') {
+            // Web browsers generate uncompressed PNGs when you paste a bitmap
+            // - for example from copying a rectangle of pixels in Paint or by pressing PrtScn.
+            // These files are unnecessarily large, so we recompress all PNGs and see if
+            // we get a reduction in size. This saves bandwidth and avoids triggering the
+            // `$force_lossy_compression` condition in `post_image_upload()`
+            const recompressed = await renderImageInCanvas(imageFile).then(
+                canvas => compressImageFromCanvas(canvas, 1)
+            ).catch(() => undefined);
+            if (recompressed?.size < imageFile.size) {
+                return recompressed;
+            }
+        }
+        return imageFile;
     }
 
     document.addEventListener('paste', async event => {
         const active = document.activeElement;
         if (!active || !$(active).closest('.wikicode-input').length) return;
 
-        let imageData = findImageClipboardData(event.clipboardData);
-        if (!imageData) return;
-        const { fileData, fileExtension } = imageData;
-
+        let imageFile = findImageFileInClipboard(event.clipboardData);
+        if (!imageFile) return;
         event.preventDefault();
 
-        const form = new FormData();
-        form.append('image', fileData, `image.${fileExtension}`);
 
         const $t = $(active);
         const id = Date.now();
@@ -266,15 +299,21 @@ $(function() {
         const tempText = 'uploading image ' + id + '...';
         insertIntoInput($t, '[img:' + tempText + ']', '', '', true);
 
-        const response = await fetch(window.urls.api.image_upload, { method: 'post', body: form });
-        const json = await response.json();
-
         let replace;
+        imageFile = await recompressImageIfNeeded(imageFile).catch(error => {
+            replace = `Error: ${error.message}`;
+        });
+        if (imageFile) {
+            const form = new FormData();
+            form.append('image', imageFile);
+            const response = await fetch(window.urls.api.image_upload, { method: 'post', body: form });
+            const json = await response.json();
 
-        if (!response.ok) {
-            replace = 'Error: ' + json.image[0];
-        } else {
-            replace = json.url;
+            if (!response.ok) {
+                replace = 'Error: ' + json.image[0];
+            } else {
+                replace = json.url;
+            }
         }
         let text = $t.val();
         if (text.indexOf(tempText) >= 0) {
