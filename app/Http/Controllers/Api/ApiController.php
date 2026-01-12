@@ -1422,19 +1422,12 @@ class ApiController extends Controller {
 
     private function post_image_upload() {
 
-        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        });
-        Validator::extend('image_size', function($attr, $value, $parameters) {
-            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
-            $info = getimagesize($value->getPathName());
-            return $info[0] <= $max && $info[1] <= $max;
-        });
-
         $this->validate(Request::instance(), [
-            'image' => 'required|max:2048|valid_extension:avif,gif,jpeg,jpg,png,webp|image_size:3000'
+            // Note: When changing the `max:` value you need to also change `maxImageUploadSize`
+            // in `wikicode-preview.js` to the same value multiplied by 1024
+            'image' => 'required|max:2048|mimetypes:image/avif,image/gif,image/jpeg,image/png,image/webp|dimensions:max_width=3000,max_height=3000'
         ], [
-            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+            'dimensions' => 'The image cannot have a width or height of more than 3000 pixels',
         ]);
 
         $image = Request::file('image');
