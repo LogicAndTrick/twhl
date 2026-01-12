@@ -26,7 +26,7 @@ class ProcessVaultScreenshots extends Command {
             $title = $info['basename'];    // 1234.jpg
             $filename = $info['filename']; // 1234
             $ext = $info['extension'];     // jpg
-            if (preg_match('/^(\d*)\.(png|jpg)$/s', $title))
+            if (preg_match('/^(\d*)\.(avif|jpg|png|webp)$/s', $title))
             {
                 $item = VaultItem::with(['vault_screenshots'])->find($filename);
                 if ($item != null && count($item->vault_screenshots) == 0) {
@@ -50,7 +50,7 @@ class ProcessVaultScreenshots extends Command {
                     copy($file, $temp_dir . '/' . $temp_name);
                     $thumbs = Image::MakeThumbnails(
                         $temp_dir . '/' . $temp_name, Image::$vault_image_sizes,
-                        public_path('uploads/vault/'), $shot->id . '.' . $ext, true
+                        public_path('uploads/vault/'), (string) $shot->id, true
                     );
                     unlink($temp_dir . '/' . $temp_name);
 

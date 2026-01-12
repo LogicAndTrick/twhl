@@ -225,9 +225,11 @@ $(function() {
     });
 
     const imageTypeToExtension = {
+        "image/avif": "avif",
         "image/gif": "gif",
         "image/jpeg": "jpg",
         "image/png": "png",
+        "image/webp": "webp",
     };
 
     const findImageClipboardData = (clipboardData) => {

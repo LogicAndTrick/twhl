@@ -175,10 +175,10 @@ class PanelController extends Controller {
 
         $this->validate(Request::instance(), [
             'type' => 'in:upload,preset',
-            'upload' => 'required_if:type,upload|valid_extension:jpeg,jpg,png|image_size:1000',
+            'upload' => 'required_if:type,upload|valid_extension:avif,gif,jpeg,jpg,png,webp|image_size:1000',
             'preset' => 'required_if:type,preset'
         ], [
-            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
+            'valid_extension' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp',
             'image_size' => 'The image can\'t be larger than 1000px square. It will be resized to 100px anyway, please upload a smaller image!'
         ]);
 
@@ -186,17 +186,17 @@ class PanelController extends Controller {
             $upload = Request::file('upload');
             $slug = str_pad(strval(rand(0, 99999)), 5, '0', STR_PAD_LEFT);
             $uid = str_pad(strval($user->id), 5, '0', STR_PAD_LEFT);
-            $name = $uid . '_' . $slug . '.' . strtolower($upload->getClientOriginalExtension());
+            $name = $uid . '_' . $slug;
 
             $user->deleteAvatar();
 
             $temp_dir = public_path('uploads/avatars/temp');
             $temp_name = $user->id . '_temp.' . strtolower($upload->getClientOriginalExtension());
             $upload->move($temp_dir, $temp_name);
-            Image::MakeThumbnails($temp_dir . '/' . $temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), $name, true);
+            $thumbs = Image::MakeThumbnails($temp_dir . '/' . $temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), $name, true);
             unlink($temp_dir . '/' . $temp_name);
 
-            $user->update([ 'avatar_custom' => true, 'avatar_file' => $name ]);
+            $user->update([ 'avatar_custom' => true, 'avatar_file' => pathinfo($thumbs[0], PATHINFO_BASENAME) ]);
         } else {
             $preset = Request::input('preset');
             // Make sure it's in our list before doing anything

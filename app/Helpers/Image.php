@@ -4,51 +4,84 @@ namespace App\Helpers;
 
 class Image
 {
-    private $_info;
-    private $_image;
+    const OUTPUT_FILE_EXTENSIONS = array(
+        \IMAGETYPE_AVIF => 'avif',
+        \IMAGETYPE_JPEG => 'jpg',
+        \IMAGETYPE_WEBP => 'webp',
+    );
+
+    private array $_info = array(0, 0, 0);
+    private bool $_lossily_compressed = false;
+    private \GdImage | null $_image = null;
 
     function __construct($image_location)
     {
         $this->_info = getimagesize($image_location);
-        if ($this->_info[2] == IMAGETYPE_JPEG) {
+        if ($this->_info[2] === \IMAGETYPE_AVIF) {
+            $this->_image = imagecreatefromavif($image_location);
+            $this->_lossily_compressed = true; // Usually the case for AVIF
+        } else if ($this->_info[2] === \IMAGETYPE_GIF) {
+            $this->_image = imagecreatefromgif($image_location);
+        } else if ($this->_info[2] === \IMAGETYPE_JPEG) {
             $this->_image = imagecreatefromjpeg($image_location);
-        } else if ($this->_info[2] == IMAGETYPE_PNG) {
+            $this->_lossily_compressed = true;
+        } else if ($this->_info[2] === \IMAGETYPE_PNG) {
             $this->_image = imagecreatefrompng($image_location);
-            imagealphablending($this->_image, true);
+        } else if ($this->_info[2] === \IMAGETYPE_WEBP) {
+            $this->_image = imagecreatefromwebp($image_location);
+            // It's not perfect, but this detection should get it right 99% of the time.
+            // It looks for the signature of a lossy image data chunk.
+            // See https://developers.google.com/speed/webp/docs/riff_container
+            $this->_lossily_compressed = str_contains(
+                file_get_contents($image_location, false, null, 0, 1024 * 1024),
+                'VP8 '
+            );
         }
-        else $this->_image = null;
+        if ($this->_image) {
+           imagealphablending($this->_image, true);
+        }
     }
 
-    /**
-     * @return int
-     */
-    function Width()
+    function Width(): int
     {
         return $this->_info[0];
     }
 
-    /**
-     * @return int
-     */
-    function Height()
+    function Height(): int
     {
         return $this->_info[1];
     }
 
-    function SaveResized($location, $max_width, $max_height, $force_size = false, $image_type = false)
+    private function HasAlphaChannel(): bool
+    {
+        return ($this->_info['channels'] ?? 4) !== 3;
+    }
+
+    private function PickOutputFormat(bool $force_lossy = false) {
+        $lossy = $this->_lossily_compressed || $force_lossy;
+        if ($lossy) {
+            // AVIF is good for lossy compression and supports alpha channels, but...
+            if ($this->HasAlphaChannel()) {
+                return \IMAGETYPE_AVIF;
+            }
+            // ... PHP's AVIF encoder is mediocre, so use JPEG when we don't need an alpha channel
+            return \IMAGETYPE_JPEG;
+        }
+
+        // WebP has excellent lossless compression and supports alpha channels
+        return \IMAGETYPE_WEBP;
+    }
+
+    function SaveResized(string $location, int $output_format, int $max_width, int $max_height, bool $force_size = false)
     {
         if ($this->_image === null) return;
         $new_dims = Image::GetResizeDimensions($this->Width(), $this->Height(), $max_width, $max_height);
         $actual_dims = $force_size ? array($max_width, $max_height) : $new_dims;
         $new_image = imagecreatetruecolor($actual_dims[0], $actual_dims[1]);
-        if ($this->_info[2] == IMAGETYPE_PNG) {
-            imagealphablending($new_image, false);
-            $transparent = imagecolorallocatealpha($new_image, 0, 0, 0, 127);
-            imagefill($new_image, 0, 0, $transparent);
-            imagesavealpha($new_image, true);
-        } else {
-            imagefill($new_image, 0, 0, imagecolorallocate($new_image, 255, 255, 255));
-        }
+        imagealphablending($new_image, false);
+        $transparent = imagecolorallocatealpha($new_image, 0, 0, 0, 127);
+        imagefill($new_image, 0, 0, $transparent);
+        imagesavealpha($new_image, true);
         // Ubuntu doesn't include a version of GD that supports imageantialias
         if (function_exists('imageantialias')) {
             imageantialias($new_image, true);
@@ -56,11 +89,12 @@ class Image
         $dx = ($actual_dims[0] - $new_dims[0]) / 2;
         $dy = ($actual_dims[1] - $new_dims[1]) / 2;
         imagecopyresampled($new_image, $this->_image, $dx, $dy, 0, 0, $new_dims[0], $new_dims[1], $this->Width(), $this->Height());
-        if (!$image_type) $image_type = $this->_info[2];
-        if ($image_type == IMAGETYPE_JPEG) {
+        if ($output_format == \IMAGETYPE_AVIF) {
+            imageavif($new_image, $location, 75);
+        } else if ($output_format == \IMAGETYPE_JPEG) {
             imagejpeg($new_image, $location, 80);
-        } else if ($image_type == IMAGETYPE_PNG) {
-            imagepng($new_image, $location);
+        } else if ($output_format == \IMAGETYPE_WEBP) {
+            imagewebp($new_image, $location, \IMG_WEBP_LOSSLESS);
         }
         imagedestroy($new_image);
     }
@@ -108,11 +142,8 @@ class Image
         else return array($max_width, ceil($xr * $height)); // Too wide, scale height to keep aspect ratio
     }
 
-    static function MakeThumbnails($image_location, $image_sizes = array(), $destination_folder = null, $filename = null, $delete_existing = false)
+    static function MakeThumbnails(string $image_location, array $image_sizes, string $destination_folder, string $filename, bool $delete_existing = false, bool $force_lossy_compression = false)
     {
-        $info = pathinfo($image_location);
-        if ($filename !== null) $info = pathinfo($info['dirname'] . '/' . $filename);
-        if ($destination_folder === null) $destination_folder = $info['dirname'];
         if (count($image_sizes) == 0) $image_sizes = Image::$vault_image_sizes;
         $image = new Image($image_location);
         $ret = array();
@@ -125,7 +156,9 @@ class Image
             }
             $pre = !isset($size['prefix']) || $size['prefix'] == null ? '' : $size['prefix'];
             $suf = !isset($size['suffix']) || $size['suffix'] == null ? '' : $size['suffix'];
-            $name = $pre . $info['filename'] . $suf . '.' . $info['extension'];
+            $output_format = $image->PickOutputFormat($force_lossy_compression);
+            $extension = self::OUTPUT_FILE_EXTENSIONS[$output_format];
+            $name = $pre . pathinfo($filename, PATHINFO_BASENAME) . $suf . '.' . $extension;
             $save = rtrim($destination_folder, '/') . '/' . $name;
             if ($delete_existing && file_exists($save)) {
                 unlink($save);
@@ -135,7 +168,7 @@ class Image
                 mkdir($dir, 0777, true);
             }
             if (!file_exists($save)) {
-                $image->SaveResized($save, $w, $h, isset($size['force-size']) && $size['force-size'] === true, isset($size['type']) ? $size['type'] : false);
+                $image->SaveResized($save, $output_format, $w, $h, isset($size['force-size']) && $size['force-size'] === true);
             }
             $ret[] = $name;
         }
