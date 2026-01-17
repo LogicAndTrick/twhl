@@ -582,6 +582,15 @@ class ApiController extends Controller {
         ]
     ];
 
+    const RATE_LIMIT_HEADERS = [
+        'X-RateLimit-Limit' => [
+            '$ref' => '#/components/headers/RateLimitLimit'
+        ],
+        'X-RateLimit-Remaining' => [
+            '$ref' => '#/components/headers/RateLimitRemaining'
+        ],
+    ];
+
     private function getRelatedClass($obj, $prop)
     {
         $rel = null;
@@ -695,7 +704,6 @@ class ApiController extends Controller {
 
         foreach ($this->descriptors as $key => $desc) {
             [$name, $pluralName] = $this->objectNamesFromDescriptor($desc);
-            $filterCols = implode(', ', $desc['filter_columns'] ?? []);
 
             foreach ($desc['methods'] ?? [] as $method) {
                 if ($method == 'get') {
@@ -712,7 +720,8 @@ class ApiController extends Controller {
                                     ]
                                 ],
                             ]
-                        ]
+                        ],
+                        'headers' => self::RATE_LIMIT_HEADERS
                     ];
 
                     $pagedResponseName = $this->responseName($method, $pluralName, true);
@@ -727,17 +736,18 @@ class ApiController extends Controller {
                                             'type' => 'array',
                                             'items' => [
                                                 '$ref' => "#/components/schemas/$name",
-                                                'page' => ['type' => 'integer', 'description' => 'The current page number'],
-                                                'pages' => ['type' => 'integer', 'description' => 'The total number of pages'],
-                                                'total' => ['type' => 'integer', 'description' => 'The total number of items']
                                             ]
-                                        ]
+                                        ],
+                                        'page' => ['type' => 'integer', 'description' => 'The current page number'],
+                                        'pages' => ['type' => 'integer', 'description' => 'The total number of pages'],
+                                        'total' => ['type' => 'integer', 'description' => 'The total number of items']
                                     ],
-                                    'required' => ['items'],
+                                    'required' => ['items', 'page', 'pages', 'total'],
                                     'type' => 'object',
                                 ],
                             ]
-                        ]
+                        ],
+                        'headers' => self::RATE_LIMIT_HEADERS
                     ];
                 } else {
                     $responseName = $this->responseName($method, $name);
@@ -750,7 +760,8 @@ class ApiController extends Controller {
                                     '$ref' => "#/components/schemas/$name"
                                 ]
                             ]
-                        ]
+                        ],
+                        'headers' => self::RATE_LIMIT_HEADERS
                     ];
                 }
             }
@@ -763,7 +774,8 @@ class ApiController extends Controller {
                         'application/json' => [
                             'schema' => $add['response']['schema']
                         ]
-                    ]
+                    ],
+                    'headers' => self::RATE_LIMIT_HEADERS
                 ];
             }
         }
@@ -1022,6 +1034,22 @@ class ApiController extends Controller {
         $swagger = [
             '$schema'=> 'https://spec.openapis.org/oas/3.0/schema/2024-10-18',
             'components' => [
+                'headers' => [
+                    'RateLimitLimit' => [
+                        'description' => 'The number of allowed requests in a time window',
+                        'schema' => [
+                            'format' => 'uint16',
+                            'type' => 'integer'
+                        ]
+                    ],
+                    'RateLimitRemaining' => [
+                        'description' => 'The number of allowed requests in the current time window',
+                        'schema' => [
+                            'format' => 'uint16',
+                            'type' => 'integer'
+                        ]
+                    ]
+                ],
                 'requestBodies' => $this->getRequestBodies(),
                 'responses' => [
                     ...$this->responsesFromDescriptors(),
@@ -1030,34 +1058,61 @@ class ApiController extends Controller {
                         'content' => [
                             'application/json' => [
                                 'schema' => [
-                                '$ref' => '#/components/schemas/ErrorDescription'
+                                    '$ref' => '#/components/schemas/ErrorDescription'
                                 ]
                             ]
                         ],
-                        'description' => 'Unauthorized. You either lack permission, or your API key is invalid, or you did not provide an API key'
+                        'description' => 'Unauthorized. You either lack permission, or your API key is invalid, or you did not provide an API key',
+                        'headers' => self::RATE_LIMIT_HEADERS
                     ],
                     # 404
                     'NotFoundErrorResult' => [
                         'content' => [
                             'application/json' => [
                                 'schema' => [
-                                '$ref' => '#/components/schemas/ErrorDescription'
+                                    '$ref' => '#/components/schemas/ErrorDescription'
                                 ]
                             ]
                         ],
-                        'description' => 'Resource not found or insufficient permissions'
+                        'description' => 'Resource not found or insufficient permissions',
+                        'headers' => self::RATE_LIMIT_HEADERS
                     ],
                     # 422
                     'ValidationFailedErrorResult' => [
                         'content' => [
                             'application/json' => [
                                 'schema' => [
-                                '$ref' => '#/components/schemas/ErrorDescription'
+                                  '$ref' => '#/components/schemas/ErrorDescription'
                                 ]
                             ]
                         ],
-                        'description' => 'Validation failed'
+                        'description' => 'Validation failed',
+                        'headers' => self::RATE_LIMIT_HEADERS
                     ],
+                    # 429 - Too Many Requests. Any endpoint can return this response
+                    'TooManyErrorResult' => [
+                        'content' => [
+                            'text/html' => new \stdClass()
+                        ],
+                        'description' => 'Response you get if you send too many requests in a short amount of time',
+                        'headers' => [
+                            ...self::RATE_LIMIT_HEADERS,
+                            'Retry-After' => [
+                                'description' => 'Seconds until you will be allowed to send requests again',
+                                'schema' => [
+                                    'format' => 'uint16',
+                                    'type' => 'integer'
+                                ]
+                            ],
+                            'X-RateLimit-Reset' => [
+                                'description' => 'The time as a UNIX timestamp when you will be allowed to send requests again',
+                                'schema' => [
+                                    'format' => 'unixtime',
+                                    'type' => 'integer'
+                                ]
+                            ]
+                        ]
+                    ]
                 ],
                 'schemas' => [
                     'ErrorDescription' => [
