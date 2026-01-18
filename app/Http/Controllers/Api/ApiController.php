@@ -530,7 +530,7 @@ class ApiController extends Controller {
                     'method' => 'get',
                     'operationId' => 'getShoutsCreatedFrom',
                     'parameters' => [
-                        'timestamp' => [ 'required' => false, 'type' => 'integer', 'description' => 'The timestamp to retrieve shouts posted after' ]
+                        'timestamp' => [ 'required' => false, 'type' => 'integer', 'description' => 'The timestamp to retrieve shouts posted after', 'format' => 'unixtime' ]
                     ],
                     'response' => [
                         'description' => 'Recent shouts',
