@@ -738,9 +738,21 @@ class ApiController extends Controller {
                                                 '$ref' => "#/components/schemas/$name",
                                             ]
                                         ],
-                                        'page' => ['type' => 'integer', 'description' => 'The current page number'],
-                                        'pages' => ['type' => 'integer', 'description' => 'The total number of pages'],
-                                        'total' => ['type' => 'integer', 'description' => 'The total number of items']
+                                        'page' => [
+                                            'description' => 'The current page number',
+                                            'format' => 'uint32',
+                                            'type' => 'integer',
+                                        ],
+                                        'pages' => [
+                                            'description' => 'The total number of pages',
+                                            'format' => 'uint32',
+                                            'type' => 'integer'
+                                        ],
+                                        'total' => [
+                                            'description' => 'The total number of items',
+                                            'format' => 'uint32',
+                                            'type' => 'integer'
+                                        ]
                                     ],
                                     'required' => ['items', 'page', 'pages', 'total'],
                                     'type' => 'object',
@@ -797,10 +809,33 @@ class ApiController extends Controller {
             $params = $desc['parameters'][$method] ?? [];
             if ($method == 'get') {
                 $allParameters = [
-                    'count' => ['type' => 'integer', 'description' => 'Maximum number of results to return. Maximum is 100, default is 10'],
-                    'filter' => ['type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: ' . $filterCols],
-                    'id' => ['type' => 'string', 'description' => 'CSV list of object IDs to return'],
-                    'sort_descending' => ['type' => 'boolean', 'description' => 'Set to true to sort in reverse order'],
+                    'count' => [
+                        'default' => 10,
+                        'description' => 'Maximum number of results to return. Maximum is 100, default is 10',
+                        'format' => 'uint16',
+                        'minimum' => 1,
+                        'maximum' => 100,
+                        'type' => 'integer'
+                    ],
+                    'filter' => [
+                        'description' => 'Search string to filter results by. Filtered columns are: ' . $filterCols,
+                        'type' => 'string'
+                    ],
+                    'id' => [
+                        'description' => 'IDs of objects to return',
+                        'explode' => false,
+                        'items' => [
+                            'format' => 'uint32',
+                            'type' => 'integer'
+                        ],
+                        'type' => 'array',
+                        'uniqueItems' => true
+                    ],
+                    'sort_descending' => [
+                        'default' => false,
+                        'description' => 'Set to true to sort in reverse order',
+                        'type' => 'boolean'
+                    ],
                     ...$params
                 ];
                 $responseName = $this->responseName($method, $pluralName);
@@ -816,7 +851,11 @@ class ApiController extends Controller {
                     'security' => $security
                 ];
                 $pagedParameters = [
-                    'page' => ['type' => 'integer', 'description' => 'The page of results to return. Works alongside `count`'],
+                    'page' => [
+                        'description' => 'The page of results to return. Works alongside `count`',
+                        'format' => 'uint32',
+                        'type' => 'integer'
+                    ],
                     ...$allParameters
                 ];
                 $pagedResponseName = $this->responseName($method, $pluralName, true);
@@ -846,10 +885,18 @@ class ApiController extends Controller {
                 }
                 if (!empty($desc['expand'])) {
                     $exp = [
-                        'name' => 'expand',
+                        'description' => 'Relations to expand.',
+                        'explode' => false,
                         'in' => 'query',
-                        'schema' => [ 'type' => 'string' ],
-                        'description' => 'CSV list of relations to expand. Expandable relationships are: ' . implode(', ', $desc['expand'])
+                        'name' => 'expand',
+                        'schema' => [
+                            'items' => [
+                                'enum' => $desc['expand'],
+                                'type' => 'string',
+                            ],
+                            'type' => 'array',
+                            'uniqueItems' => true
+                        ],
                     ];
                     $items["/$key"]['get']['parameters'][] = $exp;
                     $items["/$key/paged"]['get']['parameters'][] = $exp;
