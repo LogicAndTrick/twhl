@@ -1333,6 +1333,7 @@ class ApiController extends Controller {
         $pages = ceil($total / $count);
         if ($page == 'last' || $page > $pages) $page = $pages;
         else if ($page < 1) $page = 1;
+        else $page = intval($page);
 
         $items = $query->skip(($page - 1) * $count)->take($count)->get();
 
