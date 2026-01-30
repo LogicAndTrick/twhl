@@ -1048,7 +1048,7 @@ class ApiController extends Controller {
             $p['in'] = 'query';
             $p['name'] = $parameterName;
             $p['schema'] = [];
-            foreach (array_intersect_key($p, array_flip(['enum', 'items', 'type'])) as $typePropertyKey => $typePropertyValue) {
+            foreach (array_intersect_key($p, array_flip(['default', 'enum', 'format', 'items', 'maximum', 'minimum', 'type', 'uniqueItems'])) as $typePropertyKey => $typePropertyValue) {
                 $p['schema'][$typePropertyKey] = $p[$typePropertyKey];
                 unset($p[$typePropertyKey]);
             }
