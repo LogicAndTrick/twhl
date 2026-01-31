@@ -57,7 +57,6 @@ class Image
     }
 
     private function PickOutputFormat() {
-        $lossy = $this->_lossily_compressed;
         if ($this->HasAlphaChannel() || !$this->_lossily_compressed) {
             return \IMAGETYPE_PNG;
         }

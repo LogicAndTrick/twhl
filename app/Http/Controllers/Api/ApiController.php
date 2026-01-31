@@ -1659,7 +1659,7 @@ class ApiController extends Controller {
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
             'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
             'invalid_title' => "A page title cannot start with ':category' or ':upload'.",
-            'valid_extension' => 'Only the following file formats are allowed: gif, jpg, png'
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
         $revision = WikiController::createRevision($obj, $rev);
         return $revision;
