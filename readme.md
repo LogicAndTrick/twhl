@@ -2,11 +2,11 @@
 
 TWHL is a mapping and modding resource website for Half-Life 1 and related games.
 
-- [Visit twhl.info](http://twhl.info)
+- [Visit twhl.info](https://twhl.info)
 
 ### Getting a dev environment set up
 
-TWHL4 uses the [Laravel](http://laravel.com/) framework. Detailed instructions can be found
+TWHL4 uses the [Laravel](https://laravel.com/) framework. Detailed instructions can be found
 in the Laravel docs, but here's the basic steps:
 
 1. If you know how to use Docker, see the [docker-for-development](docker-for-development/readme.md) folder and skip many of the following steps.

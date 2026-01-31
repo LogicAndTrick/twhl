@@ -1,20 +1,30 @@
-$(document).on('click', '.video-content .uninitialised', function(event) {
-    var $t = $(this),
-      ytid = $t.data('youtube-id'),
-       url = 'https://www.youtube.com/embed/' + ytid + '?autoplay=1&rel=0',
-     frame = $('<iframe></iframe>').attr({ src: url, frameborder: 0, allowfullscreen: ''}).addClass('caption-body');
-    $t.replaceWith(frame);
+document.addEventListener("click", event => {
+    const target = event.target.closest('.video-content .uninitialised');
+    if (!target) return;
+
+    const ytid = target.dataset.youtubeId;
+    if (!ytid) return;
+
+    const frame = document.createElement('iframe');
+    frame.allowfullscreen = false;
+    frame.src = 'https://www.youtube.com/embed/' + ytid + '?autoplay=1&rel=0';
+    frame.frameBorder = '0';
+    frame.referrerPolicy = 'strict-origin-when-cross-origin';
+    frame.classList.add('caption-body');
+    target.replaceWith(frame);
 });
 
-$(function() {
-    $('.caption-panel').attr('tabindex', -1);
-    $(document).on('click', '.caption-panel', function(event) {
-        $(this).focus();
-    });
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.caption-panel').forEach(x => x.tabindex = -1);
 });
 
+document.addEventListener('click', () => {
+    const panel = event.target.closest('.caption-panel');
+    if (panel) panel.focus();
+})
 
-var embed_templates = {
+
+const embed_templates = {
     vault_slider_screenshot: '<div><img data-u="image" data-src2="{image_large}" alt="Screenshot" /><img data-u="thumb" data-src2="{image_thumb}" alt="Thumbnail" /></div>',
     vault_slider: '<div id="{slider_id}" class="slider">' +
             '<div class="loading" data-u="loading">Loading...</div>' +
@@ -34,20 +44,20 @@ var embed_templates = {
     vault_no_slider: '<a href="{url}"><img class="embed-image" src="{shot}" alt="Screenshot" /></a>'
 };
 
-var __uniq = 0;
-var embed_callbacks = {
+let __uniq = 0;
+const embed_callbacks = {
     vault: function (element, data) {
-        var images = data.vault_screenshots || [];
+        const images = data.vault_screenshots || [];
         images.forEach(function (img) {
-            img.image_large = template(window.urls.embed.vault_screenshot, { shot: img.image_large });
-            img.image_thumb= template(window.urls.embed.vault_screenshot, { shot: img.image_thumb });
+            img.image_large = template(window.urls.embed.vault_screenshot, {shot: img.image_large});
+            img.image_thumb = template(window.urls.embed.vault_screenshot, {shot: img.image_thumb});
         });
 
         if (images.length <= 1) {
             // 1 or zero screenshots - no need for a slide show
             // Just put screenshot image in there
-            var shot = images.length == 1 ? images[0].image_large : window.urls.images.no_screenshot_320;
-            var embed_no_slider = template(embed_templates.vault, {
+            const shot = images.length === 1 ? images[0].image_large : window.urls.images.no_screenshot_320;
+            const embed_no_slider = template(embed_templates.vault, {
                 url: template(window.urls.view.vault, data),
                 name: data.name,
                 user_url: template(window.urls.view.user, data.user),
@@ -57,29 +67,32 @@ var embed_callbacks = {
                 category: data.vault_category.name,
                 game_abbr: data.game.abbreviation,
                 game_name: data.game.name,
-                game_image: template(window.urls.embed.game_icon, { game_abbr: data.game.abbreviation }),
-                vault_slider: template(embed_templates.vault_no_slider, { shot: shot, url: template(window.urls.view.vault, data) })
+                game_image: template(window.urls.embed.game_icon, {game_abbr: data.game.abbreviation}),
+                vault_slider: template(embed_templates.vault_no_slider, {
+                    shot: shot,
+                    url: template(window.urls.view.vault, data)
+                })
             });
 
             // Set the content
             element.html(embed_no_slider);
         } else {
 
-            var sid = 'vault-slider-'+(__uniq++);
+            const sid = 'vault-slider-' + (__uniq++);
 
             // Sort the shots
-            images.sort(function(a, b) {
+            images.sort(function (a, b) {
                 if (a.is_primary) return -1;
                 if (b.is_primary) return +1;
                 return a.order_index - b.order_index;
             });
 
             // Assemble the slide show
-            var shots = images.map(function(s) {
+            const shots = images.map(function (s) {
                 return template(embed_templates.vault_slider_screenshot, s);
             }).join('');
-            var show = template(embed_templates.vault_slider, { slider_id: sid, slider_screenshots: shots });
-            var embed = template(embed_templates.vault, {
+            const show = template(embed_templates.vault_slider, {slider_id: sid, slider_screenshots: shots});
+            const embed = template(embed_templates.vault, {
                 url: template(window.urls.view.vault, data),
                 name: data.name,
                 user_url: template(window.urls.view.user, data.user),
@@ -89,7 +102,7 @@ var embed_callbacks = {
                 category: data.vault_category.name,
                 game_abbr: data.game.abbreviation,
                 game_name: data.game.name,
-                game_image: template(window.urls.embed.game_icon, { game_abbr: data.game.abbreviation }),
+                game_image: template(window.urls.embed.game_icon, {game_abbr: data.game.abbreviation}),
                 vault_slider: show
             });
 
@@ -97,7 +110,7 @@ var embed_callbacks = {
             element.html(embed);
 
             // Initialise the slide show
-            var slider = new $JssorSlider$(sid, {
+            const slider = new $JssorSlider$(sid, {
                 $AutoPlay: true,
                 $AutoPlayInterval: 4000,
                 $SlideDuration: 250,
@@ -121,11 +134,11 @@ var embed_callbacks = {
 };
 
 $(document).on('appear', '.embed-content .uninitialised', function(e, $affected) {
-  var $t = $(this).text('Loading...'),
-     par = $t.parent(),
-     typ = $t.data('embed-type'),
-      id = $t.data(typ+'-id'),
-     url = window.urls.embed[typ];
+    const $t = $(this).text('Loading...'),
+        par = $t.parent(),
+        typ = $t.data('embed-type'),
+        id = $t.data(typ + '-id'),
+        url = window.urls.embed[typ];
 
     if ($t.data('stop')) return;
     $t.data('stop', true);

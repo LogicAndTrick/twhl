@@ -1,8 +1,10 @@
 <?php
 
-class TestCase extends Illuminate\Foundation\Testing\TestCase {
+namespace Tests;
 
-    protected $baseUrl = 'http://localhost';
+class TestCase extends \PHPUnit\Framework\TestCase {
+
+    protected $baseUrl = 'http://twhl';
 
 	/**
 	 * Creates the application.

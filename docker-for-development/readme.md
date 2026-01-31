@@ -1,30 +1,24 @@
-Delete your `.env` file if you have one and run this in Bash or PowerShell to build the Docker images and start the containers:
-```
-docker compose up
-```
-The web server can then be reached at http://localhost:82 .
+# Dockerized local development
 
-To install the Composer dependencies and create the `.env` file (if it does not exist), run:
-```
-docker compose exec php-apache twhl-install
-```
+## Starting a local development instance of TWHL
+1. Create a [GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token) with the `read:packages` scope and add it to the file `~/.npmrc` like this:
+	```
+	//npm.pkg.github.com/:_authToken=ghp_1234example567
+	```
+	This step is necessary for the successful installation of the `@logicandtrick/twhl-wikicode-parser` NPM package.
+2. Run `docker compose up` to build the Docker images and start the containers. Your local development instance of TWHL can now be reached at http://localhost:82 .
+3. When making changes to `*.css`, `*.scss` and `*.js` files, you need to run `docker compose run --rm node npm run development` to bundle those changes into the compiled CSS and JS files. The easiest way to do this is to run `docker compose run --rm node npm run watch`, which will watch the files for changes and auto-build when needed.
 
-To run `npm install` inside the Node container:
-```
-docker compose run node npm install
-```
+## Updating NPM dependencies
+1. Make your changes to package.json
+2. Run `docker compose run --rm node npm install`
 
-To start a Bash instance inside the PHP & Apache container for executing commands, run this:
-```
-docker compose exec php-apache bash
-```
+## Updating Composer PHP dependencies
+1. Make your changes to composer.json
+2. Run `docker compose run --rm composer composer install`
 
-To see the Apache log, run this:
-```
-docker compose logs php-apache
-```
+## Running Bash inside the PHP & Apache container for executing commands
+Run `docker compose exec php-apache bash`
 
-To rebuild the images:
-```
-docker compose build
-```
+## Inspecting the Apache logs
+Run `docker compose logs php-apache`
