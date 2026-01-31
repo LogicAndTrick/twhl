@@ -1,5 +1,14 @@
 name: twhl-dev
 services:
+  composer:
+    container_name: twhl-dev-composer
+    command: composer install
+    environment:
+      - COMPOSER_IGNORE_PLATFORM_REQS=1
+    image: composer:latest
+    volumes:
+       - ../:/var/twhl
+    working_dir: /var/twhl
   db:
     command:
       --collation-server=utf8mb4_unicode_ci
@@ -8,27 +17,73 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=twhl
       - MYSQL_ROOT_PASSWORD=cs_canbunk2
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=cs_canbunk2 --execute \"SELECT 1;\""
+      interval: 5s
+      timeout: 5s
+      retries: 10
     image: mysql:8.0
 #    ports:
 #      - "3306:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql
-  node:
-    container_name: twhl-dev-node
+  migration-runner:
     build:
-      context: ./node
-    image: twhl-dev/node
+      context: ./migration-runner
+    container_name: twhl-dev-migration-runner
+    depends_on:
+      composer:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    env_file:
+      - path: ../.env.example
+      - path: ../.env
+        required: false
+    environment:
+      - APP_KEY=base64:PB2xpacpFD+vjAcrcj/tBEQ7RzAtvUyufGd4KznJ81k=
+      - DB_DATABASE=twhl
+      - DB_HOST=twhl-mysql-db
+      - DB_PASSWORD=cs_canbunk2
+      - DB_USERNAME=root
+    image: twhl-dev/migration-runner
+    links:
+      - "db:twhl-mysql-db"
     volumes:
        - ../:/var/twhl
+  node:
+    container_name: twhl-dev-node
+    command: npm install
+    image: node:24
+    secrets:
+       - source: npmrc
+         target: /root/.npmrc
+    volumes:
+       - ../:/var/twhl
+    working_dir: /var/twhl
   php-apache:
     build:
       context: ./php-apache
     container_name: twhl-dev-php-apache
+    depends_on:
+      composer:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+      migration-runner:
+        condition: service_completed_successfully
+      node:
+        condition: service_completed_successfully
+    env_file:
+      - path: ../.env.example
+      - path: ../.env
+        required: false
     environment:
+      - APP_KEY=base64:PB2xpacpFD+vjAcrcj/tBEQ7RzAtvUyufGd4KznJ81k=
       - DB_DATABASE=twhl
       - DB_HOST=twhl-mysql-db
       - DB_PASSWORD=cs_canbunk2
-      - DB_USER=root
+      - DB_USERNAME=root
     image: twhl-dev/php-apache
     links:
       - "db:twhl-mysql-db"
@@ -37,3 +92,6 @@ services:
     volumes:
       - ../:/var/www/html/twhl
       - ./php-apache/twhl-dev-php-conf.d:/usr/local/etc/php/conf.d
+secrets:
+  npmrc:
+    file: ~/.npmrc
