@@ -4,25 +4,20 @@ namespace App\Http\Middleware;
 
 use App\Models\Accounts\ApiKey;
 use Closure;
-use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ApiKeyAuthenticate
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * Handle an incoming request
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         if ($request->is('api/*') && !$request->user()) {
             $api_key = $request->get('api_key');
             if (!$api_key) {
-                $headers = getallheaders();
-                if (isset($headers['Authorization'])) $api_key = $headers['Authorization'];
-                else if (isset($headers['authorization'])) $api_key = $headers['authorization'];
+                $api_key = $request->bearerToken() ?? $request->header('Authorization');
             }
             if ($api_key) {
                 $key = ApiKey::where('key', '=', $api_key)

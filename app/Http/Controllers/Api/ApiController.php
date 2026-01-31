@@ -41,6 +41,7 @@ use App\Models\Wiki\WikiRevisionCredit;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -53,7 +54,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller {
 
-    private $descriptors = [
+    private array $descriptors = [
         'engines' => [
             'description' => 'Game Engines',
             'expand' => [],
@@ -265,7 +266,7 @@ class ApiController extends Controller {
                         'schema' => [
                             'type' => 'array',
                             'items' => [
-                                '$ref' => '#/definitions/WikiRevision'
+                                '$ref' => '#/components/schemas/WikiRevision'
                             ]
                         ]
                     ]
@@ -299,7 +300,7 @@ class ApiController extends Controller {
                         'description' => 'Page information',
                         'schema' => [
                             'type' => 'array',
-                            'items'=> [ '$ref' => '#/definitions/WikiPageInformation' ],
+                            'items'=> [ '$ref' => '#/components/schemas/WikiPageInformation' ],
                         ]
                     ]
                 ]
@@ -529,14 +530,14 @@ class ApiController extends Controller {
                     'method' => 'get',
                     'operationId' => 'getShoutsCreatedFrom',
                     'parameters' => [
-                        'timestamp' => [ 'required' => false, 'type' => 'integer', 'description' => 'The timestamp to retrieve shouts posted after' ]
+                        'timestamp' => [ 'required' => false, 'type' => 'integer', 'description' => 'The timestamp to retrieve shouts posted after', 'format' => 'unixtime' ]
                     ],
                     'response' => [
                         'description' => 'Recent shouts',
                         'schema' => [
                             'type' => 'array',
                             'items' => [
-                                '$ref' => '#/definitions/Shout'
+                                '$ref' => '#/components/schemas/Shout'
                             ]
                         ]
                     ]
@@ -554,6 +555,7 @@ class ApiController extends Controller {
                 ]
             ],
             'object' => \stdClass::class,
+            'object_names' => ['Image', 'Images'],
             'filter_columns' => [],
             'sort_column' => 'id',
             'allowed_sort_columns' => [],
@@ -580,13 +582,20 @@ class ApiController extends Controller {
         ]
     ];
 
-    private function getRelatedClass($obj, $prop)
+    const array RATE_LIMIT_HEADERS = [
+        'X-RateLimit-Limit' => [
+            '$ref' => '#/components/headers/RateLimitLimit'
+        ],
+        'X-RateLimit-Remaining' => [
+            '$ref' => '#/components/headers/RateLimitRemaining'
+        ],
+    ];
+
+    private function getRelatedClass($obj, $prop): ?array
     {
         $rel = null;
         $o = $obj;
-        $spl = explode('.', $prop);
-        for ($i = 0; $i < count($spl); $i++) {
-            $name = $spl[$i];
+        foreach (explode('.', $prop) as $name) {
             if (!method_exists($o, $name)) return null;
             $rel = $o->$name();
             if (!$rel instanceof Relation) return null;
@@ -596,12 +605,12 @@ class ApiController extends Controller {
         if ($rel && $o) {
             $rel_expl = explode('\\', get_class($o));
             $rel_name = $rel_expl[count($rel_expl) - 1];
-            $type = "#/definitions/$rel_name";
+            $type = "#/components/schemas/$rel_name";
             if ($rel instanceof HasMany) {
                 $type = 'array';
             }
             return [
-                'ref' => "#/definitions/$rel_name",
+                'ref' => "#/components/schemas/$rel_name",
                 'type' => $type
             ];
         }
@@ -609,26 +618,40 @@ class ApiController extends Controller {
         return null;
     }
 
-    private function getDefinitions()
+    private function objectNamesFromDescriptor($descriptor): array {
+        if (isset($descriptor['object_names'])) {
+            return $descriptor['object_names'];
+        }
+
+        $expl = explode('\\', $descriptor['object']);
+        $single = $expl[count($expl) - 1];
+        $plural = "{$single}s";
+        return [$single, $plural];
+    }
+
+    private function objectSchemasFromDescriptors(): array
     {
-        $defs = [];
+        $objectSchemas = [];
 
         foreach ($this->descriptors as $key => $desc) {
             $obj = new $desc['object'];
-            $expl = explode('\\', $desc['object']);
-            $name = $expl[count($expl) - 1];
+            [$name] = $this->objectNamesFromDescriptor($desc);
             $props = [];
-            $visible = isset($obj->visible) && is_array($obj->visible) ? $obj->visible : [];
-            foreach ($visible as $prop) {
-
+            foreach (($obj->visible ?? []) as $prop) {
                 $props[$prop] = [];
 
                 $type = 'string';
                 $type_key = 'type';
-                if ($prop == 'id' || $prop == 'orderindex' || $prop == 'order_index' || substr($prop, -3) == '_id') {
+                if ($prop == 'id' || $prop == 'orderindex' || $prop == 'order_index' || str_ends_with($prop, '_id')) {
                     $type = 'integer';
                 }
-                else if ($prop == 'created_at' || $prop == 'updated_at' || $prop == 'deleted_at' || (isset($obj->dates) && $obj->dates && array_search($prop, $obj->dates) !== false)) {
+                else if (
+                    $prop == 'created_at' ||
+                    $prop == 'updated_at' ||
+                    $prop == 'deleted_at' ||
+                    in_array($prop, $obj->dates ?? []) ||
+                    ($obj instanceof Model && $obj->hasCast($prop, 'datetime'))
+                ) {
                     $props[$prop]['format'] = 'date-time';
                 }
                 else {
@@ -644,211 +667,300 @@ class ApiController extends Controller {
                 }
                 $props[$prop][$type_key] = $type;
             }
-            $defs[$name] = [
+            $objectSchemas[$name] = [
                 'type' => 'object',
                 'properties' => count($props) == 0 ? new \stdClass() : $props
             ];
         }
 
-        return $defs;
+        return $objectSchemas;
     }
 
-    private function getPathItems($key, $desc)
+    private function objectShemaFromParameterDescription(array $parameters): array
+    {
+        $required = [];
+
+        foreach ($parameters as $key => $def) {
+            if ($def['required']) {
+                $required[] = $key;
+            }
+            unset($parameters[$key]['required']);
+        }
+
+        $result = [
+            'properties' => count($parameters) === 0 ? new \stdClass() : $parameters,
+            'type' => 'object'
+        ];
+
+        if (!empty($required)) {
+            $result['required'] = $required;
+        }
+
+        return $result;
+    }
+
+
+    private function responsesFromDescriptors(): array
+    {
+        $responses = [];
+
+        foreach ($this->descriptors as $key => $desc) {
+            [$name, $pluralName] = $this->objectNamesFromDescriptor($desc);
+
+            foreach ($desc['methods'] ?? [] as $method) {
+                if ($method == 'get') {
+                    $responseName = $this->responseName($method, $pluralName);
+
+                    $responses[$responseName] = [
+                        'description' => 'Query result',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    'type' => 'array',
+                                    'items' => [
+                                        '$ref' => "#/components/schemas/$name"
+                                    ]
+                                ],
+                            ]
+                        ],
+                        'headers' => self::RATE_LIMIT_HEADERS
+                    ];
+
+                    $pagedResponseName = $this->responseName($method, $pluralName, true);
+
+                    $responses[$pagedResponseName] = [
+                        'description' => 'Paged query result',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    'properties' => [
+                                        'items' => [
+                                            'type' => 'array',
+                                            'items' => [
+                                                '$ref' => "#/components/schemas/$name",
+                                            ]
+                                        ],
+                                        'page' => [
+                                            'description' => 'The current page number',
+                                            'format' => 'uint32',
+                                            'type' => 'integer',
+                                        ],
+                                        'pages' => [
+                                            'description' => 'The total number of pages',
+                                            'format' => 'uint32',
+                                            'type' => 'integer'
+                                        ],
+                                        'total' => [
+                                            'description' => 'The total number of items',
+                                            'format' => 'uint32',
+                                            'type' => 'integer'
+                                        ]
+                                    ],
+                                    'required' => ['items', 'page', 'pages', 'total'],
+                                    'type' => 'object',
+                                ],
+                            ]
+                        ],
+                        'headers' => self::RATE_LIMIT_HEADERS
+                    ];
+                } else {
+                    $responseName = $this->responseName($method, $name);
+
+                    $responses[$responseName] = [
+                        'description' => 'Operation successful',
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => "#/components/schemas/$name"
+                                ]
+                            ]
+                        ],
+                        'headers' => self::RATE_LIMIT_HEADERS
+                    ];
+                }
+            }
+            foreach ($desc['additional_methods'] ?? [] as $op => $add) {
+                $responseName = $this->responseName($add['operationId'], $name);
+
+                $responses[$responseName] = [
+                    'description' => $add['response']['description'],
+                    'content' => [
+                        'application/json' => [
+                            'schema' => $add['response']['schema']
+                        ]
+                    ],
+                    'headers' => self::RATE_LIMIT_HEADERS
+                ];
+            }
+        }
+        return $responses;
+    }
+
+    private function getPathItems($key, $desc): array
     {
         $items = [];
         $items["/$key"] = [];
 
-        $expl = explode('\\', $desc['object']);
-        $name = $expl[count($expl) - 1];
-        $single_name = $name;
-        $plural_name = $name . 's';
-        $filterCols = isset($desc['filter_columns']) ? implode(', ', $desc['filter_columns']) : [];
+        [$name, $pluralName] = $this->objectNamesFromDescriptor($desc);
+        $filterCols = implode(', ', $desc['filter_columns'] ?? []);
 
-        if (isset($desc['object_names'])) {
-            $name = $desc['object_names'][0];
-            $plural_name = $desc['object_names'][1];
-        }
-
-        if (isset($desc['methods'])) {
-            foreach ($desc['methods'] as $method) {
-                $auth = isset($desc['auth'][$method]) ? $desc['auth'][$method] : null;
-                $params = isset($desc['parameters'][$method]) ? $desc['parameters'][$method] : [];
-                $pars = [];
-                $reqr = [];
-                foreach ($params as $k => $v) {
-                    if (isset($v['required']) && $v['required'] === true) $reqr[] = $k;
-                    unset($v['required']);
-                    $pars[$k] = $v;
-                }
-                if ($method == 'get') {
-                    $items["/$key"]['get'] = [
-                        'tags' => [$key],
-                        'operationId' => "get{$plural_name}",
-                        'consumes' => ['application/json'],
-                        'produces' => ['application/json'],
-                        'parameters' => [
-                            ['name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return'],
-                            ['name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: ' . $filterCols],
-                            ['name' => 'count', 'in' => 'query', 'type' => 'integer', 'description' => 'Maximum number of results to return. Maximum is 100, default is 10'],
-                            ['name' => 'sort_descending', 'in' => 'query', 'type' => 'boolean', 'description' => 'Set to true to sort in reverse order']
+        foreach ($desc['methods'] ?? [] as $method) {
+            $auth = $desc['auth'][$method] ?? null;
+            $security = [ $auth ? new \stdClass() : [ 'httpBearerToken' => [] ] ];
+            $params = $desc['parameters'][$method] ?? [];
+            if ($method == 'get') {
+                $allParameters = [
+                    'count' => [
+                        'default' => 10,
+                        'description' => 'Maximum number of results to return. Maximum is 100, default is 10',
+                        'format' => 'uint16',
+                        'minimum' => 1,
+                        'maximum' => 100,
+                        'type' => 'integer'
+                    ],
+                    'filter' => [
+                        'description' => 'Search string to filter results by. Filtered columns are: ' . $filterCols,
+                        'type' => 'string'
+                    ],
+                    'id' => [
+                        'description' => 'IDs of objects to return',
+                        'explode' => false,
+                        'items' => [
+                            'format' => 'uint32',
+                            'type' => 'integer'
                         ],
-                        'responses' => [
-                            200 => [
-                                'description' => 'Query result',
-                                'schema' => [
-                                    'type' => 'array',
-                                    'items' => [
-                                        '$ref' => "#/definitions/$name"
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ];
-                    $items["/$key/paged"]['get'] = [
-                        'tags' => [$key],
-                        'operationId' => "get{$plural_name}Paged",
-                        'consumes' => ['application/json'],
-                        'produces' => ['application/json'],
-                        'parameters' => [
-                            ['name' => 'id', 'in' => 'query', 'type' => 'string', 'description' => 'CSV list of object IDs to return'],
-                            ['name' => 'filter', 'in' => 'query', 'type' => 'string', 'description' => 'Search string filter results by. Filtered columns are: ' . $filterCols],
-                            ['name' => 'count', 'in' => 'query', 'type' => 'integer', 'description' => 'Maximum number of results to return. Maximum is 100, default is 10'],
-                            ['name' => 'page', 'in' => 'query', 'type' => 'integer', 'description' => 'The page of results to return. Works alongside `count`'],
-                            ['name' => 'sort_descending', 'in' => 'query', 'type' => 'boolean', 'description' => 'Set to true to sort in reverse order']
-                        ],
-                        'responses' => [
-                            200 => [
-                                'description' => 'Paged query result',
-                                'schema' => [
-                                    'type' => 'object',
-                                    'title' => "PagedList[$name]",
-                                    'properties' => [
-                                        'items' => [
-                                            'type' => 'array',
-                                            'description' => 'The array of results',
-                                            'items' => [
-                                                '$ref' => "#/definitions/$name"
-                                            ]
-                                        ],
-                                        'total' => ['type' => 'integer', 'description' => 'The total number of items'],
-                                        'pages' => ['type' => 'integer', 'description' => 'The total number of pages'],
-                                        'page' => ['type' => 'integer', 'description' => 'The current page number']
-                                    ]
-                                ]
-                            ]
-                        ]
-                    ];
-                    foreach ($pars as $k => $v) {
-                        $items["/$key"]['get']['parameters'][] = array_merge(['name' => $k, 'in' => 'query'], $v);
-                        $items["/$key/paged"]['get']['parameters'][] = array_merge(['name' => $k, 'in' => 'query'], $v);
-                    }
-                    if (isset($desc['allowed_sort_columns']) && count($desc['allowed_sort_columns']) > 0) {
-                        $exp = [
-                            'name' => 'sort_by',
-                            'in' => 'query',
-                            'type' => 'string',
-                            'enum' => $desc['allowed_sort_columns'],
-                            'description' => 'The column to sort the results by'
-                        ];
-                        $items["/$key"]['get']['parameters'][] = $exp;
-                        $items["/$key/paged"]['get']['parameters'][] = $exp;
-                    }
-                    if (count($desc['expand']) > 0) {
-                        $exp = [
-                            'name' => 'expand',
-                            'in' => 'query',
-                            'type' => 'string',
-                            'description' => 'CSV list of relations to expand. Expandable relationships are: ' . implode(', ', $desc['expand'])
-                        ];
-                        $items["/$key"]['get']['parameters'][] = $exp;
-                        $items["/$key/paged"]['get']['parameters'][] = $exp;
-                    }
-                    if ($auth) {
-                        $items["/$key"]['get']['x-requires-permission'] = $auth;
-                        $items["/$key/paged"]['get']['x-requires-permission'] = $auth;
-                    }
-                } else {
-
-                    $schm = [
-                        'type' => 'object',
-                        'properties' => count($pars) == 0 ? new \stdClass() : $pars
-                    ];
-                    if (count($reqr) > 0) $schm['required'] = $reqr;
-
-                    $op = $method;
-                    if ($method == 'put') $op = 'edit';
-                    else if ($method == 'post') $op = 'create';
-
-                    $items["/$key"][$method] = [
-                        'tags' => [$key],
-                        'operationId' => "{$op}{$single_name}",
-                        'consumes' => ['application/json'],
-                        'produces' => ['application/json'],
-                        'parameters' => [
-                            [
-                                'name' => "{$op}{$name}Body",
-                                'in' => 'body',
-                                'description' => 'Posted data',
-                                'schema' => $schm
-                            ]
-                        ],
-                        'responses' => [
-                            200 => [
-                                'description' => 'Operation successful',
-                                'schema' => [
-                                    '$ref' => "#/definitions/$name"
-                                ]
-                            ],
-                            404 => [
-                                'description' => 'Resource not found or insufficient permissions',
-                            ],
-                            422 => [
-                                'description' => 'Validation failed'
-                            ]
-                        ]
-                    ];
-                }
-            }
-        }
-        if (isset($desc['additional_methods'])) {
-            foreach ($desc['additional_methods'] as $n => $add) {
-                $params = isset($add['parameters']) ? $add['parameters'] : [];
-                $pars = [];
-                $reqr = [];
-                foreach ($params as $k => $v) {
-                    if (isset($v['required']) && $v['required'] === true) $reqr[] = $k;
-                    unset($v['required']);
-                    $pars[$k] = $v;
-                }
-                $schm = [
-                    'type' => 'object',
-                    'properties' => count($pars) == 0 ? new \stdClass() : $pars
+                        'type' => 'array',
+                        'uniqueItems' => true
+                    ],
+                    'sort_descending' => [
+                        'default' => false,
+                        'description' => 'Set to true to sort in reverse order',
+                        'type' => 'boolean'
+                    ],
+                    ...$params
                 ];
-                if (count($reqr) > 0) $schm['required'] = $reqr;
-                $items["/$key/$n"][$add['method']] = [
+                $responseName = $this->responseName($method, $pluralName);
+                $items["/$key"]['get'] = [
                     'tags' => [$key],
-                    'operationId' => $add['operationId'],
-                    'consumes' => ['application/json'],
-                    'produces' => ['application/json'],
-                    'parameters' => [
-                        [
-                            'name' => 'body',
-                            'in' => 'body',
-                            'description' => 'Posted data',
-                            'schema' => $schm
+                    'operationId' => "get{$pluralName}",
+                    'parameters' => $this->makeParameterSet($allParameters),
+                    'responses' => [
+                        '200' => [
+                            '$ref' => "#/components/responses/{$responseName}"
                         ]
                     ],
+                    'security' => $security
+                ];
+                $pagedParameters = [
+                    'page' => [
+                        'description' => 'The page of results to return. Works alongside `count`',
+                        'format' => 'uint32',
+                        'type' => 'integer'
+                    ],
+                    ...$allParameters
+                ];
+                $pagedResponseName = $this->responseName($method, $pluralName, true);
+                $items["/$key/paged"]['get'] = [
+                    'tags' => [$key],
+                    'operationId' => "get{$pluralName}Paged",
+                    'parameters' => $this->makeParameterSet($pagedParameters),
                     'responses' => [
-                        200 => $add['response'],
+                        '200' => [
+                            '$ref' => "#/components/responses/{$pagedResponseName}"
+                        ]
+                    ],
+                    'security' => $security
+                ];
+                if (!empty($desc['allowed_sort_columns'])) {
+                    $exp = [
+                        'name' => 'sort_by',
+                        'in' => 'query',
+                        'schema' => [
+                            'type' => 'string',
+                            'enum' => $desc['allowed_sort_columns']
+                        ],
+                        'description' => 'The column to sort the results by'
+                    ];
+                    $items["/$key"]['get']['parameters'][] = $exp;
+                    $items["/$key/paged"]['get']['parameters'][] = $exp;
+                }
+                if (!empty($desc['expand'])) {
+                    $exp = [
+                        'description' => 'Relations to expand.',
+                        'explode' => false,
+                        'in' => 'query',
+                        'name' => 'expand',
+                        'schema' => [
+                            'items' => [
+                                'enum' => $desc['expand'],
+                                'type' => 'string',
+                            ],
+                            'type' => 'array',
+                            'uniqueItems' => true
+                        ],
+                    ];
+                    $items["/$key"]['get']['parameters'][] = $exp;
+                    $items["/$key/paged"]['get']['parameters'][] = $exp;
+                }
+            } else {
+                $op = $method;
+                if ($method == 'put') $op = 'edit';
+                else if ($method == 'post') $op = 'create';
+
+                $requestBodyName = $this->requestBodyName($method, $name);
+                $responseName = $this->responseName($method, $name);
+                $items["/$key"][$method] = [
+                    'tags' => [$key],
+                    'operationId' => "{$op}{$name}",
+                    'parameters' => $this->makeParameterSet([]),
+                    'requestBody' => [
+                        '$ref' => "#/components/requestBodies/{$requestBodyName}",
+                    ],
+                    'responses' => [
+                        200 => [
+                            '$ref' => "#/components/responses/{$responseName}"
+                        ],
                         404 => [
-                            'description' => 'Resource not found or insufficient permissions',
+                            '$ref' => '#/components/responses/NotFoundErrorResult'
                         ],
                         422 => [
-                            'description' => 'Validation failed'
+                            '$ref' => '#/components/responses/ValidationFailedErrorResult'
                         ]
-                    ]
+                    ],
+                    'security' => $security
                 ];
             }
+        }
+
+        foreach ($desc['additional_methods'] ?? [] as $op => $add) {
+            $params = $add['parameters'] ?? [];
+
+            $responseName = $this->responseName($add['operationId'], $name);
+            $parameterSet = $this->makeParameterSet($add['method'] === 'get' ? $params : []);
+            $items["/$key/$op"][$add['method']] = [
+                'tags' => [$key],
+                'operationId' => $add['operationId'],
+                'parameters' => $parameterSet,
+                'responses' => [
+                    200 => [
+                        '$ref' => "#/components/responses/{$responseName}"
+                    ],
+                    404 => [
+                        '$ref' => '#/components/responses/NotFoundErrorResult'
+                    ],
+                    422 => [
+                        '$ref' => '#/components/responses/ValidationFailedErrorResult'
+                    ]
+                ]
+            ];
+
+            if ($add['method'] !== 'get') {
+                $requestBodyName = $this->requestBodyName($add['operationId'], $name);
+                $items["/$key/$op"][$add['method']]['requestBody'] = [
+                    '$ref' => "#/components/requestBodies/{$requestBodyName}"
+                ];
+            }
+
         }
 
         if (count($items) == 1 && count($items["/$key"]) == 0)
@@ -859,7 +971,111 @@ class ApiController extends Controller {
         return $items;
     }
 
-    public function getIndex()
+    private function operationRelatedObjectNamePrefix($operationName, $paged, $objectName): string
+    {
+        $op = $operationName;
+        if ($operationName === 'put') {
+            $op = 'edit';
+        } else if ($operationName === 'post') {
+            $op = 'create';
+        } else if ($operationName !== 'delete' && $operationName !== 'get') {
+            $objectName = '';
+        }
+        $op = str_replace("-", "", ucwords($op, "-"));
+        $result = "{$op}{$objectName}";
+        if ($paged && $objectName) {
+            $result .= 'Paged';
+        }
+        return $result;
+    }
+
+    private function requestBodyName($operationName, $objectName): string
+    {
+        $prefix = $this->operationRelatedObjectNamePrefix($operationName, false, $objectName);
+        return "{$prefix}Body";
+    }
+
+    private function responseName($operationName, $objectName, $paged = false): string
+    {
+        $prefix = $this->operationRelatedObjectNamePrefix($operationName, $paged, $objectName);
+        return "{$prefix}Result";
+    }
+
+    private function makeRequestBodyObject($params): array
+    {
+        $bodyRequired = array_any($params, fn ($p) => $p['required'] ?? false);
+
+        return [
+            'content' => [
+                'application/json' => [
+                    'schema' => $this->objectShemaFromParameterDescription($params)
+                ]
+            ],
+            'description' => "Posted data",
+            'required' => $bodyRequired
+        ];
+    }
+
+    private function getRequestBodies(): array
+    {
+        $requestBodies = [];
+        foreach ($this->descriptors as $key => $desc) {
+            [$name] = $this->objectNamesFromDescriptor($desc);
+
+            foreach (($desc['methods'] ?? []) as $method) {
+                if ($method === 'get') {
+                    continue;
+                }
+
+                $params = $desc['parameters'][$method] ?? [];
+                $requestBodyName = $this->requestBodyName($method, $name);
+                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params);
+            }
+
+            foreach (($desc['additional_methods'] ?? []) as $op => $add) {
+                if ($add['method'] === 'get') {
+                    continue;
+                }
+
+                $params = $add['parameters'] ?? [];
+                $requestBodyName = $this->requestBodyName($add['operationId'], $name);
+                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params);
+            }
+        }
+
+        ksort($requestBodies);
+        return $requestBodies;
+    }
+
+    private function makeParameterSet($params): array
+    {
+        $parameterSet = [];
+        foreach ($params as $parameterName => $p) {
+            $p['in'] = 'query';
+            $p['name'] = $parameterName;
+            $p['schema'] = [];
+            foreach (array_intersect_key($p, array_flip(['default', 'enum', 'format', 'items', 'maximum', 'minimum', 'type', 'uniqueItems'])) as $typePropertyKey => $typePropertyValue) {
+                $p['schema'][$typePropertyKey] = $p[$typePropertyKey];
+                unset($p[$typePropertyKey]);
+            }
+            $parameterSet[] = $p;
+        }
+
+        // This header stops the API key owner from showing up in the "Active Users" after
+        // every API request
+        $parameterSet[] = [
+            'example' => 'XMLHttpRequest',
+            'in' => 'header',
+            'name' => 'X-Requested-With',
+            'schema' => [
+                'enum' => [ 'XMLHttpRequest' ],
+                'type' => 'string'
+            ]
+        ];
+        return $parameterSet;
+    }
+
+    public function getIndex(): \Illuminate\Http\JsonResponse
     {
         $api_desc = [];
         $tags = [];
@@ -868,8 +1084,112 @@ class ApiController extends Controller {
             foreach ($items as $path => $item) $api_desc[$path] = $item;
             $tags[] = ['name' => $key, 'description' => $desc['description']];
         }
-        $swagger = [
-            'swagger' => '2.0',
+        $openapi = [
+            '$schema'=> 'https://spec.openapis.org/oas/3.0/schema/2024-10-18',
+            'components' => [
+                'headers' => [
+                    'RateLimitLimit' => [
+                        'description' => 'The number of allowed requests in a time window',
+                        'schema' => [
+                            'format' => 'uint16',
+                            'type' => 'integer'
+                        ]
+                    ],
+                    'RateLimitRemaining' => [
+                        'description' => 'The number of allowed requests in the current time window',
+                        'schema' => [
+                            'format' => 'uint16',
+                            'type' => 'integer'
+                        ]
+                    ]
+                ],
+                'requestBodies' => $this->getRequestBodies(),
+                'responses' => [
+                    ...$this->responsesFromDescriptors(),
+                    # 401
+                    'UnauthorizedErrorResult' => [
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/ErrorDescription'
+                                ]
+                            ]
+                        ],
+                        'description' => 'Unauthorized. You either lack permission, or your API key is invalid, or you did not provide an API key',
+                        'headers' => self::RATE_LIMIT_HEADERS
+                    ],
+                    # 404
+                    'NotFoundErrorResult' => [
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/ErrorDescription'
+                                ]
+                            ]
+                        ],
+                        'description' => 'Resource not found or insufficient permissions',
+                        'headers' => self::RATE_LIMIT_HEADERS
+                    ],
+                    # 422
+                    'ValidationFailedErrorResult' => [
+                        'content' => [
+                            'application/json' => [
+                                'schema' => [
+                                  '$ref' => '#/components/schemas/ErrorDescription'
+                                ]
+                            ]
+                        ],
+                        'description' => 'Validation failed',
+                        'headers' => self::RATE_LIMIT_HEADERS
+                    ],
+                    # 429 - Too Many Requests. Any endpoint can return this response
+                    'TooManyErrorResult' => [
+                        'content' => [
+                            'text/html' => new \stdClass()
+                        ],
+                        'description' => 'Response you get if you send too many requests in a short amount of time',
+                        'headers' => [
+                            ...self::RATE_LIMIT_HEADERS,
+                            'Retry-After' => [
+                                'description' => 'Seconds until you will be allowed to send requests again',
+                                'schema' => [
+                                    'format' => 'uint16',
+                                    'type' => 'integer'
+                                ]
+                            ],
+                            'X-RateLimit-Reset' => [
+                                'description' => 'The time as a UNIX timestamp when you will be allowed to send requests again',
+                                'schema' => [
+                                    'format' => 'unixtime',
+                                    'type' => 'integer'
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'schemas' => [
+                    'ErrorDescription' => [
+                        'properties' => [
+                            'message' => [
+                                'type' => 'string'
+                            ]
+                        ],
+                        'required' => ['message'],
+                        'type' => 'object'
+                    ],
+                    ...$this->objectSchemasFromDescriptors()
+                ],
+                'securitySchemes' => [
+                    'httpBearerToken' => [
+                        "scheme" => "bearer",
+                        "type" => "http"
+                    ]
+                ]
+            ],
+            'externalDocs' => [
+                'url' => asset('/'),
+                'description' => 'TWHL main website'
+            ],
             'info' => [
                 'title' => 'THWL JSON API',
                 'description' => 'An unnecessarily feature-complete JSON API for TWHL.',
@@ -884,25 +1204,22 @@ class ApiController extends Controller {
                 ],
                 'version' => 'latest'
             ],
+            'openapi' => '3.0.4',
             'paths' => $api_desc,
-            'host' => preg_replace('%https?://([^/]*)/.*%', '\1', asset('/')),
-            'schemes' => [ preg_replace('%(https?):.*%', '\1', asset('/')) ],
-            'basePath' => '/api',
-            'definitions' => $this->getDefinitions(),
-            'securityDefinitions' => [
-                'api_key' => [
-                    'type' => 'apiKey',
-                    'name' => 'Authorization',
-                    'in' => 'header'
+            'security' => [
+                new \stdClass(), // Security token is optional
+                [
+                    'httpBearerToken' => []
                 ]
             ],
-            'tags' => $tags,
-            'externalDocs' => [
-                'url' => asset('/'),
-                'description' => 'TWHL main website'
-            ]
+            'servers' => [
+               [
+                'url' => asset('/api')
+               ]
+            ],
+            'tags' => $tags
         ];
-        return response()->json($swagger);
+        return response()->json($openapi, 200, [], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
 
     public function missingMethod($parameters = [])
@@ -1022,6 +1339,7 @@ class ApiController extends Controller {
         $pages = ceil($total / $count);
         if ($page == 'last' || $page > $pages) $page = $pages;
         else if ($page < 1) $page = 1;
+        else $page = intval($page);
 
         $items = $query->skip(($page - 1) * $count)->take($count)->get();
 
@@ -1076,7 +1394,8 @@ class ApiController extends Controller {
         return $post;
     }
 
-    private function post_posts_format() {
+    private function post_posts_format(): string
+    {
         $field = Request::input('field') ?: 'text';
         $text = Request::input($field) ?: '';
         return bbcode($text);
@@ -1239,7 +1558,8 @@ class ApiController extends Controller {
         return $shout;
     }
 
-    private function delete_shouts() {
+    private function delete_shouts(): array
+    {
         if (!permission('ForumAdmin')) throw new \Exception();
 
         $shout = Shout::findOrFail(Request::input('id'));
@@ -1247,7 +1567,8 @@ class ApiController extends Controller {
         return ['success' => true];
     }
 
-    private function post_wiki_revisions() {
+    private function post_wiki_revisions(): WikiRevision
+    {
         if (!permission('Admin')) throw new \Exception();
 
         Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) {
@@ -1285,7 +1606,7 @@ class ApiController extends Controller {
         return $revision;
     }
 
-    private function put_wiki_revisions()
+    private function put_wiki_revisions(): WikiRevision
     {
         if (!permission('Admin')) throw new \Exception();
 
@@ -1344,7 +1665,7 @@ class ApiController extends Controller {
         return $revision;
     }
 
-    private function post_wiki_revisions_upload()
+    private function post_wiki_revisions_upload(): WikiRevision
     {
         if (!permission('Admin')) throw new \Exception();
 
@@ -1383,7 +1704,7 @@ class ApiController extends Controller {
         return $revision;
     }
 
-    private function post_wiki_objects_page_information()
+    private function post_wiki_objects_page_information(): array
     {
         $pages = \request()->input('pages');
         $embeds = \request()->input('embeds');
@@ -1420,7 +1741,8 @@ class ApiController extends Controller {
         return $res;
     }
 
-    private function post_image_upload() {
+    private function post_image_upload(): array
+    {
 
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
