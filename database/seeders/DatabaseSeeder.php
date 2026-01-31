@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 foreach (glob(__DIR__.'/*.php') as $f) {
     require_once($f);
 }
