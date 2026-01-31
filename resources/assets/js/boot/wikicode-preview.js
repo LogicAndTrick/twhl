@@ -235,52 +235,78 @@ $(function() {
     // Note: When changing `maxImageUploadSize` you need to also change the `max:` value in
     // `ApiController.php` post_image_upload()'s validation rules to the same value divided by 1024
     const maxImageUploadSize = 2048 * 1024;
+    // Note: When changing `maxImageUploadWidth` or `maxImageUploadHeight` you need to also change
+    // `max_width` and `max_height` in `ApiController.php` post_image_upload()'s validation rules to
+    // the same values
+    const maxImageUploadWidth = 2000;
+    const maxImageUploadHeight = 2000;
 
     const findImageFileInClipboard = (clipboardData) => Iterator.from(clipboardData?.items).find(
         ({ kind, type }) => kind === 'file' && type.startsWith("image/")
     )?.getAsFile() ?? undefined;
 
-    const renderImageInCanvas = async (image) => {
-        const bitmap = await createImageBitmap(image, { premultiplyAlpha: 'none' });
-        const canvas = new OffscreenCanvas(0, 0);
-        canvas.getContext("bitmaprenderer").transferFromImageBitmap(bitmap);
-        return canvas;
+    const isOpaque = (canvas) => {
+        const rgbaData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
+        for (let dataIndex = 3; dataIndex < rgbaData.length; dataIndex += 4) {
+            if (rgbaData[dataIndex] < 255) {
+                return false;
+            }
+        }
+        return true;
     };
+
     const compressImageFromCanvas = async (canvas, quality) => {
-        const compressedBlob = await canvas.convertToBlob({ quality, type: 'image/webp' });
+        const compressedBlob = await canvas.convertToBlob(
+            { quality, type: quality === 1 ? "image/png" : "image/jpeg" }
+        );
         return new File([compressedBlob], "image", { type: compressedBlob.type });
+    };
+    const renderBitmapScaled = (original, scale) => {
+        const resized = new OffscreenCanvas(
+            Math.round(original.width * scale) || 1,
+            Math.round(original.height * scale) || 1
+        );
+        const context = resized.getContext("2d");
+        context.imageSmoothingQuality = "high";
+        context.drawImage(original, 0, 0, resized.width, resized.height);
+        return resized;
     };
 
     const recompressImageIfNeeded = async (imageFile) => {
         const fileTooLarge = imageFile.size > maxImageUploadSize;
         const unsupportedImageFormat = !imageTypesAcceptedServerSide.has(imageFile.type);
-        if (fileTooLarge || unsupportedImageFormat) {
-            const canvas = await renderImageInCanvas(imageFile).catch((error) => {
-                console.error("Image loading failed. Original error: %o", error);
-                throw new Error("Image loading failed. Your image file may be corrupted or in an unsupported file format");
-            });
-            for (let quality = 1; quality > 0; quality -= 0.08) {
-                const recompressed = await compressImageFromCanvas(canvas, quality);
-                if (recompressed.size <= maxImageUploadSize) {
-                    return recompressed;
+        const bitmap = await createImageBitmap(imageFile, { premultiplyAlpha: 'none' }).catch((error) => {
+            console.error("Image loading failed. Original error: %o", error);
+            throw new Error("Image loading failed. Your image file may be corrupted or in an unsupported file format");
+        });
+        // Images with overly large dimensions need to be scaled down
+        let scale = Math.min(1, maxImageUploadWidth / bitmap.width, maxImageUploadHeight / bitmap.height);
+        if (scale === 1 && !fileTooLarge && !unsupportedImageFormat) {
+            // No need to recompress. The dimensions, file size, and file format are supported by the API endpoint
+            return imageFile;
+        }
+        let scaledCanvas = renderBitmapScaled(bitmap, scale);
+        if (isOpaque(scaledCanvas)) {
+            // An opaque image is - if necessary - compressed with JPEG,
+            // at lower and lower quality until it's small enough
+            for (let quality = 1; quality >= 0.05; quality -= 0.05) {
+                newFile = await compressImageFromCanvas(scaledCanvas, quality);
+                if (newFile.size <= maxImageUploadSize) {
+                    return newFile;
                 }
             }
-            throw new Error("The image file is too large and could not be compressed enough to allow an upload");
-        }
-        if (imageFile.type === 'image/png') {
-            // Web browsers generate uncompressed PNGs when you paste a bitmap
-            // - for example from copying a rectangle of pixels in Paint or by pressing PrtScn.
-            // These files are unnecessarily large, so we recompress all PNGs and see if
-            // we get a reduction in size. This saves bandwidth and avoids triggering the
-            // `$force_lossy_compression` condition in `post_image_upload()`
-            const recompressed = await renderImageInCanvas(imageFile).then(
-                canvas => compressImageFromCanvas(canvas, 1)
-            ).catch(() => undefined);
-            if (recompressed?.size < imageFile.size) {
-                return recompressed;
+        } else {
+            // A transparent image is compressed with PNG, if necessary with reduced dimensions until it's small enough
+            while(scale >= 1 / maxImageUploadWidth) {
+                newFile = await compressImageFromCanvas(scaledCanvas, 1);
+                if (newFile.size <= maxImageUploadSize) {
+                    return newFile;
+                }
+                scale *= 0.8;
+                scaledCanvas = renderBitmapScaled(bitmap, scale);
             }
         }
-        return imageFile;
+        throw new Error("The image file is too large and could not be compressed enough to allow an upload");
     }
 
     document.addEventListener('paste', async event => {

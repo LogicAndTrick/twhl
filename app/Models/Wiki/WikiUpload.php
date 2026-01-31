@@ -14,23 +14,19 @@ class WikiUpload extends Model {
     }
 
     public function isEmbeddable() {
-        return $this->extension == 'avif'
-            || $this->extension == 'gif'
-            || $this->extension == 'jpg'
+        return $this->extension == 'jpg'
             || $this->extension == 'jpeg'
             || $this->extension == 'png'
-            || $this->extension == 'webp'
+            || $this->extension == 'gif'
             || $this->extension == 'mp3'
             || $this->extension == 'mp4';
     }
 
     public function isImage() {
-        return $this->extension == 'avif'
-            || $this->extension == 'gif'
-            || $this->extension == 'jpg'
+        return $this->extension == 'jpg'
             || $this->extension == 'jpeg'
             || $this->extension == 'png'
-            || $this->extension == 'webp';
+            || $this->extension == 'gif';
     }
 
     public function isVideo() {

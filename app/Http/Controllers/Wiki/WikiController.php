@@ -552,7 +552,7 @@ class WikiController extends Controller {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
         $max_size = 1024*4;
-        $allowed_extensions = 'avif,gif,jpeg,jpg,png,webp,mp3,mp4';
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('WikiAdmin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';
@@ -570,7 +570,7 @@ class WikiController extends Controller {
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
             'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
             'invalid_title' => "A page title cannot start with ':category' or ':upload'.",
-            'valid_extension' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp'
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
         $revision = $this->createRevision($obj, $rev);
 
@@ -692,7 +692,7 @@ class WikiController extends Controller {
         });
 
         $max_size = 1024*4;
-        $allowed_extensions = 'avif,gif,jpeg,jpg,png,webp,mp3,mp4';
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('WikiAdmin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';

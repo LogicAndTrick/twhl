@@ -1320,7 +1320,7 @@ class ApiController extends Controller {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
         $max_size = 1024*4;
-        $allowed_extensions = 'avif,gif,jpeg,jpg,png,webp,mp3,mp4';
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('Admin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';
@@ -1338,7 +1338,7 @@ class ApiController extends Controller {
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
             'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
             'invalid_title' => "A page title cannot start with ':category' or ':upload'.",
-            'valid_extension' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp'
+            'valid_extension' => 'Only the following file formats are allowed: gif, jpg, png'
         ]);
         $revision = WikiController::createRevision($obj, $rev);
         return $revision;
@@ -1361,7 +1361,7 @@ class ApiController extends Controller {
         });
 
         $max_size = 1024*4;
-        $allowed_extensions = 'avif,gif,jpeg,jpg,png,webp,mp3,mp4';
+        $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('Admin')) {
             $max_size = 1024*64;
             $allowed_extensions .= ',zip,rar,exe,msi';
@@ -1424,26 +1424,21 @@ class ApiController extends Controller {
 
         $this->validate(Request::instance(), [
             // Note: When changing the `max:` value you need to also change `maxImageUploadSize`
-            // in `wikicode-preview.js` to the same value multiplied by 1024
-            'image' => 'required|max:2048|mimetypes:image/avif,image/gif,image/jpeg,image/png,image/webp|dimensions:max_width=3000,max_height=3000'
+            // in `wikicode-preview.js` to the same value multiplied by 1024.
+            // When changing the `max_width` or the `max_height` you also need to update wikicode-preview.js
+            'image' => 'required|max:2048|mimetypes:image/avif,image/gif,image/jpeg,image/png,image/webp|dimensions:max_width=2000,max_height=2000'
         ], [
-            'dimensions' => 'The image cannot have a width or height of more than 3000 pixels',
+            'dimensions' => 'The image cannot have a width or height of more than 2000 pixels',
         ]);
 
         $image = Request::file('image');
         $name = Str::uuid()->toString();
 
-        // Force lossy compression if the image is more than 1MiB
-        $force_lossy_compression = false;
-        if ($image->getSize() >= 1024 * 1024) {
-            $force_lossy_compression = true;
-        }
-
         // Use 2000 maximum to support 1080p screenshots without resizing
         $thumbs = Image::MakeThumbnails($image->getPathname(),
             [ [ 'width' => 2000, 'height' => 2000, 'force' => true ] ],
             public_path('uploads/images/' . Auth::id()),
-            $name, false, $force_lossy_compression
+            $name, false
         );
 
         return [

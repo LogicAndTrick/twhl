@@ -26,7 +26,7 @@ class ProcessVaultScreenshots extends Command {
             $title = $info['basename'];    // 1234.jpg
             $filename = $info['filename']; // 1234
             $ext = $info['extension'];     // jpg
-            if (preg_match('/^(\d*)\.(avif|jpg|png|webp)$/s', $title))
+            if (preg_match('/^(\d*)\.(png|jpg)$/s', $title))
             {
                 $item = VaultItem::with(['vault_screenshots'])->find($filename);
                 if ($item != null && count($item->vault_screenshots) == 0) {

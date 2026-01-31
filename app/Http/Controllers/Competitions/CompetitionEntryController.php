@@ -52,14 +52,14 @@ class CompetitionEntryController extends Controller {
             'user_id' => ($request_user_id ? 'required|' : '') . 'numeric',
             'title' => 'required|max:255',
             'content_text' => 'max:2000',
-            'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:avif,gif,jpeg,jpg,png,webp|image_size:3000|image_limit',
+            'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:jpeg,jpg,png|image_size:3000|image_limit',
 
             '__upload_method' => $file_valid.'in:file,link',
             'link' => 'required_if:__upload_method,link|max:512',
             'file' => 'required_if:__upload_method,file|max:16384|valid_extension_file:zip,rar,7z'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
-            'valid_extension_screen' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp',
+            'valid_extension_screen' => 'Only the following file formats are allowed: jpg, png',
             'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
             'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
         ]);
@@ -169,9 +169,9 @@ class CompetitionEntryController extends Controller {
 
         $this->validate(Request::instance(), [
             'id' => 'required|numeric',
-            'screenshot' => 'required|max:2048|valid_extension:avif,gif,jpeg,jpg,png,webp|image_size:3000|image_limit',
+            'screenshot' => 'required|max:2048|valid_extension:jpeg,jpg,png|image_size:3000|image_limit',
         ], [
-            'valid_extension' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp',
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
             'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
             'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
         ]);

@@ -158,7 +158,7 @@ class VaultController extends Controller {
             'type_id' => 'required',
             // 'license_id' => 'required', // Default to license 1 = none
             'item_name' => 'required|max:120',
-            'screen' => 'max:2048|valid_extension_screen:avif,gif,jpeg,jpg,png,webp|image_size:3000',
+            'screen' => 'max:2048|valid_extension_screen:jpeg,jpg,png|image_size:3000',
             'content_text' => 'required|max:10000',
 
             '__upload_method' => 'required|in:file,link',
@@ -166,7 +166,7 @@ class VaultController extends Controller {
             'file' => 'required_if:__upload_method,file|max:16384|valid_extension_file:zip,rar,7z'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
-            'valid_extension_screen' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp',
+            'valid_extension_screen' => 'Only the following file formats are allowed: jpg, png',
             'image_size' => 'The image cannot have a width or height of more than 3000 pixels'
         ]);
 
@@ -378,9 +378,9 @@ class VaultController extends Controller {
             return $item->vault_screenshots->count() < 25;
         });
         $this->validate(Request::instance(), [
-            'file' => 'required|max:2048|valid_extension:avif,gif,jpeg,jpg,png,webp|image_size:3000|image_limit'
+            'file' => 'required|max:2048|valid_extension:jpeg,jpg,png|image_size:3000|image_limit'
         ], [
-            'valid_extension' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp',
+            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
             'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
             'image_limit' => 'You can\'t add more than 25 screenshots to a vault item'
         ]);

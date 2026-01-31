@@ -130,7 +130,7 @@ class DeployImages extends Command
 
                 $temp_name = $temp . DIRECTORY_SEPARATOR . $user->id . '_temp' . $name;
                 copy($av, $temp_name);
-                Image::MakeThumbnails($temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), pathinfo($name, PATHINFO_FILENAME), true);
+                Image::MakeThumbnails($temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), $name, true);
                 unlink($temp_name);
             } else {
                 $user->avatar_custom = false;
@@ -329,14 +329,9 @@ class DeployImages extends Command
 
             //$this->comment($item->vault_sceeenshots->count());
             if ($item->vault_sceeenshots == null || $item->vault_sceeenshots->count() == 0) {
-                $path = array_find(
-                    array_map(
-                        fn ($ext) => $mapvault_path . DIRECTORY_SEPARATOR . $item->id . $ext,
-                        array('.avif', '.jpg', '.png', '.webp')
-                    ),
-                    fn ($p) => is_file($p)
-                );
-                if ($path !== null) {
+                $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . '.jpg';
+                if (!is_file($path)) $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . '.png';
+                if (is_file($path)) {
                     $shot = VaultScreenshot::Create([
                         'item_id' => $item->id,
                         'is_primary' => true,

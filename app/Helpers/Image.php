@@ -5,9 +5,8 @@ namespace App\Helpers;
 class Image
 {
     const OUTPUT_FILE_EXTENSIONS = array(
-        \IMAGETYPE_AVIF => 'avif',
         \IMAGETYPE_JPEG => 'jpg',
-        \IMAGETYPE_WEBP => 'webp',
+        \IMAGETYPE_PNG => 'png',
     );
 
     private array $_info = array(0, 0, 0);
@@ -57,19 +56,12 @@ class Image
         return ($this->_info['channels'] ?? 4) !== 3;
     }
 
-    private function PickOutputFormat(bool $force_lossy = false) {
-        $lossy = $this->_lossily_compressed || $force_lossy;
-        if ($lossy) {
-            // AVIF is good for lossy compression and supports alpha channels, but...
-            if ($this->HasAlphaChannel()) {
-                return \IMAGETYPE_AVIF;
-            }
-            // ... PHP's AVIF encoder is mediocre, so use JPEG when we don't need an alpha channel
-            return \IMAGETYPE_JPEG;
+    private function PickOutputFormat() {
+        $lossy = $this->_lossily_compressed;
+        if ($this->HasAlphaChannel() || !$this->_lossily_compressed) {
+            return \IMAGETYPE_PNG;
         }
-
-        // WebP has excellent lossless compression and supports alpha channels
-        return \IMAGETYPE_WEBP;
+        return \IMAGETYPE_JPEG;
     }
 
     function SaveResized(string $location, int $output_format, int $max_width, int $max_height, bool $force_size = false)
@@ -89,12 +81,10 @@ class Image
         $dx = ($actual_dims[0] - $new_dims[0]) / 2;
         $dy = ($actual_dims[1] - $new_dims[1]) / 2;
         imagecopyresampled($new_image, $this->_image, $dx, $dy, 0, 0, $new_dims[0], $new_dims[1], $this->Width(), $this->Height());
-        if ($output_format == \IMAGETYPE_AVIF) {
-            imageavif($new_image, $location, 75);
-        } else if ($output_format == \IMAGETYPE_JPEG) {
+        if ($output_format == \IMAGETYPE_JPEG) {
             imagejpeg($new_image, $location, 80);
-        } else if ($output_format == \IMAGETYPE_WEBP) {
-            imagewebp($new_image, $location, \IMG_WEBP_LOSSLESS);
+        } else if ($output_format == \IMAGETYPE_PNG) {
+            imagepng($new_image, $location);
         }
         imagedestroy($new_image);
     }
@@ -142,7 +132,7 @@ class Image
         else return array($max_width, ceil($xr * $height)); // Too wide, scale height to keep aspect ratio
     }
 
-    static function MakeThumbnails(string $image_location, array $image_sizes, string $destination_folder, string $filename, bool $delete_existing = false, bool $force_lossy_compression = false)
+    static function MakeThumbnails(string $image_location, array $image_sizes, string $destination_folder, string $filename, bool $delete_existing = false)
     {
         if (count($image_sizes) == 0) $image_sizes = Image::$vault_image_sizes;
         $image = new Image($image_location);
@@ -156,9 +146,9 @@ class Image
             }
             $pre = !isset($size['prefix']) || $size['prefix'] == null ? '' : $size['prefix'];
             $suf = !isset($size['suffix']) || $size['suffix'] == null ? '' : $size['suffix'];
-            $output_format = $image->PickOutputFormat($force_lossy_compression);
+            $output_format = $image->PickOutputFormat();
             $extension = self::OUTPUT_FILE_EXTENSIONS[$output_format];
-            $name = $pre . pathinfo($filename, PATHINFO_BASENAME) . $suf . '.' . $extension;
+            $name = $pre . pathinfo($filename, PATHINFO_FILENAME) . $suf . '.' . $extension;
             $save = rtrim($destination_folder, '/') . '/' . $name;
             if ($delete_existing && file_exists($save)) {
                 unlink($save);

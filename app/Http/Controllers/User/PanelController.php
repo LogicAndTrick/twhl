@@ -164,22 +164,13 @@ class PanelController extends Controller {
         $id = Request::input('id');
         $user = PanelController::GetUser($id);
 
-        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        });
-        Validator::extend('image_size', function($attr, $value, $parameters) {
-            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
-            $info = getimagesize($value->getPathName());
-            return $info[0] <= $max && $info[1] <= $max;
-        });
-
         $this->validate(Request::instance(), [
             'type' => 'in:upload,preset',
-            'upload' => 'required_if:type,upload|valid_extension:avif,gif,jpeg,jpg,png,webp|image_size:1000',
+            'upload' => 'required_if:type,upload|mimetypes:image/gif,image/jpeg,image/png|dimensions:max_width=1000,max_height=1000',
             'preset' => 'required_if:type,preset'
         ], [
-            'valid_extension' => 'Only the following file formats are allowed: avif, gif, jpg, png, webp',
-            'image_size' => 'The image can\'t be larger than 1000px square. It will be resized to 100px anyway, please upload a smaller image!'
+            'mimetypes' => 'Only the following file formats are allowed: gif, jpg, png',
+            'dimensions' => 'The image can\'t be larger than 1000px square. It will be resized to 100px anyway, please upload a smaller image!'
         ]);
 
         if (Request::input('type') == 'upload') {

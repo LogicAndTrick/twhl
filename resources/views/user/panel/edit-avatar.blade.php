@@ -29,7 +29,7 @@
     @form(panel/edit-avatar upload=true)
         @hidden(id $user)
         <input type="hidden" name="type" value="upload" />
-        @file(upload) = Choose Image (avif, gif, jpg, png, or webp)
+        @file(upload) = Choose Image (png or jpg)
         @submit = Upload Avatar
     @endform
 
