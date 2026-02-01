@@ -106,8 +106,8 @@ foreach ($legacy as $page => $fn) {
     Route::get('Legacy/'.$page, $fn);
 }
 
-// Swagger convention suggests that the api definition should be available at /swagger.json
-Route::get('/swagger.json', 'Api\ApiController@getIndex');
+// The OpenAPI 3 spec recommends that the API definition should be named openapi.json
+Route::get('/openapi.json', 'Api\ApiController@getIndex');
 
 // Debug - add CORS
 if (app('config')->get('app.debug')) {
