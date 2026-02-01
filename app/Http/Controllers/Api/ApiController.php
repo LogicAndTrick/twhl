@@ -1743,37 +1743,30 @@ class ApiController extends Controller {
 
     private function post_image_upload(): array
     {
-
-        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        });
-        Validator::extend('image_size', function($attr, $value, $parameters) {
-            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
-            $info = getimagesize($value->getPathName());
-            return $info[0] <= $max && $info[1] <= $max;
-        });
-
+        $allowed_mimetypes = [
+            'image/avif',
+            'image/gif',
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
         $this->validate(Request::instance(), [
-            'image' => 'required|max:2048|valid_extension:gif,jpeg,jpg,png|image_size:3000'
+            // Note: When changing the `max:` value you need to also change `maxImageUploadSize`
+            // in `wikicode-preview.js` to the same value multiplied by 1024.
+            // When changing the `max_width` or the `max_height` you also need to update wikicode-preview.js
+            'image' => 'required|max:2048|mimetypes:' . implode(',', $allowed_mimetypes) . '|dimensions:max_width=2000,max_height=2000'
         ], [
-            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+            'dimensions' => 'The image cannot have a width or height of more than 2000 pixels',
         ]);
 
         $image = Request::file('image');
-        $fname = Str::uuid()->toString() . '.' . $image->getClientOriginalExtension();
-
-        // Force jpeg if the image is more than 1mb
-        $override_type = false;
-        if ($image->getSize() >= 1024 * 1024) {
-            $override_type = IMAGETYPE_JPEG;
-            $fname = explode('.', $fname)[0] . '.jpg';
-        }
+        $name = Str::uuid()->toString();
 
         // Use 2000 maximum to support 1080p screenshots without resizing
         $thumbs = Image::MakeThumbnails($image->getPathname(),
-            [ [ 'width' => 2000, 'height' => 2000, 'force' => true, 'type' => $override_type ] ],
+            [ [ 'width' => 2000, 'height' => 2000, 'force' => true ] ],
             public_path('uploads/images/' . Auth::id()),
-            $fname, false
+            $name, false
         );
 
         return [

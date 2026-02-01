@@ -211,7 +211,7 @@ class DeployImages extends Command
                 copy($path, $temp_path);
                 $thumbs = Image::MakeThumbnails(
                     $temp_path, Image::$comp_image_sizes,
-                    public_path('uploads/competition/'), $shot->id . '.' . $info['extension'], true
+                    public_path('uploads/competition/'), strval($shot->id), true
                 );
                 unlink($temp_path);
 
@@ -332,7 +332,6 @@ class DeployImages extends Command
                 $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . '.jpg';
                 if (!is_file($path)) $path = $mapvault_path . DIRECTORY_SEPARATOR . $item->id . '.png';
                 if (is_file($path)) {
-
                     $shot = VaultScreenshot::Create([
                         'item_id' => $item->id,
                         'is_primary' => true,
@@ -350,7 +349,7 @@ class DeployImages extends Command
                     copy($path, $temp_path);
                     $thumbs = Image::MakeThumbnails(
                         $temp_path, Image::$vault_image_sizes,
-                        public_path('uploads/vault/'), $shot->id . '.' . $info['extension'], true
+                        public_path('uploads/vault/'), strval($shot->id), true
                     );
                     unlink($temp_path);
 

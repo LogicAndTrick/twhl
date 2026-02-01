@@ -123,7 +123,7 @@ class VaultController extends Controller {
         $screen->move($temp_dir, $temp_name);
         $thumbs = Image::MakeThumbnails(
             $temp_dir . '/' . $temp_name, Image::$vault_image_sizes,
-            public_path('uploads/vault/'), $shot->id . '.' . strtolower($screen->getClientOriginalExtension()), true
+            public_path('uploads/vault/'), strval($shot->id), true
         );
         unlink($temp_dir . '/' . $temp_name);
 

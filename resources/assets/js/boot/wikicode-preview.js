@@ -224,39 +224,98 @@ $(function() {
         document.addEventListener('selectionchange', throttledRefresh);
     });
 
-    const imageTypeToExtension = {
-        "image/gif": "gif",
-        "image/jpeg": "jpg",
-        "image/png": "png",
-    };
+    const imageTypesAcceptedServerSide = new Set([
+        "image/avif",
+        "image/gif",
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ]);
 
-    const findImageClipboardData = (clipboardData) => {
-        for (const item of Array.from(clipboardData?.items ?? [])) {
-            const { kind, type } = item;
-            if (kind !== 'file' || !(type in imageTypeToExtension)) continue;
+    // Note: When changing `maxImageUploadSize` you need to also change the `max:` value in
+    // `ApiController.php` post_image_upload()'s validation rules to the same value divided by 1024
+    const maxImageUploadSize = 2048 * 1024;
+    // Note: When changing `maxImageUploadWidth` or `maxImageUploadHeight` you need to also change
+    // `max_width` and `max_height` in `ApiController.php` post_image_upload()'s validation rules to
+    // the same values
+    const maxImageUploadWidth = 2000;
+    const maxImageUploadHeight = 2000;
 
-            const fileData = item.getAsFile();
-            if (fileData) { 
-                return {
-                    fileData,
-                    fileExtension: imageTypeToExtension[type],
-                }
+    const findImageFileInClipboard = (clipboardData) => Iterator.from(clipboardData?.items).find(
+        ({ kind, type }) => kind === 'file' && type.startsWith("image/")
+    )?.getAsFile() ?? undefined;
+
+    const isOpaque = (canvas) => {
+        const rgbaData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data;
+        for (let dataIndex = 3; dataIndex < rgbaData.length; dataIndex += 4) {
+            if (rgbaData[dataIndex] < 255) {
+                return false;
             }
         }
+        return true;
+    };
+
+    const compressImageFromCanvas = async (canvas, quality) => {
+        const compressedBlob = await canvas.convertToBlob(
+            { quality, type: quality === 1 ? "image/png" : "image/jpeg" }
+        );
+        return new File([compressedBlob], "image", { type: compressedBlob.type });
+    };
+    const renderBitmapScaled = (original, scale) => {
+        const resized = new OffscreenCanvas(
+            Math.round(original.width * scale) || 1,
+            Math.round(original.height * scale) || 1
+        );
+        const context = resized.getContext("2d");
+        context.imageSmoothingQuality = "high";
+        context.drawImage(original, 0, 0, resized.width, resized.height);
+        return resized;
+    };
+
+    const recompressImageIfNeeded = async (imageFile) => {
+        const fileTooLarge = imageFile.size > maxImageUploadSize;
+        const unsupportedImageFormat = !imageTypesAcceptedServerSide.has(imageFile.type);
+        const bitmap = await createImageBitmap(imageFile, { premultiplyAlpha: 'none' }).catch((error) => {
+            console.error("Image loading failed. Original error: %o", error);
+            throw new Error("Image loading failed. Your image file may be corrupted or in an unsupported file format");
+        });
+        // Images with overly large dimensions need to be scaled down
+        let scale = Math.min(1, maxImageUploadWidth / bitmap.width, maxImageUploadHeight / bitmap.height);
+        if (scale === 1 && !fileTooLarge && !unsupportedImageFormat) {
+            // No need to recompress. The dimensions, file size, and file format are supported by the API endpoint
+            return imageFile;
+        }
+        let scaledCanvas = renderBitmapScaled(bitmap, scale);
+        if (isOpaque(scaledCanvas)) {
+            // An opaque image is - if necessary - compressed with JPEG,
+            // at lower and lower quality until it's small enough
+            for (let quality = 1; quality >= 0.05; quality -= 0.05) {
+                newFile = await compressImageFromCanvas(scaledCanvas, quality);
+                if (newFile.size <= maxImageUploadSize) {
+                    return newFile;
+                }
+            }
+        } else {
+            // A transparent image is compressed with PNG, if necessary with reduced dimensions until it's small enough
+            while(scale >= 1 / maxImageUploadWidth) {
+                newFile = await compressImageFromCanvas(scaledCanvas, 1);
+                if (newFile.size <= maxImageUploadSize) {
+                    return newFile;
+                }
+                scale *= 0.8;
+                scaledCanvas = renderBitmapScaled(bitmap, scale);
+            }
+        }
+        throw new Error("The image file is too large and could not be compressed enough to allow an upload");
     }
 
     document.addEventListener('paste', async event => {
         const active = document.activeElement;
         if (!active || !$(active).closest('.wikicode-input').length) return;
 
-        let imageData = findImageClipboardData(event.clipboardData);
-        if (!imageData) return;
-        const { fileData, fileExtension } = imageData;
-
+        let imageFile = findImageFileInClipboard(event.clipboardData);
+        if (!imageFile) return;
         event.preventDefault();
-
-        const form = new FormData();
-        form.append('image', fileData, `image.${fileExtension}`);
 
         const $t = $(active);
         const id = Date.now();
@@ -264,15 +323,21 @@ $(function() {
         const tempText = 'uploading image ' + id + '...';
         insertIntoInput($t, '[img:' + tempText + ']', '', '', true);
 
-        const response = await fetch(window.urls.api.image_upload, { method: 'post', body: form });
-        const json = await response.json();
-
         let replace;
+        imageFile = await recompressImageIfNeeded(imageFile).catch(error => {
+            replace = `Error: ${error.message}`;
+        });
+        if (imageFile) {
+            const form = new FormData();
+            form.append('image', imageFile);
+            const response = await fetch(window.urls.api.image_upload, { method: 'post', body: form });
+            const json = await response.json();
 
-        if (!response.ok) {
-            replace = 'Error: ' + json.image[0];
-        } else {
-            replace = json.url;
+            if (!response.ok) {
+                replace = 'Error: ' + json.image[0];
+            } else {
+                replace = json.url;
+            }
         }
         let text = $t.val();
         if (text.indexOf(tempText) >= 0) {
