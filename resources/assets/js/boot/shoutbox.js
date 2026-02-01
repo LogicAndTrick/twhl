@@ -4,10 +4,10 @@
 ;
 
 // Increment this to clear everyone's cached local storage
-var TWHL_SHOUTBOX_DATA_FORMAT_VERSION = '1';
+const TWHL_SHOUTBOX_DATA_FORMAT_VERSION = '1';
 
-var probably_twhl = (/(?:\b|\/\/|^)twhl\.info(?:\b|\/|$)/i);
-var entityMap = {
+const probably_twhl = (/(?:\b|\/\/|^)twhl\.info(?:\b|\/|$)/i);
+const entityMap = {
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -15,87 +15,95 @@ var entityMap = {
     "'": '&#39;',
     "/": '&#x2F;'
 };
-var readableTime = window.readableTime;
 
-var window_template =
-        '<div :class="\'shoutbox \' + classes" @click="state = \'open\'">' +
-            '<h1>' +
-                '<span v-if="newMessage" class="new-message-icon fa fa-comment"></span> ' +
-                'Shoutbox <span v-if="loading" class="refresh-icon fa fa-refresh"></span>' +
-                '<a href="#" class="minimise-button" @click.prevent.stop="state = \'closed\'"><span class="fa fa-caret-down"></span></a>' +
-                '<a href="#" class="expand-button" @click.prevent.stop="state = \'open\'"><span class="fa fa-caret-up"></span></a>' +
-            '<a href="#" v-if="position !== \'left\'" class="minimise-button position-button" @click.prevent.stop="position = \'left\'"><span class="fa fa-caret-left"></span></a>' +
-            '<a href="#" v-if="position !== \'right\'" class="minimise-button position-button" @click.prevent.stop="position = \'right\'"><span class="fa fa-caret-right"></span></a>' +
-            '</h1>' +
-            '<ul class="shouts">' +
-                '<li v-if="!shouts.length" class="shout inactive">' +
-                    'Loading...' +
-                '</li>' +
-                '<li v-else v-for="s in shouts" class="shout">' +
-                    '<span class="avatar"><a :href="s.user.url"><img :src="s.user.avatar_small" :alt="s.user.name" /></a></span>' +
-                    '<span class="message">' +
-                        '<span class="time" :title="s.date">{{formatTime(s.created)}}</span>' +
-                        '<button v-if="moderator" class="btn btn-outline-inverse btn-xxs delete" @click="beginDelete(s)">D</button>' +
-                        '<button v-if="moderator" class="btn btn-outline-inverse btn-xxs edit" @click="beginEdit(s)">E</button>' +
-                        '<span class="user"><a :href="s.user.url">{{s.user.name}}</a></span>' +
-                        '<span class="text" v-html="s.formatted_content" /> ' +
-                    '</span>' +
-                '</li>' +
-            '</ul>' +
-            '<div class="error" v-if="errorMessage"">' +
-                '<span class="fa fa-remove"></span><span class="message">{{errorMessage}}</span>' +
-            '</div>' +
-            '<form method="get" @submit.prevent="save()" v-if="active">' +
-                '<div class="input-group">' +
-                    '<input :disabled="deleting" type="text" maxlength="250" class="form-control input-sm" placeholder="Type here" v-model="text">' +
-                    '<button :disabled="loading" v-if="editing" class="btn btn-info btn-sm edit-button" type="submit" @click="save()">Edit</button>' +
-                    '<button :disabled="loading" v-if="deleting" class="btn btn-danger btn-sm delete-button" type="submit" @click="save()">Delete</button>' +
-                    '<button :disabled="loading" v-if="editing || deleting" class="btn btn-outline-inverse btn-sm cancel-button" type="button" @click="cancelEdit()"><span class="fa fa-remove"></span></button>' +
-                    '<button :disabled="loading" v-if="!editing && !deleting" class="btn btn-primary btn-sm shout-button" type="submit" @click="save()">Shout!</button>' +
-                '</div>' +
-            '</form>' +
-            '<form v-else class="inactive">Log in to add shouts of your own</form>' +
-        '</div>';
+const window_template = `
+    <div :class="'shoutbox ' + classes" @click="state = 'open'">
+        <h1>
+            <span v-if="newMessage" class="new-message-icon fa fa-comment"></span> 
+            Shoutbox
+            <span v-if="loading" class="refresh-icon fa fa-refresh"></span>
+            <a href="#" class="minimise-button" @click.prevent.stop="state = 'closed'"><span class="fa fa-caret-down"></span></a>
+            <a href="#" class="expand-button" @click.prevent.stop="state = 'open'"><span class="fa fa-caret-up"></span></a>
+            <a href="#" v-if="position !== 'left'" class="minimise-button position-button" @click.prevent.stop="position = 'left'"><span class="fa fa-caret-left"></span></a>
+            <a href="#" v-if="position !== 'right'" class="minimise-button position-button" @click.prevent.stop="position = 'right'"><span class="fa fa-caret-right"></span></a>
+        </h1>
+        <ul class="shouts">
+            <li v-if="!shouts.length" class="shout inactive">
+                Loading...
+            </li>
+            <li v-else v-for="(s, i) in shouts" :key="i" class="shout">
+                <span class="avatar">
+                    <a :href="s.user.url"><img :src="s.user.avatar_small" :alt="s.user.name" /></a>
+                </span>
+                <span class="message">
+                    <span class="time" :title="s.date">{{formatTime(s.created)}}</span>
+                    <button v-if="moderator" class="btn btn-outline-inverse btn-xxs delete" @click="beginDelete(s)">D</button>
+                    <button v-if="moderator" class="btn btn-outline-inverse btn-xxs edit" @click="beginEdit(s)">E</button>
+                    <span class="user"><a :href="s.user.url">{{s.user.name}}</a></span>
+                    <span class="text" v-html="s.formatted_content" /> 
+                </span>
+            </li>
+        </ul>
+        <div class="error" v-if="errorMessage"">
+            <span class="fa fa-remove"></span><span class="message">{{errorMessage}}</span>
+        </div>
+        <form method="get" @submit.prevent="save()" v-if="active">
+            <div class="input-group">
+                <input :disabled="deleting" type="text" maxlength="250" class="form-control input-sm" placeholder="Type here" v-model="text">
+                <button :disabled="loading" v-if="editing" class="btn btn-info btn-sm edit-button" type="submit" @click="save()">Edit</button>
+                <button :disabled="loading" v-if="deleting" class="btn btn-danger btn-sm delete-button" type="submit" @click="save()">Delete</button>
+                <button :disabled="loading" v-if="editing || deleting" class="btn btn-outline-inverse btn-sm cancel-button" type="button" @click="cancelEdit()"><span class="fa fa-remove"></span></button>
+                <button :disabled="loading" v-if="!editing && !deleting" class="btn btn-primary btn-sm shout-button" type="submit" @click="save()">Shout!</button>
+            </div>
+        </form>
+        <form v-else class="inactive">Log in to add shouts of your own</form>
+    </div>
+`;
 
-var shoutbox = new Vue({
+// noinspection JSUnusedGlobalSymbols
+
+const shoutbox = {
     template: window_template,
-    data: {
-        // options
-        url: '',
-        userUrl: '',
-        active: false,
-        moderator: false,
+    data(self) {
+        return {
+            // options
+            url: '',
+            userUrl: '',
+            active: false,
+            moderator: false,
+            ...self.$attrs,
 
-        // store
-        loading: true,
-        store: null,
-        lastUpdate: 0,
-        lastId: 0,
-        lastSeen: 0,
+            // store
+            loading: true,
+            store: null,
+            lastUpdate: 0,
+            lastId: 0,
+            lastSeen: 0,
 
-        // positioning
-        state: 'default',
-        position: 'right',
+            // positioning
+            state: 'default',
+            position: 'right',
 
-        // interaction
-        editing: false,
-        deleting: false,
-        text: '',
-        interval: null,
-        errorMessage: null
+            // interaction
+            editing: false,
+            deleting: false,
+            text: '',
+            interval: null,
+            errorMessage: null
+        };
     },
-    mounted: function() {
+    mounted() {
         this.loadStorage();
         this.loadCookie();
         this.scrollToEnd();
         this.fetch(true);
         this.interval = setInterval(this.fetch, 60 * 1000);
     },
-    destroyed: function() {
+    unmounted() {
         clearInterval(this.interval);
     },
     computed: {
-        urls: function() {
+        urls() {
             return {
                 get: template(this.url, { action: '/from' }),
                 post: template(this.url, { action: '' }),
@@ -103,11 +111,11 @@ var shoutbox = new Vue({
                 delete: template(this.url, { action: '' })
             };
         },
-        shouts: function() {
+        shouts() {
             return this.store || [];
         },
-        classes: function () {
-            var cls = [];
+        classes() {
+            const cls = [];
             if (this.editing) cls.push('editing');
             if (this.deleting) cls.push('deleting');
             if (this.moderator) cls.push('moderator');
@@ -117,14 +125,20 @@ var shoutbox = new Vue({
             cls.push('state-' + this.state);
             return cls.join(' ');
         },
-        newMessage: function() {
+        newMessage() {
             return false;
         }
     },
     methods: {
-        loadStorage: function() {
+        init(options) {
+            this.url = options.url;
+            this.userUrl = options.userUrl;
+            this.active = options.active;
+            this.moderator = options.moderator;
+        },
+        loadStorage() {
             try {
-                var version = localStorage.getItem('shoutbox.version') || '0';
+                const version = localStorage.getItem('shoutbox.version') || '0';
                 if (version === TWHL_SHOUTBOX_DATA_FORMAT_VERSION) {
                     this.store = JSON.parse(localStorage.getItem('shoutbox.store')) || [];
                     this.lastUpdate = parseInt(localStorage.getItem('shoutbox.lastUpdate'), 10) || 0;
@@ -137,50 +151,50 @@ var shoutbox = new Vue({
                 this.lastUpdate = this.lastId = this.lastSeen = 0;
             }
         },
-        saveStorage: function() {
+        saveStorage() {
             localStorage.setItem('shoutbox.version', TWHL_SHOUTBOX_DATA_FORMAT_VERSION);
             localStorage.setItem('shoutbox.store', JSON.stringify(this.store));
             localStorage.setItem('shoutbox.lastUpdate', this.lastUpdate);
             localStorage.setItem('shoutbox.lastId', this.lastId);
             localStorage.setItem('shoutbox.lastSeen', this.lastSeen);
         },
-        loadCookie: function() {
+        loadCookie() {
             try {
-                var c = JSON.parse(Cookies.get('shoutbox.settings'));
+                const c = JSON.parse(Cookies.get('shoutbox.settings'));
                 if (c.state === 'open' || c.state === 'closed') this.state = c.state;
                 if (c.position === 'left' || c.position === 'right') this.position = c.position;
             } catch (ex) {
                 //
             }
         },
-        saveCookie: function() {
+        saveCookie() {
             Cookies.set('shoutbox.settings', JSON.stringify({ state: this.state, position: this.position }), { expires: 365, path: '/', sameSite: 'lax' });
         },
-        fetch: function(full) {
-            var self = this;
-            var timestamp = full === true ? 0 : Math.floor(this.lastUpdate / 1000);
+        fetch(full) {
+            const self = this;
+            const timestamp = full === true ? 0 : Math.floor(this.lastUpdate / 1000);
             this.refreshing = true;
             $.get(this.urls.get, { timestamp: timestamp }, function(data) {
                 self.updateStore(data, full);
             });
         },
-        updateStore: function(arr, full) {
-            var obj, i;
+        updateStore(arr, full) {
+            let obj, i;
 
-            var scroll = this.getScroll();
+            const scroll = this.getScroll();
 
             if (full === true) this.store = [];
 
             // Avoid duplicates
-            var ids = {};
+            const ids = {};
             this.store = this.store.concat(arr);
-            var newStore = [];
+            const newStore = [];
             for (i = 0; i < this.store.length; i++) {
                 obj = this.store[i];
                 if (!obj.updated) obj.updated = Date.parse(obj.updated_at);
                 if (!obj.created) obj.created = Date.parse(obj.created_at);
                 if (ids[obj.id] !== undefined) {
-                    var orig = newStore[ids[obj.id]];
+                    const orig = newStore[ids[obj.id]];
                     if (orig.updated < obj.updated) newStore[ids[obj.id]] = obj;
                 } else {
                     ids[obj.id] = newStore.length;
@@ -210,23 +224,22 @@ var shoutbox = new Vue({
 
             if (scroll >= 0.98 || full) this.scrollToEnd();
         },
-        escapeHtml: function(string) {
+        escapeHtml(string) {
             return String(string).replace(/[&<>"'\/]/g, function (s) {
                 return entityMap[s];
             });
         },
-        format: function(content) {
-            var self = this;
-
+        format(content) {
+            const self = this;
 
             // Linkify links but hide the html in base64 so they don't get encoded
             content = content.replace(/\u0000/g, ''); // Replace \0 with empty string, there's no reason for them to exist
             content = Autolinker.link(content, {
                 replaceFn : function(match) {
-                    var tag = this.getTagBuilder().build(match);
+                    const tag = this.getTagBuilder().build(match);
                     tag.setInnerHtml(self.escapeHtml(tag.getInnerHtml())); // Escape the link text
                     if (probably_twhl.test(tag.getAttr('href'))) delete tag.attrs['target'];
-                    var str = tag.toAnchorString();
+                    const str = tag.toAnchorString();
                     return '\0\u9998'+b64EncodeUnicode(str).replace(/\//ig,'-')+'\u9999\0'; // B64 encode the whole thing, replace slashes as they'll be encoded later
                 }
             });
@@ -241,30 +254,30 @@ var shoutbox = new Vue({
 
             return content;
         },
-        formatTime: function (time) {
-            return readableTime(time);
+        formatTime(time) {
+            return window.readableTime(time);
         },
-        save: function () {
-            var content = this.text;
+        save() {
+            const content = this.text;
             if (!content || !this.active) return;
 
             this.text = '';
             this.loading = true;
 
-            var url = this.editing ? this.urls.edit
-                    : this.deleting ? this.urls.delete
+            const url = this.editing ? this.urls.edit
+                : this.deleting ? this.urls.delete
                     : this.urls.post;
-            var method = this.editing ? 'PUT'
-                    : this.deleting ? 'DELETE'
+            const method = this.editing ? 'PUT'
+                : this.deleting ? 'DELETE'
                     : 'POST';
-            var id = this.editing ? this.editing.id
-                    : this.deleting ? this.deleting.id
+            const id = this.editing ? this.editing.id
+                : this.deleting ? this.deleting.id
                     : null;
-            var full = this.deleting;
+            const full = this.deleting;
 
             if (!this.editing && !this.deleting) this.scrollToEnd();
 
-            var self = this;
+            const self = this;
             $.ajax({
                 url: url,
                 method: method,
@@ -280,58 +293,55 @@ var shoutbox = new Vue({
                 self.fetch(!!full);
             });
         },
-        beginEdit: function (shout) {
+        beginEdit(shout) {
             this.deleting = false;
             this.editing = shout;
             this.text = shout.content;
             this.focus();
         },
-        beginDelete: function (shout) {
+        beginDelete(shout) {
             this.deleting = shout;
             this.editing = false;
             this.text = shout.content;
             this.focus();
         },
-        cancelEdit: function () {
+        cancelEdit() {
             this.editing = this.deleting = false;
             this.text = '';
         },
-        focus: function() {
+        focus() {
             this.$nextTick(function () {
                 $('input', this.$el).focus();
             });
         },
-        scrollToEnd: function () {
+        scrollToEnd() {
             this.$nextTick(function () {
                 this.setScroll(1);
             });
         },
-        getScroll: function() {
-            var el = $('.shouts', this.$el).get(0);
+        getScroll() {
+            const el = $('.shouts', this.$el).get(0);
             if (!el) return 1;
             return el.scrollTop / (el.scrollHeight - el.offsetHeight);
         },
-        setScroll: function(s) {
-            var el = $('.shouts', this.$el).get(0);
+        setScroll(s) {
+            const el = $('.shouts', this.$el).get(0);
             if (!el) return;
             el.scrollTop = s * (el.scrollHeight - el.offsetHeight);
         }
     },
     watch: {
-        state: function () {
+        state() {
             this.saveCookie();
         },
-        position: function () {
+        position() {
             this.saveCookie();
         }
     }
 
-});
+};
 
 window.initShoutbox = function(options) {
-    shoutbox.url = options.url;
-    shoutbox.userUrl = options.userUrl;
-    shoutbox.active = options.active;
-    shoutbox.moderator = options.moderator;
-    shoutbox.$mount(document.getElementById('shoutbox-container'));
+    const app = Vue.createApp(shoutbox, options);
+    app.mount('#shoutbox-container');
 };
