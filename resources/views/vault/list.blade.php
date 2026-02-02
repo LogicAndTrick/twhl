@@ -68,8 +68,7 @@
                 <li class="filter-action" data-filter-value="2">2</li>
                 <li class="filter-action" data-filter-value="1.5">1.5</li>
                 <li class="filter-action" data-filter-value="1">1</li>
-                <li class="filter-action" data-filter-value="0.5">0.5</li>
-                <li class="filter-action" data-filter-value="0">0</li>
+                <li class="clear-filter static-control filter-action"><span class="fa fa-remove"></span> Clear Filter</li>
             </ul>
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Sort: Created</span></button>
             <ul class="dropdown-menu pull-right vault-filter filter-one filter-sort">
