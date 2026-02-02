@@ -166,6 +166,12 @@
   .tile-main > img {
     min-width: 250px;
   }
+
+  @media (map.get($grid-breakpoints, 'lg') <= width < map.get($grid-breakpoints, 'xl')) {
+    .tile-title {
+      font-size: 0.75rem;
+    }
+  }
 }
 
 .vault-item {
