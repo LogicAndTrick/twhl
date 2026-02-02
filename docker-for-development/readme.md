@@ -17,6 +17,10 @@
 1. Make your changes to composer.json
 2. Run `docker compose run --rm composer composer install`
 
+## Running database migrations
+1. Create a new migration in the `database/migrations` folder
+2. Run `docker compose run --rm php-apache php artisan migrate`
+
 ## Making changes to one of the views
 1. Make your changes to a .blade.php file or a Blade template pattern
 2. To test the change you need to clear the cache by running `docker compose run --rm php-apache php artisan view:clear`
