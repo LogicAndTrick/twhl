@@ -155,7 +155,7 @@
 
         function update_filters(cls) {
             const classes = ['filter-games', 'filter-categories', 'filter-types', 'filter-users', 'filter-includes', 'filter-rating', 'filter-sort'];
-            const zero = ['All Games', 'All Categories', 'All Types', 'All Users', 'Any Includes', 'Min. Rating: Any', 'Sort: Date'];
+            const zero = ['All Games', 'All Categories', 'All Types', 'All Users', 'Any Includes', 'Min. Rating: Any', 'Sort: Created'];
             const one = ['{text}', '{text}', '{text}', '<img src="{avatar}" alt="avatar" /> {text}', '{text}', 'Min. Rating: {text}', 'Sort: {text}'];
             const many = ['{count} Games', '{count} Categories', '{count} Types', '{count} Users', '{count} Includes', 'Min. Rating: {text}', 'Sort: {text}'];
 
