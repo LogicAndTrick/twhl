@@ -97,7 +97,7 @@
                     <span class="tile-main">
                         <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
                     </span>
-                    <span class="tile-title">{{ $item->vault_category->adjective }} {{ $item->vault_type->name }} by @avatar($item->user inline link=false)</span>
+                    <span class="tile-title">{{ $item->vault_category->adjective }} {{ strtolower($item->vault_type->name) }} by @avatar($item->user inline link=false)</span>
                     <span class="tile-subtitle">
                         @date($item->created_at) &bull;
                         <span class="stars">
