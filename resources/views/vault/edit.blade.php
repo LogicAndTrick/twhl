@@ -19,7 +19,7 @@
         @autocomplete(type_id api/vault-types $item) = Content Type
         @autocomplete(license_id api/licenses $item) = Content License
         <p id="license-help" class="help-block"></p>
-        @text(name:item_name $item) = Name
+        @text(name:item_name $item required=true) = Name
 
         <div class="card mb-3">
             <div class="card-header">
@@ -50,15 +50,22 @@
                 </label>
             </div>
             <div class="card-body">
-                @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb) - Leave blank to use current file
-                @text(link $location) = Link to File (Dropbox, Steam Workshop, etc.)
+                <fieldset name="file-fields">
+                    @file(file required=!$has_upload) = File Upload (.zip, .rar, .7z, maximum size: 16mb)@if ($has_upload) - Leave blank to use current file @endif
+                </fieldset>
+                <fieldset name="link-fields">
+                    @text(link $location format=url required=true) = Link to File (Dropbox, Steam Workshop, etc.)
+                    @if (!$has_upload)
+                        @checkbox(link_broken $item) = Broken download - Check this if the download link has stopped working
+                    @endif
+                </fieldset>
             </div>
         </div>
 
         @checkbox(flag_ratings $item) = Allow ratings for this content
 
         <div class="wikicode-input">
-            @textarea(content_text $item) = Description
+            @textarea(content_text $item required=true) = Description
         </div>
 
         @submit = Edit Vault Item
@@ -100,8 +107,8 @@
             });
             $('[name=__upload_method]').on('change', function() {
                 var sel = $('[name=__upload_method]:checked').attr('value');
-                $('.option-panel .card-body > div').addClass('d-none');
-                $('[name="' + sel + '"]').parent().removeClass('d-none');
+                $('.option-panel .card-body > fieldset').prop('disabled', true).prop('hidden', true);
+                $('[name="' + sel + '-fields"]').prop('disabled', false).prop('hidden', false);
             }).change();
         });
     </script>

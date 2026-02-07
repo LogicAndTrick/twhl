@@ -111,6 +111,13 @@
                                 Ratings Disabled
                             @endif
                         </span>
+                        @if ($item->link_broken)
+                            &bull;
+                            <span class="text-warning">
+                                <span class="fa fa-chain-broken"></span>
+                                Broken Download
+                            </span>
+                        @endif
                     </span>
                 </a>
             </div>

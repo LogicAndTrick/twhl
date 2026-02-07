@@ -119,13 +119,15 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('text');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'placeholder' => ''], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'placeholder' => '', 'required' => 'false'], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
                 $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
                 $format = $parameters['format'];
+                $required = $this->evaluatedBooleanAttribute($parameters, 'required');
+                $type = in_array($format, [ 'url' ]) ? $format : 'text';
 
                 $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
@@ -139,7 +141,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='text' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='$placeholder' />" .
+                "<input type='$type' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='$placeholder' $required />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -265,13 +267,14 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('textarea');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['class' => ''], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['class' => '', 'required' => 'false'], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
                 $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
                 $class = $parameters['class'];
+                $required = $this->evaluatedBooleanAttribute($parameters, 'required');
 
                 $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
@@ -283,7 +286,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<textarea class='form-control $class' id='$id' name='$mapped_name'>$collect</textarea>" .
+                "<textarea class='form-control $class' id='$id' name='$mapped_name' $required>$collect</textarea>" .
                 "$error_message</div>";
             }, $view);
         });
@@ -292,7 +295,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('autocomplete');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['model_name', 'url'], ['clearable' => false, 'multiple' => false, 'placeholder' => '', 'id' => 'id', 'text' => 'name'], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['model_name', 'url'], ['clearable' => false, 'multiple' => false, 'placeholder' => '', 'required' => 'false', 'id' => 'id', 'text' => 'name'], 'label');
 
                 $expl_name = explode(':', $parameters['model_name']);
                 $name = $expl_name[0];
@@ -312,11 +315,13 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_class = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorClass(\$errors, $name_array); ?>";
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
+                $required = $this->evaluatedBooleanAttribute($parameters, 'required');
+
                 $json_args = json_encode($parameters);
                 $multiple = $parameters['multiple'] ? 'multiple' : '';
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<div class='controls'><select class='autocomplete' id='$id' name='$mapped_name' $multiple>$collect</select></div>" .
+                "<div class='controls'><select class='autocomplete' id='$id' name='$mapped_name' $multiple $required>$collect</select></div>" .
                 "$error_message</div><script type='text/javascript'>$(function() {" .
                 "$('#$id').autocomplete($json_args);" .
                 "});</script>";
@@ -327,12 +332,14 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('file');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], [], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['required' => 'false'], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
                 $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
+
+                $required = $this->evaluatedBooleanAttribute($parameters, 'required');
 
                 $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
@@ -343,7 +350,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='file' id='$id' name='$mapped_name' class='form-control' />" .
+                "<input type='file' id='$id' name='$mapped_name' class='form-control' $required />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -443,4 +450,10 @@ class BladeServiceProvider extends ServiceProvider {
         return str_replace("'", '&#39;', htmlspecialchars($value));
     }
 
+    private function evaluatedBooleanAttribute(array $parameters, string $attributeName): string {
+        $expression = (string) ($parameters[$attributeName] ?? '');
+        if (!$expression || $expression === 'false') return '';
+        if ($expression === 'true') return $attributeName;
+        return "<?php if ($expression) echo '$attributeName'; ?>";
+    }
 }
