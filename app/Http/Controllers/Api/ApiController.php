@@ -637,24 +637,27 @@ class ApiController extends Controller {
             $obj = new $desc['object'];
             [$name] = $this->objectNamesFromDescriptor($desc);
             $props = [];
-            foreach (($obj->visible ?? []) as $prop) {
+            $visible = $obj instanceof Model ? $obj->getVisible() : [];
+            foreach ($visible as $prop) {
                 $props[$prop] = [];
 
+                $format = null;
                 $type = 'string';
                 $type_key = 'type';
-                if ($prop == 'id' || $prop == 'orderindex' || $prop == 'order_index' || str_ends_with($prop, '_id')) {
+                if ($obj->hasCast($prop, 'boolean')) {
+                    $type = 'boolean';
+                } else if ($prop == 'id' || $prop == 'orderindex' || $prop == 'order_index' || str_ends_with($prop, '_id')) {
+                    $format = 'double-int'; // Integer that can fit in an IEEE 754 double
                     $type = 'integer';
-                }
-                else if (
+                } else if (
                     $prop == 'created_at' ||
                     $prop == 'updated_at' ||
                     $prop == 'deleted_at' ||
                     in_array($prop, $obj->dates ?? []) ||
-                    ($obj instanceof Model && $obj->hasCast($prop, 'datetime'))
+                    $obj->hasCast($prop, 'datetime')
                 ) {
-                    $props[$prop]['format'] = 'date-time';
-                }
-                else {
+                    $format = 'date-time';
+                } else {
                     $rel = $this->getRelatedClass($obj, $prop);
                     if ($rel) {
                         $type = $rel['type'];
@@ -666,6 +669,7 @@ class ApiController extends Controller {
                     }
                 }
                 $props[$prop][$type_key] = $type;
+                if ($format) $props[$prop]['format'] = $format;
             }
             $objectSchemas[$name] = [
                 'type' => 'object',
