@@ -10,7 +10,7 @@
     </h1>
 
     <ol class="breadcrumb">
-        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li><a href="{{ act('wiki', 'index') }}">Wiki</a></li>
         <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
         <li class="active">History</li>
     </ol>

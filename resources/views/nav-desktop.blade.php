@@ -21,20 +21,20 @@
     </div>
     <nav class="header-nav navbar navbar-expand navbar-dark bg-theme">
         <ul class="navbar-nav me-auto">
-            <li class="nav-item"><a class="nav-link" href="{{ url('/forum') }}">Forums</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/wiki') }}">Wiki</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/vault') }}">Vault</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url('/competition') }}">Competitions</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ act('forum', 'index') }}">Forums</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ act('wiki', 'index') }}">Wiki</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ act('vault', 'index') }}">Vault</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ act('competition', 'index') }}">Competitions</a></li>
             <li class="nav-item"><a class="nav-link" href="https://discord.gg/jEw8EqD">Discord</a></li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="{{ url('/') }}" data-bs-toggle="dropdown">
                     Community
                 </a>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="{{ url('/journal') }}">Journals</a>
-                    <a class="dropdown-item" href="{{ url('/news') }}">News</a>
-                    <a class="dropdown-item" href="{{ url('/poll') }}">Polls</a>
-                    <a class="dropdown-item" href="{{ url('/user') }}">Members</a>
+                    <a class="dropdown-item" href="{{ act('journal', 'index') }}">Journals</a>
+                    <a class="dropdown-item" href="{{ act('news', 'index') }}">News</a>
+                    <a class="dropdown-item" href="{{ act('poll', 'index') }}">Polls</a>
+                    <a class="dropdown-item" href="{{ act('user', 'index') }}">Members</a>
                 </div>
             </li>
         </ul>

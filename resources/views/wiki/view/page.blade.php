@@ -13,7 +13,7 @@
 </h1>
 
 <ol class="breadcrumb">
-    <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+    <li><a href="{{ act('wiki', 'index') }}">Wiki</a></li>
     <li class="active">View Page</li>
     <li class="ms-auto no-breadcrumb">
         <label class="form-check form-check-inline d-none d-xl-inline-block">

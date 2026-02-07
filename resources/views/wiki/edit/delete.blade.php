@@ -7,7 +7,7 @@
     <h1>Delete: {{ $revision->getNiceTitle() }}</h1>
 
     <ol class="breadcrumb">
-        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li><a href="{{ act('wiki', 'index') }}">Wiki</a></li>
         <li><a href="{{ act('wiki', 'page', $revision->slug) }}">{{ $revision->getNiceTitle() }}</a></li>
         <li><a href="{{ act('wiki', 'history', $revision->slug) }}">History</a></li>
         <li class="active">Delete Page</li>

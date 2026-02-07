@@ -15,7 +15,7 @@
 </h1>
 
 <ol class="breadcrumb">
-    <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+    <li><a href="{{ act('wiki', 'index') }}">Wiki</a></li>
     <li class="active">View Category</li>
 </ol>
 

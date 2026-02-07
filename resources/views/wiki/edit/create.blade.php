@@ -7,7 +7,7 @@
     <h1>Create new page</h1>
 
     <ol class="breadcrumb">
-        <li><a href="{{ url('/wiki') }}">Wiki</a></li>
+        <li><a href="{{ act('wiki', 'index') }}">Wiki</a></li>
         <li class="active">Create Page</li>
     </ol>
 
