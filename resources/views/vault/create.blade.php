@@ -11,14 +11,14 @@
 
     <p>Here you can upload a map, mod, texture pack, model, or other modding resources to the TWHL vault!</p>
     @form(vault/create upload=true)
-        @autocomplete(engine_id api/engines) = Game Engine
-        @autocomplete(game_id api/games) = Game
-        @autocomplete(category_id api/vault-categories) = Category
+        @autocomplete(engine_id api/engines required=true) = Game Engine
+        @autocomplete(game_id api/games required=true) = Game
+        @autocomplete(category_id api/vault-categories required=true) = Category
         <p id="category-help" class="help-block"></p>
-        @autocomplete(type_id api/vault-types) = Content Type
+        @autocomplete(type_id api/vault-types required=true) = Content Type
         @autocomplete(license_id api/licenses) = Content License
         <p id="license-help" class="help-block"></p>
-        @text(name:item_name) = Name
+        @text(name:item_name required=true) = Name
 
         <div class="card mb-3">
             <div class="card-header">
@@ -49,8 +49,12 @@
                 </label>
             </div>
             <div class="card-body">
-                @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
-                @text(link) = Link to File (Dropbox, Steam Workshop, etc.)
+                <fieldset name="file-fields">
+                    @file(file required=true) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
+                </fieldset>
+                <fieldset name="link-fields">
+                    @text(link format=url required=true) = Link to File (Dropbox, Steam Workshop, etc.)
+                </fieldset>
             </div>
         </div>
 
@@ -60,7 +64,7 @@
         @checkbox(flag_ratings $fr_def) = Allow ratings for this content
 
         <div class="wikicode-input">
-            @textarea(content_text) = Description
+            @textarea(content_text required=true) = Description
         </div>
 
         @submit = Create Vault Item
@@ -102,8 +106,8 @@
             });
             $('[name=__upload_method]').on('change', function() {
                 var sel = $('[name=__upload_method]:checked').attr('value');
-                $('.option-panel .card-body > div').addClass('d-none');
-                $('[name="' + sel + '"]').parent().removeClass('d-none');
+                $('.option-panel .card-body > fieldset').prop('disabled', true).prop('hidden', true);
+                $('[name="' + sel + '-fields"]').prop('disabled', false).prop('hidden', false);
             }).change();
         });
     </script>

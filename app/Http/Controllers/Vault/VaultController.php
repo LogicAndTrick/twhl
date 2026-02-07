@@ -271,7 +271,8 @@ class VaultController extends Controller {
             '__upload_method' => $method,
             '__includes' => $included,
             'location' => $location,
-            'content' => $content
+            'content' => $content,
+            'has_upload' => !$item->is_hosted_externally
         ]);
     }
 
@@ -293,6 +294,7 @@ class VaultController extends Controller {
 
             '__upload_method' => 'required|in:file,link',
             'link' => 'required_if:__upload_method,link|max:512',
+            'link_broken' => 'prohibited_unless:__upload_method,link',
             'file' => 'max:16384|valid_extension:zip,rar,7z'
         ], [
             'valid_extension' => 'Only the following file formats are allowed: zip, rar, 7z'
@@ -340,6 +342,7 @@ class VaultController extends Controller {
         $item->content_html = bbcode(Request::input('content_text'));
 
         $item->is_hosted_externally = !$uploaded;
+        $item->link_broken = !!Request::input('link_broken');
 
         $item->flag_notify = !!Request::input('flag_notify');
         $item->flag_ratings = !!Request::input('flag_ratings');

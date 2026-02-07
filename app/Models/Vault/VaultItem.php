@@ -18,14 +18,14 @@ class VaultItem extends Model {
     public $fillable = [
         'user_id', 'engine_id', 'game_id', 'category_id', 'type_id', 'license_id',
         'name', 'content_text', 'content_html',
-        'is_hosted_externally', 'file_location', 'file_size',
+        'is_hosted_externally', 'file_location', 'file_size', 'link_broken',
         'flag_notify', 'flag_ratings',
         'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating'
     ];
     public $visible = [
         'id', 'user_id', 'engine_id', 'game_id', 'category_id', 'type_id', 'license_id',
         'name', 'content_text', 'content_html',
-        'is_hosted_externally', 'file_location', 'file_size',
+        'is_hosted_externally', 'file_location', 'file_size', 'link_broken',
         'flag_ratings',
         'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating',
         'created_at', 'updated_at',
@@ -33,8 +33,11 @@ class VaultItem extends Model {
     ];
     protected $casts = [
         'created_at' => 'datetime',
+        'deleted_at' => 'datetime',
+        'flag_ratings' => 'boolean',
+        'is_hosted_externally' => 'boolean',
+        'link_broken' => 'boolean',
         'updated_at' => 'datetime',
-        'deleted_at' => 'datetime'
     ];
 
     public function user()

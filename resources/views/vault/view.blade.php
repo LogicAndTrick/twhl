@@ -130,13 +130,18 @@
                                     License: {{ $item->license->name }}
                                 </a>
                             @endif
-                            <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn d-block w-100 btn-success">
-                                <span class="fa fa-download"></span>
-                                Download
-                                @if ($item->file_size > 0)
-                                    ({{ format_filesize($item->file_size) }})
-                                @elseif ($item->is_hosted_externally)
-                                    (Hosted Externally)
+                            <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn d-block w-100 btn-{{ $item->link_broken ? 'warning' : 'success' }}">
+                                @if ($item->link_broken)
+                                    <span class="fa fa-chain-broken"></span>
+                                    Broken Download (Hosted Externally)
+                                @else
+                                    <span class="fa fa-download"></span>
+                                    Download
+                                    @if ($item->file_size > 0)
+                                        ({{ format_filesize($item->file_size) }})
+                                    @elseif ($item->is_hosted_externally)
+                                        (Hosted Externally)
+                                    @endif
                                 @endif
                             </a>
                             @if ($item->reviewsAllowed())
