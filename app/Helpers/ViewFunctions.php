@@ -28,11 +28,7 @@ if (!function_exists('act'))
             if (!is_array($arg)) $arr[] = $arg;
             else foreach ($arg as $k => $v) $arr[$k] = $v;
         }
-        $path = $controller;
-        if ($action !== 'index') {
-            $path .= '/' . $action;
-        }
-        return url($path, $arr);
+        return url($controller.'/'.$action, $arr);
     }
 }
 
