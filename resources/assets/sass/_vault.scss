@@ -168,6 +168,12 @@
   }
 
   @media (map.get($grid-breakpoints, 'lg') <= width < map.get($grid-breakpoints, 'xl')) {
+    .broken-download-warning {
+      font-size: 0.6875rem;
+    }
+    .broken-download-icon {
+      display: none;
+    }
     .tile-title {
       font-size: 0.75rem;
     }
@@ -213,6 +219,7 @@
       height: 2rem;
     }
   }
+
   .btn {
     margin-top: 0.5rem;
 

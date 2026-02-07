@@ -113,8 +113,8 @@
                         </span>
                         @if ($item->link_broken)
                             &bull;
-                            <span class="text-warning">
-                                <span class="fa fa-chain-broken"></span>
+                            <span class="text-warning broken-download-warning">
+                                <span class="fa fa-chain-broken broken-download-icon"></span>
                                 Broken Download
                             </span>
                         @endif
