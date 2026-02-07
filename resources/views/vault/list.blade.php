@@ -88,7 +88,7 @@
     <div class="row vault-list">
         @foreach ($items as $item)
             <div class="col col-md-6 col-lg-4 d-flex">
-                <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item">
+                <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item {{ $item->link_broken ? 'vault-item-with-broken-dl' : '' }}">
                     <span class="tile-heading">
                         <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
                         <span title="{{ $item->name }}">{{ $item->name }}</span>

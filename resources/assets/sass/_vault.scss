@@ -166,6 +166,9 @@
   .tile-main > img {
     min-width: 250px;
   }
+  .vault-item-with-broken-dl .tile-main > img {
+    filter: grayscale(75%) blur(3px);
+  }
 
   @media (map.get($grid-breakpoints, 'lg') <= width < map.get($grid-breakpoints, 'xl')) {
     .broken-download-warning {
