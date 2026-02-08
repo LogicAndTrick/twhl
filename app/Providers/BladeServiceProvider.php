@@ -451,7 +451,7 @@ class BladeServiceProvider extends ServiceProvider {
 
         if ($pattern_name === 'wiki-title') {
             $characters = WikiRevision::disallowedTitleCharacters();
-            $description = "The following symbols are not allowed: $characters";
+            $description = "These symbols are not allowed: $characters";
             $pattern = '[^' . preg_quote($characters) . ']*';
         }
 
