@@ -490,6 +490,7 @@ class WikiController extends Controller {
             return $meta !== null;
         });
         Validator::extend('invalid_title', function($attribute, $value, $parameters) {
+            if (WikiRevision::titleContainsDisallowedCharacters($value)) return false;
             return substr($value, 0, 7) != 'upload:';
         });
         $this->validate(Request::instance(), [
@@ -545,6 +546,7 @@ class WikiController extends Controller {
             return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('invalid_title', function($attribute, $value, $parameters) use ($obj, $rev) {
+            if (WikiRevision::titleContainsDisallowedCharacters($value)) return false;
             return ($obj->type_id != WikiType::PAGE) ||
                    (substr($value, 0, 9) != 'category:' && substr($value, 0, 7) != 'upload:');
         });

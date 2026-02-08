@@ -1,5 +1,6 @@
 <?php namespace App\Providers;
 
+use App\Models\Wiki\WikiRevision;
 use Blade;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -119,13 +120,14 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('text');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'placeholder' => ''], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'pattern_name' => '', 'placeholder' => ''], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
                 $mapped_name = Arr::get($expl_name, 1, $name);
                 $name_array = "['$name', '$mapped_name']";
                 $format = $parameters['format'];
+                $pattern_attributes = BladeServiceProvider::inputPatternByName($parameters['pattern_name']);
 
                 $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
@@ -139,7 +141,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='text' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='$placeholder' />" .
+                "<input type='text' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='$placeholder' $pattern_attributes />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -443,4 +445,17 @@ class BladeServiceProvider extends ServiceProvider {
         return str_replace("'", '&#39;', htmlspecialchars($value));
     }
 
+    public function inputPatternByName(string $pattern_name): string {
+        $description = null;
+        $pattern = null;
+
+        if ($pattern_name === 'wiki-title') {
+            $characters = WikiRevision::disallowedTitleCharacters();
+            $description = "The following symbols are not allowed: $characters";
+            $pattern = '[^' . preg_quote($characters) . ']*';
+        }
+
+        if (!$pattern) return '';
+        return 'pattern="' . BladeServiceProvider::esc($pattern) . '" data-patterndescription="' . BladeServiceProvider::esc($description) . '"';
+    }
 }
