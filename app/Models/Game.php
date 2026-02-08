@@ -6,8 +6,8 @@ class Game extends Model {
 
     public $table = 'games';
     public $timestamps = false;
-    public $fillable = ['engine_id', 'name', 'abbreviation', 'orderindex'];
-    public $visible = ['id', 'engine_id', 'name', 'abbreviation', 'orderindex', 'engine'];
+    public $fillable = ['engine_id', 'name', 'name_variants', 'abbreviation', 'orderindex'];
+    public $visible = ['id', 'engine_id', 'name', 'name_variants', 'abbreviation', 'orderindex', 'engine'];
 
     public function getIconUrl()
     {
