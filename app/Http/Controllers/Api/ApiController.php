@@ -1252,17 +1252,19 @@ class ApiController extends Controller {
 
                 $sort = $desc['sort_column'];
                 if (!is_array($sort)) $sort = [$sort];
+                $sort_by_specified = false;
                 $s = Request::input('sort_by');
                 if ($s && isset($desc['allowed_sort_columns']) && array_search($s, $desc['allowed_sort_columns']) !== false) {
                     if (!is_array($s)) $s = [$s];
                     $sort = array_merge($s, $sort);
+                    $sort_by_specified = true;
                 }
 
                 $sort_desc = isset($desc['sort_descending']) ? $desc['sort_descending'] : false;
                 if (Request::input('sort_descending') === 'true') $sort_desc = true;
                 else if (Request::input('sort_descending') === 'false') $sort_desc = false;
 
-                $filtered = $this->filter($q, $desc['filter_columns'], $sort, $sort_desc, $desc['fulltext_filtering'] ?? false);
+                $filtered = $this->filter($q, $desc['filter_columns'], $sort, $sort_desc, $desc['fulltext_filtering'] ?? false, $sort_by_specified);
                 $array = $this->toArray($filtered, count($parameters) < 2 || $parameters[1] != 'paged');
                 return response()->json($array);
             }
@@ -1272,24 +1274,29 @@ class ApiController extends Controller {
         ])->setStatusCode(404);
     }
 
-    private function filter(Builder $query, array $filter_cols, array $sort_cols, bool $sort_desc, bool $fulltext_filtering) {
+    private function filter(Builder $query, array $filter_cols, array $sort_cols, bool $sort_desc, bool $fulltext_filtering, bool $sort_by_specified) {
 
         $ids = Request::input('id');
         if ($ids) {
             $ids = array_filter(array_map(function($x) { return intval($x); }, explode(',', $ids)), function($x) { return $x > 0; });
-            if ($ids) $query = $query-> whereIn('id', $ids);
+            if ($ids) $query = $query->whereIn('id', $ids);
         }
 
-        if (!is_array($filter_cols)) $filter_cols = [$filter_cols];
         if ($sort_cols && !is_array($sort_cols)) $sort_cols = [$sort_cols];
         if (!$sort_cols || !is_array($sort_cols) || count($sort_cols) == 0) $sort_cols = $filter_cols;
 
+        $filter = Request::input('filter');
+        $fulltext_match = '';
+        if (!empty($filter) && $fulltext_filtering) {
+            $fulltext_match = 'MATCH (' . implode(',', $filter_cols) . ') AGAINST (?)';
+            $fulltext_sort_dir = $sort_desc ? '' : ' desc'; // Reversed as MATCH() returns higher values for better matches
+            if (!$sort_by_specified) $query = $query->orderByRaw($fulltext_match . $fulltext_sort_dir, [$filter]);
+        } 
         foreach ($sort_cols as $v) {
             $query = $query->orderBy($v, $sort_desc ? 'desc' : 'asc');
         }
 
-        $filter = Request::input('filter');
-        if (!$filter || count($filter_cols) == 0) return $query;
+        if (empty($filter)) return $query;
         $filter .= '%';
         $args = [];
         $sql = '1 != 1';
@@ -1299,7 +1306,7 @@ class ApiController extends Controller {
             $args[] = $filter;
         }
         $query = $query->whereRaw("($sql)", $args);
-        if ($fulltext_filtering) $query = $query->orWhereFullText($filter_cols, $filter);
+        if ($fulltext_filtering) $query = $query->orWhereRaw($fulltext_match, [$filter]);
         return $query;
     }
 
