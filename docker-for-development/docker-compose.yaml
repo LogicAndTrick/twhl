@@ -54,7 +54,7 @@ services:
   node:
     container_name: twhl-dev-node
     command: npm install
-    image: node:24
+    image: node:lts
     secrets:
        - source: npmrc
          target: /root/.npmrc
