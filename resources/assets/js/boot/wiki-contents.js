@@ -23,7 +23,7 @@ $(function() {
                 else if (hlevel < lastLvl) lvl = 1;
                 lastLvl = hlevel;
 
-                list.append('<li class="level-' + lvl + '"><a href="#' + h.attr('id') + '">' + h.text() + '</a></li>');
+                list.append('<li class="level-' + lvl + '"><a href="#' + h.attr('id') + '">' + escapeHtml(h.text()) + '</a></li>');
             }
             $t.prepend(toc);
         }
