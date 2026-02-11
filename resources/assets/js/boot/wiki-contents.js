@@ -31,7 +31,7 @@ $(function() {
                         break;
                     }
                 }
-                const tocLevel = hlevelStack.length;
+                const tocLevel = hlevelStack.length - 1;
                 list.append('<li class="level-' + tocLevel + '"><a href="#' + h.attr('id') + '">' + h.text() + '</a></li>');
             }
             $t.prepend(toc);
