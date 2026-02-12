@@ -19,19 +19,10 @@ $(function() {
                 if (!h.attr('id')) h.attr('id', 'wiki-heading-' + autoId++);
 
                 const hlevel = parseInt(h.get(0).tagName.substring(1), 10);
+                let tocLevel = hlevelStack.findIndex(hl => hl >= hlevel);
+                if (tocLevel === -1) tocLevel = hlevelStack.length;
+                else hlevelStack.splice(tocLevel);
                 hlevelStack.push(hlevel);
-                for (const [tocLevel, hlevelInStack] of hlevelStack.entries()) {
-                    if (hlevel === hlevelInStack) {
-                        hlevelStack.splice(tocLevel + 1);
-                        break;
-                    }
-                    if (hlevel < hlevelInStack) {
-                        hlevelStack.splice(tocLevel);
-                        hlevelStack.push(hlevel);
-                        break;
-                    }
-                }
-                const tocLevel = hlevelStack.length - 1;
                 list.append('<li class="level-' + tocLevel + '"><a href="#' + h.attr('id') + '">' + h.text() + '</a></li>');
             }
             $t.prepend(toc);
