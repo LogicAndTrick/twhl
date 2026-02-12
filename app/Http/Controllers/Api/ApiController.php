@@ -1586,6 +1586,7 @@ class ApiController extends Controller {
             return $meta !== null;
         });
         Validator::extend('invalid_title', function($attribute, $value, $parameters) {
+            if (WikiRevision::titleContainsDisallowedCharacters($value)) return false;
             return substr($value, 0, 7) != 'upload:';
         });
         $this->validate(Request::instance(), [
@@ -1595,7 +1596,7 @@ class ApiController extends Controller {
         ], [
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
             'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
-            'invalid_title' => "A page title cannot start with ':upload'.",
+            'invalid_title' => "A page title cannot start with ':upload' and cannot contain any of these characters: " . WikiRevision::disallowedTitleCharacters(),
             'category_name_must_exist' => 'This category name doesn\'t exist. Apply this category to at least one object before creating the category page.'
         ]);
 
@@ -1634,6 +1635,7 @@ class ApiController extends Controller {
             return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
         Validator::extend('invalid_title', function($attribute, $value, $parameters) use ($obj, $rev) {
+            if (WikiRevision::titleContainsDisallowedCharacters($value)) return false;
             return ($obj->type_id != WikiType::PAGE) ||
                    (substr($value, 0, 9) != 'category:' && substr($value, 0, 7) != 'upload:');
         });
@@ -1658,7 +1660,7 @@ class ApiController extends Controller {
             'must_change' => 'At least one field must be changed to apply an edit.',
             'unique_wiki_slug' => 'The URL of this page is not unique, change the title to create a URL that doesn\'t already exist.',
             'valid_categories' => 'Category names must only contain letters, numbers, and spaces. Example: [cat:Name]',
-            'invalid_title' => "A page title cannot start with ':category' or ':upload'.",
+            'invalid_title' => "A page title cannot start with ':category' or ':upload' and cannot contain any of these characters: " . WikiRevision::disallowedTitleCharacters(),
             'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
         $revision = WikiController::createRevision($obj, $rev);

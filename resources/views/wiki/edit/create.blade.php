@@ -13,7 +13,7 @@
 
     @form(wiki/create)
         <span class="d-none" id="promptForm"></span>
-        @text(title $slug_title) = Page Title
+        @text(title $slug_title pattern_name=wiki-title) = Page Title
         <div class="wikicode-input">
             @textarea(content_text) = Page Content
         </div>

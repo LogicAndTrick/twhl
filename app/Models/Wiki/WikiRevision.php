@@ -97,4 +97,14 @@ class WikiRevision extends Model {
         $text = preg_replace('/[^-$_.+!*\'"(),:;<>^{}|~0-9a-z[\]]/si', '', $text);
         return $text;
     }
+
+    public static function disallowedTitleCharacters(): string {
+        return '[]#|';
+    }
+    public static function titleContainsDisallowedCharacters(string $title): bool {
+        return array_any(
+            str_split(WikiRevision::disallowedTitleCharacters()),
+            fn($char) => str_contains($title, $char)
+        );
+    }
 }

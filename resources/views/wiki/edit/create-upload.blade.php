@@ -31,7 +31,7 @@
         </ul>
     </div>
     @form(wiki/create-upload upload=true)
-        @text(title $slug_title) = File Name
+        @text(title $slug_title pattern_name=wiki-title) = File Name
         @file(file) = Choose File
         <div class="wikicode-input">
             @textarea(content_text) = File Details
