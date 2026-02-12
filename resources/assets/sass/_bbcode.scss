@@ -50,6 +50,18 @@ pre {
     padding: 0.3rem 0;
   }
 
+  // heading hyperlinks
+  .anchor-link {
+    padding: 0 0.5rem;
+    opacity: 0;
+    color: away(var(--bs-body-color), 0.15);
+    transition: opacity 0.2s;
+  }
+
+  :hover > .anchor-link {
+    opacity: 0.5;
+  }
+
   .card {
     margin-bottom: 1rem;
 
