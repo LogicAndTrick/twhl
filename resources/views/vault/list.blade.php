@@ -88,7 +88,7 @@
     <div class="row vault-list">
         @foreach ($items as $item)
             <div class="col col-md-6 col-lg-4 d-flex">
-                <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item">
+                <a href="{{ act('vault', 'view', $item->id) }}" class="tile vault-item {{ $item->link_broken ? 'broken-download' : '' }}">
                     <span class="tile-heading">
                         <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" title="{{ $item->game->name }}" />
                         <span title="{{ $item->name }}">{{ $item->name }}</span>
@@ -111,6 +111,13 @@
                                 Ratings Disabled
                             @endif
                         </span>
+                        @if ($item->link_broken)
+                            &bull;
+                            <span class="broken-download-warning">
+                                <span class="fa fa-chain-broken broken-download-icon"></span>
+                                Broken Download
+                            </span>
+                        @endif
                     </span>
                 </a>
             </div>

@@ -166,8 +166,20 @@
   .tile-main > img {
     min-width: 250px;
   }
+  .broken-download .tile-main > img {
+    filter: grayscale(50%) blur(2px);
+  }
+  .broken-download-warning {
+    color: away(var(--bs-warning));
+  }
 
   @media (map.get($grid-breakpoints, 'lg') <= width < map.get($grid-breakpoints, 'xl')) {
+    .broken-download-warning {
+      font-size: 0.6875rem;
+    }
+    .broken-download-icon {
+      display: none;
+    }
     .tile-title {
       font-size: 0.75rem;
     }
@@ -213,6 +225,7 @@
       height: 2rem;
     }
   }
+
   .btn {
     margin-top: 0.5rem;
 
