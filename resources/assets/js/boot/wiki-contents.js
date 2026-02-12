@@ -12,7 +12,7 @@ $(function() {
             toc.append(list);
             list.append('<li><h2>Contents</h2></li>')
 
-            let hlevelStack = [0];
+            const hlevelStack = [0];
             for (let i = 0; i < headings.length; i++) {
                 const h = $(headings[i]);
 
