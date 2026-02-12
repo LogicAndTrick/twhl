@@ -41,6 +41,7 @@ use App\Models\Wiki\WikiRevisionCredit;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -63,8 +64,7 @@ class ApiController extends Controller {
             'parameters' => [],
             'object' => Engine::class,
             'filter_columns' => ['name'],
-            'sort_column' => 'orderindex',
-            'default_filters' => []
+            'sort_column' => 'orderindex'
         ],
         'games' => [
             'description' => 'Games',
@@ -77,9 +77,9 @@ class ApiController extends Controller {
                 ],
             ],
             'object' => Game::class,
-            'filter_columns' => ['name'],
-            'sort_column' => 'orderindex',
-            'default_filters' => []
+            'filter_columns' => ['name', 'name_variants', 'abbreviation'],
+            'fulltext_filtering' => true,
+            'sort_column' => 'orderindex'
         ],
         'licenses' => [
             'description' => 'Content Licenses',
@@ -88,8 +88,7 @@ class ApiController extends Controller {
             'auth' => [],
             'object' => License::class,
             'filter_columns' => ['name'],
-            'sort_column' => 'orderindex',
-            'default_filters' => []
+            'sort_column' => 'orderindex'
         ],
         'posts' => [
             'description' => 'Forum Posts',
@@ -117,7 +116,6 @@ class ApiController extends Controller {
             'object' => ForumPost::class,
             'filter_columns' => ['content_text'],
             'sort_column' => 'created_at',
-            'default_filters' => [],
             'additional_methods' => [
                 'format' => [
                     'method' => 'post',
@@ -155,8 +153,7 @@ class ApiController extends Controller {
             ],
             'object' => ForumThread::class,
             'filter_columns' => ['title'],
-            'sort_column' => ['is_sticky','updated_at'],
-            'default_filters' => []
+            'sort_column' => ['is_sticky','updated_at']
         ],
         'forums' => [
             'description' => 'Forums',
@@ -165,8 +162,7 @@ class ApiController extends Controller {
             'auth' => [],
             'object' => Forum::class,
             'filter_columns' => ['name'],
-            'sort_column' => 'order_index',
-            'default_filters' => []
+            'sort_column' => 'order_index'
         ],
         'users' => [
             'description' => 'Users',
@@ -175,8 +171,7 @@ class ApiController extends Controller {
             'auth' => [],
             'object' => User::class,
             'filter_columns' => ['name'],
-            'sort_column' => 'id',
-            'default_filters' => []
+            'sort_column' => 'id'
         ],
         'permissions' => [
             'description' => 'User Permissions',
@@ -185,8 +180,7 @@ class ApiController extends Controller {
             'auth' => [],
             'object' => Permission::class,
             'filter_columns' => ['name'],
-            'sort_column' => 'name',
-            'default_filters' => []
+            'sort_column' => 'name'
         ],
         'comments' => [
             'description' => 'Comments',
@@ -216,8 +210,7 @@ class ApiController extends Controller {
             ],
             'object' => CommentDetail::class,
             'filter_columns' => ['content_text'],
-            'sort_column' => 'updated_at',
-            'default_filters' => []
+            'sort_column' => 'updated_at'
         ],
         'comment-metas' => [
             'description' => 'Comment Metas',
@@ -251,7 +244,6 @@ class ApiController extends Controller {
             'filter_columns' => ['title', 'content_text'],
             'sort_column' => 'title',
             'allowed_sort_columns' => ['title','created_at'],
-            'default_filters' => [],
             'additional_methods' => [
                 'upload' => [
                     'method' => 'post',
@@ -326,8 +318,7 @@ class ApiController extends Controller {
             'object' => WikiRevisionMeta::class,
             'filter_columns' => [],
             'sort_column' => 'id',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'wiki-revision-book' => [
             'description' => 'Wiki Revision Books',
@@ -347,7 +338,6 @@ class ApiController extends Controller {
             'filter_columns' => ['name'],
             'sort_column' => 'orderindex',
             'allowed_sort_columns' => [],
-            'default_filters' => [],
             'object_names' => ['VaultCategory','VaultCategories']
         ],
         'vault-types' => [
@@ -359,8 +349,7 @@ class ApiController extends Controller {
             'object' => VaultType::class,
             'filter_columns' => ['name'],
             'sort_column' => 'orderindex',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'vault-includes' => [
             'description' => 'Vault Includes',
@@ -371,8 +360,7 @@ class ApiController extends Controller {
             'object' => VaultInclude::class,
             'filter_columns' => ['name'],
             'sort_column' => 'orderindex',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'vault-screenshots' => [
             'description' => 'Vault Screenshots',
@@ -388,8 +376,7 @@ class ApiController extends Controller {
             'object' => VaultScreenshot::class,
             'filter_columns' => [],
             'sort_column' => 'order_index',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'vault-items' => [
             'description' => 'Vault Items',
@@ -404,8 +391,7 @@ class ApiController extends Controller {
             'object' => VaultItem::class,
             'filter_columns' => [ 'name' ],
             'sort_column' => 'created_at',
-            'allowed_sort_columns' => ['updated_at'],
-            'default_filters' => []
+            'allowed_sort_columns' => ['updated_at']
         ],
         'vault-item-review' => [
             'description' => 'Vault Item Reviews',
@@ -428,8 +414,7 @@ class ApiController extends Controller {
             'object' => Competition::class,
             'filter_columns' => ['name'],
             'sort_column' => 'created_at',
-            'allowed_sort_columns' => ['updated_at', 'id'],
-            'default_filters' => []
+            'allowed_sort_columns' => ['updated_at', 'id']
         ],
         'competition-restriction-groups' => [
             'description' => 'Competition Restriction Groups',
@@ -440,8 +425,7 @@ class ApiController extends Controller {
             'object' => CompetitionRestrictionGroup::class,
             'filter_columns' => ['title'],
             'sort_column' => 'id',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'competition-restrictions' => [
             'description' => 'Competition Restrictions',
@@ -456,8 +440,7 @@ class ApiController extends Controller {
             'object' => CompetitionRestriction::class,
             'filter_columns' => ['content_text'],
             'sort_column' => 'id',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'competition-statuses' => [
             'description' => 'Competition Statuses',
@@ -469,7 +452,6 @@ class ApiController extends Controller {
             'filter_columns' => ['name'],
             'sort_column' => 'id',
             'allowed_sort_columns' => [],
-            'default_filters' => [],
             'object_names' => ['CompetitionStatus','CompetitionStatuses']
         ],
         'competition-types' => [
@@ -481,8 +463,7 @@ class ApiController extends Controller {
             'object' => CompetitionType::class,
             'filter_columns' => ['name'],
             'sort_column' => 'id',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'competition-judge-types' => [
             'description' => 'Competition Judge Types',
@@ -493,8 +474,7 @@ class ApiController extends Controller {
             'object' => CompetitionJudgeType::class,
             'filter_columns' => ['name'],
             'sort_column' => 'id',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'shouts' => [
             'description' => 'Shouts',
@@ -524,7 +504,6 @@ class ApiController extends Controller {
             'filter_columns' => ['content'],
             'sort_column' => 'created_at',
             'sort_descending' => true,
-            'default_filters' => [],
             'additional_methods' => [
                 'from' => [
                     'method' => 'get',
@@ -558,8 +537,7 @@ class ApiController extends Controller {
             'object_names' => ['Image', 'Images'],
             'filter_columns' => [],
             'sort_column' => 'id',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ],
         'api-key' => [
             'description' => 'Api Keys',
@@ -577,8 +555,7 @@ class ApiController extends Controller {
             'object' => ApiKey::class,
             'filter_columns' => ['app'],
             'sort_column' => 'id',
-            'allowed_sort_columns' => [],
-            'default_filters' => []
+            'allowed_sort_columns' => []
         ]
     ];
 
@@ -1275,17 +1252,19 @@ class ApiController extends Controller {
 
                 $sort = $desc['sort_column'];
                 if (!is_array($sort)) $sort = [$sort];
+                $sort_by_specified = false;
                 $s = Request::input('sort_by');
                 if ($s && isset($desc['allowed_sort_columns']) && array_search($s, $desc['allowed_sort_columns']) !== false) {
                     if (!is_array($s)) $s = [$s];
                     $sort = array_merge($s, $sort);
+                    $sort_by_specified = true;
                 }
 
                 $sort_desc = isset($desc['sort_descending']) ? $desc['sort_descending'] : false;
                 if (Request::input('sort_descending') === 'true') $sort_desc = true;
                 else if (Request::input('sort_descending') === 'false') $sort_desc = false;
 
-                $filtered = $this->filter($q, $desc['filter_columns'], $sort, $sort_desc);
+                $filtered = $this->filter($q, $desc['filter_columns'], $sort, $sort_desc, $desc['fulltext_filtering'] ?? false, $sort_by_specified);
                 $array = $this->toArray($filtered, count($parameters) < 2 || $parameters[1] != 'paged');
                 return response()->json($array);
             }
@@ -1295,24 +1274,29 @@ class ApiController extends Controller {
         ])->setStatusCode(404);
     }
 
-    private function filter($query, $filter_cols, $sort_cols = [], $sort_desc = false) {
+    private function filter(Builder $query, array $filter_cols, array $sort_cols, bool $sort_desc, bool $fulltext_filtering, bool $sort_by_specified) {
 
         $ids = Request::input('id');
         if ($ids) {
             $ids = array_filter(array_map(function($x) { return intval($x); }, explode(',', $ids)), function($x) { return $x > 0; });
-            if ($ids) $query = $query-> whereIn('id', $ids);
+            if ($ids) $query = $query->whereIn('id', $ids);
         }
 
-        if (!is_array($filter_cols)) $filter_cols = [$filter_cols];
         if ($sort_cols && !is_array($sort_cols)) $sort_cols = [$sort_cols];
         if (!$sort_cols || !is_array($sort_cols) || count($sort_cols) == 0) $sort_cols = $filter_cols;
 
+        $filter = Request::input('filter');
+        $fulltext_match = '';
+        if (!empty($filter) && $fulltext_filtering) {
+            $fulltext_match = 'MATCH (' . implode(',', $filter_cols) . ') AGAINST (?)';
+            $fulltext_sort_dir = $sort_desc ? '' : ' desc'; // Reversed as MATCH() returns higher values for better matches
+            if (!$sort_by_specified) $query = $query->orderByRaw($fulltext_match . $fulltext_sort_dir, [$filter]);
+        } 
         foreach ($sort_cols as $v) {
             $query = $query->orderBy($v, $sort_desc ? 'desc' : 'asc');
         }
 
-        $filter = Request::input('filter');
-        if (!$filter || count($filter_cols) == 0) return $query;
+        if (empty($filter)) return $query;
         $filter .= '%';
         $args = [];
         $sql = '1 != 1';
@@ -1321,7 +1305,9 @@ class ApiController extends Controller {
             $sql .= " or $col like ?";
             $args[] = $filter;
         }
-        return $query->whereRaw("($sql)", $args);
+        $query = $query->whereRaw("($sql)", $args);
+        if ($fulltext_filtering) $query = $query->orWhereRaw($fulltext_match, [$filter]);
+        return $query;
     }
 
     private function toArray($query, $force_plain = false) {
