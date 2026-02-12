@@ -1,5 +1,6 @@
 <?php namespace App\Providers;
 
+use App\Models\Wiki\WikiRevision;
 use Blade;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -119,7 +120,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('text');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'placeholder' => '', 'required' => 'false'], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['format' => null, 'pattern_name' => '', 'placeholder' => '', 'required' => 'false'], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
@@ -128,6 +129,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $format = $parameters['format'];
                 $required = $this->evaluatedBooleanAttribute($parameters, 'required');
                 $type = in_array($format, [ 'url' ]) ? $format : 'text';
+                $pattern_attributes = BladeServiceProvider::inputPatternByName($parameters['pattern_name']);
 
                 $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
@@ -141,7 +143,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='$type' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='$placeholder' $required />" .
+                "<input type='$type' class='form-control' id='$id' name='$mapped_name' value='$collect' placeholder='$placeholder' $pattern_attributes $required />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -455,5 +457,18 @@ class BladeServiceProvider extends ServiceProvider {
         if (!$expression || $expression === 'false') return '';
         if ($expression === 'true') return $attributeName;
         return "<?php if ($expression) echo '$attributeName'; ?>";
+    }
+    public function inputPatternByName(string $pattern_name): string {
+        $description = null;
+        $pattern = null;
+
+        if ($pattern_name === 'wiki-title') {
+            $characters = WikiRevision::disallowedTitleCharacters();
+            $description = "These symbols are not allowed: $characters";
+            $pattern = '[^' . preg_quote($characters) . ']*';
+        }
+
+        if (!$pattern) return '';
+        return 'pattern="' . BladeServiceProvider::esc($pattern) . '" data-patterndescription="' . BladeServiceProvider::esc($description) . '"';
     }
 }

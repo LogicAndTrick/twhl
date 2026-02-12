@@ -13,5 +13,19 @@ Element.prototype.filteredEventListener = function (event, selector, callback) {
     };
     this.addEventListener(event, handler);
     return handler;
+};
+
+const escapeHtmlEntityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+
+window.escapeHtml = string => {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+        return escapeHtmlEntityMap[s];
+    });
 }
-;

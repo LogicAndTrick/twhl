@@ -29,6 +29,7 @@ mix.scripts([
         "resources/assets/js/boot/comment-meta-rating.js",
         "resources/assets/js/boot/embed.js",
         "resources/assets/js/boot/embed-inline.js",
+        'resources/assets/js/boot/form-validation.js',
         "resources/assets/js/boot/highlight.js",
         "resources/assets/js/boot/home.js",
         "resources/assets/js/boot/shoutbox.js",
