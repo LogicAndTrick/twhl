@@ -21,7 +21,7 @@ $(function() {
                 const hlevel = parseInt(h.get(0).tagName.substring(1), 10);
                 let tocLevel = hlevelStack.findIndex(hl => hl >= hlevel);
                 if (tocLevel === -1) tocLevel = hlevelStack.length;
-                else hlevelStack.splice(tocLevel);
+                hlevelStack.splice(tocLevel);
                 hlevelStack.push(hlevel);
                 list.append('<li class="level-' + tocLevel + '"><a href="#' + h.attr('id') + '">' + h.text() + '</a></li>');
             }
