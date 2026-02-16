@@ -10,6 +10,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // See https://github.com/LogicAndTrick/twhl/issues/133
+
+        
         DB::unprepared("DROP procedure IF EXISTS update_wiki_object;");
         DB::unprepared("
             CREATE PROCEDURE update_wiki_object(oid INT)
