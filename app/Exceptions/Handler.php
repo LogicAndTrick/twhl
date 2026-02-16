@@ -2,6 +2,7 @@
 
 use Throwable;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Sentry\Laravel\Integration;
 
 class Handler extends ExceptionHandler {
 
@@ -34,6 +35,10 @@ class Handler extends ExceptionHandler {
      */
     public function report(Throwable $exception)
     {
+        if ($this->shouldReport($exception)) {
+            Integration::captureUnhandledException($exception);
+        }
+
         parent::report($exception);
     }
 
