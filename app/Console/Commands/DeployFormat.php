@@ -29,7 +29,7 @@ class DeployFormat extends Command
     {
         // Stop some triggers because they're pretty slow
         DB::unprepared("DROP TRIGGER IF EXISTS forum_posts_update_statistics_on_update");
-        DB::unprepared("DROP TRIGGER IF EXISTS wiki_revisions_update_statistics_on_update");
+        DB::unprepared("SET @disable_wiki_revisions_update_statistics_on_update = 1;");
 
         // Comments
         $this->process('Comment', Comment::where('content_html', '=', '')->where('content_text', '!=', ''));
@@ -91,15 +91,7 @@ class DeployFormat extends Command
         });
 
         // Let's get those triggers back in there
-        DB::unprepared("
-            CREATE TRIGGER wiki_revisions_update_statistics_on_update AFTER UPDATE ON wiki_revisions
-            FOR EACH ROW BEGIN
-                CALL update_user_wiki_statistics(NEW.user_id);
-
-                IF NEW.user_id != OLD.user_id THEN
-                    CALL update_user_wiki_statistics(OLD.user_id);
-                END IF;
-            END;");
+        DB::unprepared("SET @disable_wiki_revisions_update_statistics_on_update = NULL;");
 
         DB::unprepared("
             CREATE TRIGGER forum_posts_update_statistics_on_update AFTER UPDATE ON forum_posts
