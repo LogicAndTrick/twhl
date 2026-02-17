@@ -74,6 +74,11 @@ class DeployFormat extends Command
 
         // Wiki Revisions
         $this->process('Wiki revision', WikiRevision::where('content_html', '=', '')->where('content_text', '!=', ''), 'content_text', 'content_html', function ($rev, $result) {
+            // Update summary
+            $rev->summary = WikiRevision::summaryFromParseResult($result);
+            $rev->save();
+
+            // Update meta
             $meta = [];
             foreach ($result->GetMetadata() as $md) {
                 $c = $md['key'];

@@ -2,13 +2,14 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use LogicAndTrick\WikiCodeParser\ParseResult;
 
 class WikiRevision extends Model {
 
 	//
     protected $table = 'wiki_revisions';
-    protected $fillable = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'content_html', 'message'];
-    public $visible = ['id', 'object_id', 'user_id', 'is_active', 'slug', 'title', 'content_text', 'content_html', 'message', 'created_at', 'wiki_object', 'user', 'wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits'];
+    protected $fillable = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'content_html', 'message', 'summary'];
+    public $visible = ['id', 'object_id', 'user_id', 'is_active', 'slug', 'title', 'content_text', 'content_html', 'message', 'summary', 'created_at', 'wiki_object', 'user', 'wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits'];
 
     public $appends = [ 'escaped_slug' ];
 
@@ -106,5 +107,14 @@ class WikiRevision extends Model {
             str_split(WikiRevision::disallowedTitleCharacters()),
             fn($char) => str_contains($title, $char)
         );
+    }
+
+    public static function summaryFromParseResult(ParseResult $parse_result): string {
+        $plain = $parse_result->ToPlainText();
+        $shortened = mb_substr($plain, 0, 300);
+        if (strlen($plain) !== strlen($shortened)) {
+            $shortened .= '...';
+        }
+        return $shortened;
     }
 }

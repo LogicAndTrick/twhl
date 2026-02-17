@@ -60,6 +60,7 @@ class UpdateWikiTitleLinks
                 $rev->update([
                     'content_text' => $text,
                     'content_html' => $parse_result->ToHtml(),
+                    'summary' => WikiRevision::summaryFromParseResult($parse_result),
                 ]);
                 $m->update([
                     'value' => $newTitle
