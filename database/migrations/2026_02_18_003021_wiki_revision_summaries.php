@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Wiki\WikiRevision;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +17,15 @@ return new class extends Migration
             // for use as og:description.
             $table->string('summary', 2 ** 16 - 1);
         });
+
+        foreach (WikiRevision::where('is_active', '=', 1)->get() as $revision) {
+            $summary = '';
+            try {
+                $summary = WikiRevision::summaryFromParseResult(bbcode_result($revision->content_text));
+            } catch (\Throwable $e) { }
+            $revision->summary = $summary;
+            $revision->save();
+        }
     }
 
     /**
