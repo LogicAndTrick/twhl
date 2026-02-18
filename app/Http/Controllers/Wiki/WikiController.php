@@ -402,7 +402,7 @@ class WikiController extends Controller {
             'content_text' => Request::input('content_text'),
             'content_html' => $parse_result->ToHtml(),
             'content_plain' => $parse_result->ToPlainText(),
-            'message' => Request::input('message') ?: '',
+            'message' => Request::input('message') ?: ''
         ]);
 
         // Parse meta from the content
@@ -624,7 +624,7 @@ class WikiController extends Controller {
             'content_plain' => $parse_result->ToPlainText(),
             'message' => 'Reverting to revision #' . $rev->id .
                          ($rev->message ? " ({$rev->message})" : '') .
-                         (Request::input('reason') ? ' - ' . Request::input('reason') : ''),
+                         (Request::input('reason') ? ' - ' . Request::input('reason') : '')
         ]);
         $meta = [];
         foreach ($parse_result->GetMetadata() as $md) {

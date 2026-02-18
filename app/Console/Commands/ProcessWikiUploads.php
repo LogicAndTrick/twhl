@@ -40,7 +40,7 @@ class ProcessWikiUploads extends Command {
                 'content_text' => $text,
                 'content_html' => $parse_result->ToHtml(),
                 'content_plain' => $parse_result->ToPlainText(),
-                'message' => 'Automatic TWHL3 conversion',
+                'message' => 'Automatic TWHL3 conversion'
             ]);
 
             // Parse meta from the content
