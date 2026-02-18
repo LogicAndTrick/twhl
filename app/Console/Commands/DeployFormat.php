@@ -14,6 +14,7 @@ use App\Models\News;
 use App\Models\Polls\Poll;
 use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemReview;
+use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
@@ -91,7 +92,9 @@ class DeployFormat extends Command
                 }
             }
             $object = $rev->wiki_object;
-            if ($object->type_id == WikiType::UPLOAD) {
+            if (!$object) $object = WikiObject::query()->find($rev->object_id);
+            if (!$object) $this->warn("ERROR processing wiki revision {$rev->id} - wiki object is null");
+            if ($object && $object->type_id == WikiType::UPLOAD) {
                 $upload = WikiUpload::query()->where('object_id', '=', $object->id)->where('revision_id', '=', $rev->id)->first();
                 if ($upload) {
                     $file_name = $upload->getServerFileName();
