@@ -16,9 +16,10 @@ use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemReview;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
+use App\Models\Wiki\WikiType;
+use App\Models\Wiki\WikiUpload;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Database\Query\Expression;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
 
@@ -75,8 +76,8 @@ class DeployFormat extends Command
         $this->process('vault', 'Vault item review', VaultItemReview::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Wiki Revisions
-        $this->process('wiki', 'Wiki revision', WikiRevision::query()->where('content_text', '!=', '')->whereAny(['content_html', 'content_plain'], '=', ''), 'content_text', 'content_html', 'content_plain', function ($rev, $result) {
-            \Illuminate\Support\Facades\DB::unprepared("delete from wiki_revision_metas where revision_id = {$rev->id}");
+        $this->process('wiki', 'Wiki revision', WikiRevision::query()->with(['wiki_object'])->where('content_text', '!=', '')->whereAny(['content_html', 'content_plain'], '=', ''), 'content_text', 'content_html', 'content_plain', function ($rev, $result) {
+            DB::unprepared("delete from wiki_revision_metas where revision_id = {$rev->id}");
             $meta = [];
             foreach ($result->GetMetadata() as $md) {
                 $c = $md['key'];
@@ -89,8 +90,23 @@ class DeployFormat extends Command
                     $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v) ]);
                 }
             }
+            $object = $rev->wiki_object;
+            if ($object->type_id == WikiType::UPLOAD) {
+                $upload = WikiUpload::query()->where('object_id', '=', $object->id)->where('revision_id', '=', $rev->id)->first();
+                if ($upload) {
+                    $file_name = $upload->getServerFileName();
+                    $info = getimagesize($file_name);
+                    $size = filesize($file_name);
+                    array_push(
+                        $meta,
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::UPLOAD_ID, 'value' => $upload->id]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::FILE_SIZE, 'value' => $size]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::IMAGE_WIDTH, 'value' => $info ? $info[0] : 0]),
+                        new WikiRevisionMeta(['key' => WikiRevisionMeta::IMAGE_HEIGHT, 'value' => $info ? $info[1] : 0])
+                    );
+                }
+            }
             $rev->wiki_revision_metas()->saveMany($meta);
-            //DB::statement('CALL update_wiki_object(?);', [$rev->object_id]);
         });
 
         // Let's get those triggers back in there
