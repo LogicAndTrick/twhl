@@ -140,7 +140,7 @@ class DeployFormat extends Command
                     try {
                         $parse_result = bbcode_result($q->$source);
                         $q->$target_html = $parse_result->ToHtml();
-                        $q->$target_plain = $parse_result->ToPlainText();
+                        if ($target_plain !== null) $q->$target_plain = $parse_result->ToPlainText();
                         $q->timestamps = false;
                         $q->save();
                         if ($callback && is_callable($callback)) {
