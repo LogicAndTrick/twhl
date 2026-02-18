@@ -19,11 +19,12 @@ use App\Models\Wiki\WikiRevisionMeta;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Database\Query\Expression;
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User;
 
 class DeployFormat extends Command
 {
-    protected $signature = 'deploy:format';
+    protected $signature = 'deploy:format {entity}';
     protected $description = 'Post deployment, process any records that need to be parsed with bbcode.';
 
     public function handle()
@@ -33,48 +34,49 @@ class DeployFormat extends Command
         DB::unprepared("SET @disable_wiki_revisions_update_statistics_on_update = 1;");
 
         // Comments
-        $this->process('Comment', Comment::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('comment', 'Comment', Comment::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Competitions
-        $this->process('Competition brief', Competition::where('brief_html', '=', '')->where('brief_text', '!=', ''), 'brief_text', 'brief_html');
-        $this->process('Competition results intro', Competition::where('results_intro_html', '=', '')->where('results_intro_text', '!=', ''), 'results_intro_text', 'results_intro_html');
-        $this->process('Competition results outro', Competition::where('results_outro_html', '=', '')->where('results_outro_text', '!=', ''), 'results_outro_text', 'results_outro_html');
+        $this->process('competition', 'Competition brief', Competition::where('brief_html', '=', '')->where('brief_text', '!=', ''), 'brief_text', 'brief_html');
+        $this->process('competition', 'Competition results intro', Competition::where('results_intro_html', '=', '')->where('results_intro_text', '!=', ''), 'results_intro_text', 'results_intro_html');
+        $this->process('competition', 'Competition results outro', Competition::where('results_outro_html', '=', '')->where('results_outro_text', '!=', ''), 'results_outro_text', 'results_outro_html');
 
         // Competition Entries
-        $this->process('Competition entry', CompetitionEntry::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('competition', 'Competition entry', CompetitionEntry::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Competition Restrictions
-        $this->process('Competition restriction', CompetitionRestriction::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('competition', 'Competition restriction', CompetitionRestriction::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Competition Results
-        $this->process('Competition result', CompetitionResult::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('competition', 'Competition result', CompetitionResult::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Forum Posts
-        $this->process('Forum post', ForumPost::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('post', 'Forum post', ForumPost::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Journals
-        $this->process('Journal', Journal::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('journal', 'Journal', Journal::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Messages
-        $this->process('Message', Message::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('message', 'Message', Message::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // News
-        $this->process('News', News::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('news', 'News', News::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Polls
-        $this->process('Poll', Poll::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('poll', 'Poll', Poll::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Users
-        $this->process('User', User::where('info_biography_html', '=', '')->where('info_biography_text', '!=', ''), 'info_biography_text', 'info_biography_html');
+        $this->process('user', 'User', User::where('info_biography_html', '=', '')->where('info_biography_text', '!=', ''), 'info_biography_text', 'info_biography_html');
 
         // Vault Items
-        $this->process('Vault item', VaultItem::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('vault', 'Vault item', VaultItem::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Vault Item Reviews
-        $this->process('Vault item review', VaultItemReview::where('content_html', '=', '')->where('content_text', '!=', ''));
+        $this->process('vault', 'Vault item review', VaultItemReview::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Wiki Revisions
-        $this->process('Wiki revision', WikiRevision::where('content_html', '=', '')->where('content_text', '!=', ''), 'content_text', 'content_html', 'content_plain', function ($rev, $result) {
+        $this->process('wiki', 'Wiki revision', WikiRevision::query()->where('content_text', '!=', '')->whereAny(['content_html', 'content_plain'], '=', ''), 'content_text', 'content_html', 'content_plain', function ($rev, $result) {
+            \Illuminate\Support\Facades\DB::unprepared("delete from wiki_revision_metas where revision_id = {$rev->id}");
             $meta = [];
             foreach ($result->GetMetadata() as $md) {
                 $c = $md['key'];
@@ -115,8 +117,11 @@ class DeployFormat extends Command
             END;");
     }
 
-    private function process(string $type, Expression $query, string $source = 'content_text', string $target_html = 'content_html', null | string $target_plain = null, callable | null $callback = null)
+    private function process(string $entity, string $type, Builder $query, string $source = 'content_text', string $target_html = 'content_html', null | string $target_plain = null, callable | null $callback = null)
     {
+        $filteredEntity = $this->argument('entity');
+        if ($filteredEntity != 'all' && $filteredEntity != $entity) return;
+
         $inc = 1000;
         $this->comment("Processing: {$type}");
         $grand_total = $query->count();
