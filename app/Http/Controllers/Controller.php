@@ -22,4 +22,8 @@ abstract class Controller extends BaseController {
 
         $this->middleware('permission:'.$per, ['only' => $actions]);
     }
+
+    protected function missingMethod($parameters = []) {
+        abort(404);
+    }
 }
