@@ -17,6 +17,14 @@ return new class extends Migration
             $table->string('content_plain')->after('content_html');
         });
 
+        // Turn off statistics updates (optimization)
+        DB::unprepared("SET @disable_wiki_revisions_update_statistics_on_update = 1");
+
+
+        // Update old revisions with a simple content_plain=content_text
+        DB::unprepared("UPDATE wiki_revisions SET content_plain=content_text");
+
+        // Process the WikiCode for all the active revisions
         foreach (WikiRevision::where('is_active', '=', 1)->get() as $revision) {
             $content_plain = $revision->content_text;
             try {
@@ -25,6 +33,8 @@ return new class extends Migration
             $revision->content_plain = $content_plain;
             $revision->save();
         }
+
+        DB::unprepared("SET @disable_wiki_revisions_update_statistics_on_update = NULL");
     }
 
     /**
