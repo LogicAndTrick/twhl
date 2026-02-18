@@ -8,8 +8,13 @@
 
         <meta content="The Whole Half-Life" property="og:site_name">
         @if (!empty($meta_description))
-            <?php $meta_description = str_replace("\n", ' ', mb_substr($meta_description, 0, 300)) . (mb_strlen($meta_description) > 300 ? '...' : ''); ?>
-            <meta property="og:description" content="{{$meta_description}}">
+            <?php
+                if (mb_strlen($meta_description) > 300) $meta_description = mb_substr($meta_description, 0, 300) . '...';
+                // Manually do escaping here so we can encode newlines
+                $meta_description = e($meta_description);
+                $meta_description = str_replace(["\r\n", "\r", "\n"], '&#10;', $meta_description);
+            ?>
+            <meta property="og:description" content="{!! $meta_description !!}">
         @else
             <meta property="og:description" content="View this page on TWHL">
         @endif
