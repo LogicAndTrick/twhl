@@ -35,16 +35,18 @@
                 <a href="{{ url('wiki/page/' . $page->slug) }}">{{$page->title}}</a>
                 <?php
                     $pos = 0;
+                    $search_length = mb_strlen($search);
                     while ($pos !== false) {
-                        $idx = stripos($page->content_text, $search, $pos);
+                        $idx = mb_stripos($page->content_text, $search, $pos);
                         if ($idx === false) break;
 
+                        $content_length = mb_strlen($page->content_text);
                         $st = max(0, $idx - 50);
-                        $en = min(strlen($page->content_text), $idx + strlen($search) + 50);
+                        $en = min($content_length, $idx + $search_length + 50);
                         echo '<br>';
-                        echo '<span class="text-muted">' . ($st > 0 ? '...' : '') . substr($page->content_text, $st, $idx - $st) . '</span>';
-                        echo '<strong>' . substr($page->content_text, $idx, strlen($search)) . '</strong>';
-                        echo '<span class="text-muted">' . substr($page->content_text, $idx + strlen($search), $en - ($idx + strlen($search))) . ($en < strlen($page->content_text) ? '...' : '') . '</span>';
+                        echo '<span class="text-muted">' . ($st > 0 ? '...' : '') . mb_substr($page->content_text, $st, $idx - $st) . '</span>';
+                        echo '<strong>' . mb_substr($page->content_text, $idx, $search_length) . '</strong>';
+                        echo '<span class="text-muted">' . mb_substr($page->content_text, $idx + $search_length, $en - ($idx + $search_length)) . ($en < $content_length ? '...' : '') . '</span>';
 
                         $pos = $idx + 1;
                     }

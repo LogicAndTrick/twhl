@@ -46,8 +46,8 @@ class FormatWiki extends Command
             /** @var WikiRevision $rev */
             foreach ($revisions as $rev ) {
 
-                $trim_title = substr($rev->title, 0, 50);
-                if (strlen($rev->title) > strlen($trim_title)) $trim_title = substr($trim_title, 0, 47) . '...';
+                $trim_title = mb_substr($rev->title, 0, 50);
+                if (mb_strlen($rev->title) > mb_strlen($trim_title)) $trim_title = mb_substr($trim_title, 0, 47) . '...';
                 $this->getOutput()->write("\r[$current/$total] Revision #{$rev->id} ($trim_title)");
                 $current++;
 

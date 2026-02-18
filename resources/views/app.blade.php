@@ -7,8 +7,8 @@
         <title>{{ isset($page_title) && !!$page_title ? $page_title . ' - ' : '' }}TWHL: Half-Life and Source Mapping Tutorials and Resources</title>
 
         <meta content="The Whole Half-Life" property="og:site_name">
-        @if (isset($meta_description) && strlen($meta_description) > 0)
-            <?php $meta_description = str_replace("\n", ' ', substr($meta_description, 0, 300)) . (strlen($meta_description) > 300 ? '...' : ''); ?>
+        @if (!empty($meta_description))
+            <?php $meta_description = str_replace("\n", ' ', mb_substr($meta_description, 0, 300)) . (mb_strlen($meta_description) > 300 ? '...' : ''); ?>
             <meta property="og:description" content="{{$meta_description}}">
         @else
             <meta property="og:description" content="View this page on TWHL">
