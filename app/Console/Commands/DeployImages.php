@@ -270,8 +270,8 @@ class DeployImages extends Command
                         'title' => $name,
                         'content_text' => $rev_desc,
                         'content_html' => $parsed_description->ToHtml(),
+                        'content_plain' => $parsed_description->ToPlainText(),
                         'message' => 'Automatically migrated from TWHL3',
-                        'summary' => WikiRevision::summaryFromParseResult($result)
                     ]);
 
                     $upload = WikiUpload::Create([
@@ -415,8 +415,8 @@ class DeployImages extends Command
                         'title' => $name,
                         'content_text' => $rev_desc,
                         'content_html' => $parsed_description->ToHtml(),
+                        'content_plain' => $parsed_description->ToPlainText(),
                         'message' => 'Automatically migrated from TWHL3',
-                        'summary' => WikiRevision::summaryFromParseResult($result)
                     ]);
 
                     $upload = WikiUpload::Create([
@@ -473,8 +473,8 @@ class DeployImages extends Command
                         'title' => $name,
                         'content_text' => $rev_desc,
                         'content_html' => $parsed_description->ToHtml(),
+                        'content_plain' => $parsed_description->ToPlainText(),
                         'message' => 'Automatically migrated from TWHL3',
-                        'summary' => WikiRevision::summaryFromParseResult($result)
                     ]);
 
                     $upload = WikiUpload::Create([

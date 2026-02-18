@@ -1,6 +1,6 @@
 @extends('app')
 <?php
-    if ($revision) $meta_description = $revision->summary;
+    if ($revision) $meta_description = $revision->content_plain;
 ?>
 
 @section('content')

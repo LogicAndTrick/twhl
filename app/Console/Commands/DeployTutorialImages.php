@@ -114,8 +114,8 @@ class DeployTutorialImages extends Command
                         'title' => $name,
                         'content_text' => $rev_desc,
                         'content_html' => $parsed_description->ToHtml(),
+                        'content_plain' => $parsed_description->ToPlainText(),
                         'message' => 'Automatically migrated from TWHL3',
-                        'summary' => WikiRevision::summaryFromParseResult($parsed_description)
                     ]);
 
                     $upload = WikiUpload::Create([

@@ -13,17 +13,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('wiki_revisions', function (Blueprint $table) {
-            // Contains summaries - short versions of the text without WikiCode or HTML
-            // for use as og:description.
-            $table->string('summary', 2 ** 16 - 1);
+            // Versions of the text without WikiCode or HTML, for example for use as og:description.
+            $table->string('content_plain')->after('content_html');
         });
 
         foreach (WikiRevision::where('is_active', '=', 1)->get() as $revision) {
-            $summary = '';
+            $content_plain = $revision->content_text;
             try {
-                $summary = WikiRevision::summaryFromParseResult(bbcode_result($revision->content_text));
+                $content_plain = bbcode_result($revision->content_text)->ToPlainText();
             } catch (\Throwable $e) { }
-            $revision->summary = $summary;
+            $revision->content_plain = $content_plain;
             $revision->save();
         }
     }
@@ -34,7 +33,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('wiki_revisions', function (Blueprint $table) {
-            $table->dropColumn('summary');
+            $table->dropColumn('content_plain');
         });
     }
 };
