@@ -20,12 +20,8 @@ return new class extends Migration
         // Turn off statistics updates (optimization)
         DB::unprepared("SET @disable_wiki_revisions_update_statistics_on_update = 1");
 
-
-        // Update old revisions with a simple content_plain=content_text
-        DB::unprepared("UPDATE wiki_revisions SET content_plain=content_text");
-
-        // Process the WikiCode for all the active revisions
-        foreach (WikiRevision::where('is_active', '=', 1)->get() as $revision) {
+        // Process the WikiCode for all revisions
+        foreach (WikiRevision::all() as $revision) {
             $content_plain = $revision->content_text;
             try {
                 $content_plain = bbcode_result($revision->content_text)->ToPlainText();
