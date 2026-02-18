@@ -105,6 +105,7 @@ class DeployTutorialImages extends Command
                         'type_id' => WikiType::UPLOAD
                     ]);
 
+                    $parsed_description = bbcode_result($rev_desc);
                     $rev = WikiRevision::Create([
                         'object_id' => $obj->id,
                         'user_id' => $revis->user_id,
@@ -112,8 +113,9 @@ class DeployTutorialImages extends Command
                         'slug' => 'upload:'.$name,
                         'title' => $name,
                         'content_text' => $rev_desc,
-                        'content_html' => bbcode($rev_desc),
-                        'message' => 'Automatically migrated from TWHL3'
+                        'content_html' => $parsed_description->ToHtml(),
+                        'content_plain' => $parsed_description->ToPlainText(),
+                        'message' => 'Automatically migrated from TWHL3',
                     ]);
 
                     $upload = WikiUpload::Create([

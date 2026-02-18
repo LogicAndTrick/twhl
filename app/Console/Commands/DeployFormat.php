@@ -17,6 +17,7 @@ use App\Models\Vault\VaultItemReview;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Database\Query\Expression;
 use DB;
 use Illuminate\Foundation\Auth\User;
 
@@ -73,7 +74,7 @@ class DeployFormat extends Command
         $this->process('Vault item review', VaultItemReview::where('content_html', '=', '')->where('content_text', '!=', ''));
 
         // Wiki Revisions
-        $this->process('Wiki revision', WikiRevision::where('content_html', '=', '')->where('content_text', '!=', ''), 'content_text', 'content_html', function ($rev, $result) {
+        $this->process('Wiki revision', WikiRevision::where('content_html', '=', '')->where('content_text', '!=', ''), 'content_text', 'content_html', 'content_plain', function ($rev, $result) {
             $meta = [];
             foreach ($result->GetMetadata() as $md) {
                 $c = $md['key'];
@@ -114,7 +115,7 @@ class DeployFormat extends Command
             END;");
     }
 
-    private function process($type, $query, $source = 'content_text', $target = 'content_html', $callback = null)
+    private function process(string $type, Expression $query, string $source = 'content_text', string $target_html = 'content_html', null | string $target_plain = null, callable | null $callback = null)
     {
         $inc = 1000;
         $this->comment("Processing: {$type}");
@@ -122,7 +123,7 @@ class DeployFormat extends Command
 
         for ($i = 0; $i < $grand_total; $i += $inc) {
 
-            $cb = function($query_result) use ($type, $source, $target, $callback, $inc, $grand_total, $i) {
+            $cb = function($query_result) use ($type, $source, $target_html, $target_plain, $callback, $inc, $grand_total, $i) {
 
                 $total = $query_result->count();
                 $count = 1;
@@ -130,7 +131,8 @@ class DeployFormat extends Command
                 foreach ($query_result as $q) {
                     try {
                         $parse_result = bbcode_result($q->$source);
-                        $q->$target = $parse_result->ToHtml();
+                        $q->$target_html = $parse_result->ToHtml();
+                        if ($target_plain !== null) $q->$target_plain = $parse_result->ToPlainText();
                         $q->timestamps = false;
                         $q->save();
                         if ($callback && is_callable($callback)) {

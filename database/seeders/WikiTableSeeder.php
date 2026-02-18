@@ -27,6 +27,7 @@ class WikiTableSeeder extends \Illuminate\Database\Seeder
             'title' => 'Home',
             'content_text' => 'This is the home page.',
             'content_html' => 'This is the home page.',
+            'content_plain' => 'This is the home page.',
             'message' => ''
         ]);
 

@@ -39,6 +39,7 @@ class ProcessWikiUploads extends Command {
                 'title' => $title,
                 'content_text' => $text,
                 'content_html' => $parse_result->ToHtml(),
+                'content_plain' => $parse_result->ToPlainText(),
                 'message' => 'Automatic TWHL3 conversion'
             ]);
 
