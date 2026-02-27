@@ -36,7 +36,7 @@
         <meta name="theme-color" content="#e68a27">
 
         <link href="{{ mix('/css/app.css') }}?sl" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/svg+xml">
         <link rel="search" type="application/opensearchdescription+xml" href="{{ url('/opensearch.xml') }}" title="TWHL">
 
         @yield('styles', '')
