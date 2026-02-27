@@ -12,6 +12,7 @@ php_value post_max_size 16M
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ /$1 [L,R=301]
 
+    # Use an SVG favicon
     RewriteRule "^favicon.ico$" "images/twhl-logo.svg" [L]
 
     # Handle Front Controller...
