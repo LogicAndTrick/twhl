@@ -26,7 +26,12 @@ class SearchController extends Controller {
         }
         $searched = !!$search;
 
+        $perPage = 15;
+        $page = intval(Request::input('page', 1));
+        if (!$page || $page < 1) $page = 1;
+
         if (!Auth::check()) {
+            $page = 1;
             $validator = Validator::make(Request::all(), [
                 'g-recaptcha-response' => 'required|recaptcha',
                 'search' => 'required|max:30'
@@ -60,7 +65,7 @@ class SearchController extends Controller {
                         OR forum_threads.title LIKE CONCAT(\'%\', ?, \'%\')
                     )', [ $search, $search ])
                 ->select('forum_threads.*')
-                ->paginate()
+                ->paginate(perPage: $perPage, page: $page)
                 ->appends(Request::except('page'));
 
             $posts = ForumPost::with(['user', 'thread', 'forum'])
@@ -76,7 +81,7 @@ class SearchController extends Controller {
                 ->whereRaw('MATCH (forum_posts.content_text) AGAINST (?)', [ $search ])
                 ->whereRaw('t.deleted_at is null')
                 ->select('forum_posts.*')
-                ->paginate()
+                ->paginate(perPage: $perPage, page: $page)
                 ->appends(Request::except('page'));
 
             $wikis = WikiRevision::with(['user', 'wiki_object'])
@@ -85,7 +90,7 @@ class SearchController extends Controller {
                         MATCH (wiki_revisions.content_text, wiki_revisions.title) AGAINST (?)
                         OR wiki_revisions.title LIKE CONCAT(\'%\', ?, \'%\')
                     )', [ $search, $search ])
-                ->paginate()
+                ->paginate(perPage: $perPage, page: $page)
                 ->appends(Request::except('page'));
 
             $vaults = VaultItem::with(['user', 'vault_category', 'vault_type'])
@@ -93,7 +98,7 @@ class SearchController extends Controller {
                         MATCH (vault_items.content_text, vault_items.name) AGAINST (?)
                         OR vault_items.name LIKE CONCAT(\'%\', ?, \'%\')
                     )', [ $search, $search ])
-                ->paginate()
+                ->paginate(perPage: $perPage, page: $page)
                 ->appends(Request::except('page'));
 
             //SELECT * FROM `users` WHERE name like CONCAT('%', 'user', '%')
@@ -102,7 +107,7 @@ class SearchController extends Controller {
                         MATCH (users.name, users.info_biography_text) AGAINST (?)
                         OR users.name LIKE CONCAT(\'%\', ?, \'%\')
                     )', [ $search, $search ])
-                ->paginate()
+                ->paginate(perPage: $perPage, page: $page)
                 ->appends(Request::except('page'));
 
         }
