@@ -36,7 +36,9 @@
         <meta name="theme-color" content="#e68a27">
 
         <link href="{{ mix('/css/app.css') }}?sl" rel="stylesheet">
-        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="32x32">
+        <link rel="icon" href="{{ asset('images/twhl-logo.svg') }}" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
         <link rel="search" type="application/opensearchdescription+xml" href="{{ url('/opensearch.xml') }}" title="TWHL">
 
         @yield('styles', '')
