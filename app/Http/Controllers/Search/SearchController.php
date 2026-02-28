@@ -6,9 +6,8 @@ use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiRevision;
-use DB;
-use Request;
-use Auth;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller {
 
@@ -20,6 +19,11 @@ class SearchController extends Controller {
     public function getIndex()
    	{
         $search = trim(Request::input('search'));
+        $max_search_length = Auth::check() ? 50 : 20;
+        if (mb_strlen($search) > $max_search_length) {
+            $search = mb_substr($search, 0, $max_search_length);
+        }
+
         $searched = !!$search;
 
         $users = null;
@@ -96,6 +100,7 @@ class SearchController extends Controller {
    		return view('search/index', [
             'searched' => $searched,
             'search' => $search,
+            'max_search_length' => $max_search_length,
             'results_threads' => $threads,
             'results_posts' => $posts,
             'results_wikis' => $wikis,

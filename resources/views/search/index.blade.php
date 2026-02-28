@@ -7,9 +7,15 @@
     <form action="{{ url('search/index') }}" method="get">
         <div class="input-group">
             <span class="input-group-text"><span class="fa fa-search"></span></span>
-            <input type="text" class="form-control" name="search" placeholder="Search" value="{{ $search }}">
+            <input type="text" class="form-control" name="search" placeholder="Search" value="{{ $search }}" maxlength="{{ $max_search_length  }}">
             <button type="submit" class="btn btn-light">Search</button>
         </div>
+        <span class="form-text">
+            A strict limit has been applied to the search length due to spambots posting complex queries and taking the site offline.
+            @guest
+                Login to search for longer queries, or use Google instead.
+            @endguest
+        </span>
     </form>
 
     <hr/>
