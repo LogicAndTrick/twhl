@@ -60,6 +60,16 @@ class Egg
                 'christmas'
             ]
         ],
+        'pride' => [ // Pride month
+            'groups' => ['header'],
+            'type' => 'date',
+            'format' => 'm',
+            'match' => '06',
+            'classes' => [
+                'pride'
+            ],
+            'leet' => 6
+        ],
         'ninja' => [
             'groups' => ['background'],
             'type' => 'random',

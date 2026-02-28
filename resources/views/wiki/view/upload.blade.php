@@ -19,7 +19,7 @@
 
 @if (!$revision->is_active)
     <div class="alert alert-warning">
-        You are viewing an older revision of this image. Only the current revision is embedded on other pages.
+        <span class="fa fa-exclamation-triangle"></span> You are viewing an older revision of this image. Only the current revision is embedded on other pages.
         <a href="{{ act('wiki', 'page', $latest_revision->slug) }}">Click here</a> to see the current revision of this image.
     </div>
 @endif

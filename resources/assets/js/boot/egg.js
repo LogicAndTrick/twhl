@@ -1,24 +1,24 @@
 window.addEventListener('DOMContentLoaded', function () {
-    var isChristmas = document.body.classList.contains('egg-christmas');
+    const isChristmas = document.body.classList.contains('egg-christmas');
     if (!isChristmas) return;
 
-    var header = $('.header-image');
-    var logo = header.find('.logo-image');
-    var src = logo.attr('src');
+    const header = $('.header-image');
+    const logo = header.find('.logo-image');
+    const src = logo.attr('src');
     logo.attr('src', src.replace(/twhl-logo-64\.png/ig, 'twhl-logo-xmas1.png'));
 
-    var snowCornerL = src.replace(/twhl-logo-64\.png/ig, 'snow-corner1.png');
-    var snowCornerR = src.replace(/twhl-logo-64\.png/ig, 'snow-corner2.png');
+    const snowCornerL = src.replace(/twhl-logo-64\.png/ig, 'snow-corner1.png');
+    const snowCornerR = src.replace(/twhl-logo-64\.png/ig, 'snow-corner2.png');
 
     // It's snowing!
 
-    var snowContainer = $('<div></div>').addClass('snowfield');
+    const snowContainer = $('<div></div>').addClass('snowfield');
     snowContainer.append($('<img />').attr('src', snowCornerL).addClass('snow-corner-left'));
     snowContainer.append($('<img />').attr('src', snowCornerR).addClass('snow-corner-right'));
 
-    var flakes = [];
-    var containerWidth = snowContainer.width();
-    var containerHeight = snowContainer.height();
+    const flakes = [];
+    let containerWidth = snowContainer.width();
+    let containerHeight = snowContainer.height();
 
     function repositionSnowflake(flake, initial) {
         if (initial) flake.top = Math.random() * 100;
@@ -34,33 +34,34 @@ window.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    var animating = false;
+    let animating = false;
     setInterval(function () {
         containerWidth = snowContainer.width();
         containerHeight = snowContainer.height();
-        var wasAnimating = animating;
+        const wasAnimating = animating;
         animating = containerWidth > 0 && containerHeight > 0;
         if (!wasAnimating && animating) window.requestAnimationFrame(animateSnowflakes);
     }, 2000);
 
-    var last = 0;
+    let last = 0;
+
     function animateSnowflakes(timestamp) {
-        var elapsed = (timestamp - last) / 1000;
+        const elapsed = (timestamp - last) / 1000;
         last = timestamp;
 
-        for (var i = 0; i < flakes.length; i++) {
-            var flake = flakes[i];
+        for (let i = 0; i < flakes.length; i++) {
+            const flake = flakes[i];
 
             flake.top += flake.vspeed * elapsed * 60;
             if (flake.top > 100) {
                 // If the tab is in the background or hasn't got animation frames for a while,
                 // all the snowflakes will get reset to the top of the container, and it looks
                 // bad. So retain the top value so flakes respawn in a nice random position.
-                var tt = flake.top % 100;
+                const tt = flake.top % 100;
                 repositionSnowflake(flake);
                 flake.top = tt;
             } else {
-                var distance = flake.hspeed * elapsed;
+                const distance = flake.hspeed * elapsed;
                 flake.left += distance * flake.direction;
                 flake.drift -= distance;
                 if (flake.drift < 0) {
@@ -79,10 +80,10 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     // 50-100 snowflakes
-    var numFlakes = Math.floor(Math.random() * 50 + 50);
+    const numFlakes = Math.floor(Math.random() * 50 + 50);
 
-    for (var i = 0; i < numFlakes; i++) {
-        var flake = {
+    for (let i = 0; i < numFlakes; i++) {
+        const flake = {
             element: $('<div></div>').addClass('snowflake'),
             top: 0,
             left: 0,
@@ -99,4 +100,14 @@ window.addEventListener('DOMContentLoaded', function () {
 
     animating = true;
     window.requestAnimationFrame(animateSnowflakes);
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    const isPride = document.body.classList.contains('egg-pride');
+    if (!isPride) return;
+
+    const header = document.querySelector('.header-image');
+    const logo = header.querySelector('.logo-image');
+    const src = logo.src;
+    logo.src = src.replace(/twhl-logo-64\.png/ig, 'twhl-logo-pride.png');
 });

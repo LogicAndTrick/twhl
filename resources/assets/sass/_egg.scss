@@ -5,6 +5,31 @@ body {
   &.egg-ant {
     background-image: url('../images/egg/antlovesyou.gif');
   }
+  &.egg-pride {
+    --pride-gradient: linear-gradient(
+      135deg,
+      #ff6363, #ffcc72, #ffff76,
+      #7bff7b, #9292ff, #cf87ff,
+      white, #ffa6b9, #6be1ff
+    );
+
+    .header-desktop {
+      .header-image {
+        a {
+          &:hover {
+            //text-shadow: var(--pride-gradient) 0 0 2px;
+            //text-decoration: none;
+          }
+          .subtitle, .title {
+            background-image: var(--pride-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+          }
+        }
+      }
+    }
+  }
 }
 
 .header-desktop .snowfield {

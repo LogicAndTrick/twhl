@@ -25,7 +25,7 @@ mix.scripts([
         'resources/assets/js/lib/jssor.slider.mini.js',
         'resources/assets/js/lib/autolinker.js',
         'resources/assets/js/lib/highlight.pack.js',
-        "resources/assets/js/boot/christmas.js",
+        "resources/assets/js/boot/egg.js",
         "resources/assets/js/boot/comment-meta-rating.js",
         "resources/assets/js/boot/embed.js",
         "resources/assets/js/boot/embed-inline.js",
