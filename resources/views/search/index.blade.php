@@ -1,6 +1,12 @@
 @title($searched ? 'Search results' : 'Search TWHL')
 @extends('app')
 
+@section('scripts')
+    @guest
+    {!! ReCaptcha::htmlScriptTagJsApi() !!}
+    @endguest
+@endsection
+
 @section('content')
     <h1>{{ $searched ? 'Search results' : 'Search TWHL' }}</h1>
 
@@ -16,6 +22,15 @@
                 Login to search for longer queries, or use Google instead.
             @endguest
         </span>
+
+        @guest
+            <div class="d-flex justify-content-center mt-2">
+                {!! ReCaptcha::htmlFormSnippet() !!}
+            </div>
+            @error('g-recaptcha-response')
+                <p class="help-block text-danger">Please check the box to prove that you're not a robot.</p>
+            @enderror
+        @endguest
     </form>
 
     <hr/>
@@ -35,7 +50,9 @@
 
             <h2>Wiki articles</h2>
             @if ($results_wikis && $results_wikis->count() > 0)
+                @auth
                 {!! $results_wikis->render() !!}
+                @endauth
                 <table class="table table-sm table-striped table-bordered search-wikis">
                     <thead>
                         <tr>
@@ -69,7 +86,9 @@
 
             <h2>Thread titles</h2>
             @if ($results_threads && $results_threads->count() > 0)
+                @auth
                 {!! $results_threads->render() !!}
+                @endauth
                 <table class="table table-sm table-striped table-bordered search-threads">
                     <thead>
                         <tr>
@@ -103,7 +122,9 @@
 
             <h2>Forum posts</h2>
             @if ($results_posts && $results_posts->count() > 0)
+                @auth
                 {!! $results_posts->render() !!}
+                @endauth
                 <table class="table table-sm table-striped table-bordered search-posts">
                     <thead>
                         <tr>
@@ -138,7 +159,9 @@
 
             <h2>Vault items</h2>
             @if ($results_vaults && $results_vaults->count() > 0)
+                @auth
                 {!! $results_vaults->render() !!}
+                @endauth
                 <p>For a more refined vault search, go to the <a href="{{ act('vault', 'index') }}">vault listings page</a>.</p>
                 <table class="table table-sm table-striped table-bordered search-wikis">
                     <thead>
@@ -178,7 +201,9 @@
 
             <h2>Users</h2>
             @if ($results_users && $results_users->count() > 0)
+                @auth
                 {!! $results_users->render() !!}
+                @endauth
                 <table class="table table-sm table-striped table-bordered search-users">
                     <thead>
                         <tr>

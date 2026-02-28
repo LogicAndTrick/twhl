@@ -8,6 +8,7 @@ use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiRevision;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SearchController extends Controller {
 
@@ -19,12 +20,21 @@ class SearchController extends Controller {
     public function getIndex()
    	{
         $search = trim(Request::input('search'));
-        $max_search_length = Auth::check() ? 50 : 20;
+        $max_search_length = Auth::check() ? 60 : 30;
         if (mb_strlen($search) > $max_search_length) {
             $search = mb_substr($search, 0, $max_search_length);
         }
-
         $searched = !!$search;
+
+        if (!Auth::check()) {
+            $validator = Validator::make(Request::all(), [
+                'g-recaptcha-response' => 'required|recaptcha',
+                'search' => 'required|max:30'
+            ]);
+            if ($validator->fails()) {
+                $searched = false;
+            }
+        }
 
         $users = null;
         $vaults = null;
@@ -110,3 +120,4 @@ class SearchController extends Controller {
    	}
 
 }
+
