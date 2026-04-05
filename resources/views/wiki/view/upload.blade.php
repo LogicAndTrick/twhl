@@ -24,46 +24,51 @@
     </div>
 @endif
 
-@if ($upload->isEmbeddable())
-    <div class="wiki-image">
-        @if ($upload->isImage())
-                <img src="{{ $upload->getResourceFileName() }}" alt="{{ $revision->getNiceTitle() }}">
-        @elseif ($upload->isVideo())
-            <video src="{{ $upload->getResourceFileName() }}" controls>
-                Your browser doesn't support embedded video. Use the embed URL below to download it.
-            </video>
-        @elseif ($upload->isAudio())
-            <audio src="{{ $upload->getResourceFileName() }}" controls>
-                Your browser doesn't support embedded audio. Use the embed URL below to download it.
-            </audio>
-        @endif
+@if ($upload)
+    @if ($upload->isEmbeddable())
+        <div class="wiki-image">
+            @if ($upload->isImage())
+                    <img src="{{ $upload->getResourceFileName() }}" alt="{{ $revision->getNiceTitle() }}">
+            @elseif ($upload->isVideo())
+                <video src="{{ $upload->getResourceFileName() }}" controls>
+                    Your browser doesn't support embedded video. Use the embed URL below to download it.
+                </video>
+            @elseif ($upload->isAudio())
+                <audio src="{{ $upload->getResourceFileName() }}" controls>
+                    Your browser doesn't support embedded audio. Use the embed URL below to download it.
+                </audio>
+            @endif
+        </div>
+    @endif
+
+    <div class="text-center">
+        <a class="btn btn-success btn-lg" href="{{ $upload->getEmbeddableFileName() }}">
+            <span class="fa fa-download"></span> Download
+        </a>
     </div>
+
+    <h4>Upload Details</h4>
+    <dl class="dl-horizontal dl-wide">
+        <dt>File Size</dt><dd>{{ format_filesize($revision->getFileSize()) }}</dd>
+        <dt>Download WikiCode (TWHL only)</dt><dd>[file:{{ $revision->title }}]</dd>
+        @if ($upload->isImage())
+            <dt>Image Width</dt><dd>{{ $revision->getImageWidth() }}</dd>
+            <dt>Image Height</dt><dd>{{ $revision->getImageHeight() }}</dd>
+            <dt>Embed WikiCode (TWHL only)</dt><dd>[img:{{ $revision->title }}]</dd>
+        @endif
+        @if ($upload->isVideo())
+            <dt>Embed WikiCode (TWHL only)</dt><dd>[video:{{ $revision->title }}]</dd>
+        @endif
+        @if ($upload->isAudio())
+            <dt>Embed WikiCode (TWHL only)</dt><dd>[audio:{{ $revision->title }}]</dd>
+        @endif
+        <dt>Direct URL (dynamic)</dt><dd><a href="{{ $upload->getEmbeddableFileName() }}">{{ $upload->getEmbeddableFileName() }}</a></dd>
+        <dt>Direct URL (permalink)</dt><dd><a href="{{ $upload->getResourceFileName() }}">{{ $upload->getResourceFileName() }}</a></dd>
+    </dl>
+@else
+    <h4>File not found</h4>
+    <p>The file for this revision was not found. Use a newer revision.</p>
 @endif
-
-<div class="text-center">
-    <a class="btn btn-success btn-lg" href="{{ $upload->getEmbeddableFileName() }}">
-        <span class="fa fa-download"></span> Download
-    </a>
-</div>
-
-<h4>Upload Details</h4>
-<dl class="dl-horizontal dl-wide">
-    <dt>File Size</dt><dd>{{ format_filesize($revision->getFileSize()) }}</dd>
-    <dt>Download WikiCode (TWHL only)</dt><dd>[file:{{ $revision->title }}]</dd>
-    @if ($upload->isImage())
-        <dt>Image Width</dt><dd>{{ $revision->getImageWidth() }}</dd>
-        <dt>Image Height</dt><dd>{{ $revision->getImageHeight() }}</dd>
-        <dt>Embed WikiCode (TWHL only)</dt><dd>[img:{{ $revision->title }}]</dd>
-    @endif
-    @if ($upload->isVideo())
-        <dt>Embed WikiCode (TWHL only)</dt><dd>[video:{{ $revision->title }}]</dd>
-    @endif
-    @if ($upload->isAudio())
-        <dt>Embed WikiCode (TWHL only)</dt><dd>[audio:{{ $revision->title }}]</dd>
-    @endif
-    <dt>Direct URL (dynamic)</dt><dd><a href="{{ $upload->getEmbeddableFileName() }}">{{ $upload->getEmbeddableFileName() }}</a></dd>
-    <dt>Direct URL (permalink)</dt><dd><a href="{{ $upload->getResourceFileName() }}">{{ $upload->getResourceFileName() }}</a></dd>
-</dl>
 
 <h3>Upload Information</h3>
 <div class="wiki bbcode {{$revision->user->getClasses()}}">
