@@ -133,6 +133,11 @@ class WikiController extends Controller {
             $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits', 'wiki_revision_credits.user', 'wiki_object', 'user'])->findOrFail($revision);
         }
 
+        if ($rev && !$rev->wiki_object) {
+            // revision exists but object has been deleted.
+            abort(404);
+        }
+
         // A category will always have the list of pages at the bottom, even if the page doesn't exist
         $max_combined_cats = Auth::check() ? self::MAX_COMBINED_CATEGORIES_AUTHENTICATED : self::MAX_COMBINED_CATEGORIES_UNAUTHENTICATED;
         $cat_name = null;
@@ -192,7 +197,7 @@ class WikiController extends Controller {
         }
 
         $upload = null;
-        if ($rev && $rev->wiki_object && $rev->wiki_object->type_id == WikiType::UPLOAD) {
+        if ($rev && $rev->wiki_object->type_id == WikiType::UPLOAD) {
             $upload = $rev->getUpload();
         }
 
