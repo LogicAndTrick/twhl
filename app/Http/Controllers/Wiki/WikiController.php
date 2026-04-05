@@ -192,7 +192,7 @@ class WikiController extends Controller {
         }
 
         $upload = null;
-        if ($rev && $rev->wiki_object->type_id == WikiType::UPLOAD) {
+        if ($rev && $rev->wiki_object && $rev->wiki_object->type_id == WikiType::UPLOAD) {
             $upload = $rev->getUpload();
         }
 
