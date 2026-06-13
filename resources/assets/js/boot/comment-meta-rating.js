@@ -1,28 +1,43 @@
 
-$(function() {
-    $('.comment-meta-rating').each(function() {
-        var $t = $(this),
-           sel = $t.find('select').css('display', 'none'),
-           con = $t.find('.stars'),
-            fs = con.data('full-star'),
-            es = con.data('empty-star');
-        for (var i = 1; i <= 5; i++) {
-            con.append(
-                $('<img/>').attr({ src: es, alt: 'star' }).data({ score: i }).click(function() {
-                    sel.val($(this).data('score')).change();
-                })
-            );
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.comment-meta-rating').forEach(self => {
+        const sel = self.querySelector('select');
+        const con = self.querySelector('.stars');
+
+        if (!sel || !con) return;
+
+        sel.style.display = 'none';
+
+        const fs = con.dataset.fullStar;
+        const es = con.dataset.emptyStar;
+
+        for (let i = 1; i <= 5; i++) {
+            const img = document.createElement('img');
+            img.src = es;
+            img.alt = 'star';
+            img.dataset['score'] = i.toString();
+            img.addEventListener('click', event => {
+                sel.value = event.target.dataset.score;
+                sel.dispatchEvent(new Event('change'));
+            });
+            con.appendChild(img);
         }
-        con.append(
-            $(' <button></button>').attr({ type: 'button' }).addClass('btn btn-outline-inverse btn-sm').text('Remove Rating').click(function() {
-                sel.val(0).change();
-            })
-        );
-        sel.on('change', function() {
-            var val = $(this).val();
-            con.find('img').each(function() {
-                var st = $(this), idx = st.data('score');
-                st.attr('src', idx <= val ? fs : es);
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-outline-inverse btn-sm';
+        button.textContent = 'Clear rating';
+        button.addEventListener('click', event => {
+            sel.value = '0';
+            sel.dispatchEvent(new Event('change'));
+        });
+        con.appendChild(button);
+
+        sel.addEventListener('change', event => {
+            const val = event.target.value;
+            con.querySelectorAll('img').forEach(st => {
+                const idx = st.dataset['score'];
+                st.setAttribute('src', idx <= val ? fs : es);
             });
         });
     });
