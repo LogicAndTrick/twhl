@@ -15,7 +15,9 @@ document.addEventListener("click", event => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.caption-panel').forEach(x => x.tabindex = -1);
+    document.querySelectorAll('.caption-panel').forEach(x => {
+        x.setAttribute('tabindex', '-1');
+    });
 });
 
 document.addEventListener('click', () => {
