@@ -77,7 +77,7 @@ const embed_callbacks = {
             });
 
             // Set the content
-            element.html(embed_no_slider);
+            element.innerHTML = embed_no_slider;
         } else {
 
             const sid = 'vault-slider-' + (__uniq++);
@@ -109,7 +109,7 @@ const embed_callbacks = {
             });
 
             // Set the content
-            element.html(embed);
+            element.innerHTML = embed;
 
             // Initialise the slide show
             const slider = new $JssorSlider$(sid, {
@@ -135,23 +135,24 @@ const embed_callbacks = {
     }
 };
 
-$(document).on('appear', '.embed-content .uninitialised', function(e, $affected) {
-    const $t = $(this).text('Loading...'),
-        par = $t.parent(),
-        typ = $t.data('embed-type'),
-        id = $t.data(typ + '-id'),
-        url = window.urls.embed[typ];
+document.addEventListener('DOMContentLoaded', () => {
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
 
-    if ($t.data('stop')) return;
-    $t.data('stop', true);
+            const el = entry.target;
+            el.textContent = 'Loading...';
 
-    $.get(url, { id: id, expand: 'user,vault_screenshots,game,vault_category' }).done(function(data) {
-        embed_callbacks[typ].call(window, par, data[0]);
+            const par = el.parentElement,
+                typ = el.dataset['embedType'],
+                id = el.dataset[typ + 'Id'],
+                url = window.urls.embed[typ];
+            obs.unobserve(el);
+
+            fetch(url + '?id=' + id + '&expand=user,vault_screenshots,game,vault_category')
+                .then(resp => resp.json())
+                .then(data => embed_callbacks[typ].call(window, par, data[0]));
+        });
     });
-});
-
-$(function() {
-    $('.embed-content .uninitialised').appear();
-    // Force already-visible stuff to appear
-    setTimeout($.force_appear, 10);
+    document.querySelectorAll('.embed-content .uninitialised').forEach(el => obs.observe(el));
 });
