@@ -49,6 +49,10 @@ User-agent: Timpibot
 User-agent: VelenPublicWebCrawler
 User-agent: Webzio-Extended
 User-agent: YouBot
+User-agent: YandexBot
+User-agent: YandexBot/3.0
+User-agent: SemrushBot
+User-agent: SemrushBot/7~bl
 User-Agent: AhrefsBot
 User-Agent: MJ12bot
 User-Agent: DotBot
