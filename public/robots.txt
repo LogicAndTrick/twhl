@@ -49,4 +49,7 @@ User-agent: Timpibot
 User-agent: VelenPublicWebCrawler
 User-agent: Webzio-Extended
 User-agent: YouBot
+User-Agent: AhrefsBot
+User-Agent: MJ12bot
+User-Agent: DotBot
 Disallow: /
