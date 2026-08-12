@@ -4,3 +4,4 @@
 /vendor
 .env
 composer.phar
+_ide_helper*.php

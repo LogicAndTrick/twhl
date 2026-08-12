@@ -2,7 +2,9 @@
 
 namespace Tests;
 
-class TestCase extends \PHPUnit\Framework\TestCase {
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase {
 
     protected $baseUrl = 'http://twhl';
 

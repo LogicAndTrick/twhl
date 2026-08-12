@@ -142,7 +142,7 @@ class BBCodeTest extends TestCase {
     }
 
     public function testState() {
-        $state = new \App\Helpers\BBCode\State('1 [b]2[/b] 3');
+        $state = new \LogicAndTrick\WikiCodeParser\State('1 [b]2[/b] 3');
 
         $str = $state->ScanTo('[');
         $this->assertEquals('1 ', $str);
