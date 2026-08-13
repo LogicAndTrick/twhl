@@ -1,7 +1,15 @@
+# ide stuff
 /.idea
-/docker-for-development/mysql-data
+/.vscode
+_ide_helper*.php
+
+# package managers
 /node_modules
 /vendor
-.env
 composer.phar
-_ide_helper*.php
+npm-debug.log
+
+# development
+.env
+/docker-for-development/mysql-data
+/public/hot

@@ -35,7 +35,7 @@
         <meta property="og:url" content="{{Request::url()}}">
         <meta name="theme-color" content="#e68a27">
 
-        <link href="{{ mix('/css/app.css') }}?sl" rel="stylesheet">
+        @vite('resources/assets/sass/app.scss')
         <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="32x32">
         <link rel="icon" href="{{ asset('images/twhl-logo.svg') }}" type="image/svg+xml">
         <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
@@ -54,7 +54,7 @@
         <![endif]-->
 
         <!-- Scripts -->
-        <script type="text/javascript" src="{{ mix('/js/all.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('/js/all.js') }}"></script>
     </head>
 <body class="{{ egg() }}">
 

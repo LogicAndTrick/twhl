@@ -4,10 +4,10 @@
 // Stuff that's everywhere
 
 body {
-    background: url('../images/body-background.png') #f4f4f4;
+    background: url('/images/body-background.png') #f4f4f4;
 
     [data-bs-theme="dark"] & {
-      background: url('../images/body-background-dark.png') #333;
+      background: url('/images/body-background-dark.png') #333;
     }
 }
 
