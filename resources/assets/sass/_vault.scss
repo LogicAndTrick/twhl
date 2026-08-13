@@ -1,273 +1,257 @@
 @use 'sass:map';
 
 .vault-filter-form {
-  .form-control {
-    height: auto;
-  }
+    .form-control {
+        height: auto;
+    }
 }
 .vault-filter-container {
-  .btn {
-    padding: 0.5rem;
-    border-color: var(--bs-border-color);
-    border-width: 1px 0 1px 1px;
-  }
-  .dropdown-toggle::after {
-    vertical-align: middle;
-  }
-  .filter-info {
-    font-size: 0.8rem;
-  }
-  @media (max-width: map.get($grid-breakpoints, 'xl') - 1px) {
-    .btn-group > .btn {
-      padding: 0.4rem;
+    .btn {
+        padding: 0.5rem;
+        border-color: var(--bs-border-color);
+        border-width: 1px 0 1px 1px;
+    }
+    .dropdown-toggle::after {
+        vertical-align: middle;
     }
     .filter-info {
-      font-size: 0.73rem;
-      img {
-        max-height: 18px;
-      }
+        font-size: 0.8rem;
     }
-  }
-  @media (max-width: map.get($grid-breakpoints, 'lg') - 1px) {
-    .btn-group > .btn {
-      padding-left: 12px;
-      padding-right: 12px;
+    @media (max-width: #{map.get($grid-breakpoints, 'xl') - 1px}) {
+        .btn-group > .btn {
+            padding: 0.4rem;
+        }
+        .filter-info {
+            font-size: 0.73rem;
+            img {
+                max-height: 18px;
+            }
+        }
     }
-    .filter-info {
-      display: none;
+    @media (max-width: #{map.get($grid-breakpoints, 'lg') - 1px}) {
+        .btn-group > .btn {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        .filter-info {
+            display: none;
+        }
     }
-  }
-  @media (max-width: map.get($grid-breakpoints, 'md') - 1) {
-    & > .btn-group {
-      display: none;
+    @media (max-width: #{map.get($grid-breakpoints, 'md') - 1px}) {
+        & > .btn-group {
+            display: none;
+        }
     }
-  }
 }
 
 .vault-filter {
-  li {
-    white-space: nowrap;
-    padding: 5px 10px;
-    cursor: pointer;
-
-    transition: background-color ease 0.2s;
-
-    &:hover {
-      background-color: var(--bs-border-color);
-    }
-
-    &.active {
-      background-color: var(--bs-primary);
-      color: white;
-    }
-
-    &.loading{
-      font-style: italic;
-      background-color: var(--bs-border-color);
-      text-align: center;
-
-      &::after {
-        display: none;
-      }
-    }
-
-    &.loading:hover {
-      background-color: transparent;
-    }
-
-    &.clear-filter {
-      text-align: center;
-    }
-  }
-
-  .user-item {
-    &, &.active {
-      background-color: transparent;
-      color: var(--bs-body-color);
-      cursor: default;
-    }
-
-    .fa {
-      float: right;
-      border-radius: 4px;
-      padding: 5px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: var(--bs-border-color);
-      }
-    }
-  }
-
-  .search-form {
-    cursor: default;
-
-    &:hover {
-      background: transparent;
-    }
-    input {
-      display: block;
-      float: none;
-    }
-
-    ul.search-results {
-      margin-top: 5px;
-      padding: 0;
-      list-style-type: none;
-
-      li {
-        padding: 3px;
-        border-radius: 5px;
+    li {
+        white-space: nowrap;
+        padding: 5px 10px;
         cursor: pointer;
 
+        transition: background-color ease 0.2s;
+
         &:hover {
-          background: var(--bs-border-color);
+            background-color: var(--bs-border-color);
+        }
+
+        &.active {
+            background-color: var(--bs-primary);
+            color: white;
+        }
+
+        &.loading {
+            font-style: italic;
+            background-color: var(--bs-border-color);
+            text-align: center;
+
+            &::after {
+                display: none;
+            }
+        }
+
+        &.loading:hover {
+            background-color: transparent;
+        }
+
+        &.clear-filter {
+            text-align: center;
+        }
+    }
+
+    .user-item {
+        &,
+        &.active {
+            background-color: transparent;
+            color: var(--bs-body-color);
+            cursor: default;
         }
 
         .fa {
-          display: none;
+            float: right;
+            border-radius: 4px;
+            padding: 5px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--bs-border-color);
+            }
         }
-      }
     }
-  }
+
+    .search-form {
+        cursor: default;
+
+        &:hover {
+            background: transparent;
+        }
+        input {
+            display: block;
+            float: none;
+        }
+
+        ul.search-results {
+            margin-top: 5px;
+            padding: 0;
+            list-style-type: none;
+
+            li {
+                padding: 3px;
+                border-radius: 5px;
+                cursor: pointer;
+
+                &:hover {
+                    background: var(--bs-border-color);
+                }
+
+                .fa {
+                    display: none;
+                }
+            }
+        }
+    }
 }
 
 .filter-games {
-  width: 624px;
-  white-space: normal;
+    width: 624px;
+    white-space: normal;
 
-  li {
-    padding: 5px;
-    display: inline-block;
-    width: 200px;
-    margin-left: 5px;
-    border-radius: 4px;
-    overflow: hidden;
+    li {
+        padding: 5px;
+        display: inline-block;
+        width: 200px;
+        margin-left: 5px;
+        border-radius: 4px;
+        overflow: hidden;
 
-    &.clear-filter {
-      width: auto;
-      margin: 0 5px 5px;
-      display: block;
+        &.clear-filter {
+            width: auto;
+            margin: 0 5px 5px;
+            display: block;
+        }
     }
-  }
 }
 
 .vault-list {
-  padding: 1rem 15px;
+    padding: 1rem 15px;
 
-  .col {
-    padding: 0.3rem;
-  }
-  .tile {
-    margin: 0;
-    max-width: 100%;
-    width: 100%;
-  }
-  .tile-main > img {
-    min-width: 250px;
-  }
-  .broken-download .tile-main > img {
-    filter: grayscale(50%) blur(2px);
-  }
-  .broken-download-warning {
-    color: away(var(--bs-warning));
-  }
-
-  @media (map.get($grid-breakpoints, 'lg') <= width < map.get($grid-breakpoints, 'xl')) {
+    .col {
+        padding: 0.3rem;
+    }
+    .tile {
+        margin: 0;
+        max-width: 100%;
+        width: 100%;
+    }
+    .tile-main > img {
+        min-width: 250px;
+    }
+    .broken-download .tile-main > img {
+        filter: grayscale(50%) blur(2px);
+    }
     .broken-download-warning {
-      font-size: 0.6875rem;
+        color: away(var(--bs-warning));
     }
-    .broken-download-icon {
-      display: none;
+
+    @media (map.get($grid-breakpoints, 'lg') <= width < map.get($grid-breakpoints, 'xl')) {
+        .broken-download-warning {
+            font-size: 0.6875rem;
+        }
+        .broken-download-icon {
+            display: none;
+        }
+        .tile-title {
+            font-size: 0.75rem;
+        }
     }
-    .tile-title {
-      font-size: 0.75rem;
-    }
-  }
 }
 
 .vault-item {
-  .game-icon {
-    height: 1.3em;
-  }
+    .game-icon {
+        height: 1.3em;
+    }
 }
 
-#vault-slider {
-  .slider, &.slider { height: 350px; }
-  .slides { height: 260px; }
-
-  @media (min-width: map.get($grid-breakpoints, 'md')) {
-    .slider, &.slider { height: 470px; }
-    .slides { height: 380px; }
-  }
-
-  @media (min-width: map.get($grid-breakpoints, 'lg')) {
-    .slider, &.slider { height: 610px; }
-    .slides { height: 520px; }
-  }
-
-  @media (min-width: map.get($grid-breakpoints, 'xl')) {
-    .slider, &.slider { height: 550px; }
-    .slides { height: 460px; }
-  }
+.vault-slider-container {
+    margin-bottom: 1rem;
 }
 
 .vault-details {
-  dl {
-    margin-bottom: 0;
-  }
-  .stars {
-    display: block;
-    text-align: center;
-    margin-bottom: 1rem;
-
-    img {
-      height: 2rem;
+    dl {
+        margin-bottom: 0;
     }
-  }
+    .stars {
+        display: block;
+        text-align: center;
+        margin-bottom: 1rem;
 
-  .btn {
-    margin-top: 0.5rem;
-
-    @media (min-width: map.get($grid-breakpoints, 'md')) and (max-width: map.get($grid-breakpoints, 'lg') - 1px) {
-      font-size: 0.7rem;
+        img {
+            height: 2rem;
+        }
     }
-  }
+
+    .btn {
+        margin-top: 0.5rem;
+
+        @media (min-width: #{map.get($grid-breakpoints, 'md')}) and (max-width: #{map.get($grid-breakpoints, 'lg') - 1px}) {
+            font-size: 0.7rem;
+        }
+    }
 }
 
 .screenshots-dnd-explanation {
-  font-size: 12px;
-  line-height: 40px;
-  margin: 0 20px;
-  text-align: right;
+    font-size: 12px;
+    line-height: 40px;
+    margin: 0 20px;
+    text-align: right;
 }
 
 .screenshot-list {
-
-  li {
-    border-radius: 4px;
-    border: 1px solid var(--bs-border-color);
-    padding: 10px;
-    background-color: var(--bs-body-bg);
-  }
-
-  .drag-handle {
-    display: inline-block;
-    float: right;
-    cursor: move;
-
-    .fa-bars {
-      color: #999;
-      font-size: 26px;
+    li {
+        border-radius: 4px;
+        border: 1px solid var(--bs-border-color);
+        padding: 10px;
+        background-color: var(--bs-body-bg);
     }
-  }
 
-  img {
-    max-height: 60px;
-  }
+    .drag-handle {
+        display: inline-block;
+        float: right;
+        cursor: move;
+
+        .fa-bars {
+            color: #999;
+            font-size: 26px;
+        }
+    }
+
+    img {
+        max-height: 60px;
+    }
 }
 
 .review-scores-label {
-  line-height: 2em;
-  text-align: center;
+    line-height: 2em;
+    text-align: center;
 }

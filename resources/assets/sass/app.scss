@@ -10,13 +10,8 @@ $fa-font-path: "/fonts";
 @import "font-awesome/scss/font-awesome";
 
 // Third party
-
-@import "select2";
-@import "diffview";
-@import "slider";
+@import "swiper";
 @import "hljs";
-@import "../css/jquery.countdown";
-@import "dropzone";
 
 // Utils
 @import "responsive";

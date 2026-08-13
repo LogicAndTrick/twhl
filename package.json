@@ -6,6 +6,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.11",
     "laravel-vite-plugin": "^3.2.0",
     "oxfmt": "^0.63.0",
     "oxlint": "^1.78.0",

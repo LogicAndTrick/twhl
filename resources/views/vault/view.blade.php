@@ -49,35 +49,32 @@
         <div class="slot-main">
             <div class="row">
                 <div class="col-12 col-xl-9 vault-slider-container">
-                    <div id="vault-slider" class="slider">
-                        <div class="loading" data-u="loading">
-                            Loading...
-                        </div>
-                        <div class="slides" data-u="slides">
-                            @if (count($item->vault_screenshots) > 0)
+                    @if (count($item->vault_screenshots) > 0)
+                        <div id="vault-slider" class="swiper">
+                            <div class="swiper-wrapper">
                                 @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
-                                <div>
-                                    <img data-u="image" data-src2="{{ asset('uploads/vault/'.$sshot->image_large) }}" alt="Screenshot" />
-                                    <img data-u="thumb" data-src2="{{ asset('uploads/vault/'.$sshot->image_thumb) }}" alt="Thumbnail" />
-                                </div>
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('uploads/vault/'.$sshot->image_large) }}" alt="Screenshot" />
+                                    </div>
                                 @endforeach
-                            @else
-                                <div>
-                                    <img data-u="image" data-src2="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
-                                    <img data-u="thumb" data-src2="{{ asset('images/no-screenshot-320.png') }}" alt="Thumbnail" />
-                                </div>
-                            @endif
+                            </div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
                         </div>
-                        <div data-u="thumbnavigator" class="thumbs">
-                            <div data-u="slides">
-                                <div data-u="prototype" class="p">
-                                    <div data-u="thumbnailtemplate" class="i"></div>
-                                </div>
+                        <div id="vault-thumbnails" class="swiper swiper-thumbs">
+                            <div class="swiper-wrapper">
+                                @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
+                                    <div class="swiper-slide">
+                                        <img src="{{ asset('uploads/vault/'.$sshot->image_thumb) }}" alt="Thumbnail" />
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
-                        <span data-u="arrowleft" class="arrow left" style="top: 123px; left: 8px;"></span>
-                        <span data-u="arrowright" class="arrow right" style="top: 123px; right: 8px;"></span>
-                    </div>
+                    @else
+                        <div class="empty-swiper">
+                            <img src="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
+                        </div>
+                    @endif
                 </div>
                 <div class="col-12 col-xl-3 vault-key-info">
                     <div class="row">
@@ -183,28 +180,15 @@
 
 @section('scripts')
     <script type="text/javascript">
-        $(function() {
-            $('[data-bs-toggle="tooltip"]').tooltip()
-
-            var slider = new $JssorSlider$("vault-slider", {
-                $AutoPlay: true,
-                $AutoPlayInterval: 4000,
-                $SlideDuration: 250,
-                $FillMode: 5,
-
-                $ThumbnailNavigatorOptions: {
-                    $Class: $JssorThumbnailNavigator$,
-                    $ChanceToShow: 2,
-                    $SpacingX: 8,
-                    $DisplayPieces: 10,
-                    $ParkingPosition: 360
-                },
-
-                $ArrowNavigatorOptions: {
-                    $Class: $JssorArrowNavigator$,
-                    $AutoCenter: 2
-                }
-            });
+        document.addEventListener('DOMContentLoaded', () => {
+            const swiper = document.getElementById('vault-slider');
+            const thumbs = document.getElementById('vault-thumbnails');
+            if (swiper) {
+                window.initialiseSwiper({
+                    element: swiper,
+                    thumbnailsElement: thumbs
+                });
+            }
         });
     </script>
 @endsection

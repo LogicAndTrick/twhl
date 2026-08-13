@@ -1,59 +1,75 @@
+
+<div id="gallery-modal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">View Entry Screenshots</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="loading-el text-center p-4">
+            <img src="{{ asset("images/loading.gif") }}" alt="Loading..." /> Loading...
+        </div>
+        <div class="gallery-el d-none">
+            ...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-inverse" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
-    var gallery_url_template = "{{ url('competition/entry-screenshot-gallery/{id}') }}";
-    $(function() {
-        $('.gallery-button').click(function(event) {
-            event.preventDefault();
-            var $t = $(this),
-                par = $t.closest('[data-id]'),
-                id = par.data('id'),
-                title = par.data('title'),
-                obj = ({id}),
-                gallery_query;
-            var bb = bootbox.alert({
-                title: title || 'View Entry Screenshots',
-                message: '<div class="text-center"><img src="{{ asset("images/loading.gif") }}" alt="Loading..." /> Loading...</div>',
-                size: 'large',
-                backdrop: true,
-                buttons: {
-                    ok: {
-                        label: "Close",
-                        className: "btn-inverse"
-                    }
-                },
-                callback: function() {
-                    if (gallery_query) gallery_query.abort();
-                    this.find('.slider').remove();
-                }
-            });
+    const gallery_url_template = "{{ url('competition/entry-screenshot-gallery/-id-') }}";
+    document.addEventListener('DOMContentLoaded', () => {
+        const modalEl = document.getElementById('gallery-modal'),
+              titleEl = modalEl.querySelector('.modal-title'),
+              loadingEl = modalEl.querySelector('.loading-el'),
+              galleryEl = modalEl.querySelector('.gallery-el'),
+              modal = new bootstrapModal(modalEl);
+        
+        let abort = undefined;
+        let currentSwiper = undefined;
+        modalEl.addEventListener('hidden.bs.modal', () => {
+            abort?.abort();
+            currentSwiper?.destroy();
+            galleryEl.replaceChildren();
+        });
 
-            // Adding a short delay here forces the slider to process after the modal has dropped in
-            //  This makes sure that the width of the slider is correctly set
-            var delay = $.Deferred();
-            setTimeout(delay.resolve, 200);
+        document.querySelectorAll('.gallery-button').forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.preventDefault();
+                const t = event.target,
+                      par = t.closest('[data-id]'),
+                      id = par.dataset.id,
+                      title = par.dataset.title;
 
-            gallery_query = $.get(template(gallery_url_template, obj));
-            $.when(gallery_query, delay.promise()).done(function(args) {
-                var result = args[0];
-                var con = bb.find('.bootbox-body').html(result).find('.slider')[0];
-                var slider = new $JssorSlider$(con, {
-                    $AutoPlay: true,
-                    $AutoPlayInterval: 4000,
-                    $SlideDuration: 250,
-                    $FillMode: 5,
+                titleEl.textContent = title;
+                loadingEl.classList.toggle('d-none', false);
+                galleryEl.classList.toggle('d-none', true);
 
-                    $ThumbnailNavigatorOptions: {
-                        $Class: $JssorThumbnailNavigator$,
-                        $ChanceToShow: 2,
-                        $SpacingX: 8,
-                        $DisplayPieces: 10,
-                        $ParkingPosition: 360
-                    },
+                abort = new AbortController();
+                fetch(gallery_url_template.replace('-id-', id), { signal: abort.signal })
+                    .then(x => x.text())
+                    .then(x => {
+                        const el = document.createElement('div');
+                        el.innerHTML = x;
+                        galleryEl.replaceChildren(el);
+                        const swiper = el.querySelector('#competition-slider');
+                        const thumbs = el.querySelector('#competition-thumbnails');
+                        if (swiper) {
+                            window.initialiseSwiper({
+                                element: swiper,
+                                thumbnailsElement: thumbs
+                            });
+                        }
+                        loadingEl.classList.toggle('d-none', true);
+                        galleryEl.classList.toggle('d-none', false);
+                    });
 
-                    $ArrowNavigatorOptions: {
-                        $Class: $JssorArrowNavigator$,
-                        $AutoCenter: 2
-                    }
-                });
+                modal.show();
             });
         });
     });

@@ -7,12 +7,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 // dropzone -> uppy
 //
 // boot scripts
+import './boot/bootstrap';
 // import './boot/egg.js';
 // import './boot/comment-meta-rating.js';
 // import './boot/embed.js';
 // import './boot/embed-inline.js';
 // import './boot/form-validation.js';
 import './boot/highlight';
+import './boot/swiper';
 // import './boot/home.js';
 // import './boot/shoutbox.js';
 // import './boot/util.js';
