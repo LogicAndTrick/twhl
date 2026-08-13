@@ -1,7 +1,7 @@
 /**
  * Get the saved theme if we have one, otherwise use the browser preference.
  */
-function getTheme() {
+export function getTheme() {
     const stored = localStorage.getItem('theme');
     if (stored === 'light' || stored === 'dark') return stored;
 
@@ -9,22 +9,26 @@ function getTheme() {
     return media.matches ? 'dark' : 'light';
 }
 
+export function detectAndSetTheme() {
+    document.documentElement.setAttribute('data-bs-theme', getTheme());
+}
+
 // set the theme immediately
-document.documentElement.setAttribute('data-bs-theme', getTheme());
+detectAndSetTheme();
 
 /**
  * Set the theme and save it to local storage.
  */
-function setTheme(theme) {
+export function setTheme(theme: string) {
     document.documentElement.setAttribute('data-bs-theme', theme);
     localStorage.setItem('theme', theme);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.theme-toggle').forEach(toggle => {
-        toggle.addEventListener('click', e => {
+    document.querySelectorAll('.theme-toggle').forEach((toggle) => {
+        toggle.addEventListener('click', (e) => {
             e.preventDefault();
             setTheme(document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark');
-        })
+        });
     });
 });

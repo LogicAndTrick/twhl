@@ -1,4 +1,5 @@
 import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
 import { createLogger, defineConfig } from 'vite';
 
 const logger = createLogger();
@@ -24,6 +25,7 @@ export default defineConfig({
         },
     },
     plugins: [
+        vue(),
         laravel({
             input: ['resources/assets/sass/app.scss', 'resources/assets/js/app.ts'],
             refresh: true,

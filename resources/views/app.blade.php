@@ -126,7 +126,7 @@
             }
         };
         document.addEventListener('DOMContentLoaded', function () {
-            window.initShoutbox?.call({
+            window.initShoutbox?.call(window, {
                 url:'{{ url("api/shouts{action}") }}',
                 userUrl:'{{ url("user/view/{id}") }}',
                 active: {{ Auth::user() != null ? "true" : "false" }},

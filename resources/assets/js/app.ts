@@ -8,6 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 //
 // boot scripts
 import './boot/bootstrap';
+import './boot/dates';
 // import './boot/egg.js';
 // import './boot/comment-meta-rating.js';
 // import './boot/embed.js';
@@ -16,9 +17,9 @@ import './boot/bootstrap';
 import './boot/highlight';
 import './boot/swiper';
 // import './boot/home.js';
-// import './boot/shoutbox.js';
+import './boot/shoutbox';
+import './boot/theme';
 // import './boot/util.js';
 // import './boot/wiki-contents.js';
 // import './boot/wikicode-preview.js';
 import './boot/wikicode-preview';
-// import './boot/theme.js';
