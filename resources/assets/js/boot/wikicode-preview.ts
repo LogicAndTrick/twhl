@@ -1,5 +1,4 @@
-import hljs from 'highlight.js';
-
+import hljs from '../lib/highlight';
 import { parser } from '../lib/parser';
 
 /**
@@ -191,7 +190,8 @@ function addButtons(container: HTMLElement, textarea: HTMLTextAreaElement) {
 window.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.wikicode-input').forEach((input) => {
         let group = el('div', 'form-group'),
-            heading = el('h4', '', 'Message preview'),
+            heading = el('h4', 'me-auto', 'Message preview'),
+            headingCont = el('div', 'd-flex align-items-center'),
             btn = el<HTMLButtonElement>('button', 'btn btn-info btn-xs preview-button', 'Update Preview', (x) => (x.type = 'button')),
             card = el('div', 'card'),
             panel = el('div', 'card-body bbcode'),
@@ -207,17 +207,18 @@ window.addEventListener('DOMContentLoaded', () => {
                 x.type = 'checkbox';
                 x.checked = !document.cookie.split(';').some((x) => x.includes('live_preview=no'));
             }),
-            livePreviewLabel = el('label', 'form-check w-auto', 'Live preview'),
+            livePreviewLabel = el('label', 'form-check ms-3', 'Live preview'),
             fullscreen = el<HTMLAnchorElement>('a', 'ms-2 hidden-sm-down', '', (x) => {
                 x.href = '#';
                 x.innerHTML = '<span class="fa fa-arrows-alt"></span> Full screen editor';
             });
 
         livePreviewLabel.prepend(livePreviewInput);
-        heading.append(livePreviewLabel);
-        heading.append(btn);
+        headingCont.append(heading);
+        headingCont.append(btn);
+        headingCont.append(livePreviewLabel);
         card.append(panel);
-        group.append(heading, card);
+        group.append(headingCont, card);
         input.append(group);
         ta.parentElement!.prepend(help);
 

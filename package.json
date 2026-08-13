@@ -16,6 +16,10 @@
   "dependencies": {
     "@logicandtrick/twhl-wikicode-parser": "^0.9.7",
     "@popperjs/core": "^2.11.8",
+    "@uppy/core": "^5.2.0",
+    "@uppy/drag-drop": "^5.1.0",
+    "@uppy/status-bar": "^5.1.0",
+    "@uppy/xhr-upload": "^5.2.0",
     "autolinker": "^4.1.5",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.5.1",
