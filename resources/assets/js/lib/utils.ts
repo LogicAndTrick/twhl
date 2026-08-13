@@ -9,17 +9,17 @@ export function filteredEventListener(element: Element, event: keyof HTMLElement
     };
     element.addEventListener(event, handler);
     return handler;
-};
+}
 
 const escapeHtmlEntityMap: Record<string, string> = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
     '"': '&quot;',
     "'": '&#39;',
-    "/": '&#x2F;'
+    '/': '&#x2F;',
 };
 
 export const escapeHtml = (string: string) => {
-    return String(string).replace(/[&<>"'\/]/g, s => escapeHtmlEntityMap[s]);
-}
+    return String(string).replace(/[&<>"'/]/g, (s) => escapeHtmlEntityMap[s]);
+};

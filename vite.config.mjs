@@ -1,5 +1,5 @@
-import { createLogger, defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
+import { createLogger, defineConfig } from 'vite';
 
 const logger = createLogger();
 const originalWarnOnce = logger.warnOnce;

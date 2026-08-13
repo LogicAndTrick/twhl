@@ -1,15 +1,9 @@
-
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 
-// ?
-// import 'select2/dist/js/select2.js';
-// import './lib/select2-data-api.js';
-// import './lib/select2-pagination.js';
-// import './lib/autocomplete.js';
-
-// no module?
-// import './lib/jsdifflib.js';
-// import './lib/jssor.slider.mini.js';
+// replacements: (need to check they actually work...)
+// select2/autocomplete -> tom-select
+// jssdiflib -> diff (doesn't have a UI, need to make a custom one)
+// jssor.slider -> swiper
 
 // boot scripts
 // import './boot/egg.js';
@@ -23,4 +17,5 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 // import './boot/util.js';
 // import './boot/wiki-contents.js';
 // import './boot/wikicode-preview.js';
+import './boot/wikicode-preview';
 // import './boot/theme.js';

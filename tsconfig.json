@@ -9,7 +9,8 @@
     "noEmit": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny": true
   },
   "include": [
     "resources/assets/js/**/*",

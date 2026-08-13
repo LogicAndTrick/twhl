@@ -1,0 +1,9 @@
+{
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "singleQuote": true,
+    "sortImports": true,
+    "printWidth": 160,
+    "useTabs": false,
+    "tabWidth": 4,
+    "ignorePatterns": ["public/build", "package.json", "package-lock.json"]
+}
