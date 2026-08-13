@@ -1,3 +1,3 @@
 import hljs from '../lib/highlight';
 
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();

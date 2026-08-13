@@ -1,7 +1,7 @@
 @use 'mixins' as *;
 @use 'sass:meta';
 
-@import "../css/hljs-solarized-light.css";
+@use 'highlight.js/scss/base16/solarized-light.scss';
 
 .hljs {
   padding: 1rem;
@@ -9,5 +9,5 @@
 }
 
 @include dark-mode {
-  @include meta.load-css("../css/hljs-solarized-dark.css");
+  @include meta.load-css('highlight.js/scss/base16/solarized-dark.scss');
 }
