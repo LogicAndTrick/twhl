@@ -35,26 +35,13 @@
         <meta property="og:url" content="{{Request::url()}}">
         <meta name="theme-color" content="#e68a27">
 
-        @vite('resources/assets/sass/app.scss')
+        @vite(['resources/assets/sass/app.scss', 'resources/assets/js/app.ts'])
         <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="32x32">
         <link rel="icon" href="{{ asset('images/twhl-logo.svg') }}" type="image/svg+xml">
         <link rel="apple-touch-icon" href="{{ asset('images/apple-touch-icon.png') }}">
         <link rel="search" type="application/opensearchdescription+xml" href="{{ url('/opensearch.xml') }}" title="TWHL">
 
         @yield('styles', '')
-
-        <!-- Fonts -->
-        <link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
-
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <!-- Scripts -->
-        <script type="text/javascript" src="{{ asset('/js/all.js') }}"></script>
     </head>
 <body class="{{ egg() }}">
 
@@ -138,16 +125,19 @@
                 book_info: '{{ url('wiki/book-info?book={book}') }}'
             }
         };
-        $(function() {
-            window.initShoutbox({
+        document.addEventListener('DOMContentLoaded', function () {
+            window.initShoutbox?.call({
                 url:'{{ url("api/shouts{action}") }}',
                 userUrl:'{{ url("user/view/{id}") }}',
                 active: {{ Auth::user() != null ? "true" : "false" }},
                 moderator: {{ permission("ForumAdmin") ? "true" : "false" }}
             });
-        });
-        $('.navbar-search-dropdown .dropdown').on('shown.bs.dropdown', function () {
-            $(this).find('input:text').focus();
+
+            document.querySelectorAll('.navbar-search-dropdown .dropdown').forEach(function (dropdown) {
+                dropdown.addEventListener('shown.bs.dropdown', event => {
+                    event.target.parentElement.querySelector('input[type="text"]')?.focus();
+                });
+            });
         });
     </script>
     @yield('scripts', '')

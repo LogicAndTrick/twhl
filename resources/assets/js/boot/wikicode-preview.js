@@ -179,7 +179,7 @@ $(function() {
             const formData = new FormData(form[0]);
             let text = formData.get(name);
             text = text.replace(/^\w/img, function(match, index) {
-                return "\2" + index + "\3" + match;
+                return "\x02" + index + "\x03" + match;
             });
 
             // do some string replace stuffs

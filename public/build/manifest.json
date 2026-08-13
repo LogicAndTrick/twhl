@@ -1,4 +1,10 @@
 {
+  "resources/assets/js/app.ts": {
+    "file": "assets/app-CsTQAhRx.js",
+    "name": "app",
+    "src": "resources/assets/js/app.ts",
+    "isEntry": true
+  },
   "resources/assets/sass/app.scss": {
     "file": "assets/app-Brk7IiBd.css",
     "name": "app",
