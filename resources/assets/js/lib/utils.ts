@@ -76,3 +76,22 @@ export function b64DecodeUnicode(base64: string) {
     const bytes = Uint8Array.from(binString, (x) => x.charCodeAt(0));
     return new TextDecoder().decode(bytes);
 }
+
+export function round(val: number, num: number) {
+    const pow = Math.pow(10, num);
+    return Math.round(val * pow) / pow;
+}
+
+export function formatFilesize(bytes: number) {
+    if (bytes < 1024) return bytes + 'b';
+    const kbytes = bytes / 1024;
+    if (kbytes < 1024) return round(kbytes, 2) + 'kb';
+    const mbytes = kbytes / 1024;
+    if (mbytes < 1024) return round(mbytes, 2) + 'mb';
+    const gbytes = mbytes / 1024;
+    if (gbytes < 1024) return round(gbytes, 2) + 'gb';
+    const tbytes = gbytes / 1024;
+    if (tbytes < 1024) return round(tbytes, 2) + 'tb';
+    const pbytes = tbytes / 1024;
+    return round(pbytes, 2) + 'pb';
+}

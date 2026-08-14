@@ -49,7 +49,7 @@
         <div class="slot-main">
             <div class="row">
                 <div class="col-12 col-xl-9 vault-slider-container">
-                    @if (count($item->vault_screenshots) > 0)
+                    @if (count($item->vault_screenshots) > 1)
                         <div id="vault-slider" class="swiper">
                             <div class="swiper-wrapper">
                                 @foreach($item->vault_screenshots->sortBy('order_index') as $sshot)
@@ -72,7 +72,11 @@
                         </div>
                     @else
                         <div class="empty-swiper">
-                            <img src="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
+                            @if (count($item->vault_screenshots) > 0)
+                                <img src="{{ asset('uploads/vault/'.$item->vault_screenshots->first()->image_large) }}" alt="Screenshot" />
+                            @else
+                                <img src="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
+                            @endif
                         </div>
                     @endif
                 </div>

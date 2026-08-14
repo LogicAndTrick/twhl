@@ -1730,7 +1730,10 @@ class ApiController extends Controller {
             ];
         }
 
-        return $res;
+        return [
+            'pages' => (object) $res['pages'],
+            'embeds' => (object) $res['embeds'],
+        ];
     }
 
     private function post_image_upload(): array

@@ -66,7 +66,7 @@ onMounted(() => {
     loadCookie();
     scrollToEnd();
     fetchUpdates(true);
-    interval = setInterval(fetch, 60 * 1000);
+    interval = setInterval(fetchUpdates, 60 * 1000);
 });
 onUnmounted(() => {
     clearInterval(interval);

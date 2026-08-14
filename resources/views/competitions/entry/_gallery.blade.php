@@ -1,4 +1,4 @@
-@if (count($entry->screenshots) > 0)
+@if (count($entry->screenshots) > 1)
     <div id="competition-slider" class="swiper">
         <div class="swiper-wrapper">
             @foreach($entry->screenshots->sortBy('order_index') as $sshot)
@@ -21,6 +21,10 @@
     </div>
 @else
     <div class="empty-swiper">
-        <img src="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
+        @if (count($entry->screenshots) > 0)
+            <img src="{{ asset('uploads/competition/'.$entry->screenshots->first()->image_full) }}" alt="Screenshot" />
+        @else
+            <img src="{{ asset('images/no-screenshot-640.png') }}" alt="Screenshot" />
+        @endif
     </div>
 @endif
