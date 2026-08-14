@@ -8,6 +8,7 @@ import ini from 'highlight.js/lib/languages/ini';
 import javascript from 'highlight.js/lib/languages/javascript';
 import json from 'highlight.js/lib/languages/json';
 import php from 'highlight.js/lib/languages/php';
+import plaintext from 'highlight.js/lib/languages/plaintext';
 import xml from 'highlight.js/lib/languages/xml';
 
 hljs.registerLanguage('php', php);
@@ -20,5 +21,18 @@ hljs.registerLanguage('json', json);
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('angelscript', angelscript);
 hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('plaintext', plaintext);
+
+hljs.addPlugin({
+    'before:highlightElement'({ el }) {
+        const children = Array.from(el.children);
+        (el as any).__custom_highlight_children = children;
+        children.forEach((x) => x.parentElement?.removeChild(x));
+    },
+    'after:highlightElement'({ el }) {
+        const children = (el as any).__custom_highlight_children as Element[];
+        if (children) el.prepend(...children);
+    },
+});
 
 export default hljs;

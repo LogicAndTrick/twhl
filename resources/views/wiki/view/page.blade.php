@@ -38,25 +38,3 @@
 @include('wiki.view.revision-content', ['revision' => $revision])
 @include('wiki.view.revision-categories', ['revision' => $revision])
 @include('wiki.view.revision-credits', ['revision' => $revision])
-
-<script defer>
-    document.addEventListener('DOMContentLoaded', function() {
-        const readingModeCheckbox = document.getElementById('reading-mode');
-        const content = document.querySelector('.wiki.bbcode');
-
-        function setReadingMode(on) {
-            content.classList.toggle('reading-mode', on);
-            readingModeCheckbox.checked = on;
-        }
-
-        if (!readingModeCheckbox || !content) return;
-
-        readingModeCheckbox.addEventListener('change', e => {
-            const on = readingModeCheckbox.checked;
-            setReadingMode(on);
-            Cookies.set('wiki.reading-mode', on ? 'true' : 'false');
-        });
-
-        setReadingMode(Cookies.get('wiki.reading-mode') === 'true');
-    });
-</script>

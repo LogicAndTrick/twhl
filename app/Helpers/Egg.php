@@ -58,7 +58,8 @@ class Egg
             'match' => '12',
             'classes' => [
                 'christmas'
-            ]
+            ],
+            'leet' => 12
         ],
         'pride' => [ // Pride month
             'groups' => ['header'],

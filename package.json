@@ -8,6 +8,7 @@
   "devDependencies": {
     "@types/bootstrap": "^5.2.11",
     "@types/js-cookie": "^3.0.6",
+    "@types/lodash.throttle": "^4.1.9",
     "@vitejs/plugin-vue": "^6.0.8",
     "laravel-vite-plugin": "^3.2.0",
     "oxfmt": "^0.63.0",
@@ -30,7 +31,7 @@
     "font-awesome": "^4.7.0",
     "highlight.js": "^11.12.0",
     "js-cookie": "^3.0.8",
-    "lodash": "^4.17.21",
+    "lodash.throttle": "^4.1.1",
     "popper.js": "^1.16.1",
     "swiper": "^14.1.0",
     "tom-select": "^2.6.2",

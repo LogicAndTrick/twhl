@@ -13,7 +13,7 @@ import {
 const config = ParserConfiguration.Twhl();
 
 if (import.meta.env.DEV) {
-    const sp = config.Processors.find(x => x instanceof SmiliesProcessor);
+    const sp = config.Processors.find((x) => x instanceof SmiliesProcessor);
     if (sp) sp.UrlFormatString = 'http://twhl/images/smilies/{0}.png';
 }
 
