@@ -8,6 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.js';
 //
 // boot scripts
 import './boot/bootstrap';
+import './boot/compare';
 import './boot/dates';
 import './boot/egg';
 import './boot/comment-meta-rating';

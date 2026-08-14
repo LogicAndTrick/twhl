@@ -64,80 +64,14 @@
 
 @section('scripts')
     <script type="text/javascript">
-
-        function get_revision(id) {
-            return $.getJSON('{{ url("api/wiki-revisions") }}', { id: id });
-        }
-        function get_revision_meta(id) {
-            return $.getJSON('{{ url("api/wiki-revision-metas") }}', { revision_id: id, count: 100 });
-        }
-        function embed_image(container, rev) {
-            container.append('<img src="{{ url("/wiki/embed/rev:") }}' + rev.id + '/current.png" alt="Image" />');
-        }
-        function extract_text(rev, meta) {
-            var str = '';
-            for (var i = 0; i < meta.length; i++) {
-                var key = meta[i].key, val = meta[i].value;
-                switch (key) {
-                    case 'w':
-                        str += '[META] Image Width: ' + val + '\n';
-                        break;
-                    case 'h':
-                        str += '[META] Image Height: ' + val + '\n';
-                        break;
-                    case 's':
-                        str += '[META] File Size: ' + val + '\n';
-                        break;
-                    case 'u':
-                        str += '[META] Upload ID: ' + val + '\n';
-                        break;
-                }
-            }
-            str += rev.content_text;
-            return str;
-        }
-        function compare_revisions(elem, left, right, id1, id2) {
-            elem.html('<p>Loading...</p>');
-            left.empty();
-            right.empty();
-
-            var r1 = get_revision(id1),
-                m1 = get_revision_meta(id1),
-                r2 = get_revision(id2),
-                m2 = get_revision_meta(id2);
-
-            $.when(r1, m1, r2, m2).done(function (args1, args2, args3, args4) {
-                var rev1 = args1[0][0], rev2 = args3[0][0], meta1 = args2[0], meta2 = args4[0];
-                var v1 = difflib.stringAsLines(extract_text(rev1, meta1));
-                var v2 = difflib.stringAsLines(extract_text(rev2, meta2));
-                var sm = new difflib.SequenceMatcher(v1, v2);
-                $(elem).html(diffview.buildView({
-                    baseTextLines: v1,
-                    newTextLines: v2,
-                    opcodes: sm.get_opcodes(),
-                    baseTextName: "Revision "+id1,
-                    newTextName: "Revision "+id2,
-                    contextSize: 3,
-                    viewType: 0
-                }));
-                if ({{$object->type_id == \App\Models\Wiki\WikiType::UPLOAD ? 'true' : 'false'}}) {
-                    embed_image(left, rev1);
-                    embed_image(right, rev2);
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            const compareEl = document.getElementById('compare');
+            const compareButton = document.getElementById('compare-button');
+            compareButton.addEventListener('click', () => {
+                const v1 = document.querySelector('input[type="radio"][name="compare1"]:checked').value;
+                const v2 = document.querySelector('input[type="radio"][name="compare2"]:checked').value;
+                window.attachWikiRevisionDiff?.call(window, compareEl, Math.min(v1, v2), Math.max(v1, v2));
             });
-        }
-
-        $('#compare-button').click(function() {
-            var v1 = $('input:radio[name=compare1]:checked').val();
-            var v2 = $('input:radio[name=compare2]:checked').val();
-            if (v1 >= 0 && v2 >= 0 && v1 != v2) {
-                compare_revisions(
-                    $('#compare'),
-                    $('#compare-image-left'),
-                    $('#compare-image-right'),
-                    Math.min(v1, v2),
-                    Math.max(v1, v2));
-            }
         });
     </script>
 @endsection

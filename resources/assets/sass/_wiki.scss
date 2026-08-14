@@ -2,207 +2,212 @@
 @use 'functions' as *;
 
 .wiki-navigation {
-  background: #c2e5ff;
-  margin: 0 calc(var(--bs-gutter-x) * -0.5);
-  padding: 5px 5px 0;
-  flex-wrap: wrap;
-  white-space: nowrap;
+    background: #c2e5ff;
+    margin: 0 calc(var(--bs-gutter-x) * -0.5);
+    padding: 5px 5px 0;
+    flex-wrap: wrap;
+    white-space: nowrap;
 
-  [data-bs-theme="dark"] & {
-    background: #004370;
-  }
-
-  .btn {
-    padding: 2px 8px;
-    overflow: hidden;
-    border-radius: 0;
-    text-overflow: ellipsis;
-    border: 1px solid away(var(--bs-border-color), 0.25);
-    background: var(--bs-body-bg);
-
-    &:hover {
-      background: rgb(from var(--bs-body-bg) r g b / 0.5);
-
+    [data-bs-theme='dark'] & {
+        background: #004370;
     }
-  }
 
-  .btn-group {
-    margin-left: 0;
-    margin-right: 5px;
-    margin-bottom: 5px;
-  }
-
-  @media (max-width: map.get($grid-breakpoints, 'xl') - 1px) and (min-width: map.get($grid-breakpoints, 'lg')) {
     .btn {
-      max-width: 160px;
-    }
-  }
+        padding: 2px 8px;
+        overflow: hidden;
+        border-radius: 0;
+        text-overflow: ellipsis;
+        border: 1px solid away(var(--bs-border-color), 0.25);
+        background: var(--bs-body-bg);
 
-  @media (max-width: map.get($grid-breakpoints, 'md') - 1px) {
+        &:hover {
+            background: rgb(from var(--bs-body-bg) r g b / 0.5);
+        }
+    }
+
     .btn-group {
-      display: flex;
-      width: 100%;
-      margin-right: 0;
-
-      > .btn, > .btn-group {
-        flex: 1 1 auto;
-        max-width: none;
-      }
+        margin-left: 0;
+        margin-right: 5px;
+        margin-bottom: 5px;
     }
-  }
+
+    @media (max-width: #{map.get($grid-breakpoints, 'xl') - 1px}) and (min-width: map.get($grid-breakpoints, 'lg')) {
+        .btn {
+            max-width: 160px;
+        }
+    }
+
+    @media (max-width: #{map.get($grid-breakpoints, 'md') - 1px}) {
+        .btn-group {
+            display: flex;
+            width: 100%;
+            margin-right: 0;
+
+            > .btn,
+            > .btn-group {
+                flex: 1 1 auto;
+                max-width: none;
+            }
+        }
+    }
 }
 
 ul.wiki-categories {
-  @extend .inline-bullet;
+    @extend .inline-bullet;
 
-  border: 1px solid var(--bs-border-color);
-  margin-top: 0.5rem;
-  padding: 0.25rem 0.5rem;
+    border: 1px solid var(--bs-border-color);
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.5rem;
 
-  .header {
-    font-weight: bold;
-  }
-
+    .header {
+        font-weight: bold;
+    }
 }
 
 ul.wiki-credits {
-  list-style: none;
+    list-style: none;
 
-  border: 1px solid var(--bs-border-color);
-  margin-top: 0.5rem;
-  padding: 0.25rem 0.5rem;
+    border: 1px solid var(--bs-border-color);
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.5rem;
 
-  li {
-    padding: 0.125rem;
-    border-top: 1px solid var(--bs-border-color);
-  }
+    li {
+        padding: 0.125rem;
+        border-top: 1px solid var(--bs-border-color);
+    }
 
-  .header {
-    font-weight: bold;
-    border: 0;
-  }
+    .header {
+        font-weight: bold;
+        border: 0;
+    }
 }
 
 .wiki-book {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 
-  .card-header {
-    padding: 0.5rem 1rem;
+    .card-header {
+        padding: 0.5rem 1rem;
 
-    h3 {
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-  }
-
-  .card-body {
-    padding: 0.5rem 1rem;
-  }
-
-  nav {
-    display: flex;
-    flex-flow: row nowrap;
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--bs-border-color);
-
-    .previous {
-      text-align: left;
-      flex: 1;
+        h3 {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
     }
 
-    .current {
-      text-align: center;
-      font-weight: bold;
-      font-size: 1rem;
-      line-height: 1rem;
-      flex: 1;
+    .card-body {
+        padding: 0.5rem 1rem;
     }
 
-    .next {
-      text-align: right;
-      flex: 1;
-    }
-  }
+    nav {
+        display: flex;
+        flex-flow: row nowrap;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--bs-border-color);
 
-  ul {
-    margin-bottom: 0;
+        .previous {
+            text-align: left;
+            flex: 1;
+        }
 
-    .current {
-      font-weight: bold;
+        .current {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1rem;
+            line-height: 1rem;
+            flex: 1;
+        }
+
+        .next {
+            text-align: right;
+            flex: 1;
+        }
     }
-  }
+
+    ul {
+        margin-bottom: 0;
+
+        .current {
+            font-weight: bold;
+        }
+    }
 }
 
 .wiki-image {
-  img, video, audio {
-    @extend .img-thumbnail;
-    display: block;
-    max-width: 95%;
-    margin: 10px auto;
-  }
+    img,
+    video,
+    audio {
+        @extend .img-thumbnail;
+        display: block;
+        max-width: 95%;
+        margin: 10px auto;
+    }
 }
 
 .autoplay-overlay {
-  width: 200px;
-  overflow: visible;
-  z-index: 1;
-  color: white;
-  font-weight: bold;
-  position: absolute;
-  top: 20px;
-  left: calc(50% - 100px);
-  right: auto;
-  background: rgba(0, 0, 0, 0.5);
-  line-height: 2rem;
-  border-radius: 0.25rem;
-  pointer-events: none;
+    width: 200px;
+    overflow: visible;
+    z-index: 1;
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 20px;
+    left: calc(50% - 100px);
+    right: auto;
+    background: rgba(0, 0, 0, 0.5);
+    line-height: 2rem;
+    border-radius: 0.25rem;
+    pointer-events: none;
 }
 
-@media (min-width: map.get($grid-breakpoints, 'xl') - 1px) {
-  .wiki {
-    --reading-mode-width: 55rem;
+.code-diff-view .file-header .file-info .diff-commandbar {
+    display: none;
+}
 
-    &.reading-mode {
-      max-width: var(--reading-mode-width);
-      margin: 0 auto;
-      font-size: 1rem;
-      line-height: 1.6em;
+@media (min-width: #{map.get($grid-breakpoints, 'xl') - 1px}) {
+    .wiki {
+        --reading-mode-width: 55rem;
+
+        &.reading-mode {
+            max-width: var(--reading-mode-width);
+            margin: 0 auto;
+            font-size: 1rem;
+            line-height: 1.6em;
+        }
     }
-  }
 }
 
 @media (min-width: 1900px) {
-  // floating table of contents for large screens
-  .wiki {
-    .contents {
-      position: fixed;
-      top: 1rem;
-      max-width: 14vw;
-      background-color: var(--bs-body-bg);
-      transform: translateX(calc(-100% - 1.5rem));
-      max-height: calc(100vh - 2rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: stretch;
+    // floating table of contents for large screens
+    .wiki {
+        .contents {
+            position: fixed;
+            top: 1rem;
+            max-width: 14vw;
+            background-color: var(--bs-body-bg);
+            transform: translateX(calc(-100% - 1.5rem));
+            max-height: calc(100vh - 2rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
 
-      > ul {
-        overflow-y: auto;
-        margin: 0;
-      }
-    }
+            > ul {
+                overflow-y: auto;
+                margin: 0;
+            }
+        }
 
-    &.reading-mode {
-      .contents {
-        // translate the difference between the reading mode width and the screen width
-        // 1320 = container width, bs-gutter-x = container padding, 2px = border
-        // divide by 2 since we only want the left side
-        transform: translateX(calc(-100% - 1.5rem - (1320px - var(--reading-mode-width) - var(--bs-gutter-x) - 2px) / 2));
-        font-size: var(--bs-body-font-size);
-        line-height: var(--bs-body-line-height);
-      }
+        &.reading-mode {
+            .contents {
+                // translate the difference between the reading mode width and the screen width
+                // 1320 = container width, bs-gutter-x = container padding, 2px = border
+                // divide by 2 since we only want the left side
+                transform: translateX(calc(-100% - 1.5rem - (1320px - var(--reading-mode-width) - var(--bs-gutter-x) - 2px) / 2));
+                font-size: var(--bs-body-font-size);
+                line-height: var(--bs-body-line-height);
+            }
+        }
     }
-  }
 }

@@ -23,6 +23,7 @@ declare global {
                 page: string;
                 formatting_guide: string;
                 book_info: string;
+                get_revisions: string;
             };
         };
     }

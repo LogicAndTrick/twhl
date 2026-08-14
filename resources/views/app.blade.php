@@ -122,7 +122,8 @@
             wiki: {
                 page: '{{ url('wiki/page/{slug}') }}',
                 formatting_guide: '{{ url("wiki/page/TWHL:_WikiCode_Syntax") }}',
-                book_info: '{{ url('wiki/book-info?book={book}') }}'
+                book_info: '{{ url('wiki/book-info?book={book}') }}',
+                get_revisions: '{{ url("api/wiki-revisions") }}',
             }
         };
         document.addEventListener('DOMContentLoaded', function () {
