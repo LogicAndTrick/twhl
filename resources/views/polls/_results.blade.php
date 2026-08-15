@@ -30,9 +30,9 @@
     </div>
 </div>
 <script type="text/javascript">
-    $(function() {
-        var data = {!! json_encode($d) !!};
-        var ctx = document.getElementById("poll-chart-{{ $poll->id }}").getContext("2d");
-        var chart = new Chart(ctx).Pie(data, {animationSteps:50, animationEasing: "easeOutQuart"});
+    document.addEventListener('DOMContentLoaded', () => {
+        const data = {!! json_encode($d) !!};
+        const ctx = document.getElementById("poll-chart-{{ $poll->id }}").getContext("2d");
+        window.renderPieChart?.call(window, data, ctx);
     });
 </script>

@@ -31,6 +31,14 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        chunkSizeWarningLimit: 1024,
+        rolldownOptions: {
+            checks: {
+                pluginTimings: false
+            }
+        }
+    },
     server: {
         cors: true,
         // proxy images and fonts through to the dev server, I don't want these in the vite bundle.
