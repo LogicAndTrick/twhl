@@ -1,3 +1,5 @@
+import { Dropdown } from 'bootstrap';
+
 import hljs from '../lib/highlight';
 import { parser } from '../lib/parser';
 
@@ -184,6 +186,8 @@ function addButtons(container: HTMLElement, textarea: HTMLTextAreaElement) {
         smg.append(smiley);
         smg.append(ddm);
         toolbar.append(smg);
+
+        new Dropdown(smiley);
     }
 }
 

@@ -1,5 +1,3 @@
-import 'bootstrap/dist/js/bootstrap.bundle.js';
-//
 // replacements: (need to check they actually work...)
 // select2/autocomplete -> tom-select
 // jssdiflib -> diff (doesn't have a UI, need to make a custom one)
@@ -24,3 +22,4 @@ import './boot/theme';
 import './boot/wiki-contents';
 import './boot/wiki-reading-mode';
 import './boot/wikicode-preview';
+import './boot/window';

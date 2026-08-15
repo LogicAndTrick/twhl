@@ -133,12 +133,12 @@
     <script type="text/javascript">
 
         const templates = {
-            'item:filter-games': '<li class="stop-close filter-action" data-filter-value="{id}" data-text="{abbreviation}"><img src="{{ asset("images/games/{abbreviation}_{size}.svg") }}" alt="{name}" /> {name}</li>',
-            'item:filter-categories': '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>',
-            'item:filter-types': '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>',
-            'item:filter-includes': '<li class="stop-close filter-action" data-filter-value="{id}">{name}</li>',
-            'item:filter-users': '<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>',
-            'append:filter-users': '<li class="static-control search-form user-search stop-close"><input class="form-control w-100" type="text" placeholder="Search users..." /><ul class="search-results"></ul></li>'
+            'item:filter-games': '<li class="filter-action" data-filter-value="{id}" data-text="{abbreviation}"><img src="{{ asset("images/games/{abbreviation}_{size}.svg") }}" alt="{name}" /> {name}</li>',
+            'item:filter-categories': '<li class="filter-action" data-filter-value="{id}">{name}</li>',
+            'item:filter-types': '<li class="filter-action" data-filter-value="{id}">{name}</li>',
+            'item:filter-includes': '<li class="filter-action" data-filter-value="{id}">{name}</li>',
+            'item:filter-users': '<li class="user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>',
+            'append:filter-users': '<li class="static-control search-form user-search"><input class="form-control w-100" type="text" placeholder="Search users..." /><ul class="search-results"></ul></li>'
         };
 
         function populate_filter(cls, items, templ, obj, append) {
@@ -146,9 +146,9 @@
             if (!el) return;
 
             obj = obj || {};
-            el.replaceChildren(...items.map(x => htmlTemplate(templ, {...obj, ...x})));
-            el.append(htmlTemplate('<li class="clear-filter static-control filter-action"><span class="fa fa-remove"></span> Clear Filter</li>'));
-            if (append) el.append(htmlTemplate(append));
+            el.replaceChildren(...items.map(x => nanoTemplateHtml(templ, {...obj, ...x})));
+            el.append(nanoTemplateHtml('<li class="clear-filter static-control filter-action"><span class="fa fa-remove"></span> Clear Filter</li>'));
+            if (append) el.append(nanoTemplateHtml(append));
 
             const input = document.querySelector(`[data-filter=${cls}]`);
             const selected = (input.value || '').split('-');
@@ -182,7 +182,7 @@
 
                 const obj = { text, count };
                 if (activeQs.length > 0) Object.assign(obj, activeQs[0].dataset);
-                filterInfo.innerHTML = template(templ, obj);
+                filterInfo.innerHTML = nanoTemplate(templ, obj);
                 input.value = activeQs.map(x => x.dataset.filterValue).join('-');
             }
         }
@@ -212,53 +212,58 @@
         document.addEventListener('DOMContentLoaded', function() {
             let timeout = null;
 
-            // todo:jquery
-            $('.vault-filter').on('click', '.filter-action', function() {
-                var clr = $(this).is('.clear-filter');
-                var par = $(this).closest('.vault-filter');
-                if (par.is('.filter-one') || clr) {
-                    par.find('.active').removeClass('active');
-                }
-                if (par.is('.remove-item') && clr) par.find('li:not(.static-control)').remove();
-                else if (par.is('.remove-item')) $(this).closest('li').remove();
-                else if (!clr) $(this).toggleClass('active');
-                update_filters();
-            }).on('keyup', '.user-search input', function() {
-                var $t = $(this);
-                $t.siblings('.search-results').html('<li class="loading">Searching...</li>');
-                if (timeout) clearTimeout(timeout);
-                timeout = setTimeout(function() {
-                    clearTimeout(timeout);
-                    $.get('{{ url("api/users") }}', { filter: $t.val() }, function(data) {
-                        $t.siblings('.search-results').empty().append(data.map(function(u) {
-                            return template('<li class="stop-close user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>', u);
+            document.querySelectorAll('.vault-filter').forEach(x => {
+                window.filteredEventListener(x, 'click', '.filter-action', (event, el) => {
+                    const clr = el.matches('.clear-filter');
+                    const par = el.closest('.vault-filter');
+                    if (par.matches('.filter-one') || clr) {
+                        par.querySelectorAll('.active').forEach(a => a.classList.remove('active'));
+                    } else {
+                        event.stopPropagation();
+                    }
+                    if (par.matches('.remove-item') && clr) par.querySelectorAll('li:not(.static-control)').forEach(e => e.remove());
+                    else if (par.matches('.remove-item')) x.closest('li').remove();
+                    else if (!clr) el.classList.toggle('active');
+                    update_filters();
+                });
+                window.filteredEventListener(x, 'keyup', '.user-search input', (event, el) => {
+                    const results = el.parentElement.querySelector('.search-results');
+                    results.innerHTML = '<li class="loading">Searching...</li>';
+
+                    if (timeout) clearTimeout(timeout);
+                    timeout = setTimeout(async () => {
+                        clearTimeout(timeout);
+                        const resp = await fetch('{{ url("api/users") }}?filter=' + encodeURIComponent(el.value));
+                        const data = await resp.json();
+                        results.replaceChildren(...data.map(u => {
+                            return nanoTemplateHtml('<li class="user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>', u);
                         }));
-                    });
-                }, 500);
-            }).on('click', '.user-search .user-item', function() {
-                if ($('.filter-users > [data-filter-value="' + $(this).data('filter-value') + '"]').length) return;
-                $(this).clone().addClass('active').insertBefore('.filter-users .clear-filter');
-                update_filters('filter-users');
-                $('.filter-users .user-search input').val('').focus();
+                    }, 500);
+                });
+                window.filteredEventListener(x, 'click', '.user-search .user-item', (event, el) => {
+                    event.stopPropagation();
+
+                    const val = el.dataset.filterValue;
+                    const existing = document.querySelector('.filter-users > [data-filter-value="' + val + '"]');
+                    if (existing) return;
+
+                    const clone = el.cloneNode();
+                    clone.classList.add('active');
+                    document.querySelector('.filter-users .clear-filter').before(clone);
+
+                    update_filters('filter-users');
+
+                    const input = document.querySelector('.filter-users .user-search input');
+                    input.value = '';
+                    input.focus();
+                });
             });
 
-            // todo:jquery
-            $('.filter-users').parent().on('shown.bs.dropdown', function() {
-                $(this).find('input').val('').focus();
-            });
-
-            // todo:jquery
-            $('.filter-games').parent().on('show.bs.dropdown', function() {
-                var s = $('.vault-filter-form [name=search]'),
-                    fg = $('.filter-games'),
-                    bt = fg.siblings('[data-bs-toggle="dropdown"]'),
-                    w = s.outerWidth() + s.siblings('.input-group-addon').outerWidth(),
-                    cw = fg.outerWidth(),
-                    bw = bt.outerWidth(),
-                    max = cw - bw;
-                fg.css({
-                    left: -Math.min(max, w)
-                })
+            const fu = document.querySelector('.filter-users');
+            fu.parentElement.addEventListener('shown.bs.dropdown', () => {
+                const input = fu.querySelector('input');
+                input.value = '';
+                input.focus();
             });
 
             // Update dynamic content

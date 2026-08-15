@@ -9,7 +9,7 @@
  * @returns Template results
  */
 export function nanoTemplate(template_string: string, ...objs: any[]) {
-    return template_string.replace(/\{(.*?)\}/ig, (_, name) => {
+    return template_string.replace(/\{(.*?)\}/gi, (_, name) => {
         for (const obj of objs) {
             if (obj && obj[name]) return obj[name];
         }
@@ -17,7 +17,7 @@ export function nanoTemplate(template_string: string, ...objs: any[]) {
     });
 }
 
-function nanoTemplateHtml(template_string: string, ...objs: any[]) {
+export function nanoTemplateHtml(template_string: string, ...objs: any[]) {
     const el = document.createElement('template');
     el.innerHTML = nanoTemplate(template_string, ...objs);
     const count = el.content.childNodes.length;

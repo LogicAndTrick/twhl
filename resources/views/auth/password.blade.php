@@ -14,7 +14,7 @@
     @endif
 
     <div class="row">
-        <div class="col-xl-4 offset-xl-4 col-md-6 offset-md-3">
+        <div id="password-reset-form" class="col-xl-4 offset-xl-4 col-md-6 offset-md-3">
             @form(password/email)
                 @text(email) = Email
                 <div class="text-center">
@@ -27,8 +27,9 @@
 
 @section('scripts')
     <script type="text/javascript">
-        $('form').submit(function() {
-            $(this).find('button').prop('disabled', true);
+        const form = document.getElementById('password-reset-form').querySelector('form');
+        form.addEventListener('submit', () => {
+            form.querySelector('button').disabled = true;
         });
     </script>
 @endsection
