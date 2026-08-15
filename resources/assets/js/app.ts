@@ -19,6 +19,7 @@ import './boot/swiper';
 import './boot/home';
 import './boot/shoutbox';
 import './boot/theme';
+import './boot/vault-screenshots';
 import './boot/wiki-contents';
 import './boot/wiki-reading-mode';
 import './boot/wikicode-preview';

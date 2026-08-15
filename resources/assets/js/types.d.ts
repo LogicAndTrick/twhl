@@ -19,6 +19,11 @@ declare global {
                 image_upload: string;
                 format: string;
             };
+            vault: {
+                save_screenshot_order: string;
+                get_screenshots: string;
+                delete_screenshot: string;
+            };
             wiki: {
                 page: string;
                 formatting_guide: string;

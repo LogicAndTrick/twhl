@@ -26,7 +26,7 @@
         </li>
     </ul>
     <h3>Upload Screenshots <small>Maximum size: 2mb, maximum width/height: 3000px</small></h3>
-    <form id="screenshot-upload" action="{{ act('vault', 'create-screenshot') }}" class="dropzone" enctype="multipart/form-data">
+    <form id="screenshot-upload" method="post" action="{{ act('vault', 'create-screenshot') }}" class="dropzone" enctype="multipart/form-data">
         <input type='hidden' name='_token' value='{{ csrf_token() }}'/>
         <input type="hidden" name="id" value="{{ $item->id }}"/>
         <div class="fallback">
@@ -34,6 +34,7 @@
             <button class="btn btn-secondary" type="submit">Upload</button>
         </div>
     </form>
+    <div id="screenshot-uppy"></div>
 @endsection
 
 @section('scripts')
@@ -53,55 +54,9 @@
             </div>
         </li>
     </script>
-    <script type="text/javascript">
-
-        Dropzone.options.screenshotUpload = {
-            filesizeBase: 1024,
-            maxFilesize: 2,
-            init: function() {
-                this.on('success', update_screenshot_list);
-                this.on('error', function(file, message) {
-                    if (typeof message == 'object' && message.file) {
-                        $(file.previewElement).find('[data-dz-errormessage]').text(message.file);
-                    }
-                })
-            }
-        };
-
-        var screenshot_template = $('#vault-screenshot-template').html();
-
-        function save_screenshot_order() {
-            $('.screenshot-list').addClass('loading');
-            var ids = $('.screenshot-list li').map(function() { return $(this).data('id'); }).toArray();
-            $.post('{{ url("vault/save-screenshot-order/{$item->id}") }}', { ids: ids, _token: '{{ csrf_token() }}' }, function(data) {
-                $('.screenshot-list').removeClass('loading');
-            });
-        }
-
-        function update_screenshot_list() {
-            $('.screenshot-list').addClass('loading');
-            $.get('{{ url("api/vault-screenshots") }}', { count: 100, item_id: "{{ $item->id }}" }, function(data) {
-                var list = $('.screenshot-list').empty();
-                if (list.data('ui-sortable')) list.sortable('destroy');
-                for (var i = 0; i < data.length; i++) {
-                    list.append(template(screenshot_template, data[i]));
-                }
-                list.sortable({
-                    handle: '.drag-handle',
-                    update: function () {
-                        save_screenshot_order();
-                    }
-                });
-                list.removeClass('loading');
-            });
-        }
-
-        $(document).on('click', '.delete-button', function() {
-            $('.screenshot-list').addClass('loading');
-            var id = $(this).closest('li').data('id');
-            $.post('{{ url("vault/delete-screenshot") }}', { id: id, _token: '{{ csrf_token() }}' }, update_screenshot_list);
+    <script type="text/javascript" defer>
+        window.addEventListener('DOMContentLoaded', () => {
+            window.initialiseVaultScreenshots();
         });
-
-        update_screenshot_list();
     </script>
 @endsection

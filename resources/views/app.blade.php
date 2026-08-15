@@ -119,6 +119,11 @@
                 image_upload: '{{ url("api/image-upload") }}',
                 format: '{{ url("api/posts/format") }}'
             },
+            vault: {
+                save_screenshot_order: '{{ url("vault/save-screenshot-order/{id}") }}',
+                get_screenshots: '{{ url("api/vault-screenshots") }}',
+                delete_screenshot: '{{ url("vault/delete-screenshot") }}',
+            },
             wiki: {
                 page: '{{ url('wiki/page/{slug}') }}',
                 formatting_guide: '{{ url("wiki/page/TWHL:_WikiCode_Syntax") }}',
