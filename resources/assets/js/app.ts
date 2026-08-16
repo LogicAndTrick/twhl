@@ -5,6 +5,7 @@
 // dropzone -> uppy
 //
 // boot scripts
+import './boot/autocomplete';
 import './boot/bootstrap';
 import './boot/chart';
 import './boot/compare';

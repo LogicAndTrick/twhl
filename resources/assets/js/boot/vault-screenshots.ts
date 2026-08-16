@@ -48,12 +48,7 @@ import { filteredEventListener } from '../lib/utils';
     });
     uppy.on('complete', (upload) => {
         if (upload.failed?.length) {
-            console.log(upload.failed);
-            /*
-                if (typeof message == 'object' && message.file) {
-                    $(file.previewElement).find('[data-dz-errormessage]').text(message.file);
-                }
-            */
+            alert('Upload failed. Make sure your images are less than 2mb, and 3000px in width/height.');
         }
         update_screenshot_list();
     });

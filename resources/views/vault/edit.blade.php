@@ -15,10 +15,10 @@
         @autocomplete(engine_id api/engines $item) = Game Engine
         @autocomplete(game_id api/games $item) = Game
         @autocomplete(category_id api/vault-categories $item) = Category
-        <p id="category-help" class="help-block"></p>
+        <p id="category-help" class="help-block form-text mx-4">{{ $item->vault_category->description }}</p>
         @autocomplete(type_id api/vault-types $item) = Content Type
         @autocomplete(license_id api/licenses $item) = Content License
-        <p id="license-help" class="help-block"></p>
+        <p id="license-help" class="help-block form-text mx-4">{{ $item->license->description }}</p>
         @text(name:item_name $item required=true) = Name
 
         <div class="card mb-3">
@@ -73,43 +73,5 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript">
-        $(function() {
-            $('[name=game_id]').on('change', function() {
-                var d = $(this).data('select2').data();
-                if (d && d.length && d[0].engine_id) {
-                    set_select2('[name=engine_id]', d[0].engine_id);
-                }
-            });
-            $('[name=engine_id]').on('change', function() {
-                var d = $(this).data('select2').data();
-                var g = $('[name=game_id]').data('select2').data();
-                if (d && d.length && d[0].id && g && g.length && g[0].engine_id != d[0].id) {
-                    set_select2('[name=game_id]', null);
-                }
-            });
-            $('[name=category_id]').on('change', function() {
-                var d = $(this).data('select2').data();
-                $('#category-help').text(d && d.length && d[0].description);
-            });
-            $('[name=license_id]').on('change', function() {
-                var d = $(this).data('select2').data();
-                $('#license-help').text(d && d.length && d[0].description);
-            });
-            $('[name=type_id]').on('change', function() {
-                var d = $(this).data('select2').data();
-                var id = d && d.length ? d[0].id : 0;
-                $('[name="__includes[]"][data-type!="' + id + '"]')
-                    .prop('disabled', true).prop('checked', false)
-                    .parent().addClass('inactive');
-                $('[name="__includes[]"][data-type="' + id + '"]').prop('disabled', false)
-                    .parent().removeClass('inactive');
-            });
-            $('[name=__upload_method]').on('change', function() {
-                var sel = $('[name=__upload_method]:checked').attr('value');
-                $('.option-panel .card-body > fieldset').prop('disabled', true).prop('hidden', true);
-                $('[name="' + sel + '-fields"]').prop('disabled', false).prop('hidden', false);
-            }).change();
-        });
-    </script>
+    @include('vault._vault_edit_js')
 @endsection

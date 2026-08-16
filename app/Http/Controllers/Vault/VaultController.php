@@ -248,7 +248,7 @@ class VaultController extends Controller {
     }
 
     public function getEdit($id) {
-        $item = VaultItem::with(['vault_screenshots', 'vault_includes'])->findOrFail($id);
+        $item = VaultItem::with(['vault_screenshots', 'vault_includes', 'vault_category', 'license'])->findOrFail($id);
         if (!$item->isEditable()) abort(404);
         $includes = VaultInclude::all();
 

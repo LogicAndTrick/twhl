@@ -28,7 +28,12 @@
                 </div>
             </div>
             <script type="text/javascript">
-                $('[data-bs-target="#message-{{ $message->id }}"] .collapsed-only').text($('#message-{{ $message->id }}').text());
+            {
+                const messageId = {{ $message->id }};
+                const msg = document.getElementById(`message-${messageId}`);
+                const collapsed = document.querySelector(`[data-bs-target="#message-${messageId}"] .collapsed-only`);
+                if (collapsed && msg) collapsed.textContent = msg.textContent;
+            }
             </script>
         @endforeach
     </div>

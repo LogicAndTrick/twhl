@@ -97,13 +97,15 @@
 @section('scripts')
     @include('competitions._gallery_javascript')
     <script type="text/javascript">
-        var edit_url = "{{ url('competition-judging', 'edit') }}";
-        $(function() {
-            $('form').submit(function(event) {
-                event.preventDefault();
-                var $t = $(this).addClass('loading');
-                $.post(edit_url, $t.serializeArray()).always(function() {
-                    $t.removeClass('loading');
+        const edit_url = "{{ url('competition-judging', 'edit') }}";
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.slot form').forEach(form => {
+                form.addEventListener('submit', async event => {
+                    event.preventDefault();
+                    form.classList.add('loading');
+                    const fd = new FormData(form);
+                    await fetch(edit_url, { method: 'post', body: fd });
+                    form.classList.remove('loading');
                 });
             });
         });

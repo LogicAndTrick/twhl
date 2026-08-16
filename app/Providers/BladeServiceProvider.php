@@ -324,8 +324,8 @@ class BladeServiceProvider extends ServiceProvider {
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
                 "<div class='controls'><select class='autocomplete' id='$id' name='$mapped_name' $multiple $required>$collect</select></div>" .
-                "$error_message</div><script type='text/javascript'>$(function() {" .
-                "$('#$id').autocomplete($json_args);" .
+                "$error_message</div><script type='text/javascript'>document.addEventListener('DOMContentLoaded', () => {" .
+                "initAutocomplete(document.getElementById('$id'), $json_args)" .
                 "});</script>";
             }, $view);
         });

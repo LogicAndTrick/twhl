@@ -37,7 +37,9 @@
     @endform
 
     <script>
-        const form = document.getElementById('promptForm');
-        if (form) promptWhenClosing(form.closest('form'));
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('promptForm');
+            if (form) promptWhenClosing(form.closest('form'));
+        });
     </script>
 @endsection
