@@ -85,17 +85,22 @@
 @section('scripts')
     @include('competitions._gallery_javascript')
     <script type="text/javascript">
-        var vote_url_template = "{{ url('competition/add-vote/{id}') }}";
-        $(function() {
-            $('.vote-button').click(function() {
-                var $t = $(this),
-                    par = $t.closest('[data-id]').addClass('loading'),
-                    id = par.data('id'),
-                    obj = ({id});
-                $.get(template(vote_url_template, obj)).done(function(result) {
-                    $t.find('.vote-status').text(result.status);
-                    $t.toggleClass('active', result.is_voted_for);
-                    par.toggleClass('voted', result.is_voted_for).removeClass('loading');
+        const vote_url_template = "{{ url('competition/add-vote/{id}') }}";
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.vote-button').forEach(x => {
+                x.addEventListener('click', async event => {
+                    event.preventDefault();
+                    const par = x.closest('[data-id]');
+                    par.classList.add('loading');
+
+                    const id = par.dataset.id;
+                    const resp = await fetch(nanoTemplate(vote_url_template, { id }));
+                    const result = await resp.json();
+
+                    x.querySelector('.vote-status').textContent = result.status;
+                    x.classList.toggle('active', result.is_voted_for);
+                    par.classList.toggle('voted', result.is_voted_for);
+                    par.classList.remove('loading');
                 });
             });
         });

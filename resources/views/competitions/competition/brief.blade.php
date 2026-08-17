@@ -129,6 +129,9 @@
     @endif
     @if ($comp->isOpen() && permission('CompetitionEnter'))
         <h2>{{ $user_entry ? 'Update' : 'Submit' }} Entry</h2>
+        <div class="alert alert-info">
+            <span class="fa fa-info-circle"></span> You can update your entry as many times as you like, prior to the competition close date. Only the most recent submission will be used.
+        </div>
         @form(competition-entry/submit upload=true)
             @include('competitions.entry._entry-form-fields', [ 'comp' => $comp, 'entry' => $user_entry ])
         @endform
@@ -140,10 +143,20 @@
 
 @section('scripts')
     <script type="text/javascript" defer>
-        $('#countdown').countdown({until: new Date({{ $comp->getCloseTime()->format('U') }} * 1000), description: 'Closes in:'});
-        $('#brief-container').on('show.bs.collapse', function() {
-            $('#collapse-button').parent().slideUp(function() {
-                $('#collapse-button').parent().remove();
+        document.addEventListener('DOMContentLoaded', () => {
+            const countdown = document.getElementById('countdown');
+            if (countdown) {
+                createCountdown(countdown, {
+                    until: new Date({{ $comp->getCloseTime()->format('U') }} * 1000),
+                    description: 'Closes in:'
+                });
+            }
+
+            const bc = document.getElementById('brief-container');
+            const colBtn = document.getElementById('collapse-button');
+            bc.addEventListener('show.bs.collapse', event => {
+                const par = colBtn.parentElement;
+                par.remove();
             });
         });
     </script>

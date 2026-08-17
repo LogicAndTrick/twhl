@@ -9,6 +9,7 @@ import './boot/autocomplete';
 import './boot/bootstrap';
 import './boot/chart';
 import './boot/compare';
+import './boot/countdown';
 import './boot/dates';
 import './boot/egg';
 import './boot/comment-meta-rating';

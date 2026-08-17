@@ -13,9 +13,13 @@
         </label>
     </div>
     <div class="card-body">
-        @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
-        {? $location = $entry && $entry->is_hosted_externally ? $entry->file_location : ''; ?}
-        @text(link $location) = Link to File (Dropbox, Steam Workshop, etc.)
+        <fieldset name="file-fields">
+            @file(file) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
+        </fieldset>
+        <fieldset name="link-fields">
+            {? $location = $entry && $entry->is_hosted_externally ? $entry->file_location : ''; ?}
+            @text(link $location) = Link to File (Dropbox, Steam Workshop, etc.)
+        </fieldset>
     </div>
 </div>
 
@@ -30,11 +34,20 @@
 @submit = Submit Entry
 
 <script type="text/javascript" defer>
-    const optionPanels = document.querySelectorAll('.option-panel .card-body > div');
-    document.body.filteredEventListener('change', '[name=__upload_method]', () => {
-        const checked = document.querySelector('[name=__upload_method]:checked');
-        if (!checked) return;
-        optionPanels.forEach(x => x.classList.add('d-none'));
-        document.querySelector(`[name="${checked.value}"]`).parentElement.classList.remove('d-none');
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[name="__upload_method"]').forEach(x => {
+            x.addEventListener('change', event => {
+                const val = document.querySelector('[name="__upload_method"]:checked')?.value;
+                document.querySelectorAll('.option-panel .card-body > fieldset').forEach(fs => {
+                    fs.disabled = true;
+                    fs.hidden = true;
+                });
+                document.querySelectorAll('[name="' + val + '-fields"]').forEach(fs => {
+                    fs.disabled = false;
+                    fs.hidden = false;
+                });
+            });
+        });
+        document.querySelector('[name="__upload_method"]').dispatchEvent(new Event('change'));
     });
 </script>

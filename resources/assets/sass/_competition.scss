@@ -1,191 +1,171 @@
 @use 'functions' as *;
 
 .competition-list {
-  .slot {
-    .bbcode {
-      position: relative;
-      height: 150px;
-      overflow: hidden;
-      margin-top: 5px;
+    .slot {
+        .bbcode {
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+            margin-top: 5px;
 
-      &::after {
-        content: ' ';
-        position: absolute;
-        top: auto;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to top, var(--tile-background-color) 25%, rgb(from var(--tile-background-color) r g b / 0) 100%);
-        height: 50%;
-      }
+            &::after {
+                content: ' ';
+                position: absolute;
+                top: auto;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to top, var(--tile-background-color) 25%, rgb(from var(--tile-background-color) r g b / 0) 100%);
+                height: 50%;
+            }
 
-      .embedded {
-        display: none;
-      }
+            .embedded {
+                display: none;
+            }
+        }
+
+        .info-column {
+            text-align: center;
+
+            h2 {
+                margin-top: 5px;
+                text-align: center;
+            }
+        }
     }
-
-    .info-column {
-      text-align: center;
-
-      h2 {
-        margin-top: 5px;
-        text-align: center;
-      }
-    }
-  }
 }
 
 .competition-winners {
-  h5 {
-    margin-bottom: 5px;
-    text-align: center;
-  }
-  .avatar {
-    display: inline-block;
-    margin: 5px;
-  }
+    h5 {
+        margin-bottom: 5px;
+        text-align: center;
+    }
+    .avatar {
+        display: inline-block;
+        margin: 5px;
+    }
 }
 
 .comp-status-message {
-  font-size: 110%;
-  display: block;
+    font-size: 110%;
+    display: block;
 }
 
 .comp-status {
-  font-size: 200%;
-  font-weight: 500;
-  display: block;
-  margin: 3px 0 10px;
-}
-
-.countdown.is-countdown {
-  max-width: 300px;
-  margin: 0 auto;
-  background-color: rgb(127 127 127 / 0.25);
-  padding: 5px 0;
-
-  .countdown-row {
-    display: inline-block;
-  }
-}
-
-.countdown {
-  display: flex;
-  flex-direction: column;
-
-  .countdown-descr {
-    order: 1;
-  }
-  .countdown-show4 {
-    order: 2;
-  }
+    font-size: 200%;
+    font-weight: 500;
+    display: block;
+    margin: 3px 0 10px;
 }
 
 .competition-brief {
-  .competition-status {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+    .competition-status {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 }
 
 .competition-rules {
-  li > .bbcode {
-    margin-bottom: 0;
-  }
+    li > .bbcode {
+        margin-bottom: 0;
+    }
 }
 
 .competition-results {
-  .d-flex .bbcode {
-    flex: 1 1 auto;
-  }
-  .gallery-button .main {
-    max-width: 320px;
-  }
+    .d-flex .bbcode {
+        flex: 1 1 auto;
+    }
+    .gallery-button .main {
+        max-width: 320px;
+    }
 }
 
 .gallery-button {
-  font-size: 0;
-  text-align: center;
-  display: inline-block;
-
-  &.btn {
-      font-size: 14px;
-  }
-
-  .main {
-    display: block;
-    max-width: 100%;
-  }
-
-  .preview {
-    display: inline-block;
-    width: 24%;
-    height: 50px;
-    margin: 1% 1% 0 0;
-    background-size: cover;
-    background-position: 50% 50%;
-    vertical-align: top;
-  }
-  .more {
-    display: inline-block;
-    width: 25%;
-    margin: 1% 0 0 0;
-    font-size: 20px;
+    font-size: 0;
     text-align: center;
-    line-height: 50px;
-    vertical-align: top;
-  }
+    display: inline-block;
+
+    &.btn {
+        font-size: 14px;
+    }
+
+    .main {
+        display: block;
+        max-width: 100%;
+    }
+
+    .preview {
+        display: inline-block;
+        width: 24%;
+        height: 50px;
+        margin: 1% 1% 0 0;
+        background-size: cover;
+        background-position: 50% 50%;
+        vertical-align: top;
+    }
+    .more {
+        display: inline-block;
+        width: 25%;
+        margin: 1% 0 0 0;
+        font-size: 20px;
+        text-align: center;
+        line-height: 50px;
+        vertical-align: top;
+    }
 }
 
 .competition-vote-entry {
+    h3 {
+        margin-top: 0;
+    }
+    button {
+        margin-top: 5px;
+        text-align: center;
+    }
 
-  h3 {
-    margin-top: 0;
-  }
-  button {
-    margin-top: 5px;
-    text-align: center;
-  }
-
-  &.voted > .tile {
-    background-color: rgba(30, 255, 75, 0.25);
-  }
-
-  &.loading {
-
-  }
+    &.voted > .tile {
+        background-color: rgba(30, 255, 75, 0.25);
+    }
 }
 
 .slot {
-  &.rank-1, &.rank-2, &.rank-3 {
-    position: relative;
+    &.rank-1,
+    &.rank-2,
+    &.rank-3 {
+        position: relative;
 
-    &::before {
-      position: absolute;
-      content: ' ';
-      display: block;
-      height: 4em;
-      left: 0;
-      right: 0;
-      top: 0;
-      z-index: 0;
+        &::before {
+            position: absolute;
+            content: ' ';
+            display: block;
+            height: 4em;
+            left: 0;
+            right: 0;
+            top: 0;
+            z-index: 0;
+        }
+
+        .slot-heading {
+            z-index: 5;
+            border-bottom: 0;
+            color: black;
+
+            .slot-title a {
+                color: #0255bd;
+            }
+
+            .slot-subtitle {
+                color: #333;
+            }
+        }
     }
-
-    .slot-heading {
-      z-index: 5;
-      border-bottom: 0;
-      color: black;
-
-      .slot-title a {
-        color: #0255bd;
-      }
-
-      .slot-subtitle {
-        color: #333;
-      }
+    &.rank-1::before {
+        background-color: #ffe53c;
     }
-  }
-  &.rank-1::before { background-color: #ffe53c; }
-  &.rank-2::before { background-color: #aab1ae; }
-  &.rank-3::before { background-color: #b67d40; }
+    &.rank-2::before {
+        background-color: #aab1ae;
+    }
+    &.rank-3::before {
+        background-color: #b67d40;
+    }
 }
