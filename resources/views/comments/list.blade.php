@@ -47,6 +47,7 @@
                 @else
                     <div class="bbcode {{$comment->user->getClasses()}}">{!! $comment->content_html !!}</div>
                 @endif
+                @include('reactions.list', [ 'type' => App\Models\Reactions\Reaction::COMMENT, 'item' => $comment ])
             </div>
         </div>
     @endforeach

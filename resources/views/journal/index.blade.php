@@ -50,6 +50,7 @@
                 </div>
                 <div class="slot-main">
                     <div class="bbcode {{$journal->user->getClasses()}}">{!! $journal->content_html !!}</div>
+                    @include('reactions.list', [ 'type' => App\Models\Reactions\Reaction::JOURNAL, 'item' => $journal ])
                 </div>
             </div>
         @endforeach

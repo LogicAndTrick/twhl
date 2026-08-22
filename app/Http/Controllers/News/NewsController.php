@@ -15,15 +15,15 @@ class NewsController extends Controller {
 
 	public function getIndex()
 	{
-        $newses = News::with(['user'])->orderBy('created_at', 'desc')->paginate();
+        $newses = News::with(['user', 'reactions'])->orderBy('created_at', 'desc')->paginate();
 		return view('news/index', [
             'newses' => $newses
         ]);
 	}
 
-    public function getView($id)
+    public function getView(int $id)
     {
-        $news = News::findOrFail($id);
+        $news = News::query()->with(['reactions'])->findOrFail($id);
         $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::NEWS)->whereArticleId($id)->get();
         return view('news/view', [
             'news' => $news,

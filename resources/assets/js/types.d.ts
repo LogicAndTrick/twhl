@@ -1,5 +1,14 @@
+export type ReactionType = {
+    id: number;
+    name: string;
+    is_image: boolean;
+    value: string;
+    orderindex: number;
+};
+
 declare global {
     interface Window {
+        all_reaction_types: ReactionType[];
         urls: {
             embed: {
                 vault: string;
@@ -30,8 +39,10 @@ declare global {
                 book_info: string;
                 get_revisions: string;
             };
+            reaction: {
+                add: string;
+                remove: string;
+            };
         };
     }
 }
-
-export {};

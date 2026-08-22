@@ -5,6 +5,7 @@ use App\Models\Messages\Message;
 use App\Models\Messages\MessageThread;
 use App\Models\Messages\MessageThreadUser;
 use App\Models\Messages\MessageUser;
+use App\Models\Reactions\Reaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -39,6 +40,7 @@ class VaultItem extends Model {
         'link_broken' => 'boolean',
         'updated_at' => 'datetime',
     ];
+    protected $with = ['reactions'];
 
     public function user()
     {
@@ -93,6 +95,11 @@ class VaultItem extends Model {
     public function motms()
     {
         return $this->hasMany('App\Models\Vault\Motm', 'item_id');
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'entity_id')->withAttributes([ 'entity_type' => Reaction::VAULT_ITEM ]);
     }
 
     public function hasPrimaryScreenshot()

@@ -174,6 +174,7 @@
                     @endforeach
                     <hr/>
                     <div class="bbcode {{$item->user->getClasses()}}">{!! $item->content_html !!}</div>
+                    @include('reactions.list', [ 'type' => App\Models\Reactions\Reaction::VAULT_ITEM, 'item' => $item ])
                 </div>
             </div>
         </div>

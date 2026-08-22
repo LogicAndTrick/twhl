@@ -5,6 +5,7 @@ use App\Models\Accounts\UserSubscription;
 use App\Models\Journal;
 use App\Models\News;
 use App\Models\Polls\Poll;
+use App\Models\Reactions\Reaction;
 use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemReview;
 use App\Models\Wiki\WikiObject;
@@ -42,6 +43,7 @@ class Comment extends Model {
 	protected $table = 'comments';
     protected $fillable = ['article_type', 'article_id', 'user_id', 'content_text', 'content_html'];
     public $visible = ['id', 'user_id', 'article_id', 'article_type', 'content_text', 'content_html', 'created_at', 'updated_at', 'comment_metas', 'user'];
+    protected $with = ['reactions'];
 
     public function user()
     {
@@ -51,6 +53,11 @@ class Comment extends Model {
     public function comment_metas()
     {
         return $this->hasMany('App\Models\Comments\CommentMeta', 'comment_id', 'id');
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'entity_id')->withAttributes([ 'entity_type' => Reaction::COMMENT ]);
     }
 
     public function hasRating() {
@@ -109,13 +116,13 @@ class Comment extends Model {
 
     public function getArticle() {
         switch ($this->article_type) {
-            case Comment::NEWS;
+            case Comment::NEWS:
                 return News::findOrFail($this->article_id);
-            case Comment::JOURNAL;
+            case Comment::JOURNAL:
                 return Journal::findOrFail($this->article_id);
-            case Comment::VAULT;
+            case Comment::VAULT:
                 return VaultItem::findOrFail($this->article_id);
-            case Comment::REVIEW;
+            case Comment::REVIEW:
                 return VaultItemReview::findOrFail($this->article_id);
             case Comment::POLL:
                 return Poll::findOrFail($this->article_id);
@@ -128,13 +135,13 @@ class Comment extends Model {
 
     public function getArticleTypeDescription() {
         switch ($this->article_type) {
-            case Comment::NEWS;
+            case Comment::NEWS:
                 return 'news';
-            case Comment::JOURNAL;
+            case Comment::JOURNAL:
                 return 'journal';
             case Comment::VAULT;
                 return 'vault item';
-            case Comment::REVIEW;
+            case Comment::REVIEW:
                 return 'review';
             case Comment::POLL:
                 return 'poll';
@@ -147,13 +154,13 @@ class Comment extends Model {
 
     public function getArticleUrl() {
         switch ($this->article_type) {
-            case Comment::NEWS;
+            case Comment::NEWS:
                 return act('news', 'view', $this->article_id);
-            case Comment::JOURNAL;
+            case Comment::JOURNAL:
                 return act('journal', 'view', $this->article_id);
-            case Comment::VAULT;
+            case Comment::VAULT:
                 return act('vault', 'view', $this->article_id);
-            case Comment::REVIEW;
+            case Comment::REVIEW:
                 return act('review', 'view', $this->article_id);
             case Comment::POLL:
                 return act('poll', 'view', $this->article_id);
@@ -167,15 +174,15 @@ class Comment extends Model {
     public function getArticleTitle($article) {
         $title = '';
         switch ($this->article_type) {
-            case Comment::NEWS;
-            case Comment::JOURNAL;
+            case Comment::NEWS:
+            case Comment::JOURNAL:
             case Comment::POLL:
                 $title = $article->title;
             break;
-            case Comment::VAULT;
+            case Comment::VAULT:
                 $title = $article->name;
                 break;
-            case Comment::REVIEW;
+            case Comment::REVIEW:
                 $title = 'Review #' . $article->id;
                 break;
             case Comment::WIKI:
@@ -196,14 +203,14 @@ class Comment extends Model {
 
         $permission = null;
         switch ($type) {
-            case Comment::NEWS;
+            case Comment::NEWS:
                 $permission = 'News';
                 break;
-            case Comment::JOURNAL;
+            case Comment::JOURNAL:
                 $permission = 'Journal';
                 break;
-            case Comment::VAULT;
-            case Comment::REVIEW;
+            case Comment::VAULT:
+            case Comment::REVIEW:
                 $permission = 'Vault';
                 break;
             case Comment::POLL:
@@ -236,14 +243,14 @@ class Comment extends Model {
 
         $permission = null;
         switch ($this->article_type) {
-            case Comment::NEWS;
+            case Comment::NEWS:
                 $permission = 'News';
                 break;
-            case Comment::JOURNAL;
+            case Comment::JOURNAL:
                 $permission = 'Journal';
                 break;
-            case Comment::VAULT;
-            case Comment::REVIEW;
+            case Comment::VAULT:
+            case Comment::REVIEW:
                 $permission = 'Vault';
                 break;
             case Comment::POLL:
@@ -287,14 +294,14 @@ class Comment extends Model {
 
         $permission = null;
         switch ($this->article_type) {
-            case Comment::NEWS;
+            case Comment::NEWS:
                 $permission = 'News';
                 break;
-            case Comment::JOURNAL;
+            case Comment::JOURNAL:
                 $permission = 'Journal';
                 break;
-            case Comment::VAULT;
-            case Comment::REVIEW;
+            case Comment::VAULT:
+            case Comment::REVIEW:
                 $permission = 'Vault';
                 break;
             case Comment::POLL:

@@ -74,6 +74,7 @@
                 <div class="slot-row">
                     <div class="slot-main">
                         <div class="bbcode post-content {{$post->user->getClasses()}}">{!! $post->content_html !!}</div>
+                        @include('reactions.list', [ 'type' => App\Models\Reactions\Reaction::FORUM_POST, 'item' => $post ])
                     </div>
                     <div class="slot-right hidden-sm-down">
                         @avatar($post->user full)

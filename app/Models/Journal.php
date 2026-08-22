@@ -1,5 +1,6 @@
 <?php namespace App\Models;
 
+use App\Models\Reactions\Reaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -10,10 +11,16 @@ class Journal extends Model {
 
 	protected $table = 'journals';
     protected $fillable = ['user_id', 'title', 'content_text', 'content_html', 'stat_comments', 'flag_locked'];
+    protected $with = ['reactions'];
 
     public function user()
     {
         return $this->belongsTo('App\Models\Accounts\User');
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'entity_id')->withAttributes([ 'entity_type' => Reaction::JOURNAL ]);
     }
 
     public function getTitle() {

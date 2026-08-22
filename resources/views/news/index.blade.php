@@ -37,6 +37,7 @@
                 </div>
                 <div class="slot-main">
                     <div class="bbcode">{!! $news->content_html !!}</div>
+                    @include('reactions.list', [ 'type' => App\Models\Reactions\Reaction::NEWS, 'item' => $news ])
                 </div>
             </div>
         @endforeach

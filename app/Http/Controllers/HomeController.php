@@ -9,6 +9,7 @@ use App\Models\Journal;
 use App\Models\News;
 use App\Models\Polls\Poll;
 use App\Models\Polls\PollItemVote;
+use App\Models\Reactions\ReactionType;
 use App\Models\Vault\Motm;
 use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiObject;
@@ -67,7 +68,7 @@ class HomeController extends Controller {
             ->get();
 
         // News section
-        $newses = News::with(['user'])
+        $newses = News::with(['user', 'reactions'])
             ->orderBy('created_at', 'desc')
             ->take(1)
             ->get();

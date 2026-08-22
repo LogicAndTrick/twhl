@@ -144,3 +144,11 @@ if (!function_exists('bbcode_excerpt')) {
         return $parsed;
     }
 }
+
+if (!function_exists('all_reaction_types')) {
+    function all_reaction_types() {
+        return Cache::remember('all_reaction_types', 60 * 60, function() {
+            return App\Models\Reactions\ReactionType::query()->orderBy('orderindex')->get()->toArray();
+        });
+    }
+}

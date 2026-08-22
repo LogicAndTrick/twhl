@@ -50,6 +50,7 @@ $controllers = [
 
     'api' => 'Api\ApiController',
     'search' => 'Search\SearchController',
+    'reaction' => 'ReactionController',
     'opensearch.xml' => 'Search\OpenSearchDescriptionController'
 ];
 

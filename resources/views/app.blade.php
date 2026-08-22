@@ -100,6 +100,7 @@
         </div>
     @endif
     <script type="text/javascript">
+        window.all_reaction_types = {{ Illuminate\Support\Js::from(all_reaction_types()) }};
         window.urls = {
             embed: {
                 vault: '{{ url("api/vault-items") }}',
@@ -129,6 +130,10 @@
                 formatting_guide: '{{ url("wiki/page/TWHL:_WikiCode_Syntax") }}',
                 book_info: '{{ url('wiki/book-info?book={book}') }}',
                 get_revisions: '{{ url("api/wiki-revisions") }}',
+            },
+            reaction: {
+                add: '{{ url('reaction/add') }}',
+                remove: '{{ url('reaction/remove') }}',
             }
         };
         document.addEventListener('DOMContentLoaded', function () {

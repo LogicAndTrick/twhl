@@ -1,6 +1,7 @@
 <?php namespace App\Models\Forums;
 
 use App\Helpers\Date;
+use App\Models\Reactions\Reaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
@@ -15,6 +16,7 @@ class ForumPost extends Model {
     ];
     protected $fillable = ['forum_id', 'thread_id', 'user_id', 'content_text', 'content_html'];
     public $visible = ['id', 'forum_id', 'thread_id', 'user_id', 'content_text', 'content_html', 'created_at', 'updated_at', 'forum', 'thread', 'user'];
+    protected $with = ['reactions'];
 
     protected $table = 'forum_posts';
 
@@ -31,6 +33,11 @@ class ForumPost extends Model {
     public function user()
     {
         return $this->belongsTo('App\Models\Accounts\User');
+    }
+
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class, 'entity_id')->withAttributes([ 'entity_type' => Reaction::FORUM_POST ]);
     }
 
     /**
