@@ -34,6 +34,7 @@ class Kernel extends ConsoleKernel {
 	{
 		$schedule->command('update:competitions')->hourly();
         $schedule->command('update:motm')->daily();
+        $schedule->command('cloudflare:reload')->daily();
 	}
 
 }

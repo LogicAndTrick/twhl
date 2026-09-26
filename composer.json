@@ -10,6 +10,7 @@
 		"laravel/ui": "^4.6",
 		"logicandtrick/laravel-recaptcha": "^6.2",
 		"logicandtrick/wikicodeparser": "^0.9.7",
+		"monicahq/laravel-cloudflare": "^4.1",
 		"sentry/sentry-laravel": "^4.20"
 	},
 	"require-dev": {

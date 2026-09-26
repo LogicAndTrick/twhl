@@ -1,8 +1,8 @@
 <?php namespace App\Http;
 
-use App\Http\Middleware\ExtractCloudflareIpAddress;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Middleware\ThrottleRequests;
+use Monicahq\Cloudflare\Http\Middleware\TrustProxies;
 
 class Kernel extends HttpKernel {
 
@@ -12,12 +12,12 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $middleware = [
+        TrustProxies::class,
 		'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
 		'Illuminate\Cookie\Middleware\EncryptCookies',
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
-        ExtractCloudflareIpAddress::class,
 		'App\Http\Middleware\VerifyCsrfToken',
         'App\Http\Middleware\UpdateUserAccessDetails',
 		'App\Http\Middleware\ApiKeyAuthenticate',
