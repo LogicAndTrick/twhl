@@ -7,6 +7,7 @@ use App\Models\Competitions\CompetitionRestrictionGroup;
 use App\Models\Competitions\CompetitionStatus;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CompetitionAdminController extends Controller {
 
@@ -21,6 +22,9 @@ class CompetitionAdminController extends Controller {
 	}
 
     public function postCreate() {
+        Validator::extend('valid_extension_file', function($attribute, $value, $parameters) {
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
+        });
         $this->validate(Request::instance(), [
             'competition_name' => 'required|max:255',
             'status_id' => 'required|numeric',
@@ -32,7 +36,9 @@ class CompetitionAdminController extends Controller {
             'open_date' => 'required|date_format:d/m/Y',
             'close_date' => 'required|date_format:d/m/Y',
             'voting_close_date' => 'required_if:judge_type_id,' . CompetitionJudgeType::COMMUNITY_VOTE . '|date_format:d/m/Y',
-            'brief_attachment' => 'max:16384'
+            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg'
+        ], [
+            'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
         ]);
 
         $competition = Competition::Create([
@@ -55,7 +61,7 @@ class CompetitionAdminController extends Controller {
         $attachment = Request::file('brief_attachment');
         if ($attachment) {
             $dir = public_path('uploads/competition/attachments');
-            if (!is_dir($dir)) mkdir($dir, 0777, true);
+            if (!is_dir($dir)) mkdir($dir, 0755, true);
             $name = 'twhl-competition-' . $competition->id . '.' . strtolower($attachment->getClientOriginalExtension());
             $attachment->move($dir, $name);
             $competition->brief_attachment = $name;
@@ -73,6 +79,9 @@ class CompetitionAdminController extends Controller {
     }
 
     public function postEdit() {
+        Validator::extend('valid_extension_file', function($attribute, $value, $parameters) {
+            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
+        });
         $this->validate(Request::instance(), [
             'competition_name' => 'required|max:255',
             'status_id' => 'required|numeric',
@@ -86,7 +95,9 @@ class CompetitionAdminController extends Controller {
             'open_date' => 'required|date_format:d/m/Y',
             'close_date' => 'required|date_format:d/m/Y',
             'voting_close_date' => 'required_if:judge_type_id,' . CompetitionJudgeType::COMMUNITY_VOTE . '|date_format:d/m/Y',
-            'brief_attachment' => 'max:16384'
+            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg'
+        ], [
+            'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
         ]);
         $id = Request::input('id');
         $comp = Competition::findOrFail($id);
@@ -98,7 +109,7 @@ class CompetitionAdminController extends Controller {
 
         $brief_attachment = $comp->brief_attachment;
         $dir = public_path('uploads/competition/attachments');
-        if (!is_dir($dir)) mkdir($dir, 0777, true);
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
         $path = strlen($comp->brief_attachment) == 0 ? null : $dir . '/' . $comp->brief_attachment;
 
         $attachment = Request::file('brief_attachment');
