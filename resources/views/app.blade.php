@@ -100,6 +100,7 @@
         </div>
     @endif
     <script type="text/javascript">
+        window.csrfToken = '{{ csrf_token() }}';
         window.all_reaction_types = {{ Illuminate\Support\Js::from(all_reaction_types()) }};
         window.urls = {
             embed: {

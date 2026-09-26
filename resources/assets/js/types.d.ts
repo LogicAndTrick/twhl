@@ -8,6 +8,7 @@ export type ReactionType = {
 
 declare global {
     interface Window {
+        csrfToken: string;
         all_reaction_types: ReactionType[];
         urls: {
             embed: {

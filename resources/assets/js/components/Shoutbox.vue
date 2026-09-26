@@ -297,7 +297,7 @@ async function save() {
 
     const resp = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': window.csrfToken },
         body: JSON.stringify({ text: content, id }),
     });
     const data = await resp.json();

@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie';
-
 import { filteredEventListener } from '../lib/utils';
 import { ReactionType } from '../types';
 import { openTooltip, closeTooltip } from './tooltip';
@@ -208,7 +206,7 @@ class ReactionHandler {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN')!,
+                    'X-CSRF-TOKEN': window.csrfToken,
                 },
                 body: JSON.stringify({
                     type: this.entityType,

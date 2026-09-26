@@ -404,6 +404,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         if (imageFile) {
             const form = new FormData();
+            form.append('_token', window.csrfToken);
             form.append('image', imageFile);
             const response = await fetch(window.urls.api.image_upload, { method: 'post', body: form });
             const json = await response.json();

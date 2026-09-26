@@ -23,7 +23,10 @@ type PagesAndEmbeds = {
 async function loadPagesAndEmbeds(c: HTMLElement, pages: string[], embeds: string[]) {
     const resp = await fetch('/api/wiki-objects/page-information', {
         method: 'post',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': window.csrfToken,
+        },
         body: JSON.stringify({ pages, embeds }),
     });
     if (!resp.ok) return;
@@ -46,7 +49,6 @@ async function loadPagesAndEmbeds(c: HTMLElement, pages: string[], embeds: strin
         } else {
             pl.forEach((x) => {
                 x.title = p.revision.title;
-                console.log('a');
             });
         }
     }
