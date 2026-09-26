@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "085bddc8ae6a327a0bd46d05b2828507",
+    "content-hash": "c24e383282f428a5bae34c6f2a2dd724",
     "packages": [
         {
             "name": "brick/math",
@@ -2167,10 +2167,10 @@
         },
         {
             "name": "logicandtrick/wikicodeparser",
-            "version": "0.9.7",
+            "version": "0.9.9",
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/LogicAndTrick/WikiCodeParser/releases/download/v0.9.7/wikicodeparser-php.zip"
+                "url": "https://github.com/LogicAndTrick/WikiCodeParser/releases/download/v0.9.9/wikicodeparser-php.zip"
             },
             "type": "library",
             "autoload": {
