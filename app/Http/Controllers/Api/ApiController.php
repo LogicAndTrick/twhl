@@ -1698,8 +1698,15 @@ class ApiController extends Controller {
 
     private function post_wiki_objects_page_information(): array
     {
-        $pages = \request()->input('pages');
-        $embeds = \request()->input('embeds');
+        $this->validate(Request::instance(), [
+            'pages' => 'array',
+            'embeds' => 'array',
+            'pages.*' => 'string',
+            'embeds.*' => 'string',
+        ]);
+
+        $pages = Request::input('pages', []);
+        $embeds = Request::input('embeds', []);
 
         $res = [
             'pages' => [],
