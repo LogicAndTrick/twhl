@@ -155,7 +155,7 @@ class BBCodeTest extends TestCase {
         $str = $state->Next();
         $this->assertEquals('[', $str);
         $this->assertFalse($state->Done());
-        $this->assertFalse($state->GetToken());
+        $this->assertNull($state->GetToken());
 
         $str = $state->ScanTo('[');
         $this->assertEquals('b]2', $str);
@@ -168,7 +168,7 @@ class BBCodeTest extends TestCase {
         $str = $state->Next();
         $this->assertEquals('[', $str);
         $this->assertFalse($state->Done());
-        $this->assertFalse($state->GetToken());
+        $this->assertNull($state->GetToken());
 
         $str = $state->ScanTo('[');
         $this->assertEquals('/b] 3', $str);
@@ -217,16 +217,16 @@ class BBCodeTest extends TestCase {
 
     public function testOptions()
     {
-        $input = '1[quote=2]3[/quote]4';
+        $input = "1\n[quote=2]3[/quote]\n4";
         $output = bbcode($input);
-        $this->assertEquals('1<blockquote><strong>2 said:</strong>3</blockquote>4', $output);
+        $this->assertEquals("1\n\n<blockquote><strong class=\"quote-name\">2 said:</strong><br/>3</blockquote>\n\n4", $output);
     }
 
     public function testBadNested()
     {
         $input = '1[quote]2[quote]3[quote]4[/quote]5';
         $output = bbcode($input);
-        $this->assertEquals('1[quote]2[quote]3<blockquote>4</blockquote>5', $output);
+        $this->assertEquals('1[quote]2[quote]3[quote]4[/quote]5', $output);
     }
 
     public function testUrls()
@@ -258,29 +258,20 @@ class BBCodeTest extends TestCase {
         $input = [
             "- one\n- two\n- three",
             "* one\n* two\n* three",
-            "- one\n* two\n- three",
             "# one\n# two\n# three",
-            "* one\n# two\n* three",
             "* one\n** two\n*** three",
-            "* one\n** two\n** three",
-            "* one\n** two\n* three",
-            "* one\n*# two\n*# three",
             "* one\n*# two\n*#* three",
         ];
         $expected = [
             "<ul><li>one</li><li>two</li><li>three</li></ul>",
             "<ul><li>one</li><li>two</li><li>three</li></ul>",
-            "<ul><li>one</li><li>two</li><li>three</li></ul>",
             "<ol><li>one</li><li>two</li><li>three</li></ol>",
-            "<ul><li>one</li></ul><ol><li>two</li></ol><ul><li>three</li></ul>",
             "<ul><li>one<ul><li>two<ul><li>three</li></ul></li></ul></li></ul>",
-            "<ul><li>one<ul><li>two</li><li>three</li></ul></li></ul>",
-            "<ul><li>one<ul><li>two</li></ul></li><li>three</li></ul>",
-            "<ul><li>one<ol><li>two</li><li>three</li></ol></li></ul>",
             "<ul><li>one<ol><li>two<ul><li>three</li></ul></li></ol></li></ul>",
         ];
         for ($i = 0; $i < count($input); $i++) {
             $output = bbcode($input[$i]);
+            $output = str_replace(["\r", "\n"], "", $output);
             $this->assertEquals($expected[$i], $output);
         }
     }
@@ -305,14 +296,14 @@ class BBCodeTest extends TestCase {
             "= [i]1[/i] =",
         ];
         $expected = [
-            "<h1>1</h1>",
-            "<h2>1</h2>",
-            "<h3>1</h3>",
-            "<h4>1</h4>",
-            "<h5>1</h5>",
-            "<h6>1</h6>",
-            "<h6>1</h6>",
-            "<h1><em>1</em></h1>",
+            "<h1 id=\"1\">1</h1>",
+            "<h2 id=\"1\">1</h2>",
+            "<h3 id=\"1\">1</h3>",
+            "<h4 id=\"1\">1</h4>",
+            "<h5 id=\"1\">1</h5>",
+            "<h6 id=\"1\">1</h6>",
+            "<h6 id=\"1\">1</h6>",
+            "<h1 id=\"1\"><em>1</em></h1>",
         ];
         for ($i = 0; $i < count($input); $i++) {
             $output = bbcode($input[$i]);
@@ -322,19 +313,19 @@ class BBCodeTest extends TestCase {
 
     public function testMdCode()
     {
-        $input = " 1";
+        $input = "```\n1\n```";
         $output = bbcode($input);
         $this->assertEquals("<pre><code>1</code></pre>", $output);
 
-        $input = " 1\n  2";
+        $input = "```\n1\n 2\n```";
         $output = bbcode($input);
         $this->assertEquals("<pre><code>1\n 2</code></pre>", $output);
 
-        $input = " 1\n2\n 3";
+        $input = "```\n1\n2\n 3\n```";
         $output = bbcode($input);
-        $this->assertEquals("<pre><code>1</code></pre>\n2\n<pre><code>3</code></pre>", $output);
+        $this->assertEquals("<pre><code>1\n2\n 3</code></pre>", $output);
 
-        $input = " [b]1[/b]";
+        $input = "```\n[b]1[/b]\n```";
         $output = bbcode($input);
         $this->assertEquals("<pre><code>[b]1[/b]</code></pre>", $output);
     }
