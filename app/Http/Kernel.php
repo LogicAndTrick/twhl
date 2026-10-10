@@ -14,6 +14,7 @@ class Kernel extends HttpKernel
 	 * @var array
 	 */
 	protected $middleware = [
+		'App\Http\Middleware\BlockAi',
 		TrustProxies::class,
 		'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
 		'Illuminate\Cookie\Middleware\EncryptCookies',
