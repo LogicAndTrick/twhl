@@ -23,7 +23,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         RateLimiter::for('global', function (Request $request) {
-            return Limit::perMinute(90)->by($request->ip());
+            $user = $request->user();
+            if ($user) return Limit::perMinute(120)->by('user:' . $user->getAuthIdentifier());
+            return Limit::perMinute(60)->by('ip:' . $request->ip());
         });
         Auth::provider('twhl', function ($app, array $config) {
             return new TwhlUserProvider($app['hash'], User::class);

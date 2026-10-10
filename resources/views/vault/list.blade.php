@@ -187,23 +187,57 @@
             }
         }
 
-        async function populate_dynamic_filter(cls, url, obj) {
-            const resp = await fetch(url);
-            if (!resp.ok) return;
-            const data = await resp.json();
+        async function populate_dynamic_filter(cache, cls, url, obj) {
+            const key = `vault/list|${cls}|${url}|${JSON.stringify(obj)}`;
+            let data = null;
+            if (cache) {
+                // try and load the data from the local storage cache
+                try {
+                    const cached = localStorage.getItem(key);
+                    if (typeof cached === 'string') {
+                        const now = Date.now();
+                        const parsedCached = JSON.parse(cached);
+                        if (
+                            Array.isArray(parsedCached.data)
+                            && parsedCached.key === key
+                            && typeof parsedCached.timestamp === 'number'
+                            && now >= parsedCached.timestamp
+                            && now - parsedCached.timestamp < 60 * 60 * 1000 // 60 minutes
+                        ) {
+                            data = parsedCached.data;
+                        }
+                    }
+                } catch (e) {
+                    data = null;
+                }
+            }
+
+            if (data === null) {
+                const resp = await fetch(url);
+                if (!resp.ok) return;
+                data = await resp.json();
+                if (cache) {
+                    try {
+                        localStorage.setItem(key, JSON.stringify({ timestamp: Date.now(), data: data, key }));
+                    } catch (e) {
+                        // can't store for some reason
+                    }
+                }
+            }
+            
             populate_filter(cls, data, templates[`item:${cls}`], obj, templates[`append:${cls}`]);
         }
 
         function populate_dynamic_content() {
-            populate_dynamic_filter('filter-games', '{{ url("api/games") }}?count=100', { size: 32 });
-            populate_dynamic_filter('filter-categories', '{{ url("api/vault-categories") }}?count=100');
-            populate_dynamic_filter('filter-types', '{{ url("api/vault-types") }}?count=100');
-            populate_dynamic_filter('filter-includes', '{{ url("api/vault-includes") }}?count=100');
+            populate_dynamic_filter(true, 'filter-games', '{{ url("api/games") }}?count=100', { size: 32 });
+            populate_dynamic_filter(true, 'filter-categories', '{{ url("api/vault-categories") }}?count=100');
+            populate_dynamic_filter(true, 'filter-types', '{{ url("api/vault-types") }}?count=100');
+            populate_dynamic_filter(true, 'filter-includes', '{{ url("api/vault-includes") }}?count=100');
 
             const filterUsers = document.querySelector('[name=users]');
             const users = (filterUsers.value || '').split('-').join(',');
             if (users) {
-                populate_dynamic_filter('filter-users', '{{ url("api/users") }}?id=' + users + '&count=100');
+                populate_dynamic_filter(false, 'filter-users', '{{ url("api/users") }}?id=' + users + '&count=100');
             } else {
                 populate_filter('filter-users', [], '', null, templates['append:filter-users']);
             }
