@@ -1,6 +1,9 @@
-<?php namespace App\Providers;
+<?php
+
+namespace App\Providers;
 
 use App\Helpers\TwhlUserProvider;
+use App\Http\Middleware\LimitGuestPagination;
 use App\Models\Accounts\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -26,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
             return new TwhlUserProvider($app['hash'], User::class);
         });
         Paginator::useBootstrap();
+        Paginator::currentPageResolver(LimitGuestPagination::pageResolver(...));
     }
 
     /**
@@ -43,6 +47,9 @@ class AppServiceProvider extends ServiceProvider
             'Illuminate\Contracts\Auth\Registrar',
             'App\Services\Registrar'
         );
+        $this->app->bind(
+            'Illuminate\Pagination\LengthAwarePaginator',
+            'App\Helpers\LimitedLengthAwarePaginator'
+        );
     }
-
 }

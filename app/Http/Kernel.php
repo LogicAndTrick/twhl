@@ -1,10 +1,12 @@
-<?php namespace App\Http;
+<?php
+
+namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Monicahq\Cloudflare\Http\Middleware\TrustProxies;
 
-class Kernel extends HttpKernel {
+class Kernel extends HttpKernel
+{
 
 	/**
 	 * The application's global HTTP middleware stack.
@@ -12,18 +14,19 @@ class Kernel extends HttpKernel {
 	 * @var array
 	 */
 	protected $middleware = [
-        TrustProxies::class,
+		TrustProxies::class,
 		'Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode',
 		'Illuminate\Cookie\Middleware\EncryptCookies',
 		'Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse',
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
 		'App\Http\Middleware\VerifyCsrfToken',
-        'App\Http\Middleware\UpdateUserAccessDetails',
+		'App\Http\Middleware\UpdateUserAccessDetails',
 		'App\Http\Middleware\ApiKeyAuthenticate',
 		'App\Http\Middleware\CheckForBan',
 		'App\Http\Middleware\ConvertLegacyAccount',
-        'Illuminate\Routing\Middleware\ThrottleRequests:global',
+		'App\Http\Middleware\LimitGuestPagination',
+		'Illuminate\Routing\Middleware\ThrottleRequests:global',
 	];
 
 	/**
@@ -35,7 +38,6 @@ class Kernel extends HttpKernel {
 		'auth' => 'App\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
-        'permission' => 'App\Http\Middleware\Permission'
+		'permission' => 'App\Http\Middleware\Permission'
 	];
-
 }

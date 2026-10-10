@@ -56,7 +56,7 @@ class ForumController extends Controller {
             ->orderBy('is_sticky', 'desc')
             ->orderBy('last_post_at', 'desc')
             ->orderBy('updated_at', 'desc');
-        $count = $thread_query->getQuery()->getCountForPagination();
+        $count = $thread_query->count();
         $threads = $thread_query->skip(($page - 1) * 50)->take(50)->get();
         $pag = new LengthAwarePaginator($threads, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);
         return view('forums/forum/view', [
