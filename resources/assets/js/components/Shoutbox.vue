@@ -89,7 +89,8 @@ const lastId = ref(0);
 const lastSeen = ref(0);
 
 async function fetchUpdates(full: boolean = false) {
-    const timestamp = full === true ? 0 : Math.floor(lastUpdate.value / 1000);
+    // use a timestamp of 1 year ago instead of 0 for full updates, to save the database index a bit
+    const timestamp = full === true ? Math.floor(Date.now() / 1000) - 365 * 24 * 60 * 60 : Math.floor(lastUpdate.value / 1000);
     loading.value = true;
     const resp = await fetch(urls.value.get + '?timestamp=' + timestamp);
     const data = await resp.json();
