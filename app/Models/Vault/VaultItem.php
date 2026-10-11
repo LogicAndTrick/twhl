@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class VaultItem extends Model {
 
@@ -21,7 +22,7 @@ class VaultItem extends Model {
         'name', 'content_text', 'content_html',
         'is_hosted_externally', 'file_location', 'file_size', 'link_broken',
         'flag_notify', 'flag_ratings',
-        'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating'
+        'stat_views', 'stat_downloads', 'stat_ratings', 'stat_comments', 'stat_average_rating', 'version'
     ];
     public $visible = [
         'id', 'user_id', 'engine_id', 'game_id', 'category_id', 'type_id', 'license_id',
@@ -136,7 +137,7 @@ class VaultItem extends Model {
     public function getDownloadUrl()
     {
         if ($this->is_hosted_externally) return $this->file_location;
-        else return asset('uploads/vault/items/'.$this->file_location);
+        else return Storage::cloud()->url('uploads/vault/items/'.$this->file_location) . '?v=' . $this->version;
     }
 
     public function getServerFilePath()

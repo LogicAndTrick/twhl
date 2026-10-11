@@ -334,7 +334,7 @@ class BladeServiceProvider extends ServiceProvider {
         Blade::extend(function($view, $compiler) {
             $pattern = $this->createBladeTemplatePattern('file');
             return preg_replace_callback($pattern, function($matches) {
-                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['required' => 'false'], 'label');
+                $parameters = $this->parseBladeTemplatePattern($matches, ['name'], ['required' => 'false', 'accept' => '', 'maxsize' => ''], 'label');
 
                 $expl_name = explode(':', $parameters['name']);
                 $name = $expl_name[0];
@@ -342,6 +342,8 @@ class BladeServiceProvider extends ServiceProvider {
                 $name_array = "['$name', '$mapped_name']";
 
                 $required = $this->evaluatedBooleanAttribute($parameters, 'required');
+                $accept = $parameters['accept'] ? "accept='" . BladeServiceProvider::esc($parameters['accept']) . "'" : '';
+                $maxsize = $parameters['maxsize'] ? "data-maxsize='" . BladeServiceProvider::esc($parameters['maxsize']) . "'" : '';
 
                 $label = BladeServiceProvider::esc( Arr::get($parameters, 'label', $name) );
                 $id = $this->generateHtmlId($name);
@@ -352,7 +354,7 @@ class BladeServiceProvider extends ServiceProvider {
                 $error_message = "<?php echo \\App\\Providers\\BladeServiceProvider::ErrorMessageIfExists(\$errors, $name_array); ?>";
 
                 return "{$matches[1]}<div class='form-group $error_class'><label for='$id'>$label</label>" .
-                "<input type='file' id='$id' name='$mapped_name' class='form-control' $required />" .
+                "<input type='file' id='$id' name='$mapped_name' class='form-control' $accept $maxsize $required />" .
                 "$error_message</div>";
             }, $view);
         });
@@ -378,7 +380,7 @@ class BladeServiceProvider extends ServiceProvider {
         return '/(?<!\w)(\s*)@' . $name . '\s*?(?:\(([^)]*)\))?(?: ?= ?([^\r\n]*))?(?!\w)/';
     }
 
-    private function parseBladeTemplatePattern($matches, $required = [], $named = [], $eq = false) {
+    private function parseBladeTemplatePattern($matches, $required = [], $named = [], mixed $eq = false) {
         $ret = [
             '_' => []
         ];

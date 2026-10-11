@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class VaultController extends Controller {
 
@@ -163,7 +164,7 @@ class VaultController extends Controller {
 
             '__upload_method' => 'required|in:file,link',
             'link' => 'required_if:__upload_method,link|max:512',
-            'file' => 'required_if:__upload_method,file|max:16384|valid_extension_file:zip,rar,7z'
+            'file' => 'required_if:__upload_method,file|max:65536|valid_extension_file:zip,rar,7z'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
             'valid_extension_screen' => 'Only the following file formats are allowed: jpg, png',
@@ -198,7 +199,9 @@ class VaultController extends Controller {
             'stat_downloads' => 0,
             'stat_ratings' => 0,
             'stat_comments' => 0,
-            'stat_average_rating' => 0
+            'stat_average_rating' => 0,
+
+            'version' => 1
         ]);
 
         // Set included files
@@ -216,15 +219,11 @@ class VaultController extends Controller {
         if ($uploaded) {
             $file = Request::file('file');
 
-            $dir = public_path('uploads/vault/items');
             $name = 'twhl-vault-' . $item->id . '.' . strtolower($file->getClientOriginalExtension());
-            $file->move($dir, $name);
-
-            $file_name = $dir . '/' . $name;
-            $size = filesize($file_name);
+            Storage::cloud()->putFileAs('uploads/vault/items', $file, $name, 'public');
 
             $item->file_location = $name;
-            $item->file_size = $size;
+            $item->file_size = $file->getSize();
             $item->save();
         }
 
@@ -295,7 +294,7 @@ class VaultController extends Controller {
             '__upload_method' => 'required|in:file,link',
             'link' => 'required_if:__upload_method,link|max:512',
             'link_broken' => 'prohibited_unless:__upload_method,link',
-            'file' => 'max:16384|valid_extension:zip,rar,7z'
+            'file' => 'max:65536|valid_extension:zip,rar,7z'
         ], [
             'valid_extension' => 'Only the following file formats are allowed: zip, rar, 7z'
         ]);
@@ -315,15 +314,11 @@ class VaultController extends Controller {
             $file = Request::file('file');
 
             if ($file) {
-                $dir = public_path('uploads/vault/items');
                 $name = 'twhl-vault-' . $item->id . '.' . strtolower($file->getClientOriginalExtension());
-                $file->move($dir, $name);
-
-                $file_name = $dir . '/' . $name;
-                $size = filesize($file_name);
+                Storage::cloud()->putFileAs('uploads/vault/items', $file, $name, 'public');
 
                 $item->file_location = $name;
-                $item->file_size = $size;
+                $item->file_size = $file->getSize();
                 $item->save();
             }
         } else {
@@ -346,6 +341,7 @@ class VaultController extends Controller {
 
         $item->flag_notify = !!Request::input('flag_notify');
         $item->flag_ratings = !!Request::input('flag_ratings');
+        $item->version++;
 
         $item->save();
 

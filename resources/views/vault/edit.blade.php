@@ -51,7 +51,7 @@
             </div>
             <div class="card-body">
                 <fieldset name="file-fields">
-                    @file(file required=!$has_upload) = File Upload (.zip, .rar, .7z, maximum size: 16mb)@if ($has_upload) - Leave blank to use current file @endif
+                    @file(file required=!$has_upload accept=.zip,.rar,.7z maxsize=64) = File Upload (.zip, .rar, .7z, maximum size: 64mb)@if ($has_upload) - Leave blank to use current file @endif
                 </fieldset>
                 <fieldset name="link-fields">
                     @text(link $location format=url required=true) = Link to File (Dropbox, Steam Workshop, etc.)

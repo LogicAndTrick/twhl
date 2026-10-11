@@ -50,7 +50,7 @@
             </div>
             <div class="card-body">
                 <fieldset name="file-fields">
-                    @file(file required=true) = File Upload (.zip, .rar, .7z, maximum size: 16mb)
+                    @file(file required=true accept=.zip,.rar,.7z maxsize=64) = File Upload (.zip, .rar, .7z, maximum size: 64mb)
                 </fieldset>
                 <fieldset name="link-fields">
                     @text(link format=url required=true) = Link to File (Dropbox, Steam Workshop, etc.)
