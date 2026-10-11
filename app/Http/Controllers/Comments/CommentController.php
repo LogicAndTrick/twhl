@@ -93,7 +93,8 @@ class CommentController extends Controller {
 
         $user = intval(Request::get('user'));
         $user = $user > 0 ? User::find($user) : null;
-        if ($user) $query = $query->whereUserId($user->id);
+        if ($user) $query = $query->forceIndex('comments_deleted_at')->whereUserId($user->id);
+        else $query = $query->forceIndex('comments_deleted_created');
 
         $comments = $query->paginate(50);
 
