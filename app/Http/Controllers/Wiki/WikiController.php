@@ -39,7 +39,9 @@ class WikiController extends Controller {
     // Listings
 
     public function getPages() {
-        $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)->whereNull('wiki_revisions.deleted_at')
+        $revisions = WikiRevision::with(['wiki_object'])
+            ->forceIndex('wiki_revisions_deleted_at_is_active_slug_index')
+            ->where('wiki_revisions.is_active', '=', 1)->whereNull('wiki_revisions.deleted_at')
             ->leftJoin('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
             ->where('o.type_id', '=', WikiType::PAGE)
             ->whereNull('o.deleted_at')
