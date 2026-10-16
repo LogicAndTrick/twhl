@@ -56,7 +56,7 @@
             <div class="reaction {{ $reacts->contains('user_id', $user_id) ? 'active' : '' }}">
                 <span class="img">
                     @if ($reaction_type['is_image'])
-                        <img src="{{ $reaction_type['value'] }}" />
+                        <img src="{{ asset('images/smilies/' . $reaction_type['value']) }}" />
                     @else
                         {{ $reaction_type['value'] }}
                     @endif
