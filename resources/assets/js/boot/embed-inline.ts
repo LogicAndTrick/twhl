@@ -68,7 +68,7 @@ async function loadPagesAndEmbeds(c: HTMLElement, pages: string[], embeds: strin
         } else {
             const sz = e.meta.filter((m: any) => m.key === 's');
             const size = sz && sz.length > 0 && parseInt(sz[0].value, 10);
-            const txt = size ? '(' + formatFilesize(size) + ')' : '(Unknown size)';
+            const txt = size ? ' (' + formatFilesize(size) + ')' : ' (Unknown size)';
             pl.forEach((x) => {
                 const span = document.createElement('span');
                 span.textContent = txt;

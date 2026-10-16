@@ -1,8 +1,9 @@
-<?php namespace App\Http\Controllers\Wiki;
+<?php
+
+namespace App\Http\Controllers\Wiki;
 
 use App\Events\WikiRevisionCreated;
 use App\Events\WikiTitleRenamed;
-use App\Helpers\BBCode\ParseResult;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
@@ -20,25 +21,28 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-class WikiController extends Controller {
+class WikiController extends Controller
+{
 
-	public function __construct()
-	{
+    public function __construct()
+    {
         $this->permission(['create', 'createupload'], 'WikiCreate');
         $this->permission(['edit', 'editupload', 'revert', 'revertupload'], 'WikiCreate');
         $this->permission(['delete', 'deleteupload'], 'WikiAdmin');
-	}
+    }
 
-	public function getIndex()
-	{
+    public function getIndex()
+    {
         return $this->getPage('Home');
-	}
+    }
 
     // Listings
 
-    public function getPages() {
+    public function getPages()
+    {
         $revisions = WikiRevision::with(['wiki_object'])
             ->forceIndex('wiki_revisions_deleted_at_is_active_slug_index')
             ->where('wiki_revisions.is_active', '=', 1)->whereNull('wiki_revisions.deleted_at')
@@ -53,7 +57,8 @@ class WikiController extends Controller {
         ]);
     }
 
-    public function getUploads() {
+    public function getUploads()
+    {
         $revisions = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)
             ->leftJoin('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
             ->where('o.type_id', '=', WikiType::UPLOAD)
@@ -66,19 +71,20 @@ class WikiController extends Controller {
         ]);
     }
 
-    public function getCategories() {
+    public function getCategories()
+    {
         $sql = 'from wiki_revision_metas as m
                 inner join wiki_revisions as r on m.revision_id = r.id
                 inner join wiki_objects as o on o.id = r.object_id
                 where r.is_active = ? and m.key = ? and o.type_id = ?';
-        $param = [ true, WikiRevisionMeta::CATEGORY, WikiType::PAGE ];
+        $param = [true, WikiRevisionMeta::CATEGORY, WikiType::PAGE];
         $count = DB::select("select COUNT(distinct m.value) as count $sql", $param)[0]->count;
 
         $page = intval(Request::get('page')) ?: 1;
         $offset = ($page - 1) * 50;
 
         $cats = DB::select("select distinct m.value as value $sql order by m.value limit 50 offset $offset", $param);
-        $categories = new LengthAwarePaginator($cats, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);
+        $categories = new LengthAwarePaginator($cats, $count, 50, $page, ['path' => Paginator::resolveCurrentPath()]);
 
         foreach ($cats as $c) {
             $c->title = str_replace('_', ' ', $c->value);
@@ -89,7 +95,8 @@ class WikiController extends Controller {
         ]);
     }
 
-    public function getHistory($page) {
+    public function getHistory(string $page)
+    {
         $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $page)->firstOrFail();
         $revisions = WikiRevision::with(['user'])->where('object_id', '=', $rev->object_id)->orderBy('created_at', 'desc')->paginate(50);
         return view('wiki/list/revisions', [
@@ -105,21 +112,24 @@ class WikiController extends Controller {
 
     // Page types: 1; Article; 2: Category, 3: Upload
 
-    public function getView($id) {
+    public function getView(int $id)
+    {
         $obj = WikiObject::findOrFail($id);
         $rev = WikiRevision::where('is_active', '=', 1)->where('object_id', '=', $id)->firstOrFail();
-        return redirect('wiki/page/'.$rev->escaped_slug);
+        return redirect('wiki/page/' . $rev->escaped_slug);
     }
 
-    public function getViewRevision($id) {
+    public function getViewRevision(int $id)
+    {
         $rev = WikiRevision::findOrFail($id);
-        return redirect('wiki/page/'.$rev->escaped_slug);
+        return redirect('wiki/page/' . $rev->escaped_slug);
     }
 
     const MAX_COMBINED_CATEGORIES_UNAUTHENTICATED = 1;
     const MAX_COMBINED_CATEGORIES_AUTHENTICATED = 3;
 
-    public function getPage($page, $revision = 0) {
+    public function getPage(string $page, int $revision = 0)
+    {
         $rev = null;
         if (!$revision) {
             $rev = WikiRevision::with(['wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits', 'wiki_revision_credits.user', 'wiki_object', 'user'])->where('is_active', '=', 1)->where('slug', '=', $page)->first();
@@ -128,7 +138,7 @@ class WikiController extends Controller {
                 $redirect = WikiRevision::with(['wiki_object', 'wiki_object.current_revision'])->where('is_active', '=', 0)->where('slug', '=', $page)->first();
                 if ($redirect && $redirect->wiki_object && !$redirect->wiki_object->deleted_at && $redirect->wiki_object->current_revision && $redirect->wiki_object->current_revision->is_active) {
                     Request::session()->flash('wiki.redirected', $page);
-                    return redirect('wiki/page/'.$redirect->wiki_object->current_revision->escaped_slug);
+                    return redirect('wiki/page/' . $redirect->wiki_object->current_revision->escaped_slug);
                 }
             }
         } else {
@@ -154,48 +164,81 @@ class WikiController extends Controller {
                 abort(422);
             }
 
-            $cat_names = array_filter($all_cats, function ($c) { return !Str::startsWith($c, '!'); });
-            $notcat_names = array_map(function ($c) { return substr($c, 1); }, array_filter($all_cats, function ($c) { return Str::startsWith($c, '!'); }));
+            $version = Cache::remember('wiki/category_cache_time', now()->addDays(1), fn() => strval(microtime(true)));
+            $pageNum = max(1, intval(Request::input('page')));
+            [$cat_pages, $subcats] = Cache::remember(
+                "wiki/getPage:{$pageNum}/categories:{$max_combined_cats}:{$version}/{$cat_name}",
+                now()->addDays(1),
+                function () use ($cat_name, $max_combined_cats) {
+                    $all_cats = explode('+', $cat_name);
 
-            $cat_num = count($cat_names);
+                    $cat_names = array_filter($all_cats, function ($c) {
+                        return !Str::startsWith($c, '!');
+                    });
+                    $notcat_names = array_map(function ($c) {
+                        return substr($c, 1);
+                    }, array_filter($all_cats, function ($c) {
+                        return Str::startsWith($c, '!');
+                    }));
 
-            $cats_escaped = implode(',', array_map(function($x) {
-                return DB::connection()->getPdo()->quote($x);
-            }, $cat_names));
-            $notcats_escaped = implode(',', array_map(function($x) {
-                return DB::connection()->getPdo()->quote($x);
-            }, $notcat_names));
+                    $cats_escaped = implode(',', array_map(function ($x) {
+                        return DB::connection()->getPdo()->quote($x);
+                    }, $cat_names));
 
-            $key = DB::connection()->getPdo()->quote(WikiRevisionMeta::CATEGORY);
+                    $catpage_query = "select id as revision_id from wiki_revisions where is_active = 1";
+                    foreach ($cat_names as $cat_name) {
+                        $esc_name = DB::connection()->getPdo()->quote($cat_name);
+                        $catpage_query .= "\n intersect \n select revision_id from wiki_revision_metas where `key` = 'c' and `value` = {$esc_name}";
+                    }
+                    foreach ($notcat_names as $notcat_name) {
+                        $esc_name = DB::connection()->getPdo()->quote($notcat_name);
+                        $catpage_query .= " \n except \n select revision_id from wiki_revision_metas where `key` = 'c' and `value` = {$esc_name}";
+                    }
 
-            $catpage_filter = "select m.revision_id from wiki_revision_metas as m where m.key = $key \n";
-            if (strlen($cats_escaped) > 0) $catpage_filter .= "and m.value in ({$cats_escaped}) \n";
-            if (strlen($notcats_escaped) > 0) $catpage_filter .= "and m.revision_id not in (select m2.revision_id from wiki_revision_metas as m2 where m2.key = 'c' and m2.value in ({$notcats_escaped})) \n";
-            $catpage_filter .= "group by m.revision_id \n";
-            if (strlen($cats_escaped) > 0) $catpage_filter .= "having count(*) = $cat_num \n";
+                    DB::unprepared('drop temporary table if exists temp_cat_ids; create temporary table temp_cat_ids (primary key (revision_id)) ' . $catpage_query);
 
-            $cat_pages = WikiRevision::whereIsActive(true)
-                ->join('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
-                ->whereRaw("wiki_revisions.id in ($catpage_filter)")
-                ->where('o.type_id', '=', WikiType::PAGE)
-                ->select('wiki_revisions.*')
-                ->orderBy('wiki_revisions.title')
-                ->paginate(250);
+                    /** @var \Illuminate\Pagination\LengthAwarePaginator $cat_pages */
+                    $cat_pages = WikiRevision::whereIsActive(true)
+                        ->join('wiki_objects as o', 'o.id', '=', 'wiki_revisions.object_id')
+                        ->join('temp_cat_ids as tci', 'tci.revision_id', '=', 'wiki_revisions.id')
+                        ->where('o.type_id', '=', WikiType::PAGE)
+                        ->orderBy('wiki_revisions.title')
+                        ->select(['wiki_revisions.slug', 'wiki_revisions.title'])
+                        ->paginate(250);
 
-            $subcats = count($all_cats) >= $max_combined_cats ? [] : DB::select("
-                    select `value` as name, count(*) as num
-                    from wiki_revision_metas as mm
-                    where mm.`key` = ?
-                    " . (strlen($cats_escaped) > 0 ? "and `value` not in ({$cats_escaped})" : '') . "
-                    and mm.revision_id in (
-                        select r.id from `wiki_revisions` as r
-                        inner join wiki_objects o on r.object_id = o.id
-                        where r.`is_active` = 1
-                        and o.type_id = " . WikiType::PAGE . "
-                        and r.id in ($catpage_filter) and r.deleted_at is null
-                    )
-                    group by `value`
-                ", [ WikiRevisionMeta::CATEGORY ]);
+                    $cat_pages = [
+                        array_map(fn (WikiRevision $x) => $x->toArray(), $cat_pages->items()),
+                        $cat_pages->total(),
+                        $cat_pages->perPage(),
+                    ];
+
+                    $subcats = count($all_cats) >= $max_combined_cats ? [] : DB::select("
+                        select `value` as name, count(*) as num
+                        from wiki_revision_metas as mm
+                        where mm.`key` = ?
+                        " . (strlen($cats_escaped) > 0 ? "and `value` not in ({$cats_escaped})" : '') . "
+                        and mm.revision_id in (
+                            select r.id from `wiki_revisions` as r
+                            inner join wiki_objects o on r.object_id = o.id
+                            where r.`is_active` = 1
+                            and o.type_id = " . WikiType::PAGE . "
+                            and r.id in (select revision_id from temp_cat_ids) and r.deleted_at is null
+                        )
+                        group by `value`
+                    ", [WikiRevisionMeta::CATEGORY]);
+
+                    $subcats = array_map(fn ($x) => (array) $x, $subcats);
+
+                    return [$cat_pages, $subcats];
+                }
+            );
+
+            $cat_pages = new LengthAwarePaginator(
+                array_map(fn ($x) => (object) $x, $cat_pages[0]),
+                $cat_pages[1], $cat_pages[2], null,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+            $subcats = array_map(fn ($x) => (object) $x, $subcats);
         }
 
         $upload = null;
@@ -205,7 +248,9 @@ class WikiController extends Controller {
 
         $books = [];
         if ($rev && $rev->wiki_revision_books->count() > 0) {
-            $names = $rev->wiki_revision_books->map(function ($c) { return $c->book_name; })->unique()->toArray();
+            $names = $rev->wiki_revision_books->map(function ($c) {
+                return $c->book_name;
+            })->unique()->toArray();
             $books = DB::table('wiki_revision_books as wrb')
                 ->join('wiki_revisions as wr', 'wr.id', '=', 'revision_id')
                 ->whereIn('book_name', $names)
@@ -247,7 +292,7 @@ class WikiController extends Controller {
         ]);
     }
 
-    public function getSubscribe($id)
+    public function getSubscribe(int $id)
     {
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $id);
         if (!$sub) {
@@ -259,16 +304,16 @@ class WikiController extends Controller {
                 'send_push_notification' => false
             ]);
         }
-        return redirect('wiki/view/'.$id);
+        return redirect('wiki/view/' . $id);
     }
 
-    public function getUnsubscribe($id)
+    public function getUnsubscribe(int $id)
     {
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $id);
         if ($sub) {
             $sub->delete();
         }
-        return redirect('wiki/view/'.$id);
+        return redirect('wiki/view/' . $id);
     }
 
     public function getBookInfo()
@@ -284,7 +329,7 @@ class WikiController extends Controller {
         return response()->json($books);
     }
 
-    public function getEmbedInfo($id)
+    public function getEmbedInfo(string $id)
     {
         $upload = null;
         $rev = null;
@@ -297,7 +342,7 @@ class WikiController extends Controller {
 
         if (!$rev) {
             $upload = null;
-            $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:'.$id)->first();
+            $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:' . $id)->first();
         }
 
         if ($rev && !$upload) $upload = $rev->getUpload();
@@ -311,7 +356,7 @@ class WikiController extends Controller {
         return response()->json($res);
     }
 
-    public function getEmbed($id)
+    public function getEmbed(string $id)
     {
         $upload = null;
         $rev = null;
@@ -324,7 +369,7 @@ class WikiController extends Controller {
 
         if (!$rev) {
             $upload = null;
-            $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:'.$id)->first();
+            $rev = WikiRevision::with(['wiki_revision_metas'])->where('is_active', '=', 1)->where('slug', '=', 'upload:' . $id)->first();
         }
 
         if ($rev && !$upload) $upload = $rev->getUpload();
@@ -340,7 +385,8 @@ class WikiController extends Controller {
      * @param \LogicAndTrick\WikiCodeParser\ParseResult $result
      * @return \App\Models\Wiki\WikiRevisionBook[]
      */
-    public static function wikiBooksFromResult(\LogicAndTrick\WikiCodeParser\ParseResult $result) {
+    public static function wikiBooksFromResult(\LogicAndTrick\WikiCodeParser\ParseResult $result)
+    {
         return Collection::make($result->GetMetadata())
             ->where('key', 'WikiBook')
             ->pluck('value')
@@ -358,7 +404,8 @@ class WikiController extends Controller {
      * @param \LogicAndTrick\WikiCodeParser\ParseResult $result
      * @return \App\Models\Wiki\WikiRevisionCredit[]
      */
-    public static function wikiCreditsFromResult(\LogicAndTrick\WikiCodeParser\ParseResult $result) {
+    public static function wikiCreditsFromResult(\LogicAndTrick\WikiCodeParser\ParseResult $result)
+    {
         return Collection::make($result->GetMetadata())
             ->where('key', 'WikiCredit')
             ->pluck('value')
@@ -377,18 +424,19 @@ class WikiController extends Controller {
 
     /**
      * Creates a revision for the given object from the request data
-     * @param $object
-     * @param null $existing_revision
+     * @param WikiObject $object
+     * @param WikiRevision|null $existing_revision
      * @return WikiRevision
      */
-    public static function createRevision($object, $existing_revision = null) {
+    public static function createRevision($object, $existing_revision = null)
+    {
         $parse_result = bbcode_result(Request::input('content_text'));
 
         // The title can only change for standard/upload pages
         $title = Request::input('title');
         $slug = WikiRevision::CreateSlug(Request::input('title'));
         if ($object->type_id == WikiType::UPLOAD) {
-            $slug = 'upload:'.$slug;
+            $slug = 'upload:' . $slug;
         }
         if ($object->type_id != WikiType::PAGE && $object->type_id != WikiType::UPLOAD) {
             if ($existing_revision) {
@@ -399,7 +447,7 @@ class WikiController extends Controller {
 
         // Create the revision
         /**
-         * @var $revision WikiRevision
+         * @var WikiRevision $revision
          */
         $revision = WikiRevision::Create([
             'object_id' => $object->id,
@@ -418,11 +466,11 @@ class WikiController extends Controller {
             $c = $md['key'];
             $v = $md['value'];
             if ($c == 'WikiLink') {
-                $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => $v ]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v]);
             } else if ($c == 'WikiUpload') {
-                $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v ]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v]);
             } else if ($c == 'WikiCategory') {
-                $meta[] = new WikiRevisionMeta([ 'key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v) ]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v)]);
             }
         }
 
@@ -466,6 +514,8 @@ class WikiController extends Controller {
         DB::statement('CALL update_wiki_object(?);', [$object->id]);
         $object->touch();
 
+        self::updateCategoryCacheTime();
+
         if ($existing_revision && $revision->title != $existing_revision->title) {
             event(new WikiTitleRenamed($existing_revision->title, $object, $revision));
         }
@@ -475,29 +525,31 @@ class WikiController extends Controller {
         return $revision;
     }
 
-    public function getCreate($page = null) {
+    public function getCreate($page = null)
+    {
         return view('wiki/edit/create', [
             'slug' => $page,
             'slug_title' => str_replace('_', ' ', $page)
         ]);
     }
 
-    public function postCreate() {
-        Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) {
+    public function postCreate()
+    {
+        Validator::extend('unique_wiki_slug', function ($attribute, $value, $parameters) {
             $s = WikiRevision::CreateSlug($value);
             $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->first();
             return $rev == null;
         });
-        Validator::extend('valid_categories', function($attribute, $value, $parameters) {
+        Validator::extend('valid_categories', function ($attribute, $value, $parameters) {
             return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
-        Validator::extend('category_name_must_exist', function($attribute, $value, $parameters) {
+        Validator::extend('category_name_must_exist', function ($attribute, $value, $parameters) {
             if (substr($value, 0, 9) != 'category:') return true;
             $cat_name = WikiRevision::CreateSlug(substr($value, 9));
             $meta = WikiRevisionMeta::where('key', '=', WikiRevisionMeta::CATEGORY)->where('value', '=', $cat_name)->first();
             return $meta !== null;
         });
-        Validator::extend('invalid_title', function($attribute, $value, $parameters) {
+        Validator::extend('invalid_title', function ($attribute, $value, $parameters) {
             if (WikiRevision::titleContainsDisallowedCharacters($value)) return false;
             return substr($value, 0, 7) != 'upload:';
         });
@@ -513,12 +565,13 @@ class WikiController extends Controller {
         ]);
         $type = WikiType::PAGE;
         if (substr(Request::input('title'), 0, 9) == 'category:') $type = WikiType::CATEGORY;
-        $object = WikiObject::Create([ 'type_id' => $type ]);
+        $object = WikiObject::Create(['type_id' => $type]);
         $revision = $this->createRevision($object);
-        return redirect('wiki/page/'.$revision->escaped_slug);
+        return redirect('wiki/page/' . $revision->escaped_slug);
     }
 
-    public function getEdit($page) {
+    public function getEdit(string $page)
+    {
         $rev = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)->where('slug', '=', $page)->first();
 
         if (!$rev->wiki_object->canEdit()) return abort(404);
@@ -529,42 +582,43 @@ class WikiController extends Controller {
         ]);
     }
 
-    public function postEdit() {
+    public function postEdit()
+    {
         $id = intval(Request::input('id'));
         $rev = WikiRevision::findOrFail($id);
         $obj = WikiObject::findOrFail($rev->object_id);
 
         if (!$obj->canEdit()) return abort(404);
 
-        Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) use ($obj) {
+        Validator::extend('unique_wiki_slug', function ($attribute, $value, $parameters) use ($obj) {
             if ($obj->type_id == WikiType::UPLOAD) {
-                $value = 'upload:'.$value;
+                $value = 'upload:' . $value;
             }
             $s = WikiRevision::CreateSlug($value);
             $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->where('object_id', '!=', $obj->id)->first();
             return $rev == null;
         });
-        Validator::extend('must_change', function($attribute, $value, $parameters) use ($rev, $obj) {
+        Validator::extend('must_change', function ($attribute, $value, $parameters) use ($rev, $obj) {
             return trim($rev->content_text) != trim(Request::input('content_text'))
                 || trim($rev->title) != trim(Request::input('title'))
                 || ($obj->type_id == WikiType::UPLOAD && Request::file('file')
-                || (permission('WikiAdmin') && $obj->permission_id != Request::input('permission_id')));
+                    || (permission('WikiAdmin') && $obj->permission_id != Request::input('permission_id')));
         });
-        Validator::extend('valid_categories', function($attribute, $value, $parameters) {
+        Validator::extend('valid_categories', function ($attribute, $value, $parameters) {
             return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
-        Validator::extend('invalid_title', function($attribute, $value, $parameters) use ($obj, $rev) {
+        Validator::extend('invalid_title', function ($attribute, $value, $parameters) use ($obj, $rev) {
             if (WikiRevision::titleContainsDisallowedCharacters($value)) return false;
             return ($obj->type_id != WikiType::PAGE) ||
-                   (substr($value, 0, 9) != 'category:' && substr($value, 0, 7) != 'upload:');
+                (substr($value, 0, 9) != 'category:' && substr($value, 0, 7) != 'upload:');
         });
-        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+        Validator::extend('valid_extension', function ($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
-        $max_size = 1024*4;
+        $max_size = 1024 * 4;
         $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('WikiAdmin')) {
-            $max_size = 1024*64;
+            $max_size = 1024 * 64;
             $allowed_extensions .= ',zip,rar,exe,msi';
         }
         $rules = [
@@ -584,15 +638,16 @@ class WikiController extends Controller {
         ]);
         $revision = $this->createRevision($obj, $rev);
 
-        if(permission('WikiAdmin')) {
+        if (permission('WikiAdmin')) {
             $obj->permission_id = Request::input('permission_id');
             $obj->save();
         }
 
-        return redirect('wiki/page/'.$revision->escaped_slug);
+        return redirect('wiki/page/' . $revision->escaped_slug);
     }
 
-    public function getRevert($id) {
+    public function getRevert(int $id)
+    {
         $rev = WikiRevision::with(['wiki_object', 'user'])->where('is_active', '=', false)->findOrFail($id);
         $obj = $rev->wiki_object;
 
@@ -605,7 +660,8 @@ class WikiController extends Controller {
         ]);
     }
 
-    public function postRevert() {
+    public function postRevert()
+    {
         $id = intval(Request::input('id'));
         $rev = WikiRevision::with(['wiki_object', 'user'])->where('is_active', '=', false)->findOrFail($id);
         $obj = $rev->wiki_object;
@@ -630,19 +686,19 @@ class WikiController extends Controller {
             'content_html' => $parse_result->ToHtml(),
             'content_plain' => $parse_result->ToPlainText(),
             'message' => 'Reverting to revision #' . $rev->id .
-                         ($rev->message ? " ({$rev->message})" : '') .
-                         (Request::input('reason') ? ' - ' . Request::input('reason') : '')
+                ($rev->message ? " ({$rev->message})" : '') .
+                (Request::input('reason') ? ' - ' . Request::input('reason') : '')
         ]);
         $meta = [];
         foreach ($parse_result->GetMetadata() as $md) {
             $c = $md['key'];
             $v = $md['value'];
             if ($c == 'WikiLink') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v ]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v]);
             } else if ($c == 'WikiUpload') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v ]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v]);
             } else if ($c == 'WikiCategory') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => $v ]);
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => $v]);
             }
         }
         foreach ($rev->wiki_revision_metas as $m) {
@@ -653,10 +709,13 @@ class WikiController extends Controller {
         $revision->wiki_revision_books()->saveMany(WikiController::wikiBooksFromResult($parse_result));
         $revision->wiki_revision_credits()->saveMany(WikiController::wikiCreditsFromResult($parse_result));
         DB::statement('CALL update_wiki_object(?);', [$obj->id]);
-        return redirect('wiki/page/'.$revision->escaped_slug);
+
+        self::updateCategoryCacheTime();
+
+        return redirect('wiki/page/' . $revision->escaped_slug);
     }
 
-    public function getDelete($id)
+    public function getDelete(int $id)
     {
         $obj = WikiObject::with(['current_revision'])->findOrFail($id);
         if (!$obj->canDelete()) abort(404);
@@ -676,12 +735,16 @@ class WikiController extends Controller {
 
         $obj->delete();
         DB::statement('CALL update_wiki_object(?);', [$obj->id]);
+
+        self::updateCategoryCacheTime();
+
         return redirect('wiki');
     }
 
     // Uploads
 
-    public function getCreateUpload($name = null) {
+    public function getCreateUpload($name = null)
+    {
         return view('wiki/edit/create-upload', [
             'slug' => $name,
             'slug_title' => str_replace('_', ' ', $name)
@@ -690,22 +753,22 @@ class WikiController extends Controller {
 
     public function postCreateUpload()
     {
-        Validator::extend('unique_wiki_slug', function($attribute, $value, $parameters) {
-            $s = WikiRevision::CreateSlug('upload:'.$value);
+        Validator::extend('unique_wiki_slug', function ($attribute, $value, $parameters) {
+            $s = WikiRevision::CreateSlug('upload:' . $value);
             $rev = WikiRevision::where('is_active', '=', 1)->where('slug', '=', $s)->first();
             return $rev == null;
         });
-        Validator::extend('valid_categories', function($attribute, $value, $parameters) {
+        Validator::extend('valid_categories', function ($attribute, $value, $parameters) {
             return !preg_match('/\[cat:[^\r\n\]]*[^a-z0-9- _\'\r\n\]][^\r\n\]]*\]/i', $value);
         });
-        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
+        Validator::extend('valid_extension', function ($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
 
-        $max_size = 1024*4;
+        $max_size = 1024 * 4;
         $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
         if (permission('WikiAdmin')) {
-            $max_size = 1024*64;
+            $max_size = 1024 * 64;
             $allowed_extensions .= ',zip,rar,exe,msi';
         }
 
@@ -720,8 +783,13 @@ class WikiController extends Controller {
             'valid_extension' => 'Only the following file formats are allowed: ' . $allowed_extensions
         ]);
         $type = WikiType::UPLOAD;
-        $object = WikiObject::Create([ 'type_id' => $type ]);
+        $object = WikiObject::Create(['type_id' => $type]);
         $revision = $this->createRevision($object);
-        return redirect('wiki/page/'.$revision->escaped_slug);
+        return redirect('wiki/page/' . $revision->escaped_slug);
+    }
+
+    private static function updateCategoryCacheTime()
+    {
+        Cache::put('wiki/category_cache_time', strval(microtime(true)), now()->addDays(1));
     }
 }

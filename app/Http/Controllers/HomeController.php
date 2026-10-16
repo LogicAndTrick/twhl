@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers;
+<?php
+
+namespace App\Http\Controllers;
 
 use App\Models\Accounts\User;
 use App\Models\Competitions\Competition;
@@ -17,18 +19,17 @@ use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
 use DB;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
-class HomeController extends Controller {
+class HomeController extends Controller
+{
 
-	public function __construct()
-	{
+    public function __construct() {}
 
-	}
-
-	public function index()
-	{
+    public function index()
+    {
         $user = Auth::user();
         $user_id = $user ? $user->id : 0;
 
@@ -81,22 +82,37 @@ class HomeController extends Controller {
             ->get();
 
         // Onliners section
-        $onliners = User::with([])
-            ->whereNotNull('last_access_time')
-            ->orderBy('last_access_time', 'desc')
-            ->take(7)
-            ->get();
+        $onliners = Cache::remember('onliners', now()->addMinutes(1), function () {
+            /** @var \Illuminate\Support\Collection $users */
+            $users = User::query()
+                ->whereNotNull('last_access_time')
+                ->orderBy('last_access_time', 'desc')
+                ->take(7)
+                ->get();
+            return $users->map(fn($x) => $x->toArray())->toArray();
+        });
+        $onliners = array_map(function ($x) {
+            $usr = new User($x);
+            $usr->last_access_time = Carbon::parse($x['last_access_time']);
+            return $usr;
+        }, $onliners);
 
         $user_votes = [];
         $user_polls = [];
         if (Auth::user()) {
-            $pids = $polls->map(function($x) { return $x->id; })->toArray();
+            $pids = $polls->map(function ($x) {
+                return $x->id;
+            })->toArray();
             $uvotes = PollItemVote::whereIn('poll_id', $pids)->whereUserId(Auth::user()->id)->get();
-            $user_votes = $uvotes->map(function($x) { return $x->item_id; })->toArray();
-            $user_polls = $uvotes->map(function($x) { return $x->poll_id; })->toArray();
+            $user_votes = $uvotes->map(function ($x) {
+                return $x->item_id;
+            })->toArray();
+            $user_polls = $uvotes->map(function ($x) {
+                return $x->poll_id;
+            })->toArray();
         }
 
-		return view('home/index', [
+        return view('home/index', [
             'new_maps' => $new_maps,
             'competitions' => $comps,
             'wiki_articles' => $wiki_articles,
@@ -108,7 +124,7 @@ class HomeController extends Controller {
             'user_polls' => $user_polls,
             'onliners' => $onliners
         ]);
-	}
+    }
 
     private function getWikiFeatureData()
     {
@@ -122,7 +138,7 @@ class HomeController extends Controller {
                         where m.key = ?
                         and m.value = ?
                         group by m.revision_id
-                    )", [ WikiRevisionMeta::CATEGORY, WikiRevision::CreateSlug('Tutorials') ])
+                    )", [WikiRevisionMeta::CATEGORY, WikiRevision::CreateSlug('Tutorials')])
                     ->orderByRaw('RAND()')
                     ->limit(3)
                     ->get();
@@ -139,5 +155,4 @@ class HomeController extends Controller {
             })
         ];
     }
-
 }
