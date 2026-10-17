@@ -30,6 +30,10 @@ class Kernel extends HttpKernel
 		'Illuminate\Routing\Middleware\ThrottleRequests:global',
 	];
 
+	protected $middlewareGroups = [
+		'web' => []
+	];
+
 	/**
 	 * The application's middleware aliases.
 	 *

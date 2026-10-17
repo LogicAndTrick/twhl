@@ -1,5 +1,7 @@
 <?php
 
+use Laravel\Sentinel\Drivers\Laravel;
+
 return [
 
     /*
@@ -123,7 +125,14 @@ return [
     */
 
 	'serializable_classes' => [
+        // builtins
 		\Illuminate\Database\Eloquent\Collection::class,
+        \Illuminate\Support\Collection::class,
+        Carbon\Carbon::class,
+        Carbon\CarbonImmutable::class,
+        stdClass::class,
+
+        // models
 		\App\Models\Accounts\User::class,
 		\App\Models\Competitions\Competition::class,
 		\App\Models\Wiki\WikiObject::class,

@@ -7,6 +7,7 @@
 	"require": {
 		"ext-gd": "*",
 		"laravel/framework": "^13.0",
+		"laravel/pulse": "^1.8",
 		"laravel/tinker": "^3.0",
 		"laravel/ui": "^4.6",
 		"league/flysystem-aws-s3-v3": "^3.25",

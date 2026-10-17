@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Pulse\Facades\Pulse;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,15 @@ class AppServiceProvider extends ServiceProvider
         });
         Paginator::useBootstrap();
         Paginator::currentPageResolver(LimitGuestPagination::pageResolver(...));
+
+        Gate::define('viewPulse', function (User $user) {
+            return $user->id == 1983;
+        });
+        Pulse::user(fn (User $user) => [
+            'name' => $user->name,
+            'extra' => $user->email . " • " . $user->last_access_ip,
+            'avatar' => $user->getAvatarUrl('small')
+        ]);
     }
 
     /**
