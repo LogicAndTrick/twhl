@@ -23,7 +23,7 @@ class PostController extends Controller {
        $auth_user = Auth::user();
        $auth_user_id = $auth_user ? $auth_user->id : 0;
 
-       $query = ForumPost::with(['thread'])
+       $query = ForumPost::with(['thread', 'user'])
            ->leftJoin('forums as f', 'f.id', '=', 'forum_posts.forum_id')
            ->whereRaw('(
                f.permission_id is null
@@ -37,9 +37,9 @@ class PostController extends Controller {
 
        $user = intval(Request::get('user'));
        $user = $user > 0 ? User::find($user) : null;
-       if ($user) $query = $query->whereUserId($user->id);
+       if ($user) $query = $query->whereUserId($user->id)->forceIndex('forum_posts_deleted_at_user_id_index');
 
-       $posts = $query->paginate(50);
+       $posts = $query->simplePaginate(50);
 
        return view('forums/post/index', [
            'posts' => $posts->appends(Request::except('page')),

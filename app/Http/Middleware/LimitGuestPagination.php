@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Auth;
 class LimitGuestPagination
 {
     /** Soft cap for guest users */
-    private const MAX_GUEST_PAGE = 100;
+    private const MAX_GUEST_PAGE = 25;
 
     /** Hard cap for authenticated users */
-    private const MAX_AUTHENTICATED_PAGE = 1000;
+    private const MAX_AUTHENTICATED_PAGE = 250;
 
     public static function getMaxPage(): int
     {
