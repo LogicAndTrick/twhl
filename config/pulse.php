@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\SlowRequestsNormalised;
 use Laravel\Pulse\Http\Middleware\Authorize;
 use Laravel\Pulse\Pulse;
 use Laravel\Pulse\Recorders;
@@ -206,7 +207,7 @@ return [
             ],
         ],
 
-        Recorders\SlowRequests::class => [
+        SlowRequestsNormalised::class => [
             'enabled' => env('PULSE_SLOW_REQUESTS_ENABLED', true),
             'sample_rate' => env('PULSE_SLOW_REQUESTS_SAMPLE_RATE', 1),
             'threshold' => env('PULSE_SLOW_REQUESTS_THRESHOLD', 1000),
@@ -214,6 +215,12 @@ return [
                 '#^/'.env('PULSE_PATH', 'pulse').'$#', // Pulse dashboard...
                 '#^/telescope#', // Telescope dashboard...
             ],
+        ],
+        // keep this configuration here, but disabled. the pulse front-end needs it.
+        Recorders\SlowRequests::class => [
+            'enabled' => false,
+            'sample_rate' => env('PULSE_SLOW_REQUESTS_SAMPLE_RATE', 1),
+            'threshold' => env('PULSE_SLOW_REQUESTS_THRESHOLD', 1),
         ],
 
         Recorders\UserJobs::class => [

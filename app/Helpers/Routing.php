@@ -99,6 +99,7 @@ class Routing {
         $missing = $router->any($uri.'/{_missing}', $controller.'@missingMethod');
 
         $missing->where('_missing', '(.*)');
+        $missing->fallback();
     }
 
     /*
