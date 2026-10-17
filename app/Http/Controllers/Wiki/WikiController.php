@@ -147,7 +147,11 @@ class WikiController extends Controller
 
         if ($rev && !$rev->wiki_object) {
             // revision exists but object has been deleted.
-            abort(404);
+            return abort(404);
+        }
+        if ($page != $rev->slug) {
+            // revision exists, but is for a different page
+            return abort(404);
         }
 
         // A category will always have the list of pages at the bottom, even if the page doesn't exist
