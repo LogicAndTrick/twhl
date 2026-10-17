@@ -149,7 +149,7 @@ class WikiController extends Controller
             // revision exists but object has been deleted.
             return abort(404);
         }
-        if ($page != $rev->slug) {
+        if ($rev && $page != $rev->slug) {
             // revision exists, but is for a different page
             return abort(404);
         }

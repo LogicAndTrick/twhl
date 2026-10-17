@@ -20,12 +20,16 @@ use Illuminate\Support\Facades\Hash;
 class PanelController extends Controller {
 
 	public function __construct() {
-        $this->permission(['index', 'editAvatar', 'editProfile', 'editSettings', 'editPassword'], true);
+        $this->permission([
+            'index', 'editAvatar', 'editProfile', 'editSettings', 'editPassword',
+            'editKeys', 'addKey', 'deleteKey', 'notifications', 'clearNotifications', 'deleteSubscription'
+        ], true);
         $this->permission(['editName', 'editBans', 'addBan', 'deleteBan', 'editPermissions', 'addPermission', 'deletePermission'], 'Admin');
         $this->permission(['obliterate', 'remove'], 'ObliterateAdmin');
 	}
 
     private static function GetUser($id) {
+        if (!Auth::check()) return abort(404);
         if (!permission('Admin') || !$id) $id = Auth::user()->id;
         return User::findOrFail($id);
     }
