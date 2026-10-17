@@ -128,7 +128,6 @@ return [
         // builtins
 		\Illuminate\Database\Eloquent\Collection::class,
         \Illuminate\Support\Collection::class,
-        Carbon\Carbon::class,
         Carbon\CarbonImmutable::class,
         stdClass::class,
 
