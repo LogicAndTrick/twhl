@@ -1,4 +1,6 @@
-<?php namespace App\Http\Controllers\Forum;
+<?php
+
+namespace App\Http\Controllers\Forum;
 
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
@@ -12,17 +14,17 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class ThreadController extends Controller {
-
+class ThreadController extends Controller
+{
     // TODO Forum Threads: view deleted threads, tracking (?)
-	public function __construct()
-	{
+    public function __construct()
+    {
         $this->permission('create', 'ForumCreate');
         $this->permission(['edit', 'delete', 'restore'], 'ForumAdmin');
-	}
+    }
 
-	public function getIndex()
-	{
+    public function getIndex()
+    {
         $auth_user = Auth::user();
         $auth_user_id = $auth_user ? $auth_user->id : 0;
 
@@ -48,9 +50,10 @@ class ThreadController extends Controller {
             'threads' => $threads,
             'user' => $user
         ]);
-	}
+    }
 
-    public function getLocatePost(int $id) {
+    public function getLocatePost(int $id)
+    {
         $post = ForumPost::findOrFail($id);
         $thread = ForumThread::findOrFail($post->thread_id);
         $forum = Forum::findOrFail($thread->forum_id);
@@ -60,10 +63,10 @@ class ThreadController extends Controller {
             where thread_id = ?
             and created_at < ?
             and deleted_at is null
-        ", [ $thread->id, $post->created_at ]);
+        ", [$thread->id, $post->created_at]);
         $index = $post_index_result === null ? 0 : intval($post_index_result->num);
-        $page = ceil(($index+1) / 50);
-        return redirect('thread/view/'.$thread->id.'?page='.$page.'#post-'.$id);
+        $page = ceil(($index + 1) / 50);
+        return redirect('thread/view/' . $thread->id . '?page=' . $page . '#post-' . $id);
     }
 
     public function getView(int $id)
@@ -90,7 +93,7 @@ class ThreadController extends Controller {
                 $p->save();
             }
         }
-        $pag = new LengthAwarePaginator($posts, $count, 50, $page, [ 'path' => Paginator::resolveCurrentPath() ]);
+        $pag = new LengthAwarePaginator($posts, $count, 50, $page, ['path' => Paginator::resolveCurrentPath()]);
 
         return view('forums/thread/view', [
             'forum' => $forum,
@@ -100,7 +103,7 @@ class ThreadController extends Controller {
         ]);
     }
 
-    public function getSubscribe($id)
+    public function getSubscribe(int $id)
     {
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id);
         if (!$sub) {
@@ -112,19 +115,19 @@ class ThreadController extends Controller {
                 'send_push_notification' => false
             ]);
         }
-        return redirect('thread/view/'.$id);
+        return redirect('thread/view/' . $id);
     }
 
-    public function getUnsubscribe($id)
+    public function getUnsubscribe(int $id)
     {
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id);
         if ($sub) {
             $sub->delete();
         }
-        return redirect('thread/view/'.$id);
+        return redirect('thread/view/' . $id);
     }
 
-    public function getCreate($id)
+    public function getCreate(int $id)
     {
         $forum = Forum::where('id', '=', $id)->firstOrFail();
         return view('forums/thread/create', [
@@ -132,7 +135,8 @@ class ThreadController extends Controller {
         ]);
     }
 
-    public function postCreate() {
+    public function postCreate()
+    {
         $id = intval(Request::input('forum_id'));
         $forum = Forum::where('id', '=', $id)->firstOrFail();
         $this->validate(Request::instance(), [
@@ -160,12 +164,13 @@ class ThreadController extends Controller {
             'send_push_notification' => false,
             'is_own_article' => true
         ]);
-        return redirect('thread/view/'.$thread->id.'?page=last');
+        return redirect('thread/view/' . $thread->id . '?page=last');
     }
 
     // Administrative Tasks
 
-    public function getEdit($id) {
+    public function getEdit(int $id)
+    {
         $thread = ForumThread::findOrFail($id);
         $forum = Forum::findOrFail($thread->forum_id);
         return view('forums/thread/edit', [
@@ -174,7 +179,8 @@ class ThreadController extends Controller {
         ]);
     }
 
-    public function postEdit() {
+    public function postEdit()
+    {
         $id = intval(Request::input('id'));
         $thread = ForumThread::findOrFail($id);
         $forum = Forum::findOrFail($thread->forum_id);
@@ -191,10 +197,11 @@ class ThreadController extends Controller {
             'is_sticky' => !!Request::input('is_sticky')
         ]);
         $thread->save();
-        return redirect('thread/view/'.$thread->id);
+        return redirect('thread/view/' . $thread->id);
     }
 
-    public function getDelete($id) {
+    public function getDelete(int $id)
+    {
         $thread = ForumThread::findOrFail($id);
         $forum = Forum::findorFail($thread->forum_id);
         return view('forums/thread/delete', [
@@ -203,15 +210,17 @@ class ThreadController extends Controller {
         ]);
     }
 
-    public function postDelete() {
+    public function postDelete()
+    {
         $id = intval(Request::input('id'));
         $thread = ForumThread::findOrFail($id);
         $forum = Forum::findorFail($thread->forum_id);
         $thread->delete();
-        return redirect('forum/view/'.$forum->slug);
+        return redirect('forum/view/' . $forum->slug);
     }
 
-    public function getRestore($id) {
+    public function getRestore(int $id)
+    {
         $thread = ForumThread::onlyTrashed()->findOrFail($id);
         $forum = Forum::findorFail($thread->forum_id);
         return view('forums/thread/restore', [
@@ -220,11 +229,12 @@ class ThreadController extends Controller {
         ]);
     }
 
-    public function postRestore() {
+    public function postRestore()
+    {
         $id = intval(Request::input('id'));
         $thread = ForumThread::onlyTrashed()->findOrFail($id);
         $forum = Forum::findorFail($thread->forum_id);
         $thread->restore();
-        return redirect('thread/view/'.$thread->id);
+        return redirect('thread/view/' . $thread->id);
     }
 }
