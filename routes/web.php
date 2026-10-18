@@ -7,7 +7,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     Route::get('/', 'HomeController@index');
 
-    Route::get('/home', 'HomeController@index');
+    Route::permanentRedirect('/home', '/');
 
     $controllers = [
         'auth' => 'Auth\AuthController',

@@ -12,6 +12,11 @@ php_value post_max_size 65M
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ /$1 [L,R=301]
 
+    # Handle requests to `index.php/anything`
+    # need to look at THE_REQUEST and not REQUEST_URI because the URI gets rewritten below...
+    RewriteCond %{THE_REQUEST} ^[A-Z]+\ /index\.php/?(.*)$
+    RewriteRule ^index\.php/?(.*)$ /$1 [L,R=301]
+
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
