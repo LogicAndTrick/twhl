@@ -10,6 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ThreadController extends Controller {
 
@@ -49,21 +50,23 @@ class ThreadController extends Controller {
         ]);
 	}
 
-    public function getLocatePost($id) {
+    public function getLocatePost(int $id) {
         $post = ForumPost::findOrFail($id);
         $thread = ForumThread::findOrFail($post->thread_id);
         $forum = Forum::findOrFail($thread->forum_id);
-        $all_posts = $thread->posts;
-        $index = 0;
-        for ($index = 0; $index < $all_posts->count(); $index++) {
-            $p = $all_posts[$index];
-            if ($p->id == $id) break;
-        }
+        $post_index_result = DB::selectOne("
+            select count(*) as num
+            from forum_posts
+            where thread_id = ?
+            and created_at < ?
+            and deleted_at is null
+        ", [ $thread->id, $post->created_at ]);
+        $index = $post_index_result === null ? 0 : intval($post_index_result->num);
         $page = ceil(($index+1) / 50);
         return redirect('thread/view/'.$thread->id.'?page='.$page.'#post-'.$id);
     }
 
-    public function getView($id)
+    public function getView(int $id)
     {
         $thread = ForumThread::with(['user'])->findOrFail($id);
         $forum = Forum::findOrFail($thread->forum_id);
