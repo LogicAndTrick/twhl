@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Forum;
 
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
 use App\Models\Accounts\UserSubscription;
@@ -14,12 +15,15 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+#[TypedRouting]
 class ThreadController extends Controller
 {
     // TODO Forum Threads: view deleted threads, tracking (?)
     public function __construct()
     {
-        $this->permission('create', 'ForumCreate');
+        $this->anonymous(['index', 'locatePost', 'view']);
+        $this->permission(['subscribe', 'unsubscribe'], true);
+        $this->permission(['create'], 'ForumCreate');
         $this->permission(['edit', 'delete', 'restore'], 'ForumAdmin');
     }
 
