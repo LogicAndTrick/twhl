@@ -22,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // global middleware
         $middleware->use([
+            // modified laravel default global middlewares
             \App\Http\Middleware\BlockAi::class,
             \Illuminate\Http\Middleware\ValidatePathEncoding::class,
             \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
@@ -33,31 +34,29 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\ValidatePostSize::class,
             // \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
             // \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+
+            // modified laravel default web middlewares - I want these for api calls too
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            //\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            //\Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+            // my custom stuff
+            \App\Http\Middleware\UpdateUserAccessDetails::class,
+            \App\Http\Middleware\ApiKeyAuthenticate::class,
+            \App\Http\Middleware\CheckForBan::class,
+            \App\Http\Middleware\ConvertLegacyAccount::class,
+            \App\Http\Middleware\LimitGuestPagination::class,
+
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':global',
         ]);
 
-        $middleware->web(
-            append: [
-                \App\Http\Middleware\UpdateUserAccessDetails::class,
-                \App\Http\Middleware\CheckForBan::class,
-                \App\Http\Middleware\ConvertLegacyAccount::class,
-                \App\Http\Middleware\LimitGuestPagination::class,
-            ],
-            replace: [
-                // we use our own csrf middleware
-                \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class => \App\Http\Middleware\VerifyCsrfToken::class,
-            ],
-            remove: [
-                // this logs out users if they change their password, maybe we want to enable this at some point?
-                \Illuminate\Session\Middleware\AuthenticateSession::class,
-            ]
-        );
-
-        $middleware->api(
-            append: [
-                \App\Http\Middleware\ApiKeyAuthenticate::class,
-            ]
-        );
+        // i'm not sure why i'm bothering with this seeing as all my middlewares are global...
+        $middleware->group('web', []);
+        $middleware->group('api', []);
 
         $middleware->alias([
             'permission' => \App\Http\Middleware\Permission::class,

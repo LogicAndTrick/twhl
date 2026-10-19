@@ -20,13 +20,14 @@ abstract class Controller extends BaseController {
         foreach ($action as $a) {
             $act = strtoupper(substr($a, 0, 1)) . substr($a, 1);
 
-            if (!isset($this->defined_permissions[$a])) $this->defined_permissions[$a] = [];
+            if (!isset($this->defined_permissions["get$act"])) $this->defined_permissions["get$act"] = [];
+            if (!isset($this->defined_permissions["post$act"])) $this->defined_permissions["post$act"] = [];
             $this->defined_permissions["get$act"][] = '*';
             $this->defined_permissions["post$act"][] = '*';
         }
     }
 
-    protected function permission(string|array $action, string $permission) {
+    protected function permission(string|array $action, string|bool $permission) {
         $per = $permission === true ? 'LoggedIn' : $permission;
 
         $actions = [];
@@ -38,7 +39,8 @@ abstract class Controller extends BaseController {
             $actions[] = "get$act";
             $actions[] = "post$act";
 
-            if (!isset($this->defined_permissions[$a])) $this->defined_permissions[$a] = [];
+            if (!isset($this->defined_permissions["get$act"])) $this->defined_permissions["get$act"] = [];
+            if (!isset($this->defined_permissions["post$act"])) $this->defined_permissions["post$act"] = [];
             $this->defined_permissions["get$act"][] = $permission;
             $this->defined_permissions["post$act"][] = $permission;
         }
