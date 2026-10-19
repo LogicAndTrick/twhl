@@ -50,6 +50,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -1514,24 +1515,50 @@ class ApiController extends Controller {
 
     private function get_shouts_from() {
         $last = intval(Request::input('timestamp'));
+
+        // see if we can grab the shouts from the cache.
+        // the shoutbox generally requests shouts from `timestamp() - 1 year`.
+        // if the cached timestamp is before that, then we have the latest shouts already cached.
+        // in reality, the requested timestamp shouldn't matter too much. we get more than 50 shouts per year.
+
+        // never request data from more than 1 year ago
         $car = Carbon::createFromTimestamp($last - 10);
-        return Shout::with(['user'])
+        $min = Carbon::now()->subYear();
+        if ($car < $min) $car = $min;
+        $last = $car->getTimestamp();
+
+        // if the cached data exists and is from an earlier timestamp than the requested one, return the cached data
+        $cached_data = Cache::get('api:cache:shouts:from');
+        if ($cached_data !== null && is_array($cached_data) && isset($cached_data['last']) && $cached_data['last'] <= $last) {
+            return $cached_data['shouts'];
+        }
+
+        // otherwise, there's either no cached data, or we're requesting older data.
+        // get the new data set and update the cache with this one (it's more comprehensive)
+        $shouts = Shout::with(['user'])
             ->where('updated_at', '>=', $car)
             ->orderBy('created_at', 'desc')
             ->take(50)
             ->get()
             ->reverse()
             ->values();
+        Cache::put('api:cache:shouts:from', [
+            'shouts' => $shouts,
+            'last' => $last
+        ], now()->addMinutes(5));
+        return $shouts;
    	}
 
     private function post_shouts() {
         $this->validate(Request::instance(), [
             'text' => 'required|max:250'
         ]);
-        return Shout::Create([
+        $shout = Shout::Create([
             'user_id' => Auth::user()->id,
             'content' => Request::input('text')
         ]);
+        Cache::delete('api:cache:shouts:from'); // clear the cache
+        return $shout;
     }
 
     private function put_shouts() {
@@ -1545,6 +1572,7 @@ class ApiController extends Controller {
         $shout->update([
             'content' => Request::input('text')
         ]);
+        Cache::delete('api:cache:shouts:from'); // clear the cache
         return $shout;
     }
 
@@ -1554,6 +1582,7 @@ class ApiController extends Controller {
 
         $shout = Shout::findOrFail(Request::input('id'));
         $shout->delete();
+        Cache::delete('api:cache:shouts:from'); // clear the cache
         return ['success' => true];
     }
 

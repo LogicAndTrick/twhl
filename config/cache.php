@@ -136,6 +136,7 @@ return [
 		\App\Models\Competitions\Competition::class,
 		\App\Models\Wiki\WikiObject::class,
 		\App\Models\Wiki\WikiRevision::class,
+        \App\Models\Shout::class
 	],
 
 ];

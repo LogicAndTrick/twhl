@@ -93,6 +93,7 @@ class HomeController extends Controller
         });
         $onliners = array_map(function ($x) {
             $usr = new User($x);
+            $usr->id = $x['id'];
             $usr->last_access_time = Carbon::parse($x['last_access_time']);
             return $usr;
         }, $onliners);
