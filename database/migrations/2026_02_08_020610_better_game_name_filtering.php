@@ -27,13 +27,16 @@ class BetterGameNameFiltering extends Migration
             'Day of Defeat: Source' => 'DoD Source',
             'Garry\'s Mod' => 'Garrys Mod, Gary\'s Mod, Garys Mod',
             'Not Listed (Goldsource)' => 'GoldSrc, Gold Src, GoldSource, Gold Source',
+            'Not Listed (HL1 Engine)' => 'GoldSrc, Gold Src, GoldSource, Gold Source',
             'Spirit of Half-Life' => 'SoHL'
         ];
 
         foreach ($altNames as $name => $name_variants) {
-            $game = Game::query()->where('name', '=', $name)->firstOrFail();
-            $game->name_variants = $name_variants;
-            $game->save();
+            $game = Game::query()->where('name', '=', $name)->first();
+            if($game) {
+                $game->name_variants = $name_variants;
+                $game->save();
+            }
         }
 
     }
