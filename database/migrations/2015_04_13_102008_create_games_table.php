@@ -34,7 +34,7 @@ class CreateGamesTable extends Migration {
             [ 2, 'Team Fortress 2', 'TF2', 13          ],
             [ 2, 'Portal', 'Portal', 14                ],
             [ 2, 'Day of Defeat: Source', 'DODS', 17   ],
-            [ 1, 'Not Listed (HL1 Engine)', 'NL', 98   ],
+            [ 1, 'Not Listed (Goldsource)', 'NL', 98   ],
             [ 2, 'Not Listed (Source)', 'NLS', 99      ],
             [ 2, 'Alien Swarm', 'AS', 20               ],
             [ 1, 'Blue Shift', 'BS', 7                 ],
