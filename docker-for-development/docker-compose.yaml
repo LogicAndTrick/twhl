@@ -26,7 +26,7 @@ services:
     ports:
       - "3340:3306"
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - twhl-dev-mysql-data:/var/lib/mysql
   migration-runner:
     build:
       context: ./migration-runner
@@ -95,3 +95,5 @@ services:
 secrets:
   npmrc:
     file: ~/.npmrc
+volumes:
+  twhl-dev-mysql-data:
