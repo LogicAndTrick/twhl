@@ -1,12 +1,12 @@
 <?php namespace App\Models\Competitions;
 
+use App\Models\ModelWithExtraTypeInfo;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 
-class Competition extends Model {
+class Competition extends ModelWithExtraTypeInfo {
 
     use SoftDeletes;
 
@@ -23,11 +23,14 @@ class Competition extends Model {
         'created_at', 'updated_at',
         'status', 'type', 'judge_type'
     ];
-
-    public function getDates()
-    {
-        return ['open_date', 'close_date', 'voting_close_date', 'created_at', 'updated_at', 'deleted_at'];
-    }
+    protected $casts = [
+        'close_date' => 'datetime',
+        'open_date' => 'datetime',
+        'voting_close_date' => 'datetime',
+    ];
+    protected $nullable = [
+        'voting_close_date'
+    ];
 
     public function engines()
     {

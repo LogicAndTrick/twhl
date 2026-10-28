@@ -1,8 +1,8 @@
 <?php namespace App\Models\Wiki;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class WikiRevisionMeta extends Model {
+class WikiRevisionMeta extends ModelWithExtraTypeInfo {
 
     const CATEGORY = 'c';
     const LINK = 'l';

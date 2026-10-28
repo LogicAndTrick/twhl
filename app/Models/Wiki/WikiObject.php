@@ -1,14 +1,22 @@
 <?php namespace App\Models\Wiki;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class WikiObject extends Model {
+class WikiObject extends ModelWithExtraTypeInfo {
 
 	//
     protected $table = 'wiki_objects';
     protected $fillable = ['type_id', 'permission_id'];
     public $visible = ['id','type_id','current_revision_id', 'permission_id','stat_comments', 'flag_locked','created_at','updated_at','current_revision','permission'];
+    protected $casts = [
+        'flag_locked' => 'boolean',
+        'permission_id' => 'integer',
+        'stat_comments' => 'integer',
+    ];
+    protected $nullable = [
+        "permission_id",
+    ];
 
     use SoftDeletes;
 

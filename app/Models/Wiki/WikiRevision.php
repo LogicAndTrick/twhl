@@ -1,16 +1,19 @@
 <?php namespace App\Models\Wiki;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use LogicAndTrick\WikiCodeParser\ParseResult;
 
-class WikiRevision extends Model {
+class WikiRevision extends ModelWithExtraTypeInfo {
 
 	//
     protected $table = 'wiki_revisions';
     protected $fillable = ['object_id', 'user_id', 'slug', 'title', 'content_text', 'content_html', 'content_plain', 'message'];
     public $visible = ['id', 'object_id', 'user_id', 'is_active', 'slug', 'title', 'content_text', 'content_html', 'content_plain', 'message', 'created_at', 'wiki_object', 'user', 'wiki_revision_metas', 'wiki_revision_books', 'wiki_revision_credits'];
-
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+ 
     public $appends = [ 'escaped_slug' ];
 
     use SoftDeletes;

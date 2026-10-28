@@ -8,5 +8,7 @@ class VaultType extends Model {
     public $timestamps = false;
     public $fillable = ['name', 'orderindex'];
     public $visible = ['id', 'name', 'orderindex'];
-
+    protected $casts = [
+        'orderindex' => 'integer',
+    ];
 }

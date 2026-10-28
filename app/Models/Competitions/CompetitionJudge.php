@@ -1,8 +1,8 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CompetitionJudge extends Model {
+class CompetitionJudge extends ModelWithExtraTypeInfo {
 
     public $table = 'competition_judges';
     public $timestamps = false;

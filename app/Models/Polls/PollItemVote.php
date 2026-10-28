@@ -1,8 +1,8 @@
 <?php namespace App\Models\Polls;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class PollItemVote extends Model {
+class PollItemVote extends ModelWithExtraTypeInfo {
 
     protected $table = 'poll_item_votes';
     protected $fillable = ['poll_id', 'item_id', 'user_id'];

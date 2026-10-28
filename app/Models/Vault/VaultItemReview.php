@@ -2,11 +2,11 @@
 
 namespace App\Models\Vault;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 
-class VaultItemReview extends Model
+class VaultItemReview extends ModelWithExtraTypeInfo
 {
     use SoftDeletes;
 
@@ -18,9 +18,15 @@ class VaultItemReview extends Model
         'stat_comments', 'flag_locked'
     ];
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime'
+        'score_ambience' => 'decimal:2',
+        'score_architecture' => 'decimal:2',
+        'score_gameplay' => 'decimal:2',
+        'score_lighting' => 'decimal:2',
+        'score_texturing' => 'decimal:2',
+        'stat_comments' => 'integer',
+    ];
+    protected $nullable = [
+        'comment_id',
     ];
 
     public function user()

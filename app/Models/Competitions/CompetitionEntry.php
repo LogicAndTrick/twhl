@@ -1,15 +1,18 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CompetitionEntry extends Model {
+class CompetitionEntry extends ModelWithExtraTypeInfo {
 
     use SoftDeletes;
 
     public $table = 'competition_entries';
     public $fillable = ['competition_id', 'user_id', 'title', 'content_html', 'content_text', 'is_hosted_externally', 'file_location'];
     public $visible = ['id', 'competition_id', 'user_id', 'title'];
+    protected $casts = [
+        'is_hosted_externally' => 'integer',
+    ];
 
     public function competition()
     {

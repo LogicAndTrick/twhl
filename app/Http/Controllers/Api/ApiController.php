@@ -25,6 +25,7 @@ use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use App\Models\Game;
 use App\Models\License;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\Shout;
 use App\Models\Vault\Motm;
 use App\Models\Vault\VaultCategory;
@@ -42,9 +43,11 @@ use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -569,30 +572,66 @@ class ApiController extends Controller {
         ],
     ];
 
-    private function getRelatedClass($obj, $prop): ?array
+   
+    /**
+     * Returns the OpenAPI type and format for an attribute
+     */
+    public function getAttributeTypeInfo(ModelWithExtraTypeInfo $model, string $property): array
     {
-        $rel = null;
-        $o = $obj;
-        foreach (explode('.', $prop) as $name) {
-            if (!method_exists($o, $name)) return null;
-            $rel = $o->$name();
-            if (!$rel instanceof Relation) return null;
-            $o = $rel->getRelated();
+        $type = 'string';
+        $format = $model->getFormat($property);
+        if ($model->hasCast($property, 'boolean')) {
+            $type = 'boolean';
+        } else if ($model->hasCast($property, 'int') || $model->hasCast($property, 'integer')) {
+            // Integers default to int32
+            $type = 'integer';
+            $format ??= 'int32';
+        } else if ($model->hasCast($property, 'decimal')) {
+            // Decimals are output as strings
+            $type = 'string';
+            $format ??= 'decimal';
+        } else if ($model->hasCast($property, 'float')
+            || $model->hasCast($property, 'double')
+            || $model->hasCast($property, 'real')) {
+            $type = 'number';
+            $format ??= 'double';
+        } else if ($property === 'id' || str_ends_with($property, '_id')) {
+            // IDs are uint32
+            $type = 'integer';
+            $format ??= 'uint32';
         }
+        $info = [ 'type' => $type ];
+        if ($format) $info['format'] = $format;
+        if ($model->isNullable($property)) return [ 'anyOf' => [ $info, [ 'type' => 'null' ] ] ];
+        return $info;
+    }
 
-        if ($rel && $o) {
-            $rel_expl = explode('\\', get_class($o));
-            $rel_name = $rel_expl[count($rel_expl) - 1];
-            $type = "#/components/schemas/$rel_name";
-            if ($rel instanceof HasMany) {
-                $type = 'array';
+    /**
+     * Returns the OpenAPI type and format for a relation, or `null` if it's not a relation
+     */
+    private function getRelationTypeInfo(ModelWithExtraTypeInfo $model, string $property): ?array {
+        if (method_exists($model, $property)) {
+            $relation = $model->$property();
+            if ($relation instanceof Relation) {
+                $ref = '#/components/schemas/' . class_basename($relation->getRelated());
+                if ($relation instanceof BelongsTo || $relation instanceof HasOne) {
+                    $info = [ '$ref' => $ref ];
+
+                    $keyName = $relation instanceof BelongsTo ? $relation->getForeignKeyName() : $relation->getLocalKeyName();
+                    if ($model->isNullable($keyName)) {
+                        return [ 'anyOf' => [ $info, [ 'type' => 'null' ] ] ];
+                    }
+                    return $info;
+                }
+                if ($relation instanceof BelongsToMany || $relation instanceof HasMany) {
+                    return [
+                        'items' => [ '$ref' => $ref ],
+                        'type' => 'array',
+                    ];
+                }
+                return []; // Unrecognized relation type
             }
-            return [
-                'ref' => "#/components/schemas/$rel_name",
-                'type' => $type
-            ];
         }
-
         return null;
     }
 
@@ -615,44 +654,22 @@ class ApiController extends Controller {
             $obj = new $desc['object'];
             [$name] = $this->objectNamesFromDescriptor($desc);
             $props = [];
-            $visible = $obj instanceof Model ? $obj->getVisible() : [];
+            $required = [];
+            $visible = $obj instanceof ModelWithExtraTypeInfo ? $obj->getVisible() : [];
             foreach ($visible as $prop) {
-                $props[$prop] = [];
-
-                $format = null;
-                $type = 'string';
-                $type_key = 'type';
-                if ($obj->hasCast($prop, 'boolean')) {
-                    $type = 'boolean';
-                } else if ($prop == 'id' || $prop == 'orderindex' || $prop == 'order_index' || str_ends_with($prop, '_id')) {
-                    $format = 'double-int'; // Integer that can fit in an IEEE 754 double
-                    $type = 'integer';
-                } else if (
-                    $prop == 'created_at' ||
-                    $prop == 'updated_at' ||
-                    $prop == 'deleted_at' ||
-                    in_array($prop, $obj->dates ?? []) ||
-                    $obj->hasCast($prop, 'datetime')
-                ) {
-                    $format = 'date-time';
-                } else {
-                    $rel = $this->getRelatedClass($obj, $prop);
-                    if ($rel) {
-                        $type = $rel['type'];
-                        if ($type == 'array') {
-                            $props[$prop]['items'] = [ '$ref' => $rel['ref'] ];
-                        } else {
-                            $type_key = '$ref';
-                        }
-                    }
+                $props[$prop] = $this->getRelationTypeInfo($obj, $prop);
+                if (!$props[$prop]) {
+                    $props[$prop] = $this->getAttributeTypeInfo($obj, $prop);
+                    $required[] = $prop;
                 }
-                $props[$prop][$type_key] = $type;
-                if ($format) $props[$prop]['format'] = $format;
             }
             $objectSchemas[$name] = [
                 'type' => 'object',
-                'properties' => count($props) == 0 ? new \stdClass() : $props
+                'properties' => count($props) == 0 ? new \stdClass() : $props,
             ];
+            if ($required) {
+                $objectSchemas[$name]['required'] = $required;
+            }
         }
 
         return $objectSchemas;
@@ -1067,7 +1084,7 @@ class ApiController extends Controller {
             $tags[] = ['name' => $key, 'description' => $desc['description']];
         }
         $openapi = [
-            '$schema'=> 'https://spec.openapis.org/oas/3.0/schema/2024-10-18',
+            '$schema'=> 'https://spec.openapis.org/oas/3.1/schema-base/2026-08-03',
             'components' => [
                 'headers' => [
                     'RateLimitLimit' => [
@@ -1186,7 +1203,7 @@ class ApiController extends Controller {
                 ],
                 'version' => 'latest'
             ],
-            'openapi' => '3.0.4',
+            'openapi' => '3.1.2',
             'paths' => $api_desc,
             'security' => [
                 new \stdClass(), // Security token is optional

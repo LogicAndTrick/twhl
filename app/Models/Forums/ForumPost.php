@@ -1,19 +1,14 @@
 <?php namespace App\Models\Forums;
 
 use App\Helpers\Date;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\Reactions\Reaction;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 
-class ForumPost extends Model {
+class ForumPost extends ModelWithExtraTypeInfo {
 
     use SoftDeletes;
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime'
-    ];
     protected $fillable = ['forum_id', 'thread_id', 'user_id', 'content_text', 'content_html'];
     public $visible = ['id', 'forum_id', 'thread_id', 'user_id', 'content_text', 'content_html', 'created_at', 'updated_at', 'forum', 'thread', 'user'];
     protected $with = ['reactions'];

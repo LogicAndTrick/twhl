@@ -1,17 +1,19 @@
 <?php namespace App\Models\Accounts;
 
+use App\Models\ModelWithExtraTypeInfo;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
-class Ban extends Model {
+class Ban extends ModelWithExtraTypeInfo {
 
     protected $table = 'bans';
     protected $fillable = [ 'user_id', 'ip', 'ends_at', 'reason' ];
-
-    public function getDates()
-    {
-        return ['ends_at', 'created_at', 'updated_at', 'deleted_at'];
-    }
+    protected $casts = [
+        'ends_at' => 'datetime',
+    ];
+    protected $nullable = [
+        'ends_at',
+        'user_id',
+    ];
 
     public function user()
     {

@@ -1,8 +1,8 @@
 <?php namespace App\Models\Messages;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class Message extends Model {
+class Message extends ModelWithExtraTypeInfo {
 
     protected $table = 'messages';
     protected $fillable = ['user_id', 'thread_id', 'content_text', 'content_html'];
