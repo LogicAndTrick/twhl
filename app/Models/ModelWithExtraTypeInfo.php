@@ -45,8 +45,8 @@ abstract class ModelWithExtraTypeInfo extends Model {
     }
 
     /**
-     * Is it one of the standard timestamps (usually `created_at` and `deleted_at`) or
-     * SoftDeletes's timestamp (usually `updated_at`)? Those are nullable.
+     * Is it one of the standard timestamps (usually `created_at` and `updated_at`) or
+     * SoftDeletes's timestamp (usually `deleted_at`)? Those are nullable.
      */
     private function isDateColumn(string $property): bool
     {

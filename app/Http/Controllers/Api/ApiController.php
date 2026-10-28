@@ -576,12 +576,14 @@ class ApiController extends Controller {
     /**
      * Returns the OpenAPI type and format for an attribute
      */
-    public function getAttributeTypeInfo(ModelWithExtraTypeInfo $model, string $property): array
+    private function getAttributeTypeInfo(ModelWithExtraTypeInfo $model, string $property): array
     {
         $type = 'string';
         $format = $model->getFormat($property);
-        if ($model->hasCast($property, 'boolean')) {
-            $type = 'boolean';
+        if ($property === 'id' || str_ends_with($property, '_id')) {
+            // IDs are uint32
+            $type = 'integer';
+            $format ??= 'uint32';
         } else if ($model->hasCast($property, 'int') || $model->hasCast($property, 'integer')) {
             // Integers default to int32
             $type = 'integer';
@@ -595,11 +597,9 @@ class ApiController extends Controller {
             || $model->hasCast($property, 'real')) {
             $type = 'number';
             $format ??= 'double';
-        } else if ($property === 'id' || str_ends_with($property, '_id')) {
-            // IDs are uint32
-            $type = 'integer';
-            $format ??= 'uint32';
-        }
+        } else if ($model->hasCast($property, 'boolean')) {
+            $type = 'boolean';
+        } 
         $info = [ 'type' => $type ];
         if ($format) $info['format'] = $format;
         if ($model->isNullable($property)) return [ 'anyOf' => [ $info, [ 'type' => 'null' ] ] ];
@@ -615,13 +615,7 @@ class ApiController extends Controller {
             if ($relation instanceof Relation) {
                 $ref = '#/components/schemas/' . class_basename($relation->getRelated());
                 if ($relation instanceof BelongsTo || $relation instanceof HasOne) {
-                    $info = [ '$ref' => $ref ];
-
-                    $keyName = $relation instanceof BelongsTo ? $relation->getForeignKeyName() : $relation->getLocalKeyName();
-                    if ($model->isNullable($keyName)) {
-                        return [ 'anyOf' => [ $info, [ 'type' => 'null' ] ] ];
-                    }
-                    return $info;
+                    return [ 'anyOf' => [ [ '$ref' => $ref ], [ 'type' => 'null' ] ] ];
                 }
                 if ($relation instanceof BelongsToMany || $relation instanceof HasMany) {
                     return [
@@ -629,7 +623,8 @@ class ApiController extends Controller {
                         'type' => 'array',
                     ];
                 }
-                return []; // Unrecognized relation type
+                // Unrecognized relation type, could be any object or array of objects
+                return [ 'anyOf' => [ [ 'type' => 'array' ], [ 'type' => 'null' ], [ 'type' => 'object' ] ] ];
             }
         }
         return null;
@@ -640,8 +635,7 @@ class ApiController extends Controller {
             return $descriptor['object_names'];
         }
 
-        $expl = explode('\\', $descriptor['object']);
-        $single = $expl[count($expl) - 1];
+        $single = class_basename($descriptor['object']);
         $plural = "{$single}s";
         return [$single, $plural];
     }

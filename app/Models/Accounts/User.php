@@ -33,6 +33,7 @@ class User extends ModelWithExtraTypeInfo implements AuthenticatableContract, Ca
 	protected $hidden = ['password', 'remember_token'];
     public $visible = [ 'id', 'name', 'avatar_custom', 'avatar_file', 'title_custom', 'title_text', 'avatar_full', 'avatar_small', 'avatar_inline', 'last_login_time', 'last_access_time' ];
     protected $casts = [
+        'avatar_custom' => 'boolean',
         'info_birthday' => 'integer',
         'last_access_time' => 'datetime',
         'last_login_time' => 'datetime',

@@ -11,7 +11,7 @@ class CompetitionResult extends ModelWithExtraTypeInfo {
         'rank' => 'integer',
     ];
     protected $formats = [
-        'rank' => 'uin32',
+        'rank' => 'uint32',
     ];
 
 }

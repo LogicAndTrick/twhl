@@ -1,8 +1,8 @@
 <?php namespace App\Models\Vault;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class VaultType extends Model {
+class VaultType extends ModelWithExtraTypeInfo {
 
     public $table = 'vault_types';
     public $timestamps = false;

@@ -11,7 +11,7 @@ class CompetitionEntry extends ModelWithExtraTypeInfo {
     public $fillable = ['competition_id', 'user_id', 'title', 'content_html', 'content_text', 'is_hosted_externally', 'file_location'];
     public $visible = ['id', 'competition_id', 'user_id', 'title'];
     protected $casts = [
-        'is_hosted_externally' => 'integer',
+        'is_hosted_externally' => 'boolean',
     ];
 
     public function competition()
