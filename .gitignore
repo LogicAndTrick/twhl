@@ -11,5 +11,4 @@ npm-debug.log
 
 # development
 .env
-/docker-for-development/mysql-data
 /public/hot
