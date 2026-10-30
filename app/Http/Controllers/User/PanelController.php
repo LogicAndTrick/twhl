@@ -186,7 +186,7 @@ class PanelController extends Controller {
             $user->deleteAvatar();
 
             $temp_dir = public_path('uploads/avatars/temp');
-            $temp_name = $user->id . '_temp.' . strtolower($upload->getClientOriginalExtension());
+            $temp_name = $user->id . '_temp';
             $upload->move($temp_dir, $temp_name);
             $thumbs = Image::MakeThumbnails($temp_dir . '/' . $temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), $name, true);
             unlink($temp_dir . '/' . $temp_name);
