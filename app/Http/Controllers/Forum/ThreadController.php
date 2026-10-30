@@ -11,7 +11,7 @@ use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +27,7 @@ class ThreadController extends Controller
         $this->permission(['edit', 'delete', 'restore'], 'ForumAdmin');
     }
 
-    public function getIndex()
+    public function getIndex(Request $request)
     {
         $auth_user = Auth::user();
         $auth_user_id = $auth_user ? $auth_user->id : 0;
@@ -44,7 +44,7 @@ class ThreadController extends Controller
             ->orderBy('forum_threads.created_at', 'desc')
             ->select('forum_threads.*');
 
-        $user = intval(Request::get('user'));
+        $user = $request->integer('user');
         $user = $user > 0 ? User::find($user) : null;
         if ($user) $query = $query->whereUserId($user->id);
 
@@ -73,7 +73,7 @@ class ThreadController extends Controller
         return redirect('thread/view/' . $thread->id . '?page=' . $page . '#post-' . $id);
     }
 
-    public function getView(int $id)
+    public function getView(Request $request, int $id)
     {
         $thread = ForumThread::with(['user'])->findOrFail($id);
         $forum = Forum::findOrFail($thread->forum_id);
@@ -85,10 +85,10 @@ class ThreadController extends Controller
         $thread->save();
         $thread->timestamps = true;
 
-        $page = intval(Request::input('page')) ?: 1;
+        $page = $request->integer('page', 1);
         $post_query = ForumPost::with('user')->where('thread_id', '=', $id)->whereNull('deleted_at')->orderBy('created_at');
         $count = $post_query->getQuery()->getCountForPagination();
-        if (Request::input('page') == 'last') $page = ceil($count / 50);
+        if ($request->input('page') == 'last') $page = ceil($count / 50);
         $posts = $post_query->skip(($page - 1) * 50)->take(50)->get();
         foreach ($posts as $p) {
             if ($p->content_html == '' && $p->content_text != '') {
@@ -139,26 +139,26 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function postCreate()
+    public function postCreate(Request $request)
     {
-        $id = intval(Request::input('forum_id'));
+        $id = $request->integer('forum_id');
         $forum = Forum::where('id', '=', $id)->firstOrFail();
-        $this->validate(Request::instance(), [
+        $this->validate($request, [
             'title' => 'required|max:200',
             'text' => 'required|max:10000'
         ]);
         $thread = ForumThread::Create([
             'forum_id' => $id,
             'user_id' => Auth::user()->id,
-            'title' => Request::input('title'),
+            'title' => $request->input('title'),
             'is_open' => true
         ]);
         $post = ForumPost::Create([
             'thread_id' => $thread->id,
             'forum_id' => $id,
             'user_id' => Auth::user()->id,
-            'content_text' => Request::input('text'),
-            'content_html' => bbcode(Request::input('text')),
+            'content_text' => $request->input('text'),
+            'content_html' => bbcode($request->input('text')),
         ]);
         $sub = UserSubscription::Create([
             'user_id' => Auth::user()->id,
@@ -183,22 +183,22 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function postEdit()
+    public function postEdit(Request $request)
     {
-        $id = intval(Request::input('id'));
+        $id = $request->integer('id');
         $thread = ForumThread::findOrFail($id);
         $forum = Forum::findOrFail($thread->forum_id);
-        $this->validate(Request::instance(), [
+        $this->validate($request, [
             'title' => 'required|max:200',
             'forum_id' => 'required|integer',
             'user_id' => 'required|integer'
         ]);
         $thread->update([
-            'title' => Request::input('title'),
-            'user_id' => Request::input('user_id'),
-            'forum_id' => Request::input('forum_id'),
-            'is_open' => !!Request::input('is_open'),
-            'is_sticky' => !!Request::input('is_sticky')
+            'title' => $request->input('title'),
+            'user_id' => $request->input('user_id'),
+            'forum_id' => $request->input('forum_id'),
+            'is_open' => !!$request->input('is_open'),
+            'is_sticky' => !!$request->input('is_sticky')
         ]);
         $thread->save();
         return redirect('thread/view/' . $thread->id);
@@ -214,9 +214,9 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function postDelete()
+    public function postDelete(Request $request)
     {
-        $id = intval(Request::input('id'));
+        $id = $request->integer('id');
         $thread = ForumThread::findOrFail($id);
         $forum = Forum::findorFail($thread->forum_id);
         $thread->delete();
@@ -233,9 +233,9 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function postRestore()
+    public function postRestore(Request $request)
     {
-        $id = intval(Request::input('id'));
+        $id = $request->integer('id');
         $thread = ForumThread::onlyTrashed()->findOrFail($id);
         $forum = Forum::findorFail($thread->forum_id);
         $thread->restore();

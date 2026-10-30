@@ -3,12 +3,14 @@
 namespace App\Helpers;
 
 use ErrorException;
-use Illuminate\Routing\Router;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionIntersectionType;
+use ReflectionParameter;
+use ReflectionUnionType;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
-use ReflectionParameter;
 
 /**
  * Class Routing
@@ -123,7 +125,7 @@ class Routing
         $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
 
         $typed = count($reflection->getAttributes(TypedRouting::class)) > 0;
-        
+
         /** @var \App\Http\Controllers\Controller|null */
         $instance = $typed ? $reflection->newInstance() : null;
 
@@ -135,7 +137,7 @@ class Routing
                 $data = Routing::getMethodData($reflection, $method, $prefix);
 
                 $routable[$method->name][] = $data;
-                
+
                 if ($instance && !$instance->hasPermissionDefined($method->name)) {
                     throw new ErrorException("Controller method {$controller} @ {$method->name} has no permissions defined.");
                 }
@@ -172,14 +174,17 @@ class Routing
      */
     private static function getMethodData(ReflectionClass $class, ReflectionMethod $method, string $prefix): array
     {
-        $params = array_map(function (ReflectionParameter $value) {
-            return [
-                'index' => $value->getPosition(),
-                'name' => $value->getName(),
-                'optional' => $value->isOptional(),
-                'type' => $value->getType()?->getName(),
-            ];
-        }, $method->getParameters());
+        $params = collect($method->getParameters())
+            ->filter(Routing::isBindableParameter(...))
+            ->map(function (ReflectionParameter $value) {
+                return [
+                    'index' => $value->getPosition(),
+                    'name' => $value->getName(),
+                    'optional' => $value->isOptional(),
+                    'type' => $value->getType()?->getName(),
+                ];
+            })
+            ->toArray();
 
         $typed = count($class->getAttributes(TypedRouting::class)) > 0;
         $name = $method->name;
@@ -196,6 +201,19 @@ class Routing
             'parameters' => $params,
             'typed' => $typed
         ];
+    }
+
+    /**
+     * Check if a parameter is bindable to the route (i.e. must be a primitive)
+     */
+    private static function isBindableParameter(ReflectionParameter $param)
+    {
+        $type = $param->getType();
+        if (!$type || $type instanceof ReflectionUnionType) return true;
+        if ($type instanceof ReflectionIntersectionType) return false;
+
+        $type_name = $type->getName();
+        return $type_name == 'int' || $type_name == 'string';
     }
 
     /**
