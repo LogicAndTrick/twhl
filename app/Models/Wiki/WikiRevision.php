@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use LogicAndTrick\WikiCodeParser\ParseResult;
 
 class WikiRevision extends Model {
 

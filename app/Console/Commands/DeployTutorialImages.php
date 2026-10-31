@@ -113,7 +113,7 @@ class DeployTutorialImages extends Command
                         'slug' => 'upload:'.$name,
                         'title' => $name,
                         'content_text' => $rev_desc,
-                        'content_html' => $parsed_description->ToHtml(),
+                        'content_html' => $parsed_description->ToHtml(html_sanitise(...)),
                         'content_plain' => $parsed_description->ToPlainText(),
                         'message' => 'Automatically migrated from TWHL3',
                     ]);

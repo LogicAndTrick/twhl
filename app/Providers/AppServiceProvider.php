@@ -13,6 +13,8 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Pulse\Facades\Pulse;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -64,5 +66,20 @@ class AppServiceProvider extends ServiceProvider
             'Illuminate\Pagination\LengthAwarePaginator',
             'App\Helpers\LimitedLengthAwarePaginator'
         );
+        $this->app->singleton(HtmlSanitizer::class, function() {
+            return new HtmlSanitizer(
+                new HtmlSanitizerConfig()
+                    ->allowSafeElements()
+                    ->allowLinkSchemes(['http', 'https', 'ftp', 'mailto'])
+                    ->allowAttribute('class', '*')
+                    ->allowAttribute('id', '*')
+                    ->allowAttribute('style', '*')
+                    ->allowAttribute('data-embed-type', ['div'])
+                    ->allowAttribute('data-vault-id', ['div'])
+                    ->allowAttribute('data-info', ['span'])
+                    ->allowAttribute('data-youtube-id', ['div'])
+                    ->withMaxInputLength(pow(2, 32))
+            );
+        });
     }
 }

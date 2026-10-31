@@ -155,7 +155,7 @@ class DeployFormat extends Command
                 foreach ($query_result as $q) {
                     try {
                         $parse_result = bbcode_result($q->$source);
-                        $q->$target_html = $parse_result->ToHtml();
+                        $q->$target_html = $parse_result->ToHtml(html_sanitise(...));
                         if ($target_plain !== null) $q->$target_plain = $parse_result->ToPlainText();
                         $q->timestamps = false;
                         $q->save();

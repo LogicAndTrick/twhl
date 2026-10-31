@@ -459,7 +459,7 @@ class WikiController extends Controller
             'slug' => $slug,
             'title' => $title,
             'content_text' => Request::input('content_text'),
-            'content_html' => $parse_result->ToHtml(),
+            'content_html' => $parse_result->ToHtml(html_sanitise(...)),
             'content_plain' => $parse_result->ToPlainText(),
             'message' => Request::input('message') ?: ''
         ]);
@@ -687,7 +687,7 @@ class WikiController extends Controller
             'slug' => $same_slug ? $current_rev->slug : $rev->slug,
             'title' => $same_slug ? $current_rev->title : $rev->title,
             'content_text' => $rev->content_text,
-            'content_html' => $parse_result->ToHtml(),
+            'content_html' => $parse_result->ToHtml(html_sanitise(...)),
             'content_plain' => $parse_result->ToPlainText(),
             'message' => 'Reverting to revision #' . $rev->id .
                 ($rev->message ? " ({$rev->message})" : '') .

@@ -56,7 +56,7 @@ class FormatWiki extends Command
 
                 if (!$slugs_only) {
                     $result = bbcode_result($rev->content_text);
-                    $rev->content_html = $result->ToHtml();
+                    $rev->content_html = $result->ToHtml(html_sanitise(...));
                     $rev->timestamps = false;
 
                     $meta = [];

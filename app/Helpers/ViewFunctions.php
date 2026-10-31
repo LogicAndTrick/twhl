@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
 
 if (!function_exists('tag'))
 {
@@ -115,12 +116,19 @@ if (!function_exists('header_data')) {
     }
 }
 
+if (!function_exists('html_sanitise')) {
+    function html_sanitise(string $string) {
+        $sanitiser = app(HtmlSanitizer::class);
+        return $sanitiser->sanitize($string);
+    }
+}
+
 if (!function_exists('bbcode')) {
     function bbcode($text, $scope = '') {
         /** @var LogicAndTrick\WikiCodeParser\Parser $parser */
         $parser = app('bbcode');
         $result = $parser->ParseResult($text, $scope);
-        return $result->ToHtml();
+        return $result->ToHtml(html_sanitise(...));
     }
 }
 
@@ -139,7 +147,7 @@ if (!function_exists('bbcode_excerpt')) {
         $parser = app('bbcode');
         $len = Str::length($text);
         if ($len > $length) $text = Str::substr($text, 0, $length);
-        $parsed = $parser->ParseResult($text, $scope)->ToHtml();
+        $parsed = $parser->ParseResult($text, $scope)->ToHtml(html_sanitise(...));
         if ($len > $length) $parsed .= '...';
         return $parsed;
     }

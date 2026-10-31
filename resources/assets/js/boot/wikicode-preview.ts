@@ -1,7 +1,19 @@
 import { Dropdown } from 'bootstrap';
+import dompurify from 'dompurify';
 
 import hljs from '../lib/highlight';
 import { parser } from '../lib/parser';
+
+dompurify.setConfig({
+    USE_PROFILES: {
+        html: true,
+    },
+    FORCE_BODY: true,
+});
+
+function sanitise(html: string) {
+    return dompurify.sanitize(html);
+}
 
 /**
  * Cheap jquery replacement
@@ -247,7 +259,7 @@ window.addEventListener('DOMContentLoaded', () => {
             });
 
             const result = parser.ParseResult(text);
-            const data = result.ToHtml();
+            const data = result.ToHtml(sanitise);
 
             const event = new CustomEvent('bbcode-preview-updating', {
                 detail: { html: data, element: panel },

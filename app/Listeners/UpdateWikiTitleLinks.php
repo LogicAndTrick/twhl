@@ -59,7 +59,7 @@ class UpdateWikiTitleLinks
                 $parse_result = bbcode_result($text);
                 $rev->update([
                     'content_text' => $text,
-                    'content_html' => $parse_result->ToHtml(),
+                    'content_html' => $parse_result->ToHtml(html_sanitise(...)),
                     'content_plain' => $parse_result->ToPlainText()
                 ]);
                 $m->update([
