@@ -34,19 +34,18 @@ class ReactionController extends Controller {
             ->with(['user:id,name,avatar_file,avatar_custom'])
             ->where('entity_type', '=', $reaction->entity_type)
             ->where('entity_id', '=', $reaction->entity_id)
-            ->where('reaction_type_id', '=', $reaction->reaction_type_id)
-            ->get();
-        
-        $found = $existing->where('user_id', '=', $reaction->user_id)->first();
-        if (!$found) {
+            ->where('user_id', '=', $reaction->user_id)
+            ->first();
+
+        if ($existing) {
+            $existing->update([ 'reaction_type_id' => $reaction->reaction_type_id ]);
+            return response()->json([ $existing ], 200);
+        } else {
+            $u = Auth::user();
             $reaction->save();
-            $existing->add([
-                ...$reaction->toArray(),
-                'user' => Auth::user()
-            ]);
+            $reaction->user = [ 'id' => $u->id, 'name' => $u->name, 'avatar_inline' => $u->avatar_inline ];
+            return response()->json([ $reaction ], 201);
         }
-        
-        return response()->json($existing, $found ? 202 : 200);
     }
 
     public function postRemove()
@@ -71,15 +70,14 @@ class ReactionController extends Controller {
             ->with(['user:id,name,avatar_file,avatar_custom'])
             ->where('entity_type', '=', $reaction->entity_type)
             ->where('entity_id', '=', $reaction->entity_id)
-            ->where('reaction_type_id', '=', $reaction->reaction_type_id)
-            ->get();
-        
-        $found = $existing->where('user_id', '=', $reaction->user_id)->first();
-        if ($found) {
-            $existing = $existing->diff([$found]);
-            $found->delete();
+            ->where('user_id', '=', $reaction->user_id)
+            ->first();
+
+        if ($existing) {
+            $existing->delete();
+            return response()->json([], 200);
+        } else {
+            return response()->json([], 204);
         }
-        
-        return response()->json($existing, !$found ? 202 : 200);
     }
 }

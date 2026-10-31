@@ -216,9 +216,9 @@ class ReactionHandler {
             });
             if (!resp.ok) return;
 
-            // the returned data is the list of reactions of this type only - not of other types
+            // the returned data is the list of reactions for this user only - not for anybody else
             const data = await resp.json();
-            this.reactions = this.reactions.filter((x) => x.reaction_type_id != reaction_type_id).concat(data);
+            this.reactions = this.reactions.filter((x) => x.user_id != this.userId).concat(data);
             this.expanded = false;
         } catch (e) {
             console.error(e); // if we fail, then its not the end of the world
