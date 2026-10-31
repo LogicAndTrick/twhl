@@ -1,8 +1,8 @@
 <?php namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class Shout extends Model {
+class Shout extends ModelWithExtraTypeInfo {
 
     protected $table = 'shouts';
     protected $fillable = ['user_id', 'content'];
