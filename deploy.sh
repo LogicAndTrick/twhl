@@ -13,7 +13,7 @@ git pull --ff-only
 sudo -u www-data /composer.phar install
 
 # run database migrations, using force to stop the prompt to continue in production
-sudo -u www-data php artisan migrate --force
+sudo -u www-data php artisan migrate --force --no-interaction
 
 # clear + reset the laravel caches
 sudo -u www-data php artisan optimize
