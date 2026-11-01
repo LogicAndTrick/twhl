@@ -12,3 +12,6 @@ npm-debug.log
 # development
 .env
 /public/hot
+
+# user uploads
+public/uploads
