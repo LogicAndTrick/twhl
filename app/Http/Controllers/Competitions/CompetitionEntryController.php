@@ -55,7 +55,7 @@ class CompetitionEntryController extends Controller {
             'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:jpeg,jpg,png|image_size:3000|image_limit',
 
             '__upload_method' => $file_valid.'in:file,link',
-            'link' => 'required_if:__upload_method,link|max:512',
+            'link' => 'required_if:__upload_method,link|max:512|url:http,https',
             'file' => 'required_if:__upload_method,file|max:16384|valid_extension_file:zip,rar,7z'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',

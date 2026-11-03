@@ -163,7 +163,7 @@ class VaultController extends Controller {
             'content_text' => 'required|max:10000',
 
             '__upload_method' => 'required|in:file,link',
-            'link' => 'required_if:__upload_method,link|max:512',
+            'link' => 'required_if:__upload_method,link|max:512|url:http,https',
             'file' => 'required_if:__upload_method,file|max:65536|valid_extension_file:zip,rar,7z'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
@@ -292,7 +292,7 @@ class VaultController extends Controller {
             'content_text' => 'required|max:10000',
 
             '__upload_method' => 'required|in:file,link',
-            'link' => 'required_if:__upload_method,link|max:512',
+            'link' => 'required_if:__upload_method,link|max:512|url:http,https',
             'link_broken' => 'prohibited_unless:__upload_method,link',
             'file' => 'max:65536|valid_extension:zip,rar,7z'
         ], [
