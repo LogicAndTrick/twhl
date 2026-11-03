@@ -1,17 +1,15 @@
 <?php namespace App\Models\Forums;
 
+use App\Models\Scopes\ForumPermissionScope;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Database\Eloquent\ScopeInterface;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Auth;
 
+#[ScopedBy(ForumPermissionScope::class)]
 class Forum extends Model {
 
     use SoftDeletes;
-    use ForumPermission;
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -61,38 +59,5 @@ class Forum extends Model {
         else $str[] = 'thread_inactive';
 
         return implode(' ', $str);
-    }
-}
-
-/**
- * The forum permission trait ensures that the logged in user can access each forum object.
- * If the permission is null, anybody can view the forum.
- * Otherwise, the user must be logged in and have the specified permission to view the forum.
- *
- * @package App\Models\Forums
- */
-trait ForumPermission
-{
-    public static function bootForumPermission()
-    {
-        static::addGlobalScope(new ForumPermissionScope);
-    }
-}
-
-class ForumPermissionScope implements Scope
-{
-    private $permission_sql = '(
-    permission_id is null
-    or permission_id in (
-        select up.permission_id from user_permissions up
-        left join users u on up.user_id = u.id
-        where u.id = ?
-    ))';
-
-    public function apply(Builder $builder, Model $model)
-    {
-        $user = Auth::user();
-        $id = $user ? $user->id : 0;
-        $builder->whereRaw($this->permission_sql, [$id]);
     }
 }

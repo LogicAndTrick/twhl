@@ -29,20 +29,8 @@ class ThreadController extends Controller
 
     public function getIndex(Request $request)
     {
-        $auth_user = Auth::user();
-        $auth_user_id = $auth_user ? $auth_user->id : 0;
-
         $query = ForumThread::with(['last_post', 'last_post.user', 'forum'])
-            ->leftJoin('forums as f', 'f.id', '=', 'forum_threads.forum_id')
-            ->whereRaw('(
-                f.permission_id is null
-                or f.permission_id in (
-                    select up.permission_id from user_permissions up
-                    left join users u on up.user_id = u.id
-                    where u.id = ?
-                ))', [$auth_user_id])
-            ->orderBy('forum_threads.created_at', 'desc')
-            ->select('forum_threads.*');
+            ->orderBy('created_at', 'desc');
 
         $user = $request->integer('user');
         $user = $user > 0 ? User::find($user) : null;
@@ -109,6 +97,7 @@ class ThreadController extends Controller
 
     public function getSubscribe(int $id)
     {
+        ForumThread::findOrFail($id); // permission check
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id);
         if (!$sub) {
             $sub = UserSubscription::Create([
@@ -186,6 +175,7 @@ class ThreadController extends Controller
     public function postEdit(Request $request)
     {
         $id = $request->integer('id');
+        /** @var ForumThread */
         $thread = ForumThread::findOrFail($id);
         $forum = Forum::findOrFail($thread->forum_id);
         $this->validate($request, [
@@ -200,6 +190,14 @@ class ThreadController extends Controller
             'is_open' => !!$request->input('is_open'),
             'is_sticky' => !!$request->input('is_sticky')
         ]);
+        if ($thread->wasChanged('forum_id')) {
+            // permissions are scoped to forum_id, so if a thread
+            // is moved to a different forum, make sure we update the
+            // forum_id of all posts in the thread too
+            ForumPost::withoutGlobalScopes()->withTrashed()
+                ->where('thread_id', $thread->id)
+                ->update(['forum_id' => $thread->forum_id]);
+        }
         $thread->save();
         return redirect('thread/view/' . $thread->id);
     }

@@ -1,11 +1,14 @@
 <?php namespace App\Models\Forums;
 
 use App\Helpers\Date;
+use App\Models\Scopes\ForumThreadPermissionScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy(ForumThreadPermissionScope::class)]
 class ForumThread extends Model {
 
     use SoftDeletes;

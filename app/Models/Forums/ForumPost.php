@@ -2,10 +2,13 @@
 
 use App\Helpers\Date;
 use App\Models\Reactions\Reaction;
+use App\Models\Scopes\ForumPostPermissionScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy(ForumPostPermissionScope::class)]
 class ForumPost extends Model {
 
     use SoftDeletes;

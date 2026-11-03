@@ -48,36 +48,16 @@ class SearchController extends Controller {
         $posts = null;
 
         if ($searched) {
-            $user = Auth::user();
-            $user_id = $user ? $user->id : 0;
-
             $threads = ForumThread::with(['user', 'forum', 'last_post', 'last_post.user'])
-                ->leftJoin('forums as f', 'f.id', '=', 'forum_threads.forum_id')
-                ->whereRaw('(
-                    f.permission_id is null
-                    or f.permission_id in (
-                        select up.permission_id from user_permissions up
-                        left join users u on up.user_id = u.id
-                        where u.id = ?
-                    ))', [ $user_id ])
                 ->whereRaw('(
                         MATCH (forum_threads.title) AGAINST (?)
                         OR forum_threads.title LIKE CONCAT(\'%\', ?, \'%\')
                     )', [ $search, $search ])
-                ->select('forum_threads.*')
                 ->paginate(perPage: $perPage, page: $page)
                 ->appends(Request::except('page'));
 
             $posts = ForumPost::with(['user', 'thread', 'forum'])
                 ->leftJoin('forum_threads as t', 't.id', '=', 'forum_posts.thread_id')
-                ->leftJoin('forums as f', 'f.id', '=', 'forum_posts.forum_id')
-                ->whereRaw('(
-                    f.permission_id is null
-                    or f.permission_id in (
-                        select up.permission_id from user_permissions up
-                        left join users u on up.user_id = u.id
-                        where u.id = ?
-                    ))', [ $user_id ])
                 ->whereRaw('MATCH (forum_posts.content_text) AGAINST (?)', [ $search ])
                 ->whereRaw('t.deleted_at is null')
                 ->select('forum_posts.*')

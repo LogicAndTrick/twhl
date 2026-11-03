@@ -5,22 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Accounts\User;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionStatus;
-use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use App\Models\Journal;
 use App\Models\News;
 use App\Models\Polls\Poll;
 use App\Models\Polls\PollItemVote;
-use App\Models\Reactions\ReactionType;
-use App\Models\Vault\Motm;
 use App\Models\Vault\VaultItem;
 use App\Models\Wiki\WikiObject;
 use App\Models\Wiki\WikiRevision;
 use App\Models\Wiki\WikiRevisionMeta;
-use DB;
-use Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
@@ -30,9 +25,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        $user = Auth::user();
-        $user_id = $user ? $user->id : 0;
-
         // Vault section
         $new_maps = VaultItem::with(['user', 'vault_screenshots'])
             ->orderBy('updated_at', 'desc')
@@ -49,17 +41,8 @@ class HomeController extends Controller
 
         // Forums section
         $threads = ForumThread::with(['last_post', 'last_post.user'])
-            ->leftJoin('forums as f', 'f.id', '=', 'forum_threads.forum_id')
-            ->whereRaw('(
-                f.permission_id is null
-                or f.permission_id in (
-                    select up.permission_id from user_permissions up
-                    left join users u on up.user_id = u.id
-                    where u.id = ?
-                ))', [$user_id])
-            ->orderBy('forum_threads.last_post_at', 'desc')
+            ->orderBy('last_post_at', 'desc')
             ->take(5)
-            ->select('forum_threads.*')
             ->get();
 
         // Journals section

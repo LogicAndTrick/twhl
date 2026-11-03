@@ -15,25 +15,13 @@ class PostController extends Controller {
 	public function __construct()
 	{
         $this->permission(['create', 'edit'], 'ForumCreate');
-        $this->permission('delete', 'ForumAdmin');
+        $this->permission(['delete', 'restore'], 'ForumAdmin');
 	}
 
     public function getIndex()
    	{
-       $auth_user = Auth::user();
-       $auth_user_id = $auth_user ? $auth_user->id : 0;
-
        $query = ForumPost::with(['thread', 'user'])
-           ->leftJoin('forums as f', 'f.id', '=', 'forum_posts.forum_id')
-           ->whereRaw('(
-               f.permission_id is null
-               or f.permission_id in (
-                   select up.permission_id from user_permissions up
-                   left join users u on up.user_id = u.id
-                   where u.id = ?
-               ))', [$auth_user_id])
-           ->orderBy('forum_posts.created_at', 'desc')
-           ->select('forum_posts.*');
+           ->orderBy('created_at', 'desc');
 
        $user = intval(Request::get('user'));
        $user = $user > 0 ? User::find($user) : null;
