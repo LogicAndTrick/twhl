@@ -3,6 +3,7 @@ import dompurify from 'dompurify';
 
 import hljs from '../lib/highlight';
 import { parser } from '../lib/parser';
+import { elem as el } from '../lib/utils';
 
 dompurify.setConfig({
     USE_PROFILES: {
@@ -13,17 +14,6 @@ dompurify.setConfig({
 
 function sanitise(html: string) {
     return dompurify.sanitize(html);
-}
-
-/**
- * Cheap jquery replacement
- */
-function el<T extends HTMLElement>(type: string, cls?: string, contents?: HTMLElement | string, cback?: (x: T) => void) {
-    const element = document.createElement(type) as T;
-    if (cls) element.className = cls;
-    if (contents) element.append(contents);
-    if (cback) cback(element);
-    return element;
 }
 
 function insertIntoInput(textarea: HTMLTextAreaElement, template: string, cursor: string, cursor2: string, force_newline?: boolean) {
@@ -180,7 +170,7 @@ function addButtons(container: HTMLElement, textarea: HTMLTextAreaElement) {
 
         for (let i = 0; i < smilies.length; i++) {
             const s = smilies[i];
-            const sma = el<HTMLAnchorElement>('a', 'btn btn-link btn-xs');
+            const sma = el('a', 'btn btn-link btn-xs');
             sma.href = '#';
             sma.setAttribute('title', s.code);
             const img = document.createElement('img');
@@ -208,23 +198,23 @@ window.addEventListener('DOMContentLoaded', () => {
         let group = el('div', 'form-group'),
             heading = el('h4', 'me-auto', 'Message preview'),
             headingCont = el('div', 'd-flex align-items-center'),
-            btn = el<HTMLButtonElement>('button', 'btn btn-info btn-xs preview-button', 'Update Preview', (x) => (x.type = 'button')),
+            btn = el('button', 'btn btn-info btn-xs preview-button', 'Update Preview', (x) => (x.type = 'button')),
             card = el('div', 'card'),
             panel = el('div', 'card-body bbcode'),
             form = input.closest('form')!,
             ta = input.querySelector('textarea')!,
             name = ta.getAttribute('name')!,
-            help = el<HTMLAnchorElement>('a', 'pull-right', 'Formatting help', (x) => {
+            help = el('a', 'pull-right', 'Formatting help', (x) => {
                 x.target = '_blank';
                 x.href = window.urls.wiki.formatting_guide;
             }),
             btnCon = el('div', 'mb-1'),
-            livePreviewInput = el<HTMLInputElement>('input', 'form-check-input', undefined, (x) => {
+            livePreviewInput = el('input', 'form-check-input', undefined, (x) => {
                 x.type = 'checkbox';
                 x.checked = !document.cookie.split(';').some((x) => x.includes('live_preview=no'));
             }),
             livePreviewLabel = el('label', 'form-check ms-3', 'Live preview'),
-            fullscreen = el<HTMLAnchorElement>('a', 'ms-2 hidden-sm-down', '', (x) => {
+            fullscreen = el('a', 'ms-2 hidden-sm-down', '', (x) => {
                 x.href = '#';
                 x.innerHTML = '<span class="fa fa-arrows-alt"></span> Full screen editor';
             });

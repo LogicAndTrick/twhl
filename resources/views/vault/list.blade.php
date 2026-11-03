@@ -182,7 +182,7 @@
 
                 const obj = { text, count };
                 if (activeQs.length > 0) Object.assign(obj, activeQs[0].dataset);
-                filterInfo.innerHTML = nanoTemplate(templ, obj);
+                nanoTemplateReplace(filterInfo, templ, obj);
                 input.value = activeQs.map(x => x.dataset.filterValue).join('-');
             }
         }
@@ -256,7 +256,9 @@
                         event.stopPropagation();
                     }
                     if (par.matches('.remove-item') && clr) par.querySelectorAll('li:not(.static-control)').forEach(e => e.remove());
-                    else if (par.matches('.remove-item')) x.closest('li').remove();
+                    else if (par.matches('.remove-item')) {
+                        el.closest('li').remove();
+                    }
                     else if (!clr) el.classList.toggle('active');
                     update_filters();
                 });
@@ -281,7 +283,7 @@
                     const existing = document.querySelector('.filter-users > [data-filter-value="' + val + '"]');
                     if (existing) return;
 
-                    const clone = el.cloneNode();
+                    const clone = el.cloneNode(true);
                     clone.classList.add('active');
                     document.querySelector('.filter-users .clear-filter').before(clone);
 

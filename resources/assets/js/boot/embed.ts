@@ -1,5 +1,29 @@
 import { nanoTemplate } from '../lib/nano-templating';
-import { readableTime } from '../lib/utils';
+import { elem, readableTime } from '../lib/utils';
+
+type VaultScreenshot = {
+    image_large: string;
+    image_thumb: string;
+    is_primary: boolean;
+    order_index: number;
+};
+
+type VaultItem = {
+    name: string;
+    updated_at: string;
+    game: {
+        name: string;
+        abbreviation: string;
+    };
+    user: {
+        name: string;
+        avatar_small: string;
+    };
+    vault_category: {
+        name: string;
+    };
+    vault_screenshots: VaultScreenshot[];
+};
 
 document.addEventListener('click', (event) => {
     const target = (event.target as HTMLElement).closest('.video-content .uninitialised') as HTMLElement;
@@ -28,64 +52,74 @@ document.addEventListener('click', (event) => {
     if (panel) panel.focus();
 });
 
-const embed_templates = {
-    vault_slider_screenshot: `<div class="swiper-slide"><img src="{image_large}" alt="Screenshot" /></div>`,
-    vault_slider_thumbnail: `<div class="swiper-slide"><img src="{image_thumb}" alt="Thumbnail" /></div>`,
-    vault_slider: `
-    <div id="{slider_id}" class="swiper">
-        <div class="swiper-wrapper">{slider_screenshots}</div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
-    <div id="{slider_id}-thumbnails" class="swiper swiper-thumbs">
-        <div class="swiper-wrapper">{slider_thumbnails}</div>
-    </div>
-    `.trim(),
-    vault_slider_empty: `<div class="empty-swiper">{slider_screenshots}</div>`,
-    vault: `
-    <div class="slot">
-        <div class="slot-heading mb-3">
-            <div class="pull-right text-center" title="{game_name}">
-                <img class="game-icon" src="{game_image}" alt="{game_name}">
-                <small class="d-block">{game_abbr}</small>
-            </div>
-            <div class="slot-avatar">
-                <span class="avatar small" title="{user_name}">
-                    <a href="{user_url}"><img src="{user_avatar}" alt="{user_name}"></a>
-                </span>
-            </div>
-            <div class="slot-title">
-                <a href="{url}">{name}</a> by <a href="{user_url}">{user_name}</a>
-            </div>
-            <div class="slot-subtitle">Posted {created} &bull; {category} &bull; {game_name}</div>
-        </div>
-        <div class="slot-main">
-            {vault_slider}
-        </div>
-    </div>
-    `.trim(),
+type VaultSliderData = {
+    slider_id: string;
+    slider_screenshots: HTMLElement[];
+    slider_thumbnails: HTMLElement[];
 };
 
-type VaultItem = {
+type VaultEmbedTemplateData = {
+    url: string;
     name: string;
-    updated_at: string;
-    game: {
-        name: string;
-        abbreviation: string;
-    };
-    user: {
-        name: string;
-        avatar_small: string;
-    };
-    vault_category: {
-        name: string;
-    };
-    vault_screenshots: {
-        image_large: string;
-        image_thumb: string;
-        is_primary: boolean;
-        order_index: number;
-    }[];
+    created: string;
+    category: string;
+    game_abbr: string;
+    game_name: string;
+    game_image: string;
+    user_url: string;
+    user_avatar: string;
+    user_name: string;
+    vault_slider: HTMLElement[];
+};
+
+const embed_templates = {
+    vault_slider_screenshot({ image_large }: VaultScreenshot) {
+        const img = elem('img', undefined, undefined, (i) => {
+            i.src = image_large;
+            i.alt = 'Screenshot';
+        });
+        return elem('div', 'swiper-slide', img);
+    },
+    vault_slider_thumbnail({ image_thumb }: VaultScreenshot) {
+        const img = elem('img', undefined, undefined, (i) => {
+            i.src = image_thumb;
+            i.alt = 'Thumbnail';
+        });
+        return elem('div', 'swiper-slide', img);
+    },
+    vault_slider({ slider_id, slider_screenshots, slider_thumbnails }: VaultSliderData): HTMLElement[] {
+        const imgWrapper = elem('div', 'swiper-wrapper', slider_screenshots);
+        const thumbWrapper = elem('div', 'swiper-wrapper', slider_thumbnails);
+        const prev = elem('div', 'swiper-button-prev');
+        const next = elem('div', 'swiper-button-next');
+        const top = elem('div', 'swiper', [imgWrapper, prev, next], (d) => (d.id = slider_id));
+        const btm = elem('div', 'swiper swiper-thumbs', thumbWrapper, (d) => (d.id = slider_id + '-thumbnails'));
+        return [top, btm];
+    },
+    vault_slider_empty({ slider_screenshots }: VaultSliderData): HTMLElement[] {
+        return [elem('div', 'empty-swiper', slider_screenshots)];
+    },
+    vault({ url, name, created, category, game_abbr, game_name, game_image, user_url, user_avatar, user_name, vault_slider }: VaultEmbedTemplateData) {
+        const gameIcon = elem('img', 'game-icon', undefined, (d) => ([d.src, d.alt] = [game_image, game_name]));
+        const gameAbbr = elem('small', 'd-block', game_abbr);
+        const game = elem('div', 'pull-right text-center', [gameIcon, gameAbbr], (d) => (d.title = game_name));
+
+        const avatarImg = elem('img', undefined, undefined, (d) => ([d.src, d.alt] = [user_avatar, user_name]));
+        const avatarUrl = elem('a', undefined, avatarImg, (d) => (d.href = user_url));
+        const avatarSpan = elem('span', 'avatar small', avatarUrl, (d) => (d.title = user_name));
+        const avatar = elem('div', 'slot-avatar', avatarSpan);
+
+        const titleUrl = elem('a', undefined, name, (d) => (d.href = url));
+        const byText = elem('span', undefined, ' by ');
+        const userUrl = elem('a', undefined, user_name, (d) => (d.href = user_url));
+        const title = elem('div', 'slot-title', [titleUrl, byText, userUrl]);
+
+        const subtitle = elem('div', 'slot-subtitle', `Posted ${created} • ${category} • ${game_name}`);
+
+        const heading = elem('div', 'slot-heading mb-3', [game, avatar, title, subtitle]);
+        const main = elem('div', 'slot-main', vault_slider);
+        return elem('div', 'slot', [heading, main]);
+    },
 };
 
 let __uniq = 0;
@@ -112,13 +146,13 @@ const embed_callbacks = {
             return a.order_index - b.order_index;
         });
 
-        const shots = images.map((s) => nanoTemplate(embed_templates.vault_slider_screenshot, s)).join('');
-        const thumbs = images.map((s) => nanoTemplate(embed_templates.vault_slider_thumbnail, s)).join('');
+        const shots = images.map((s) => embed_templates.vault_slider_screenshot(s));
+        const thumbs = images.map((s) => embed_templates.vault_slider_thumbnail(s));
 
         const sid = 'vault-slider-' + __uniq++;
         const slider_template = images.length > 1 ? embed_templates.vault_slider : embed_templates.vault_slider_empty;
 
-        element.innerHTML = nanoTemplate(embed_templates.vault, {
+        const elem = embed_templates.vault({
             url: nanoTemplate(window.urls.view.vault, data),
             name: data.name,
             user_url: nanoTemplate(window.urls.view.user, data.user),
@@ -129,12 +163,13 @@ const embed_callbacks = {
             game_abbr: data.game.abbreviation,
             game_name: data.game.name,
             game_image: nanoTemplate(window.urls.embed.game_icon, { game_abbr: data.game.abbreviation }),
-            vault_slider: nanoTemplate(slider_template, {
+            vault_slider: slider_template({
                 slider_id: sid,
                 slider_screenshots: shots,
                 slider_thumbnails: thumbs,
             }),
         });
+        element.replaceChildren(elem);
 
         const swiperEl = document.getElementById(sid);
         const thumbsEl = document.getElementById(sid + '-thumbnails');

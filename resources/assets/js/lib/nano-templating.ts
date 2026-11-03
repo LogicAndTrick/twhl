@@ -1,3 +1,5 @@
+import { escapeHtml } from './utils';
+
 /**
  * Forget micro-templates! Nano-templates are where it's at!
  * This is possibly the most basic templating function in the world.
@@ -17,9 +19,28 @@ export function nanoTemplate(template_string: string, ...objs: any[]) {
     });
 }
 
-export function nanoTemplateHtml(template_string: string, ...objs: any[]) {
+/**
+ * A version of nanoTemplate which will HTML-escape all template values when doing replacements.
+ */
+export function nanoTemplateHtml(template_string: string, ...objs: any[]): HTMLElement | null {
     const el = document.createElement('template');
-    el.innerHTML = nanoTemplate(template_string, ...objs);
+    el.innerHTML = template_string.replace(/\{(.*?)\}/gi, (_, name) => {
+        for (const obj of objs) {
+            if (obj && obj[name]) return escapeHtml(obj[name]);
+        }
+        return '';
+    });
     const count = el.content.childNodes.length;
-    return count === 1 ? el.content.firstChild : null;
+    return count === 1 ? (el.content.firstChild as HTMLElement) : null;
+}
+
+export function nanoTemplateReplace(element: HTMLElement, template_string: string, ...objs: any[]) {
+    const el = document.createElement('template');
+    el.innerHTML = template_string.replace(/\{(.*?)\}/gi, (_, name) => {
+        for (const obj of objs) {
+            if (obj && obj[name]) return escapeHtml(obj[name]);
+        }
+        return '';
+    });
+    element.replaceChildren(...el.content.childNodes);
 }

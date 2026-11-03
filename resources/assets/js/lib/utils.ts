@@ -17,6 +17,23 @@ export function filteredEventListener(
     return handler;
 }
 
+/**
+ * Cheap jquery replacement
+ */
+export function elem<K extends keyof HTMLElementTagNameMap>(
+    type: K,
+    cls?: string,
+    contents?: HTMLElement | HTMLElement[] | string,
+    cback?: (x: HTMLElementTagNameMap[K]) => void,
+): HTMLElementTagNameMap[K] {
+    const element = document.createElement(type);
+    if (cls) element.className = cls;
+    if (Array.isArray(contents)) element.append(...contents);
+    else if (contents) element.append(contents);
+    if (cback) cback(element);
+    return element;
+}
+
 const escapeHtmlEntityMap: Record<string, string> = {
     '&': '&amp;',
     '<': '&lt;',
