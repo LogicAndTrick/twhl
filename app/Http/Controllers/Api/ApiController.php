@@ -539,24 +539,6 @@ class ApiController extends Controller {
             'filter_columns' => [],
             'sort_column' => 'id',
             'allowed_sort_columns' => []
-        ],
-        'api-key' => [
-            'description' => 'Api Keys',
-            'expand' => [],
-            'methods' => ['post'],
-            'auth' => [],
-            'parameters' => [
-                'post' => [
-                    'username' => [ 'required' => true, 'type' => 'string', 'description' => 'The username to log in with' ],
-                    'password' => [ 'required' => true, 'type' => 'string', 'format' => 'password', 'description' => 'The password to log in with' ],
-                    'app' => [ 'required' => true, 'type' => 'string', 'description' => 'The key context (what application is using this key?)' ],
-                ]
-            ],
-            'allow_unauthenticated' => true,
-            'object' => ApiKey::class,
-            'filter_columns' => ['app'],
-            'sort_column' => 'id',
-            'allowed_sort_columns' => []
         ]
     ];
 
@@ -1803,37 +1785,5 @@ class ApiController extends Controller {
         return [
             'url' => asset('uploads/images/' . Auth::id() . '/' . $thumbs[0])
         ];
-    }
-
-    private function post_api_key() {
-
-        $this->validate(Request::instance(), [
-            'app' => 'required|max:255',
-            'username' => 'required',
-            'password' => 'required'
-        ]);
-
-        $prov = Auth::getProvider();
-        $creds = [
-            'name' => Request::input('username'),
-            'password' => Request::input('password')
-        ];
-        $user = $prov->retrieveByCredentials($creds);
-        if (!$user) throw new ModelNotFoundException();
-        if (!Auth::getProvider()->validateCredentials($user, $creds)) throw new ModelNotFoundException();
-
-        // Stop API key spam and see if this app already has a key
-
-        $key = ApiKey::whereUserId($user->id)->whereApp(Request::input('app'))->first();
-        if ($key) return $key;
-
-        $key = ApiKey::create([
-            'user_id' => $user->id,
-            'key' => ApiKey::GenerateKey($user->id),
-            'app' => Request::input('app'),
-            'ip' => Request::ip(),
-        ]);
-
-        return $key;
     }
 }
