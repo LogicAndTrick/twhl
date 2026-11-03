@@ -1,9 +1,10 @@
 <?php namespace App\Http\Middleware;
 
+use Closure;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\ApiKeyAuthenticate;
 
 class UpdateUserAccessDetails {
 
@@ -33,7 +34,8 @@ class UpdateUserAccessDetails {
         return Auth::user() != null
             && !$request->isXmlHttpRequest()
             && $request->method() == 'GET'
-            && (count($segments) === 0 || $segments[0] !== 'api');
+            && (count($segments) === 0 || $segments[0] !== 'api')
+            && ApiKeyAuthenticate::getAuthenticatedApiKey($request) === null;
     }
 
     /**

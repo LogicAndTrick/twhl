@@ -41,12 +41,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             //\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
             //\Illuminate\Routing\Middleware\SubstituteBindings::class,
 
             // my custom stuff
-            \App\Http\Middleware\UpdateUserAccessDetails::class,
             \App\Http\Middleware\ApiKeyAuthenticate::class,
+            \App\Http\Middleware\VerifyCsrfToken::class,
+            \App\Http\Middleware\UpdateUserAccessDetails::class,
             \App\Http\Middleware\CheckForBan::class,
             \App\Http\Middleware\ConvertLegacyAccount::class,
             \App\Http\Middleware\LimitGuestPagination::class,

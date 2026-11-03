@@ -1,9 +1,8 @@
 <?php namespace App\Http\Middleware;
 
-use Closure;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery as BaseVerifier;
 use Illuminate\Http\Request;
-use Symfony\Component\Security\Core\Util\StringUtils;
+use App\Http\Middleware\ApiKeyAuthenticate;
 
 class VerifyCsrfToken extends BaseVerifier {
 
@@ -14,7 +13,8 @@ class VerifyCsrfToken extends BaseVerifier {
     protected function inExceptArray($request)
     {
         if ($request->is('api/*')) {
-            // only let api requests through with no csrf validation if they have an api key or authorization header
+            // only let api requests through with no csrf validation
+            // if they authenticated with a valid api key
             return $this->hasApiCredentials($request);
         }
         return parent::inExceptArray($request);
@@ -22,6 +22,6 @@ class VerifyCsrfToken extends BaseVerifier {
 
     private function hasApiCredentials(Request $request): bool
     {
-        return !empty($request->get('api_key')) || !empty($request->bearerToken()) || !empty($request->header('Authorization'));
+        return ApiKeyAuthenticate::getAuthenticatedApiKey($request) !== null;
     }
 }
