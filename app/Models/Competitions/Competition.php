@@ -1,11 +1,14 @@
 <?php namespace App\Models\Competitions;
 
+use App\Models\Scopes\CompetitionScope;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
 
+#[ScopedBy(CompetitionScope::class)]
 class Competition extends Model {
 
     use SoftDeletes;
