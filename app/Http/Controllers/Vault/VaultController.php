@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\Storage;
 class VaultController extends Controller {
 
 	public function __construct() {
-        $this->permission(['create', 'edit', 'delete', 'createscreenshot', 'savescreenshotorder', 'deletescreenshot', 'editscreenshots'], 'VaultCreate');
+        $this->anonymous(['index', 'view', 'download', 'embed']);
+        $this->permission(['create', 'edit', 'delete', 'createScreenshot', 'saveScreenshotOrder', 'deleteScreenshot', 'editScreenshots'], 'VaultCreate');
         $this->permission(['restore'], 'VaultAdmin');
 	}
 

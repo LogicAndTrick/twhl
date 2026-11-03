@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 class CompetitionEntryController extends Controller {
 
 	public function __construct() {
-        $this->permission(['create', 'edit', 'delete', 'addscreenshot', 'deletescreenshot'], 'CompetitionEnter');
+        $this->permission(['create', 'edit', 'delete', 'addScreenshot', 'deleteScreenshot'], 'CompetitionEnter');
         $this->permission(['restore'], 'CompetitionAdmin');
 	}
 
