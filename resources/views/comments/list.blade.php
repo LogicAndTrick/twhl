@@ -1,15 +1,23 @@
 <a id="comments"></a>
 {? $cc = $comments->count(); ?}
-<h2>
-    {{ $cc == 0 ? '' : $cc }} Comment{{ $cc == 1 ? '' : 's' }}
+<div class="d-flex align-items-center">
+    <h2 class="me-auto">{{ $cc == 0 ? '' : $cc }} Comment{{ $cc == 1 ? '' : 's' }}</h2>
     @if (Auth::check())
         @if ($subscription)
-            <a href="{{ act('comment', 'unsubscribe', $article_type, $article_id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</a>
+            @form(comment/unsubscribe)
+                @hidden(type $article_type)
+                @hidden(article_id $article_id)
+                <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</button>
+            @endform
         @else
-            <a href="{{ act('comment', 'subscribe', $article_type, $article_id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</a>
+            @form(comment/subscribe)
+                @hidden(type $article_type)
+                @hidden(article_id $article_id)
+                <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</button>
+            @endform
         @endif
     @endif
-</h2>
+</div>
 
 <div class="comment-list">
     @foreach ($comments->sortBy('created_at') as $comment)

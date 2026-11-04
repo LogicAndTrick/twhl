@@ -1,14 +1,18 @@
 <?php namespace App\Http\Controllers\Competitions;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionEntry;
 use App\Models\Competitions\CompetitionEntryVote;
-use Illuminate\Support\Facades\Auth;
+use App\Helpers\TypedRouting;
 
+#[TypedRouting]
 class CompetitionController extends Controller {
 
 	public function __construct() {
+        $this->anonymous(['index', 'brief', 'vote', 'entryScreenshotGallery']);
+        $this->permission(['addVote'], 'CompetitionEnter');
         $this->permission(['create', 'edit', 'delete', 'restore'], 'CompetitionAdmin');
 	}
 
@@ -19,7 +23,7 @@ class CompetitionController extends Controller {
         ]);
 	}
 
-    public function getBrief($id) {
+    public function getBrief(int $id) {
         $comp = Competition::with(['engines', 'judges', 'restrictions', 'restrictions.group', 'status', 'type', 'judge_type', 'results', 'entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
         $rule_groups = [];
         foreach ($comp->restrictions as $r) {
@@ -41,7 +45,7 @@ class CompetitionController extends Controller {
         ]);
     }
 
-    public function getVote($id) {
+    public function getVote(int $id) {
         $comp = Competition::with(['entries', 'entries.user', 'entries.screenshots'])->findOrFail($id);
         $user_votes = CompetitionEntryVote::whereUserId(Auth::user() ? Auth::user()->id : 0)->whereCompetitionId($id)->get();
         $voted_ids = $user_votes->map(function ($v) { return $v->entry_id; })->toBase();
@@ -51,14 +55,14 @@ class CompetitionController extends Controller {
         ]);
     }
 
-    public function getEntryScreenshotGallery($id) {
+    public function getEntryScreenshotGallery(int $id) {
         $entry = CompetitionEntry::with(['screenshots'])->findOrFail($id);
         return view('competitions/entry/_gallery', [
             'entry' => $entry
         ]);
     }
 
-    public function getAddVote($id) {
+    public function postAddVote(int $id) {
         $entry = CompetitionEntry::findOrFail($id);
         $comp = Competition::findOrFail($entry->competition_id);
         if (!$comp->canVote()) abort(422);

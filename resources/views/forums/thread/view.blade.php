@@ -28,9 +28,15 @@
         <li class="ms-auto no-breadcrumb">
             @if (Auth::check())
                 @if ($subscription)
-                    <a href="{{ act('thread', 'unsubscribe', $thread->id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</a>
+                    @form(thread/unsubscribe)
+                        @hidden(id $thread->id)
+                        <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</button>
+                    @endform
                 @else
-                    <a href="{{ act('thread', 'subscribe', $thread->id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</a>
+                    @form(thread/subscribe)
+                        @hidden(id $thread->id)
+                        <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</button>
+                    @endform
                 @endif
             @endif
         </li>

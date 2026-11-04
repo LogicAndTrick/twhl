@@ -95,8 +95,9 @@ class ThreadController extends Controller
         ]);
     }
 
-    public function getSubscribe(int $id)
+    public function postSubscribe(Request $request)
     {
+        $id = $request->input('id');
         ForumThread::findOrFail($id); // permission check
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id);
         if (!$sub) {
@@ -111,8 +112,9 @@ class ThreadController extends Controller
         return redirect('thread/view/' . $id);
     }
 
-    public function getUnsubscribe(int $id)
+    public function postUnsubscribe(Request $request)
     {
+        $id = $request->input('id');
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::FORUM_THREAD, $id);
         if ($sub) {
             $sub->delete();

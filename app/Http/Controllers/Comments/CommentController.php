@@ -228,8 +228,10 @@ class CommentController extends Controller {
 
     // Subscriptions
 
-    public function getSubscribe($type, $article_id)
+    public function postSubscribe()
     {
+        $type = Request::input('type');
+        $article_id = Request::input('article_id');
         $sub = Comment::getSubscription(Auth::user(), $type, $article_id);
         if (!$sub) {
             $sub = UserSubscription::Create([
@@ -248,8 +250,10 @@ class CommentController extends Controller {
         return redirect($str);
     }
 
-    public function getUnsubscribe($type, $article_id)
+    public function postUnsubscribe()
     {
+        $type = Request::input('type');
+        $article_id = Request::input('article_id');
         $sub = Comment::getSubscription(Auth::user(), $type, $article_id);
         if ($sub) {
             $sub->delete();

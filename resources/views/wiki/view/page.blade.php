@@ -21,9 +21,15 @@
         </label>
         @if (Auth::check())
             @if ($obj_subscription)
-                <a href="{{ act('wiki', 'unsubscribe', $revision->object_id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</a>
+                @form(wiki/unsubscribe)
+                    @hidden(id $revision->object_id)
+                    <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</button>
+                @endform
             @else
-                <a href="{{ act('wiki', 'subscribe', $revision->object_id) }}" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</a>
+                @form(wiki/subscribe)
+                    @hidden(id $revision->object_id)
+                    <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</button>
+                @endform
             @endif
         @endif
     </li>

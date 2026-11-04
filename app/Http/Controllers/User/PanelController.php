@@ -251,13 +251,15 @@ class PanelController extends Controller {
         ]);
     }
 
-    public function getClearNotifications($id = 0) {
+    public function postClearNotifications() {
+        $id = Request::input('id');
         $user = PanelController::GetUser($id);
         DB::statement("UPDATE user_notifications SET is_unread = 0 WHERE user_id = ? AND is_unread = 1", [ $user->id ]);
         return redirect('panel/notifications/'.$id);
     }
 
-    public function getDeleteSubscription($id) {
+    public function postDeleteSubscription() {
+        $id = Request::input('id');
 	    $sub = UserSubscription::findOrFail($id);
         $user = PanelController::GetUser($sub->user_id);
         if ($user->id !== $sub->user_id) abort(404);

@@ -94,12 +94,18 @@
                     par.classList.add('loading');
 
                     const id = par.dataset.id;
-                    const resp = await fetch(nanoTemplate(vote_url_template, { id }));
-                    const result = await resp.json();
-
-                    x.querySelector('.vote-status').textContent = result.status;
-                    x.classList.toggle('active', result.is_voted_for);
-                    par.classList.toggle('voted', result.is_voted_for);
+                    const resp = await fetch(nanoTemplate(vote_url_template, { id }), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': window.csrfToken }
+                    });
+                    if (!resp.ok) {
+                        toast('Failed to add vote', 'danger');
+                    } else {
+                        const result = await resp.json();
+                        x.querySelector('.vote-status').textContent = result.status;
+                        x.classList.toggle('active', result.is_voted_for);
+                        par.classList.toggle('voted', result.is_voted_for);
+                    }
                     par.classList.remove('loading');
                 });
             });

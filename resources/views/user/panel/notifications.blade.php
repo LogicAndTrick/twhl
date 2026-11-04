@@ -13,7 +13,10 @@
 
     <h2>
         <span class="fa fa-bell"></span> Notifications
-        <a href="{{ act('panel', 'clear-notifications') }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-check"></span> Mark all as read</a>
+        @form(panel/clear-notifications)
+            @hidden(id $user)
+            <button type="submit" class="btn btn-xs btn-outline-primary"><span class="fa fa-check"></span> Mark all as read</button>
+        @endform
     </h2>
     <table class="table">
         <thead>
@@ -45,7 +48,6 @@
             <tr>
                 <th class="col-30p">Type</th>
                 <th>Article</th>
-                <!--th class="col-15p">Send Email?</th-->
                 <th class="col-15p"></th>
             </tr>
         </thead>
@@ -54,9 +56,11 @@
                 <tr>
                     <td class="col-30p">{{ $subscription->type_description }}</td>
                     <td><a href="{{ $subscription->link }}">{{ $subscription->title && strlen($subscription->title) > 0 ? $subscription->title : '[No title]' }}</a></td>
-                    <!--td class="col-15p">{{ $subscription->send_email ? 'Yes' : 'No' }}</td-->
                     <td class="text-end col-15p">
-                        <a href="{{ act('panel', 'delete-subscription', $subscription->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span> Unsubscribe</a>
+                        @form(panel/delete-subscription)
+                            @hidden(id $subscription)
+                            <button type="submit" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span> Unsubscribe</button>
+                        @endform
                     </td>
                 </tr>
             @endforeach

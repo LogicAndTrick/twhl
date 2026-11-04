@@ -296,8 +296,9 @@ class WikiController extends Controller
         ]);
     }
 
-    public function getSubscribe(int $id)
+    public function postSubscribe()
     {
+        $id = Request::input('id');
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $id);
         if (!$sub) {
             $sub = UserSubscription::Create([
@@ -311,8 +312,9 @@ class WikiController extends Controller
         return redirect('wiki/view/' . $id);
     }
 
-    public function getUnsubscribe(int $id)
+    public function postUnsubscribe()
     {
+        $id = Request::input('id');
         $sub = UserSubscription::getSubscription(Auth::user(), UserSubscription::WIKI_REVISION, $id);
         if ($sub) {
             $sub->delete();
