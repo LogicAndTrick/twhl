@@ -9,7 +9,6 @@
 		"laravel/framework": "^13.39",
 		"laravel/pulse": "^1.8.1",
 		"laravel/tinker": "^3.0.2",
-		"laravel/ui": "^4.6.3",
 		"league/flysystem-aws-s3-v3": "^3.35.3",
 		"logicandtrick/laravel-recaptcha": "^6.3",
 		"logicandtrick/wikicodeparser": "^0.10.0",

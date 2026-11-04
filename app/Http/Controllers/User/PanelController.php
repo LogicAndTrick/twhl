@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class PanelController extends Controller {
 
@@ -141,7 +142,7 @@ class PanelController extends Controller {
             return Hash::check($value, $user->password);
         });
 
-        $rules = [ 'password' => 'required|confirmed|min:6' ];
+        $rules = [ 'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()] ];
         // Admin users can reset another user's password without the original
         if ($user->id == Auth::user()->id || !permission('Admin')) $rules['original_password'] = 'required|matches_original';
 
@@ -150,7 +151,7 @@ class PanelController extends Controller {
         ]);
 
         $user->update([
-            'password' => bcrypt(Request::input('password')),
+            'password' => Hash::make(Request::input('password')),
             'legacy_password' => ''
         ]);
         return redirect('panel/index/'.$id);
@@ -279,7 +280,14 @@ class PanelController extends Controller {
         $user = PanelController::GetUser($id);
 
         $this->validate(Request::instance(), [
-            'new_name' => 'required|max:255|unique:users,name,'.$user->id
+            'new_name' => [
+                'required',
+                'max:64',
+                Rule::unique('users', 'name')->ignore($user->id),
+                Rule::notRegex('/^\s|\s$/u'), // no leading or trailing whitespace
+                Rule::notRegex('/[\p{C}\p{So}]|[\x{FE0F}\x{20E3}\x{1F3FB}-\x{1F3FF}]/u'), // no control characters, no emojis
+                Rule::notRegex('/@/'), // no @ symbol
+            ],
         ]);
 
         $orig_name = $user->name;

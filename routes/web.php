@@ -46,11 +46,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     \App\Helpers\Routing::controllers($controllers);
 
-
-    Route::get('password/reset', 'Auth\PasswordController@getReset')->name('password.request');
-    Route::post('password/email', 'Auth\PasswordController@postEmail')->name('password.email');
-    Route::get('password/reset/{token}', 'Auth\PasswordController@getReset')->name('password.reset');
-
     // Important redirects
     $legacy = [
         'forums.php' => function () {
