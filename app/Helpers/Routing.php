@@ -87,6 +87,9 @@ class Routing
                 Routing::bindParameter($rt, $par);
             }
         }
+        if (isset($route['routeName']) && $route['routeName']) {
+            $rt->name($route['routeName']);
+        }
     }
 
     /*
@@ -187,6 +190,8 @@ class Routing
             ->toArray();
 
         $typed = count($class->getAttributes(TypedRouting::class)) > 0;
+        $routeNameAttrs = $method->getAttributes(RouteName::class);
+        $routeName = count($routeNameAttrs) > 0 ? $routeNameAttrs[0]->newInstance()->name : null;
         $name = $method->name;
         $verb = Routing::getVerb($name);
         $plain = Routing::getPlainUri($name, $prefix);
@@ -199,7 +204,8 @@ class Routing
             'prefix' => $prefix,
             'method' => $method,
             'parameters' => $params,
-            'typed' => $typed
+            'typed' => $typed,
+            'routeName' => $routeName,
         ];
     }
 

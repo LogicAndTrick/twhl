@@ -12,6 +12,7 @@ use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Helpers\TypedRouting;
+use App\Helpers\RouteName;
 
 /**
  * Much of the code here comes from the traits that ship with the laravel/ui package.
@@ -44,6 +45,7 @@ class PasswordController extends Controller
             : back()->withInput($request->only('email'))->withErrors(['email' => trans($response)]);
     }
 
+    #[RouteName('password.reset')]
     public function getReset(Request $request, string|null $token = null)
     {
         return view('auth.reset')->with(
