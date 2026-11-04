@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use LogicAndTrick\WikiCodeParser\ParseResult;
 
 class WikiController extends Controller
 {
@@ -429,6 +430,26 @@ class WikiController extends Controller
     }
 
     /**
+     * @return WikiRevisionMeta[]
+     */
+    public static function wikiMetasFromResult(ParseResult $result)
+    {
+        $meta = [];
+        foreach ($result->GetMetadata() as $md) {
+            $c = $md['key'];
+            $v = $md['value'];
+            if ($c == 'WikiLink') {
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v]);
+            } else if ($c == 'WikiUpload') {
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v]);
+            } else if ($c == 'WikiCategory') {
+                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v)]);
+            }
+        }
+        return $meta;
+    }
+
+    /**
      * Creates a revision for the given object from the request data
      * @param WikiObject $object
      * @param WikiRevision|null $existing_revision
@@ -467,18 +488,7 @@ class WikiController extends Controller
         ]);
 
         // Parse meta from the content
-        $meta = [];
-        foreach ($parse_result->GetMetadata() as $md) {
-            $c = $md['key'];
-            $v = $md['value'];
-            if ($c == 'WikiLink') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v]);
-            } else if ($c == 'WikiUpload') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v]);
-            } else if ($c == 'WikiCategory') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => str_replace(' ', '_', $v)]);
-            }
-        }
+        $meta = WikiController::wikiMetasFromResult($parse_result);
 
         if ($object->type_id == WikiType::UPLOAD) {
             // Check if we need to upload a new file
@@ -695,18 +705,7 @@ class WikiController extends Controller
                 ($rev->message ? " ({$rev->message})" : '') .
                 (Request::input('reason') ? ' - ' . Request::input('reason') : '')
         ]);
-        $meta = [];
-        foreach ($parse_result->GetMetadata() as $md) {
-            $c = $md['key'];
-            $v = $md['value'];
-            if ($c == 'WikiLink') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => $v]);
-            } else if ($c == 'WikiUpload') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::LINK, 'value' => 'upload:' . $v]);
-            } else if ($c == 'WikiCategory') {
-                $meta[] = new WikiRevisionMeta(['key' => WikiRevisionMeta::CATEGORY, 'value' => $v]);
-            }
-        }
+        $meta = WikiController::wikiMetasFromResult($parse_result);
         foreach ($rev->wiki_revision_metas as $m) {
             if ($m->key == WikiRevisionMeta::CATEGORY || $m->key == WikiRevisionMeta::LINK) continue;
             else $meta[] = new WikiRevisionMeta(['key' => $m->key, 'value' => $m->value]);
@@ -715,8 +714,15 @@ class WikiController extends Controller
         $revision->wiki_revision_books()->saveMany(WikiController::wikiBooksFromResult($parse_result));
         $revision->wiki_revision_credits()->saveMany(WikiController::wikiCreditsFromResult($parse_result));
         DB::statement('CALL update_wiki_object(?);', [$obj->id]);
+        $obj->touch();
 
         self::updateCategoryCacheTime();
+
+        if ($current_rev && $revision->title != $current_rev->title) {
+            event(new WikiTitleRenamed($current_rev->title, $obj, $revision));
+        }
+
+        event(new WikiRevisionCreated($revision));
 
         return redirect('wiki/page/' . $revision->escaped_slug);
     }
