@@ -8,6 +8,6 @@ class UserNotificationDetails extends UserNotification {
         'stat_hits' => 'integer',
     ];
     protected $formats = [
-        'stat_hits' => 'uint32',  
+        'stat_hits' => 'uint32',
     ];
 }
