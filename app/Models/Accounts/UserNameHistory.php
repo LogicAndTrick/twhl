@@ -2,9 +2,9 @@
 
 namespace App\Models\Accounts;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class UserNameHistory extends Model
+class UserNameHistory extends ModelWithExtraTypeInfo
 {
     public $table = 'user_name_history';
     public $fillable = ['user_id', 'name'];

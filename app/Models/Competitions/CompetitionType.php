@@ -1,8 +1,8 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CompetitionType extends Model {
+class CompetitionType extends ModelWithExtraTypeInfo {
 
     protected $table = 'competition_types';
     protected $fillable = ['name'];

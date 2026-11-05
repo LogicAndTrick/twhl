@@ -1,20 +1,23 @@
 <?php namespace App\Models\Forums;
 
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\Scopes\ForumPermissionScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[ScopedBy(ForumPermissionScope::class)]
-class Forum extends Model {
+class Forum extends ModelWithExtraTypeInfo {
 
     use SoftDeletes;
 
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime'
+        'order_index' => 'integer',
+        'stat_posts' => 'integer',
+        'stat_threads' => 'integer',
+    ];
+    protected $nullable = [
+        'permission_id',
     ];
     protected $fillable = ['name', 'description', 'slug', 'permission_id'];
     public $visible = [ 'id', 'slug', 'name', 'description', 'stat_threads', 'stat_posts', 'last_post_id', 'order_index', 'last_post' ];

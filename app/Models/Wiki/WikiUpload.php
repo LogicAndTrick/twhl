@@ -1,8 +1,8 @@
 <?php namespace App\Models\Wiki;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class WikiUpload extends Model {
+class WikiUpload extends ModelWithExtraTypeInfo {
 
 	//
     protected $table = 'wiki_uploads';
