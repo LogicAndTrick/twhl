@@ -1,8 +1,8 @@
 <?php namespace App\Models\Comments;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CommentMeta extends Model {
+class CommentMeta extends ModelWithExtraTypeInfo {
 
     const RATING = 'r';
     const TEMPLATE = 't';

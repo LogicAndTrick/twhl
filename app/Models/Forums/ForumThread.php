@@ -1,19 +1,27 @@
 <?php namespace App\Models\Forums;
 
 use App\Helpers\Date;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\Scopes\ForumThreadPermissionScope;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
 #[ScopedBy(ForumThreadPermissionScope::class)]
-class ForumThread extends Model {
+class ForumThread extends ModelWithExtraTypeInfo {
 
     use SoftDeletes;
     protected $casts = [
-        'deleted_at' => 'datetime'
+        'is_open' => 'boolean',
+        'is_sticky' => 'boolean',
+        'last_post_at' => 'datetime',
+        'stat_posts' => 'integer',
+        'stat_views' => 'integer',
+    ];
+    protected $nullable = [
+        'last_post_at',
+        'user_id'
     ];
     protected $fillable = ['forum_id','user_id','title','is_open','is_sticky'];
     public $visible = ['id', 'forum_id', 'user_id', 'title', 'stat_views', 'stat_posts', 'last_post_id', 'is_open', 'is_sticky', 'created_at', 'updated_at', 'forum', 'user', 'last_post'];

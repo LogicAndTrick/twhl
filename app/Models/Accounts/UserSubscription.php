@@ -1,9 +1,9 @@
 <?php namespace App\Models\Accounts;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use DB;
 
-class UserSubscription extends Model {
+class UserSubscription extends ModelWithExtraTypeInfo {
 
     const WIKI_OBJECT = 'wo';
     const WIKI_REVISION = 'wr';
@@ -32,6 +32,11 @@ class UserSubscription extends Model {
 	protected $table = 'user_subscriptions';
 	protected $fillable = [ 'user_id', 'article_type', 'article_id', 'send_email', 'send_push_notification', 'is_own_article' ];
     public $visible = [ ];
+	protected $casts = [
+		'is_own_article' => 'boolean',
+		'send_email' => 'boolean',
+		'send_push_notification' => 'boolean',
+	];
     public $timestamps = false;
 
     protected $appends = ['type_description','link'];

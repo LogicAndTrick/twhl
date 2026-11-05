@@ -2,13 +2,24 @@
 
 namespace App\Models\Vault;
 
+use App\Models\ModelWithExtraTypeInfo;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
-class Motm extends Model
+class Motm extends ModelWithExtraTypeInfo
 {
     protected $table = 'motms';
     protected $fillable = ['item_id', 'year', 'month'];
+    protected $casts = [
+        'month' => 'integer',
+        'year' => 'integer',
+    ];
+    protected $formats = [
+        'month' => 'uint32',
+        'year' => 'uint32',
+    ];
+    protected $nullable = [
+        'item_id',
+    ];
 
     public function vault_item()
     {

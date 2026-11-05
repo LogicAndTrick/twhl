@@ -1,11 +1,14 @@
 <?php namespace App\Models\Messages;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class MessageUser extends Model {
+class MessageUser extends ModelWithExtraTypeInfo {
 
     protected $table = 'message_users';
     protected $fillable = ['user_id', 'thread_id', 'message_id', 'is_unread'];
+    protected $casts = [
+        'is_unread' => 'boolean',
+    ];
     public $timestamps = false;
 
     public function user()

@@ -5,14 +5,14 @@ use App\Models\Messages\Message;
 use App\Models\Messages\MessageThread;
 use App\Models\Messages\MessageThreadUser;
 use App\Models\Messages\MessageUser;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\Reactions\Reaction;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
-class VaultItem extends Model {
+class VaultItem extends ModelWithExtraTypeInfo {
 
     use SoftDeletes;
 
@@ -34,12 +34,15 @@ class VaultItem extends Model {
         'vault_screenshots', 'user', 'engine', 'game', 'license', 'vault_category', 'vault_type', 'vault_includes', 'vault_item_reviews', 'motms'
     ];
     protected $casts = [
-        'created_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'file_size' => 'integer',
         'flag_ratings' => 'boolean',
         'is_hosted_externally' => 'boolean',
         'link_broken' => 'boolean',
-        'updated_at' => 'datetime',
+        'stat_average_rating' => 'decimal:2',
+        'stat_comments' => 'integer',
+        'stat_downloads' => 'integer',
+        'stat_ratings' => 'integer',
+        'stat_views' => 'integer',
     ];
     protected $with = ['reactions'];
 

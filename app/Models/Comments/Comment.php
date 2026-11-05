@@ -3,18 +3,18 @@
 use App\Models\Accounts\UserNotification;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Journal;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\News;
 use App\Models\Polls\Poll;
 use App\Models\Reactions\Reaction;
 use App\Models\Vault\VaultItem;
 use App\Models\Vault\VaultItemReview;
 use App\Models\Wiki\WikiObject;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Auth;
 use DB;
 
-class Comment extends Model {
+class Comment extends ModelWithExtraTypeInfo {
 
     const NEWS = 'n';
     const JOURNAL = 'j';
