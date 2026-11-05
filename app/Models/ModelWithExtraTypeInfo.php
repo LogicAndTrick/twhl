@@ -39,7 +39,7 @@ abstract class ModelWithExtraTypeInfo extends Model {
      */
     private function getDeletedAt(): null | string
     {
-        return in_array(SoftDeletes::class, class_uses_recursive(static::class))
+        return self::isSoftDeletable()
             ? $this->getDeletedAtColumn()
             : null;
     }
