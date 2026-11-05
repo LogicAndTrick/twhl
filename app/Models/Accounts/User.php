@@ -2,10 +2,10 @@
 
 use App\Models\Comments\Comment;
 use App\Models\Messages\MessageUser;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\Wiki\WikiRevision;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use DB;
 use Illuminate\Support\Facades\Auth;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends ModelWithExtraTypeInfo implements AuthenticatableContract, CanResetPasswordContract {
 
 	use Notifiable, Authenticatable, CanResetPassword, SoftDeletes;
 
@@ -33,9 +33,40 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $hidden = ['password', 'remember_token'];
     public $visible = [ 'id', 'name', 'avatar_custom', 'avatar_file', 'title_custom', 'title_text', 'avatar_full', 'avatar_small', 'avatar_inline', 'last_login_time', 'last_access_time' ];
     protected $casts = [
-        'deleted_at' => 'datetime',
+        'avatar_custom' => 'boolean',
+        'info_birthday' => 'integer',
+        'last_access_time' => 'datetime',
         'last_login_time' => 'datetime',
-        'last_access_time' => 'datetime'
+        'skill_animate' => 'boolean',
+        'skill_code' => 'boolean',
+        'skill_map' => 'boolean',
+        'skill_model' => 'boolean',
+        'skill_music' => 'boolean',
+        'skill_texture' => 'boolean',
+        'skill_voice' => 'boolean',
+        'stat_comments' => 'integer',
+        'stat_forum_posts' => 'integer',
+        'stat_journals' => 'integer',
+        'stat_logins' => 'integer',
+        'stat_profile_hits' => 'integer',
+        'stat_shouts' => 'integer',
+        'stat_vault_items' => 'integer',
+        'stat_wiki_edits' => 'integer',
+        'timezone' => 'integer',
+        'title_custom' => 'boolean',
+    ];
+    protected $formats = [
+        'avatar_file' => 'uri-reference',
+        'avatar_full' => 'uri',
+        'avatar_inline' => 'uri',
+        'avatar_small' => 'uri',
+    ];
+    protected $nullable = [
+        'last_access_ip',
+        'last_access_page',
+        'last_access_time',
+        'last_login_time',
+        'remember_token',
     ];
     protected $attributes = [ 'avatar_file' => 'user_noavatar1.png' ];
 

@@ -1,8 +1,8 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CompetitionRestriction extends Model {
+class CompetitionRestriction extends ModelWithExtraTypeInfo {
 
     public $table = 'competition_restrictions';
     public $timestamps = false;

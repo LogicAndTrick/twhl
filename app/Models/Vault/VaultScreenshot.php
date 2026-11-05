@@ -1,13 +1,18 @@
 <?php namespace App\Models\Vault;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class VaultScreenshot extends Model {
+class VaultScreenshot extends ModelWithExtraTypeInfo {
 
 	//
     public $table = 'vault_screenshots';
     public $fillable = ['item_id', 'is_primary', 'image_thumb', 'image_small', 'image_medium', 'image_large', 'image_full', 'image_size', 'order_index'];
     public $visible = ['id', 'item_id', 'is_primary', 'image_thumb', 'image_small', 'image_medium', 'image_large', 'image_full', 'image_size', 'order_index', 'created_at', 'vault_item'];
+    protected $casts = [
+        'image_size' => 'integer',
+        'is_primary' => 'boolean',
+        'order_index' => 'integer',
+    ];
 
     public function vault_item()
     {
