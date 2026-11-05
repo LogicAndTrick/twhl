@@ -1,0 +1,34 @@
+Options -ExecCGI -Indexes
+
+# Disable PHP execution in this directory
+<IfModule mod_php.c>
+	php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+	php_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+	php_flag engine off
+</IfModule>
+
+# Block executable/script file types and server config files (case-insensitive)
+<FilesMatch "(?i)\.(php[0-9]?|pht|phtml|phpt|phps|phar|pl|py|cgi|asp|aspx|jsp|sh|shtml|inc|htaccess|htpasswd|user\.ini)$">
+	Require all denied
+</FilesMatch>
+
+# Force browser-executable uploads to download instead of rendering
+<FilesMatch "(?i)\.(html?|xhtml|svg|xml|js|swf)$">
+	ForceType application/octet-stream
+	<IfModule mod_headers.c>
+		Header set Content-Disposition attachment
+	</IfModule>
+</FilesMatch>
+
+# Prevent MIME sniffing of uploaded files
+<IfModule mod_headers.c>
+	Header set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Remove handlers for potentially executable extensions
+RemoveHandler .php .pht .phtml .phpt .phps .php3 .php4 .php5 .php7 .php8 .phar .pl .py .cgi .asp .aspx .jsp .sh .shtml
+RemoveType .php .pht .phtml .phpt .phps .php3 .php4 .php5 .php7 .php8 .phar .pl .py .cgi .asp .aspx .jsp .sh .shtml
