@@ -566,7 +566,7 @@ class ApiController extends Controller {
             // IDs are uint32
             $type = 'integer';
             $format ??= 'uint32';
-        } else if ($model->hasCast($property, 'int') || $model->hasCast($property, 'integer')) {
+        } else if ($model->hasCast($property, [ 'int', 'integer' ])) {
             // Integers default to int32
             $type = 'integer';
             $format ??= 'int32';
@@ -574,12 +574,10 @@ class ApiController extends Controller {
             // Decimals are output as strings
             $type = 'string';
             $format ??= 'decimal';
-        } else if ($model->hasCast($property, 'float')
-            || $model->hasCast($property, 'double')
-            || $model->hasCast($property, 'real')) {
+        } else if ($model->hasCast($property, [ 'float', 'double', 'real' ])) {
             $type = 'number';
             $format ??= 'double';
-        } else if ($model->hasCast($property, 'boolean')) {
+        } else if ($model->hasCast($property, [ 'bool', 'boolean' ])) {
             $type = 'boolean';
         } 
         $info = [ 'type' => $type ];
