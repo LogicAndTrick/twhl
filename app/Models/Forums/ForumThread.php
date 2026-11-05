@@ -21,7 +21,6 @@ class ForumThread extends ModelWithExtraTypeInfo {
     ];
     protected $nullable = [
         'last_post_at',
-        'user_id'
     ];
     protected $fillable = ['forum_id','user_id','title','is_open','is_sticky'];
     public $visible = ['id', 'forum_id', 'user_id', 'title', 'stat_views', 'stat_posts', 'last_post_id', 'is_open', 'is_sticky', 'created_at', 'updated_at', 'forum', 'user', 'last_post'];
