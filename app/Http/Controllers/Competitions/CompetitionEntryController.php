@@ -31,11 +31,6 @@ class CompetitionEntryController extends Controller {
         };
         Validator::extend('valid_extension_file', $func);
         Validator::extend('valid_extension_screen', $func);
-        Validator::extend('image_size', function($attr, $value, $parameters) {
-            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
-            $info = getimagesize($value->getPathName());
-            return $info[0] <= $max && $info[1] <= $max;
-        });
 
         $entry = !$user ? null : CompetitionEntry::whereUserId($user->id)->whereCompetitionId($competition->id)->first();
         $screen_valid = $entry ? '' : 'required|';
@@ -52,15 +47,15 @@ class CompetitionEntryController extends Controller {
             'user_id' => ($request_user_id ? 'required|' : '') . 'numeric',
             'title' => 'required|max:255',
             'content_text' => 'max:2000',
-            'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:jpeg,jpg,png|image_size:3000|image_limit',
+            'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:jpeg,jpg,png|mimetypes:image/jpeg,image/png|dimensions:max_width=3000,max_height=3000|image_limit',
 
             '__upload_method' => $file_valid.'in:file,link',
             'link' => 'required_if:__upload_method,link|max:512|url:http,https',
-            'file' => 'required_if:__upload_method,file|max:16384|valid_extension_file:zip,rar,7z'
+            'file' => 'required_if:__upload_method,file|max:16384|valid_extension_file:zip,rar,7z|mimetypes:application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
             'valid_extension_screen' => 'Only the following file formats are allowed: jpg, png',
-            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+            'dimensions' => 'The image cannot have a width or height of more than 3000 pixels',
             'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
         ]);
 
@@ -110,7 +105,7 @@ class CompetitionEntryController extends Controller {
         ]);
 
         // Save the screenshot at various sizes
-        $temp_dir = public_path('uploads/competition/temp');
+        $temp_dir = storage_path('app/uploads/competition/temp');
         $temp_name = $shot->id . '_temp.' . strtolower($screen->getClientOriginalExtension());
         $screen->move($temp_dir, $temp_name);
         $thumbs = Image::MakeThumbnails(
@@ -158,21 +153,16 @@ class CompetitionEntryController extends Controller {
         Validator::extend('valid_extension', function($attribute, $value, $parameters) {
             return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
         });
-        Validator::extend('image_size', function($attr, $value, $parameters) {
-            $max = count($parameters) > 0 ? intval($parameters[0]) : 3000;
-            $info = getimagesize($value->getPathName());
-            return $info[0] <= $max && $info[1] <= $max;
-        });
         Validator::extend('image_limit', function($attr, $value, $parameters) use ($entry) {
             return !$entry || $entry->screenshots->count() < 10;
         });
 
         $this->validate(Request::instance(), [
             'id' => 'required|numeric',
-            'screenshot' => 'required|max:2048|valid_extension:jpeg,jpg,png|image_size:3000|image_limit',
+            'screenshot' => 'required|max:2048|valid_extension:jpeg,jpg,png|mimetypes:image/jpeg,image/png|dimensions:max_width=3000,max_height=3000|image_limit',
         ], [
             'valid_extension' => 'Only the following file formats are allowed: jpg, png',
-            'image_size' => 'The image cannot have a width or height of more than 3000 pixels',
+            'dimensions' => 'The image cannot have a width or height of more than 3000 pixels',
             'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
         ]);
 

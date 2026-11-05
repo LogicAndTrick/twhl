@@ -16,7 +16,7 @@ class ProcessVaultUploads extends Command {
 
 	public function handle()
 	{
-        $path = public_path('uploads/vault/process_uploads');
+        $path = storage_path('app/uploads/vault/process_uploads');
         if (!is_dir($path)) return;
 
         $files = glob($path.'/*');
@@ -27,7 +27,7 @@ class ProcessVaultUploads extends Command {
             $title = $info['basename'];    // 1234.zip
             $filename = $info['filename']; // 1234
             $ext = $info['extension'];     // zip
-            if (preg_match('/^(\d*)\.(zip|rar)$/s', $title))
+            if (preg_match('/^(\d*)\.(zip|rar|7z)$/s', $title))
             {
                 $item = VaultItem::find($filename);
                 $file_path = $item->getServerFilePath();

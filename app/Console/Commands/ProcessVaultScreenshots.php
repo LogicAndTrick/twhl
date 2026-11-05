@@ -16,7 +16,7 @@ class ProcessVaultScreenshots extends Command {
 
 	public function handle()
 	{
-        $path = public_path('uploads/vault/process_screens');
+        $path = storage_path('app/uploads/vault/process_screens');
         if (!is_dir($path)) return;
         $files = glob($path.'/*');
         $count = 1;
@@ -45,7 +45,8 @@ class ProcessVaultScreenshots extends Command {
                     ]);
 
                     // Save the screenshot at various sizes
-                    $temp_dir = public_path('uploads/vault/temp');
+                    $temp_dir = storage_path('app/uploads/vault/temp');
+                    if (!is_dir($temp_dir)) mkdir($temp_dir, 0755, true);
                     $temp_name = $shot->id . '_temp.' . $ext;
                     copy($file, $temp_dir . '/' . $temp_name);
                     $thumbs = Image::MakeThumbnails(

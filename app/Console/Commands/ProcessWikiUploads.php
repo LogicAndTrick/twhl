@@ -11,11 +11,11 @@ use DB;
 class ProcessWikiUploads extends Command {
 
 	protected $name = 'process:wiki_uploads';
-	protected $description = 'Process any images in the uploads/wiki/process folder and create uploads from them.';
+	protected $description = 'Process any images in the storage/app/uploads/wiki/process folder and create uploads from them.';
 
 	public function handle()
 	{
-        $path = public_path('uploads/wiki/process');
+        $path = storage_path('app/uploads/wiki/process');
         if (!is_dir($path)) return;
 
         $files = glob($path.'/*');

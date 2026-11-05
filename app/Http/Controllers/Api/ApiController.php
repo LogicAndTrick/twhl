@@ -1645,12 +1645,14 @@ class ApiController extends Controller {
         });
         $max_size = 1024*4;
         $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
+        $allowed_mimes = 'image/jpeg,image/png,image/gif,audio/mpeg,audio/mp3,video/mp4,application/mp4';
         if (permission('Admin')) {
             $max_size = 1024*64;
-            $allowed_extensions .= ',zip,rar,exe,msi';
+            $allowed_extensions .= ',zip,rar,7z,exe,msi';
+            $allowed_mimes .= ',application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed,application/x-msdownload,application/x-dosexec,application/x-ole-storage';
         }
         $rules = [
-            'file' => "max:$max_size|valid_extension:$allowed_extensions",
+            'file' => "max:$max_size|valid_extension:$allowed_extensions|mimetypes:$allowed_mimes",
             'content_text' => 'required|max:65536|must_change|valid_categories',
             'message' => 'max:200'
         ];
@@ -1686,14 +1688,16 @@ class ApiController extends Controller {
 
         $max_size = 1024*4;
         $allowed_extensions = 'jpeg,jpg,png,gif,mp3,mp4';
+        $allowed_mimes = 'image/jpeg,image/png,image/gif,audio/mpeg,audio/mp3,video/mp4,application/mp4';
         if (permission('Admin')) {
             $max_size = 1024*64;
-            $allowed_extensions .= ',zip,rar,exe,msi';
+            $allowed_extensions .= ',zip,rar,7z,exe,msi';
+            $allowed_mimes .= ',application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed,application/x-msdownload,application/x-dosexec,application/x-ole-storage';
         }
 
         $this->validate(Request::instance(), [
             'title' => 'required|max:200|unique_wiki_slug',
-            'file' => "required|max:{$max_size}|valid_extension:{$allowed_extensions}",
+            'file' => "required|max:{$max_size}|valid_extension:{$allowed_extensions}|mimetypes:{$allowed_mimes}",
             'content_text' => 'required|max:65536|valid_categories',
             'message' => 'max:200'
         ], [

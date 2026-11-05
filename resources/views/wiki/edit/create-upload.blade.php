@@ -20,7 +20,7 @@
                 <li>
                     Because you're an admin, you have a bit more freedom:
                     <ul>
-                        <li>Extra file extensions: <strong>.zip, .rar, .exe, .msi</strong></li>
+                        <li>Extra file extensions: <strong>.zip, .rar, .7z, .exe, .msi</strong></li>
                         <li>Increased size limit: <strong>64mb</strong></li>
                     </ul>
                 </li>

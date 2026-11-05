@@ -36,7 +36,7 @@ class CompetitionAdminController extends Controller {
             'open_date' => 'required|date_format:d/m/Y',
             'close_date' => 'required|date_format:d/m/Y',
             'voting_close_date' => 'required_if:judge_type_id,' . CompetitionJudgeType::COMMUNITY_VOTE . '|date_format:d/m/Y',
-            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg'
+            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg|mimetypes:application/pdf,image/png,image/jpeg,application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
         ]);
@@ -95,7 +95,7 @@ class CompetitionAdminController extends Controller {
             'open_date' => 'required|date_format:d/m/Y',
             'close_date' => 'required|date_format:d/m/Y',
             'voting_close_date' => 'required_if:judge_type_id,' . CompetitionJudgeType::COMMUNITY_VOTE . '|date_format:d/m/Y',
-            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg'
+            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg|mimetypes:application/pdf,image/png,image/jpeg,application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed'
         ], [
             'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
         ]);

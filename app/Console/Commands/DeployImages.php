@@ -112,8 +112,8 @@ class DeployImages extends Command
         $total = $users->count();
         $last_reported = 0;
 
-        $temp = public_path('uploads/avatars/temp');
-        if (!is_dir($temp)) mkdir($temp);
+        $temp = storage_path('app/uploads/avatars/temp');
+        if (!is_dir($temp)) mkdir($temp, 0755, true);
 
         foreach ($users as $user) {
 
@@ -193,8 +193,8 @@ class DeployImages extends Command
         $total = $shots->count();
         $last_reported = 0;
 
-        $temp = public_path('uploads/competition/temp');
-        if (!is_dir($temp)) mkdir($temp);
+        $temp = storage_path('app/uploads/competition/temp');
+        if (!is_dir($temp)) mkdir($temp, 0755, true);
 
         $c30_sub = $compopics_path . DIRECTORY_SEPARATOR . 'compo_030';
 
@@ -316,8 +316,8 @@ class DeployImages extends Command
         $total = $items->count();
         $last_reported = 0;
 
-        $temp = public_path('uploads/vault/temp');
-        if (!is_dir($temp)) mkdir($temp);
+        $temp = storage_path('app/uploads/vault/temp');
+        if (!is_dir($temp)) mkdir($temp, 0755, true);
 
         foreach ($items as $item) {
             $server_path = $item->getServerFilePath();
