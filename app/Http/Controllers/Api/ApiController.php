@@ -1539,7 +1539,9 @@ class ApiController extends Controller {
             'user_id' => Auth::user()->id,
             'content' => Request::input('text')
         ]);
+        $shout->user = Auth::user();
         Cache::delete('api:cache:shouts:from'); // clear the cache
+        event(new \App\Events\ShoutCreated($shout));
         return $shout;
     }
 

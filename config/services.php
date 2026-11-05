@@ -34,4 +34,8 @@ return [
 		'secret' => '',
 	],
 
+	'discord-bot' => [
+		'url' => env('DISCORD_BOT_URL'),
+		'token' => env('DISCORD_BOT_TOKEN'),
+	],
 ];
