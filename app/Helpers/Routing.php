@@ -215,11 +215,11 @@ class Routing
     private static function isBindableParameter(ReflectionParameter $param)
     {
         $type = $param->getType();
-        if (!$type || $type instanceof ReflectionUnionType) return true;
+        if (!$type || $type instanceof ReflectionUnionType) return false;
         if ($type instanceof ReflectionIntersectionType) return false;
 
         $type_name = $type->getName();
-        return $type_name == 'int' || $type_name == 'string';
+        return $type_name == 'int' || $type_name == 'string' || $type_name == 'mixed';
     }
 
     /**
@@ -295,6 +295,7 @@ class Routing
                 $route->whereNumber($name);
                 break;
             case 'string':
+            case 'mixed':
                 // allow anything
                 break;
             default:
