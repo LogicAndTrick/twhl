@@ -136,7 +136,7 @@ class CompetitionEntryController extends Controller {
         $entry = CompetitionEntry::with(['screenshots'])->findOrFail($id);
         $comp = Competition::findOrFail($entry->competition_id);
 
-        if (!permission('CompetitionAdmin') && !$comp->canJudge() && $entry->user_id != Auth::user()->id) abort(404);
+        if (!permission('CompetitionAdmin') && !$comp->canJudge() && $entry->user_id != Auth::id()) abort(404);
         if (!$comp->canEnter() && !$comp->canJudge()) return abort(404);
 
         return view('competitions/entry/manage', [

@@ -344,7 +344,7 @@ class WikiController extends Controller
             $rev = WikiRevision::with(['wiki_revision_metas'])->where('id', '=', substr($id, 4))->first();
         } else if (substr($id, 0, 3) == 'id:') {
             $upload = WikiUpload::where('id', '=', substr($id, 3))->first();
-            $rev = $upload->revision;
+            $rev = $upload ? $upload->revision : null;
         }
 
         if (!$rev) {
@@ -371,7 +371,7 @@ class WikiController extends Controller
             $rev = WikiRevision::with(['wiki_revision_metas'])->where('id', '=', substr($id, 4))->first();
         } else if (substr($id, 0, 3) == 'id:') {
             $upload = WikiUpload::where('id', '=', substr($id, 3))->first();
-            $rev = $upload->revision;
+            $rev = $upload ? $upload->revision : null;
         }
 
         if (!$rev) {
@@ -590,7 +590,7 @@ class WikiController extends Controller
     {
         $rev = WikiRevision::with(['wiki_object'])->where('is_active', '=', 1)->where('slug', '=', $page)->first();
 
-        if (!$rev->wiki_object->canEdit()) return abort(404);
+        if (!$rev || !$rev->wiki_object->canEdit()) return abort(404);
 
         return view('wiki/edit/page', [
             'revision' => $rev,

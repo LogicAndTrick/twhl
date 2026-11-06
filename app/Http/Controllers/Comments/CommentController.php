@@ -232,6 +232,7 @@ class CommentController extends Controller {
     {
         $type = Request::input('type');
         $article_id = Request::input('article_id');
+        $config = CommentController::$comment_config[$type] ?? abort(404);
         $sub = Comment::getSubscription(Auth::user(), $type, $article_id);
         if (!$sub) {
             $sub = UserSubscription::Create([
@@ -243,7 +244,6 @@ class CommentController extends Controller {
             ]);
         }
 
-        $config = CommentController::$comment_config[$type];
         $str = $config['redirect'];
         $str = str_ireplace('{id}', $article_id, $str);
         $str = str_ireplace('{bookmark}', '#comments', $str);
@@ -254,12 +254,12 @@ class CommentController extends Controller {
     {
         $type = Request::input('type');
         $article_id = Request::input('article_id');
+        $config = CommentController::$comment_config[$type] ?? abort(404);
         $sub = Comment::getSubscription(Auth::user(), $type, $article_id);
         if ($sub) {
             $sub->delete();
         }
 
-        $config = CommentController::$comment_config[$type];
         $str = $config['redirect'];
         $str = str_ireplace('{id}', $article_id, $str);
         $str = str_ireplace('{bookmark}', '#comments', $str);
