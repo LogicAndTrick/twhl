@@ -18,7 +18,7 @@ class UpdateMotmWinners extends Command {
          * This gives each map at least a month to be voted on before MOTM
          * is processed.
          */
-        $now = Carbon::now()->subMonths(0);
+        $now = Carbon::now()->subMonths(2);
 
         // Only look at the last 3 months
         for ($i = 0; $i < 3; $i++) {
