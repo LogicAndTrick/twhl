@@ -5,11 +5,11 @@ namespace App\Models\Reactions;
 use App\Models\Comments\Comment;
 use App\Models\Forums\ForumPost;
 use App\Models\Journal;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\News;
 use App\Models\Vault\VaultItem;
-use Illuminate\Database\Eloquent\Model;
 
-class Reaction extends Model
+class Reaction extends ModelWithExtraTypeInfo
 {
     const NEWS = 'n';
     const JOURNAL = 'j';

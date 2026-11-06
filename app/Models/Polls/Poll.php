@@ -1,19 +1,19 @@
 <?php namespace App\Models\Polls;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Poll extends Model {
+class Poll extends ModelWithExtraTypeInfo {
 
     use SoftDeletes;
 
     protected $table = 'polls';
     protected $fillable = ['title', 'content_text', 'content_html', 'close_date'];
-
-    public function getDates()
-    {
-        return ['close_date', 'created_at', 'updated_at'];
-    }
+    protected $casts = [
+        'close_date' => 'datetime',
+        'flag_locked' => 'boolean',
+        'stat_comments' => 'integer',
+    ];
 
     public function items()
     {

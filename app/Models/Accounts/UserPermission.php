@@ -1,8 +1,8 @@
 <?php namespace App\Models\Accounts;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class UserPermission extends Model {
+class UserPermission extends ModelWithExtraTypeInfo {
 
     protected $table = 'user_permissions';
     protected $fillable = [ 'user_id', 'permission_id' ];
