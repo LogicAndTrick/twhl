@@ -22,8 +22,7 @@ class UserController extends Controller {
 	public function getView($id) {
         $user = User::findOrFail($id);
         if (!Auth::user() || Auth::user()->id != $user->id) {
-            $user->stat_profile_hits++;
-            $user->save();
+            User::withoutTimestamps(fn() => $user->increment('stat_profile_hits'));
         }
         $journals = Journal::where('user_id', '=', $id)->orderBy('created_at', 'desc')->take(5)->get();
         $vault_items = VaultItem::with(['vault_screenshots', 'user', 'game'])->where('user_id', '=', $id)->orderBy('created_at', 'desc')->take(5)->get();

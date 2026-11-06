@@ -66,9 +66,7 @@ class VaultController extends Controller {
 
     public function getView($id) {
         $item = VaultItem::with(['user', 'game', 'engine', 'license', 'vault_item_reviews', 'vault_screenshots', 'vault_includes', 'vault_category', 'vault_type', 'motms'])->findOrFail($id);
-        $item->timestamps = false;
-        $item->stat_views++;
-        $item->save();
+        VaultItem::withoutTimestamps(fn() => $item->increment('stat_views'));
 
         $review = null;
         if (Auth::user()) $review = $item->vault_item_reviews->where('user_id', Auth::user()->id)->first();
@@ -84,9 +82,7 @@ class VaultController extends Controller {
 
     public function getDownload($id) {
         $item = VaultItem::findOrFail($id);
-        $item->timestamps = false;
-        $item->stat_downloads++;
-        $item->save();
+        VaultItem::withoutTimestamps(fn() => $item->increment('stat_downloads'));
         return redirect($item->getDownloadUrl());
     }
 

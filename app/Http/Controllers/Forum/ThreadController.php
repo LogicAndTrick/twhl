@@ -67,11 +67,8 @@ class ThreadController extends Controller
         $forum = Forum::findOrFail($thread->forum_id);
 
         // Update stats
-        $thread->timestamps = false;
         $thread->markAsRead();
-        $thread->stat_views++;
-        $thread->save();
-        $thread->timestamps = true;
+        ForumThread::withoutTimestamps(fn() => $thread->increment('stat_views'));
 
         $page = $request->integer('page', 1);
         $post_query = ForumPost::with('user')->where('thread_id', '=', $id)->whereNull('deleted_at')->orderBy('created_at');
