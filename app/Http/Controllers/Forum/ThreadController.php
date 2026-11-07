@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Forum;
 
+use App\Events\ForumThreadCreated;
 use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
@@ -156,6 +157,10 @@ class ThreadController extends Controller
             'send_push_notification' => false,
             'is_own_article' => true
         ]);
+        $thread->last_post = $post;
+        $thread->forum = $forum;
+        $thread->user = Auth::user();
+        event(new ForumThreadCreated($thread));
         return redirect('thread/view/' . $thread->id . '?page=last');
     }
 
