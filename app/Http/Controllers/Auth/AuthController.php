@@ -20,6 +20,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Models\Accounts\User;
 use App\Helpers\TypedRouting;
+use App\Rules\StopForumSpam;
 
 /**
  * Much of the code here comes from the traits that ship with the laravel/ui package.
@@ -203,24 +204,6 @@ class AuthController extends Controller
      */
     private function registrationValidator(array $data): \Illuminate\Contracts\Validation\Validator
     {
-        Validator::extend('no_spammers', function ($attr, $value, $parameters) {
-            // Use the StopForumSpam API to try and stop spammers from creating an account
-            $ip = urlencode(request()->ip());
-            $url = "https://api.stopforumspam.org/api?ip=$ip&confidence&json";
-
-            $json = file_get_contents($url);
-            $object = json_decode($json);
-
-            // API's not working
-            if (!$object || !isset($object->success) || !is_object($object->ip)) return true;
-
-            // If the API is more than 40% confident then block the user
-            $data = $object->ip;
-            if ($data->appears === 1 && $data->confidence >= 40) return false;
-
-            return true;
-        });
-
         // use this if we need to disable registration for some reason
         Validator::extend('never', function ($attribute, $value, $parameters) {
             return false;
@@ -234,15 +217,14 @@ class AuthController extends Controller
                 Rule::notRegex('/^\s|\s$/u'), // no leading or trailing whitespace
                 Rule::notRegex('/[\p{C}\p{So}]|[\x{FE0F}\x{20E3}\x{1F3FB}-\x{1F3FF}]/u'), // no control characters, no emojis
                 Rule::notRegex('/@/'), // no @ symbol
-                'no_spammers',
+                new StopForumSpam()
             ],
             'email' => ['required', 'confirmed', 'email', 'max:255', Rule::unique('users')],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'g-recaptcha-response' => ['required', 'recaptcha'],
             'agree_rules' => ['accepted'],
         ], [
-            'accepted' => 'You must agree to the rules.',
-            'no_spammers' => 'Registration was unsuccessful, try again later.' // Why should they get any more detailed information?
+            'accepted' => 'You must agree to the rules.'
         ]);
     }
 }
