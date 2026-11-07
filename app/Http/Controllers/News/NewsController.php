@@ -1,25 +1,30 @@
-<?php namespace App\Http\Controllers\News;
+<?php
 
+namespace App\Http\Controllers\News;
+
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Comments\Comment;
 use App\Models\News;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class NewsController extends Controller {
-
-	public function __construct()
-	{
+#[TypedRouting]
+class NewsController extends Controller
+{
+    public function __construct()
+    {
+        $this->anonymous(['index', 'view']);
         $this->permission(['create', 'edit', 'delete', 'restore'], 'NewsAdmin');
-	}
+    }
 
-	public function getIndex()
-	{
+    public function getIndex()
+    {
         $newses = News::with(['user', 'reactions'])->orderBy('created_at', 'desc')->paginate();
-		return view('news/index', [
+        return view('news/index', [
             'newses' => $newses
         ]);
-	}
+    }
 
     public function getView(int $id)
     {
@@ -34,76 +39,81 @@ class NewsController extends Controller {
 
     // Administrative Tasks
 
-    public function getCreate() {
-        return view('news/create', [
-
-        ]);
+    public function getCreate()
+    {
+        return view('news/create');
     }
 
-    public function postCreate() {
-        $this->validate(Request::instance(), [
-            'title' => 'required|max:255',
-            'text' => 'required|max:10000'
+    public function postCreate(Request $request)
+    {
+        $this->validate($request, [
+            'title' => ['required', 'max:255'],
+            'text' => ['required', 'max:10000']
         ]);
         $news = News::Create([
             'user_id' => Auth::user()->id,
-            'title' => Request::input('title'),
-            'content_text' => Request::input('text'),
-            'content_html' => bbcode(Request::input('text')),
+            'title' => $request->input('title'),
+            'content_text' => $request->input('text'),
+            'content_html' => bbcode($request->input('text')),
             'stat_comments' => 0,
             'flag_locked' => false
         ]);
-        return redirect('news/view/'.$news->id);
+        return redirect('news/view/' . $news->id);
     }
 
-    public function getEdit($id) {
+    public function getEdit(int $id)
+    {
         $news = News::findOrFail($id);
         return view('news/edit', [
             'news' => $news
         ]);
     }
 
-    public function postEdit() {
-        $id = intval(Request::input('id'));
+    public function postEdit(Request $request)
+    {
+        $id = $request->integer('id');
         $news = News::findOrFail($id);
-        $this->validate(Request::instance(), [
-            'title' => 'required|max:255',
-            'text' => 'required|max:10000'
+        $this->validate($request, [
+            'title' => ['required', 'max:255'],
+            'text' => ['required', 'max:10000']
         ]);
         $news->update([
-            'title' => Request::input('title'),
-            'content_text' => Request::input('text'),
-            'content_html' => bbcode(Request::input('text')),
+            'title' => $request->input('title'),
+            'content_text' => $request->input('text'),
+            'content_html' => bbcode($request->input('text')),
         ]);
-        return redirect('news/view/'.$news->id);
+        return redirect('news/view/' . $news->id);
     }
 
-    public function getDelete($id) {
+    public function getDelete(int $id)
+    {
         $news = News::findOrFail($id);
         return view('news/delete', [
             'news' => $news
         ]);
     }
 
-    public function postDelete() {
-        $id = intval(Request::input('id'));
+    public function postDelete(Request $request)
+    {
+        $id = $request->integer('id');
         $news = News::findOrFail($id);
         $news->delete();
         return redirect('news/index');
     }
 
-    public function getRestore($id) {
+    public function getRestore(int $id)
+    {
         $news = News::onlyTrashed()->findOrFail($id);
         return view('news/restore', [
             'news' => $news
         ]);
     }
 
-    public function postRestore() {
-        $id = intval(Request::input('id'));
+    public function postRestore(Request $request)
+    {
+        $id = $request->integer('id');
         $news = News::onlyTrashed()->findOrFail($id);
         $news->restore();
-        return redirect('news/view/'.$id);
+        return redirect('news/view/' . $id);
     }
-
 }

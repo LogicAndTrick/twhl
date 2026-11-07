@@ -1,36 +1,41 @@
-<?php namespace App\Http\Controllers\Journals;
+<?php
 
+namespace App\Http\Controllers\Journals;
+
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Comments\Comment;
 use App\Models\Journal;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class JournalController extends Controller {
-
-	public function __construct()
-	{
+#[TypedRouting]
+class JournalController extends Controller
+{
+    public function __construct()
+    {
+        $this->anonymous(['index', 'view']);
         $this->permission(['create', 'edit', 'delete', 'restore'], 'JournalCreate');
-	}
+    }
 
-	public function getIndex()
-	{
+    public function getIndex(Request $request)
+    {
         $query = Journal::with(['user'])->orderBy('created_at', 'desc');
 
-        $user = intval(Request::get('user'));
+        $user = $request->integer('user');
         $user = $user > 0 ? User::find($user) : null;
         if ($user) $query = $query->whereUserId($user->id);
 
         $journals = $query->paginate();
-		return view('journal/index', [
-            'journals' => $journals->appends(Request::except('page')),
+        return view('journal/index', [
+            'journals' => $journals->appends($request->except('page')),
             'user' => $user
         ]);
-	}
+    }
 
-    public function getView($id)
+    public function getView(int $id)
     {
         $journal = Journal::findOrFail($id);
         $comments = Comment::with(['comment_metas', 'user'])->whereArticleType(Comment::JOURNAL)->whereArticleId($id)->get();
@@ -41,22 +46,22 @@ class JournalController extends Controller {
         ]);
     }
 
-    public function getCreate() {
-        return view('journal/create', [
-
-        ]);
+    public function getCreate()
+    {
+        return view('journal/create');
     }
 
-    public function postCreate() {
-        $this->validate(Request::instance(), [
-            'title' => 'required|max:150',
-            'text' => 'required|max:10000'
+    public function postCreate(Request $request)
+    {
+        $this->validate($request, [
+            'title' => ['required', 'max:150'],
+            'text' => ['required', 'max:10000']
         ]);
         $journal = Journal::Create([
             'user_id' => Auth::user()->id,
-            'title' => Request::input('title'),
-            'content_text' => Request::input('text'),
-            'content_html' => bbcode(Request::input('text')),
+            'title' => $request->input('title'),
+            'content_text' => $request->input('text'),
+            'content_html' => bbcode($request->input('text')),
             'stat_comments' => 0,
             'flag_locked' => false
         ]);
@@ -68,10 +73,11 @@ class JournalController extends Controller {
             'send_push_notification' => false,
             'is_own_article' => true
         ]);
-        return redirect('journal/view/'.$journal->id);
+        return redirect('journal/view/' . $journal->id);
     }
 
-    public function getEdit($id) {
+    public function getEdit(int $id)
+    {
         $journal = Journal::findOrFail($id);
         if (!$journal->isEditable()) abort(404);
         return view('journal/edit', [
@@ -79,23 +85,25 @@ class JournalController extends Controller {
         ]);
     }
 
-    public function postEdit() {
-        $id = intval(Request::input('id'));
+    public function postEdit(Request $request)
+    {
+        $id = $request->integer('id');
         $journal = Journal::findOrFail($id);
         if (!$journal->isEditable()) abort(404);
-        $this->validate(Request::instance(), [
-            'title' => 'required|max:150',
-            'text' => 'required|max:10000'
+        $this->validate($request, [
+            'title' => ['required', 'max:150'],
+            'text' => ['required', 'max:10000']
         ]);
         $journal->update([
-            'title' => Request::input('title'),
-            'content_text' => Request::input('text'),
-            'content_html' => bbcode(Request::input('text')),
+            'title' => $request->input('title'),
+            'content_text' => $request->input('text'),
+            'content_html' => bbcode($request->input('text')),
         ]);
-        return redirect('journal/view/'.$journal->id);
+        return redirect('journal/view/' . $journal->id);
     }
 
-    public function getDelete($id) {
+    public function getDelete(int $id)
+    {
         $journal = Journal::findOrFail($id);
         if (!$journal->isEditable()) abort(404);
         return view('journal/delete', [
@@ -103,15 +111,17 @@ class JournalController extends Controller {
         ]);
     }
 
-    public function postDelete() {
-        $id = intval(Request::input('id'));
+    public function postDelete(Request $request)
+    {
+        $id = $request->integer('id');
         $journal = Journal::findOrFail($id);
         if (!$journal->isEditable()) abort(404);
         $journal->delete();
         return redirect('journal/index');
     }
 
-    public function getRestore($id) {
+    public function getRestore(int $id)
+    {
         $journal = Journal::onlyTrashed()->findOrFail($id);
         if (!$journal->isEditable()) abort(404);
         return view('journal/restore', [
@@ -119,12 +129,12 @@ class JournalController extends Controller {
         ]);
     }
 
-    public function postRestore() {
-        $id = intval(Request::input('id'));
+    public function postRestore(Request $request)
+    {
+        $id = $request->integer('id');
         $journal = Journal::onlyTrashed()->findOrFail($id);
         if (!$journal->isEditable()) abort(404);
         $journal->restore();
-        return redirect('journal/view/'.$id);
+        return redirect('journal/view/' . $id);
     }
-
 }
