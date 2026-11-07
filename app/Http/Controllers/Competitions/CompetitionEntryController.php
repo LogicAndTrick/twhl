@@ -1,62 +1,71 @@
-<?php namespace App\Http\Controllers\Competitions;
+<?php
+
+namespace App\Http\Controllers\Competitions;
 
 use App\Helpers\Image;
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\User;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionEntry;
 use App\Models\Competitions\CompetitionEntryScreenshot;
-use Illuminate\Support\Facades\Request;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
-class CompetitionEntryController extends Controller {
+#[TypedRouting]
+class CompetitionEntryController extends Controller
+{
 
-	public function __construct() {
-        $this->permission(['create', 'edit', 'delete', 'addScreenshot', 'deleteScreenshot'], 'CompetitionEnter');
+    public function __construct()
+    {
+        $this->permission(['submit', 'manage', 'delete', 'addScreenshot', 'deleteScreenshot'], 'CompetitionEnter');
         $this->permission(['restore'], 'CompetitionAdmin');
-	}
+    }
 
-    /**
-     * @param $controller Controller
-     * @param $competition Competition
-     * @param bool $request_user_id bool
-     * @return static
-     */
-    public static function CreateOrUpdateEntry($controller, $competition, $request_user_id = false) {
-        $user = $request_user_id ? User::find(Request::input('user_id')) : Auth::user();
-
-        $func = function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        };
-        Validator::extend('valid_extension_file', $func);
-        Validator::extend('valid_extension_screen', $func);
-
+    public static function CreateOrUpdateEntry(Request $request, Controller $controller, Competition $competition, bool $request_user_id = false): CompetitionEntry
+    {
+        $user = $request_user_id ? User::find($request->integer('user_id')) : Auth::user();
         $entry = !$user ? null : CompetitionEntry::whereUserId($user->id)->whereCompetitionId($competition->id)->first();
-        $screen_valid = $entry ? '' : 'required|';
 
-        $file_valid = $competition->isVoted() ? '' : 'required|';
-
-
-        Validator::extend('image_limit', function($attr, $value, $parameters) use ($entry) {
-            return !$entry || $entry->screenshots->count() < 10;
-        });
-
-        $controller->validate(Request::instance(), [
-            'id' => 'required|numeric',
-            'user_id' => ($request_user_id ? 'required|' : '') . 'numeric',
-            'title' => 'required|max:255',
-            'content_text' => 'max:2000',
-            'screenshot' => $screen_valid . 'max:2048|valid_extension_screen:jpeg,jpg,png|mimetypes:image/jpeg,image/png|dimensions:max_width=3000,max_height=3000|image_limit',
-
-            '__upload_method' => $file_valid.'in:file,link',
-            'link' => 'required_if:__upload_method,link|max:512|url:http,https',
-            'file' => 'required_if:__upload_method,file|max:16384|valid_extension_file:zip,rar,7z|mimetypes:application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed'
+        $controller->validate($request, [
+            'id' => ['required', 'integer'],
+            'user_id' => [Rule::requiredIf($request_user_id), 'integer'],
+            'title' => ['required', 'max:255'],
+            'content_text' => ['max:2000'],
+            'screenshot' => [
+                Rule::requiredIf(!$entry),
+                'max:2048',
+                'extensions:jpeg,jpg,png',
+                'mimetypes:image/jpeg,image/png',
+                Rule::dimensions()->maxWidth(3000)->maxHeight(3000),
+                function ($attr, $value, Closure $fail) use ($entry) {
+                    if ($entry && $entry->screenshots->count() >= 10) {
+                        $fail('You can\'t add more than 10 screenshots to a competition entry');
+                    }
+                }
+            ],
+            '__upload_method' => [
+                Rule::requiredIf(!$competition->isVoted()),
+                Rule::in(['file', 'link'])
+            ],
+            'link' => [
+                Rule::requiredIf($request->input('__upload_method') == 'link'),
+                'max:512',
+                Rule::url()->protocols(['http', 'https'])
+            ],
+            'file' => [
+                Rule::requiredIf($request->input('__upload_method') == 'file'),
+                'max:16384',
+                'extensions:zip,rar,7z',
+                'mimetypes:application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed'
+            ]
         ], [
-            'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z',
-            'valid_extension_screen' => 'Only the following file formats are allowed: jpg, png',
+            'file.extensions' => 'Only the following file formats are allowed: zip, rar, 7z',
+            'screenshot.extensions' => 'Only the following file formats are allowed: jpg, png',
             'dimensions' => 'The image cannot have a width or height of more than 3000 pixels',
-            'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
         ]);
 
         if (!$user) abort(404);
@@ -69,26 +78,26 @@ class CompetitionEntryController extends Controller {
             ]);
 
             // Upload the screenshot
-            $screen = Request::file('screenshot');
+            $screen = $request->file('screenshot');
             if ($screen) {
                 CompetitionEntryController::CreateEntryScreenshot($entry, $screen);
             }
         }
-        $uploaded = Request::input('__upload_method') == 'file';
-        $location = Request::input('link');
+        $uploaded = $request->input('__upload_method') == 'file';
+        $location = $request->input('link');
         if (!$location) $location = '';
 
         if ($uploaded) {
-            $file = Request::file('file');
+            $file = $request->file('file');
             $dir = public_path('uploads/competition/entries');
             $location = 'entry-' . $entry->id . '-' . preg_replace('/[^a-zA-Z0-9-_]/sm', '-', $user->name) . '.' . strtolower($file->getClientOriginalExtension());
             $file->move($dir, $location);
         }
 
         $entry->update([
-            'title' => Request::input('title'),
-            'content_text' => Request::input('content_text'),
-            'content_html' => bbcode(Request::input('content_text')),
+            'title' => $request->input('title'),
+            'content_text' => $request->input('content_text'),
+            'content_html' => bbcode($request->input('content_text')),
             'is_hosted_externally' => !$uploaded,
             'file_location' => $location
         ]);
@@ -96,7 +105,8 @@ class CompetitionEntryController extends Controller {
         return $entry;
     }
 
-    protected static function CreateEntryScreenshot($entry, $screen) {
+    protected static function CreateEntryScreenshot(CompetitionEntry $entry, UploadedFile $screen): CompetitionEntryScreenshot
+    {
         // We need the id to save the files, so create the db object first
         $shot = CompetitionEntryScreenshot::Create([
             'entry_id' => $entry->id,
@@ -109,8 +119,11 @@ class CompetitionEntryController extends Controller {
         $temp_name = $shot->id . '_temp.' . strtolower($screen->getClientOriginalExtension());
         $screen->move($temp_dir, $temp_name);
         $thumbs = Image::MakeThumbnails(
-            $temp_dir . '/' . $temp_name, Image::$comp_image_sizes,
-            public_path('uploads/competition/'), strval($shot->id), true
+            $temp_dir . '/' . $temp_name,
+            Image::$comp_image_sizes,
+            public_path('uploads/competition/'),
+            strval($shot->id),
+            true
         );
         unlink($temp_dir . '/' . $temp_name);
 
@@ -123,16 +136,18 @@ class CompetitionEntryController extends Controller {
         return $shot;
     }
 
-	public function postSubmit() {
-        $id = Request::input('id');
+    public function postSubmit(Request $request)
+    {
+        $id = $request->input('id');
         $comp = Competition::findOrFail($id);
         if (!$comp->canEnter()) return abort(404);
 
-        $entry = CompetitionEntryController::CreateOrUpdateEntry($this, $comp, false);
-        return redirect('competition/brief/'.$id);
-	}
+        $entry = CompetitionEntryController::CreateOrUpdateEntry($request, $this, $comp, false);
+        return redirect('competition/brief/' . $id);
+    }
 
-    public function getManage($id) {
+    public function getManage(int $id)
+    {
         $entry = CompetitionEntry::with(['screenshots'])->findOrFail($id);
         $comp = Competition::findOrFail($entry->competition_id);
 
@@ -145,25 +160,29 @@ class CompetitionEntryController extends Controller {
         ]);
     }
 
-    public function postAddScreenshot() {
-
-        $id = Request::input('id');
+    public function postAddScreenshot(Request $request)
+    {
+        $id = $request->integer('id');
         $entry = CompetitionEntry::findOrFail($id);
 
-        Validator::extend('valid_extension', function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        });
-        Validator::extend('image_limit', function($attr, $value, $parameters) use ($entry) {
-            return !$entry || $entry->screenshots->count() < 10;
-        });
-
-        $this->validate(Request::instance(), [
-            'id' => 'required|numeric',
-            'screenshot' => 'required|max:2048|valid_extension:jpeg,jpg,png|mimetypes:image/jpeg,image/png|dimensions:max_width=3000,max_height=3000|image_limit',
+        $this->validate($request, [
+            'id' => ['required', 'integer'],
+            'screenshot' => [
+                'required',
+                'file',
+                'max:2048',
+                'extensions:jpeg,jpg,png',
+                'mimetypes:image/jpeg,image/png',
+                Rule::dimensions()->maxWidth(3000)->maxHeight(3000),
+                function ($attr, $value, Closure $fail) use ($entry) {
+                    if ($entry && $entry->screenshots->count() >= 10) {
+                        $fail('You can\'t add more than 10 screenshots to a competition entry');
+                    }
+                }
+            ],
         ], [
-            'valid_extension' => 'Only the following file formats are allowed: jpg, png',
-            'dimensions' => 'The image cannot have a width or height of more than 3000 pixels',
-            'image_limit' => 'You can\'t add more than 10 screenshots to a competition entry'
+            'extensions' => 'Only the following file formats are allowed: jpg, png',
+            'dimensions' => 'The image cannot have a width or height of more than 3000 pixels'
         ]);
 
         $comp = Competition::findOrFail($entry->competition_id);
@@ -172,15 +191,16 @@ class CompetitionEntryController extends Controller {
         if (!$comp->canEnter() && !$comp->canJudge()) return abort(404);
 
         // Upload the screenshot
-        $screen = Request::file('screenshot');
+        $screen = $request->file('screenshot');
         if ($screen) {
             CompetitionEntryController::CreateEntryScreenshot($entry, $screen);
         }
-        return redirect('competition-entry/manage/'.$entry->id);
+        return redirect('competition-entry/manage/' . $entry->id);
     }
 
-    public function postDeleteScreenshot() {
-        $id = Request::input('id');
+    public function postDeleteScreenshot(Request $request)
+    {
+        $id = $request->input('id');
         $shot = CompetitionEntryScreenshot::findOrFail($id);
 
         $entry = CompetitionEntry::findOrFail($shot->entry_id);
@@ -190,15 +210,16 @@ class CompetitionEntryController extends Controller {
         if (!$comp->canEnter() && !$comp->canJudge()) return abort(404);
 
         $shot->delete();
-        $location = public_path('uploads/competition/'.$shot->image_thumb);
+        $location = public_path('uploads/competition/' . $shot->image_thumb);
         if (is_file($location)) unlink($location);
-        $location = public_path('uploads/competition/'.$shot->image_full);
+        $location = public_path('uploads/competition/' . $shot->image_full);
         if (is_file($location)) unlink($location);
 
-        return redirect('competition-entry/manage/'.$entry->id);
+        return redirect('competition-entry/manage/' . $entry->id);
     }
 
-    public function getDelete($id) {
+    public function getDelete(int $id)
+    {
         $entry = CompetitionEntry::findOrFail($id);
         $comp = Competition::findOrFail($entry->competition_id);
 
@@ -210,8 +231,9 @@ class CompetitionEntryController extends Controller {
             'comp' => $comp
         ]);
     }
-    public function postDelete() {
-        $id = Request::input('id');
+    public function postDelete(Request $request)
+    {
+        $id = $request->integer('id');
 
         $entry = CompetitionEntry::findOrFail($id);
         $comp = Competition::findOrFail($entry->competition_id);
@@ -220,12 +242,17 @@ class CompetitionEntryController extends Controller {
         if (!$comp->canEnter() && !$comp->canJudge()) return abort(404);
 
         $entry->delete();
-        return redirect('competition/brief/'.$comp->id);
+        return redirect('competition/brief/' . $comp->id);
     }
 
-    public function getRestore($id) {
-        return view('competitions/entry/restore', [
+    public function getRestore(int $id)
+    {
+        $entry = CompetitionEntry::withTrashed()->findOrFail($id);
+        $comp = Competition::findOrFail($entry->competition_id);
 
+        return view('competitions/entry/restore', [
+            'entry' => $entry,
+            'comp' => $comp
         ]);
     }
 }

@@ -1,56 +1,67 @@
-<?php namespace App\Http\Controllers\Competitions;
+<?php
 
+namespace App\Http\Controllers\Competitions;
+
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Competitions\CompetitionRestrictionGroup;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
-class CompetitionGroupController extends Controller {
+#[TypedRouting]
+class CompetitionGroupController extends Controller
+{
 
-	public function __construct() {
+    public function __construct()
+    {
         $this->permission(['index', 'create', 'edit', 'delete', 'restore'], 'CompetitionAdmin');
-	}
+    }
 
-    public function postCreate() {
-        $this->validate(Request::instance(), [
-            'title' => 'required|max:255'
+    public function postCreate(Request $request)
+    {
+        $this->validate($request, [
+            'title' => ['required', 'max:255']
         ]);
         CompetitionRestrictionGroup::Create([
-            'title' => Request::input('title'),
-            'is_multiple' => !!Request::input('is_multiple')
+            'title' => $request->input('title'),
+            'is_multiple' => $request->boolean('is_multiple')
         ]);
         return redirect('competition-restriction/index');
-   	}
+    }
 
-    public function getEdit($id) {
+    public function getEdit(int $id)
+    {
         $group = CompetitionRestrictionGroup::findOrFail($id);
         return view('competitions/group/edit', [
             'group' => $group
         ]);
     }
 
-    public function postEdit() {
-        $this->validate(Request::instance(), [
-            'id' => 'required|numeric',
-            'title' => 'required|max:255'
+    public function postEdit(Request $request)
+    {
+        $this->validate($request, [
+            'id' => ['required', 'integer'],
+            'title' => ['required', 'max:255']
         ]);
-        $id = Request::input('id');
+        $id = $request->integer('id');
         $group = CompetitionRestrictionGroup::findOrFail($id);
         $group->update([
-            'title' => Request::input('title'),
-            'is_multiple' => !!Request::input('is_multiple')
+            'title' => $request->input('title'),
+            'is_multiple' => $request->boolean('is_multiple')
         ]);
         return redirect('competition-restriction/index');
     }
 
-    public function getDelete($id) {
+    public function getDelete(int $id)
+    {
         $group = CompetitionRestrictionGroup::findOrFail($id);
         return view('competitions/group/delete', [
             'group' => $group
         ]);
     }
 
-    public function postDelete() {
-        $id = Request::input('id');
+    public function postDelete(Request $request)
+    {
+        $id = $request->integer('id');
         $group = CompetitionRestrictionGroup::findOrFail($id);
         $group->delete();
         return redirect('competition-restriction/index');
