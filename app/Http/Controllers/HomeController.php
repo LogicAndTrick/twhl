@@ -20,8 +20,10 @@ use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
-
-    public function __construct() {}
+    public function __construct()
+    {
+        // this controller is purposefully not using TypedRouting. it is routed directly from the web routes file.
+    }
 
     public function index()
     {
@@ -37,7 +39,7 @@ class HomeController extends Controller
             ->get();
 
         // Wiki section
-        $wiki_articles = $this->getWikiFeatureData();
+        $wiki_articles = self::getWikiFeatureData();
 
         // Forums section
         $threads = ForumThread::with(['last_post', 'last_post.user'])
@@ -110,7 +112,7 @@ class HomeController extends Controller
         ]);
     }
 
-    private function getWikiFeatureData()
+    private static function getWikiFeatureData()
     {
         return [
             // Featured tutorial lasts 1 day

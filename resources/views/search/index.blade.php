@@ -16,6 +16,9 @@
             <input type="text" class="form-control" name="search" placeholder="Search" value="{{ $search }}" maxlength="{{ $max_search_length  }}">
             <button type="submit" class="btn btn-light">Search</button>
         </div>
+        @error('search')
+            <p class="text-danger help-block">{{ $message }}</p>
+        @enderror
         <span class="form-text">
             A strict limit has been applied to the search length due to spambots posting complex queries and taking the site offline.
             @guest
