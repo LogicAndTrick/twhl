@@ -1,6 +1,9 @@
-<?php namespace App\Http\Controllers\User;
+<?php
+
+namespace App\Http\Controllers\User;
 
 use App\Helpers\Image;
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Accounts\ApiKey;
 use App\Models\Accounts\Ban;
@@ -11,90 +14,106 @@ use App\Models\Accounts\UserPermission;
 use App\Models\Accounts\UserSubscription;
 use App\Models\Accounts\UserSubscriptionDetails;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
-class PanelController extends Controller {
-
-	public function __construct() {
+#[TypedRouting]
+class PanelController extends Controller
+{
+    public function __construct()
+    {
         $this->permission([
-            'index', 'editAvatar', 'editProfile', 'editSettings', 'editPassword',
-            'editKeys', 'addKey', 'deleteKey', 'notifications', 'clearNotifications', 'deleteSubscription'
+            'index',
+            'editAvatar',
+            'editProfile',
+            'editSettings',
+            'editPassword',
+            'editKeys',
+            'addKey',
+            'deleteKey',
+            'notifications',
+            'clearNotifications',
+            'deleteSubscription'
         ], true);
         $this->permission(['editName', 'editBans', 'addBan', 'deleteBan', 'editPermissions', 'addPermission', 'deletePermission'], 'Admin');
         $this->permission(['obliterate', 'remove'], 'ObliterateAdmin');
-	}
+    }
 
-    private static function GetUser($id) {
+    private static function GetUser(int|null $id)
+    {
         if (!Auth::check()) return abort(404);
         if (!permission('Admin') || !$id) $id = Auth::user()->id;
         return User::findOrFail($id);
     }
 
-	public function getIndex($id = 0) {
+    public function getIndex(int|null $id = null)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/index', [
             'user' => $user
         ]);
-	}
+    }
 
-    public function getEditProfile($id = 0) {
+    public function getEditProfile(int|null $id = null)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/edit-profile', [
             'user' => $user
         ]);
     }
 
-    public function postEditProfile() {
-        $id = Request::input('id');
+    public function postEditProfile(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
-        $this->validate(Request::instance(), [
-            'title_text' => 'required_with:title_custom',
-            'info_website' => 'url',
-            'info_birthday_formatted' => 'date_format:d/m',
-            'info_biography_text' => 'max:10000'
+        $this->validate($request, [
+            'title_text' => ['required_with:title_custom'],
+            'info_website' => ['url'],
+            'info_birthday_formatted' => ['date_format:d/m'],
+            'info_biography_text' => ['max:10000']
         ]);
 
         $steam_user = '';
-        if (preg_match('%^(?:.*/)?(.*)$%m', Request::input('info_steam_profile'), $regs)) {
+        if (preg_match('%^(?:.*/)?(.*)$%m', $request->input('info_steam_profile'), $regs)) {
             $steam_user = $regs[1];
         }
 
-        $user->info_birthday_formatted = Request::input('info_birthday_formatted');
+        $user->info_birthday_formatted = $request->input('info_birthday_formatted');
 
         $user->update([
-            'title_custom' => !!Request::input('title_custom'),
-            'title_text' => Request::input('title_text'),
+            'title_custom' => $request->boolean('title_custom'),
+            'title_text' => $request->input('title_text'),
 
-            'skill_map' => !!Request::input('skill_map'),
-            'skill_model' => !!Request::input('skill_model'),
-            'skill_code' => !!Request::input('skill_code'),
-            'skill_music' => !!Request::input('skill_music'),
-            'skill_voice' => !!Request::input('skill_voice'),
-            'skill_animate' => !!Request::input('skill_animate'),
-            'skill_texture' => !!Request::input('skill_texture'),
+            'skill_map' => $request->boolean('skill_map'),
+            'skill_model' => $request->boolean('skill_model'),
+            'skill_code' => $request->boolean('skill_code'),
+            'skill_music' => $request->boolean('skill_music'),
+            'skill_voice' => $request->boolean('skill_voice'),
+            'skill_animate' => $request->boolean('skill_animate'),
+            'skill_texture' => $request->boolean('skill_texture'),
 
-            'info_name' => Request::input('info_name'),
-            'info_pronouns' => Request::input('info_pronouns'),
-            'info_website' => Request::input('info_website'),
-            'info_occupation' => Request::input('info_occupation'),
-            'info_interests' => Request::input('info_interests'),
-            'info_location' => Request::input('info_location'),
-            'info_languages' => Request::input('info_languages'),
+            'info_name' => $request->input('info_name'),
+            'info_pronouns' => $request->input('info_pronouns'),
+            'info_website' => $request->input('info_website'),
+            'info_occupation' => $request->input('info_occupation'),
+            'info_interests' => $request->input('info_interests'),
+            'info_location' => $request->input('info_location'),
+            'info_languages' => $request->input('info_languages'),
             'info_steam_profile' => $steam_user,
 
-            'info_biography_text' => Request::input('info_biography_text'),
-            'info_biography_html' => bbcode(Request::input('info_biography_text'))
+            'info_biography_text' => $request->input('info_biography_text'),
+            'info_biography_html' => bbcode($request->input('info_biography_text'))
         ]);
 
-        return redirect('panel/index/'.$id);
+        return redirect('panel/index/' . $id);
     }
 
-    public function getEditSettings($id = 0) {
+    public function getEditSettings(int|null $id = null)
+    {
         $user = PanelController::GetUser($id);
 
         // Generate time zones - we don't care too much about full zone support
@@ -102,7 +121,7 @@ class PanelController extends Controller {
         $now = new Carbon(null, 'UTC');
         for ($i = -12; $i <= 12; $i++) {
             $offset = $now->copy()->addHours($i);
-            $zones[$i] = 'UTC'.($i >= 0 ? '+' : '').$i.' - '.$offset->format('H:i');
+            $zones[$i] = 'UTC' . ($i >= 0 ? '+' : '') . $i . ' - ' . $offset->format('H:i');
         }
 
         return view('user/panel/edit-settings', [
@@ -111,22 +130,24 @@ class PanelController extends Controller {
         ]);
     }
 
-    public function postEditSettings() {
-        $id = Request::input('id');
+    public function postEditSettings(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
-        $this->validate(Request::instance(), [
-            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
-            'timezone' => 'required|between:-12,12'
+        $this->validate($request, [
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'timezone' => ['required', 'between:-12,12']
         ]);
         $user->update([
-            'email' => Request::input('email'),
-            'show_email' => !!Request::input('show_email'),
-            'timezone' => Request::input('timezone')
+            'email' => $request->input('email'),
+            'show_email' => $request->boolean('show_email'),
+            'timezone' => $request->input('timezone')
         ]);
-        return redirect('panel/index/'.$id);
+        return redirect('panel/index/' . $id);
     }
 
-    public function getEditPassword($id = 0) {
+    public function getEditPassword(int|null $id = null)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/edit-password', [
             'user' => $user,
@@ -134,30 +155,32 @@ class PanelController extends Controller {
         ]);
     }
 
-    public function postEditPassword() {
-        $id = Request::input('id');
+    public function postEditPassword(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        Validator::extend('matches_original', function($attribute, $value, $parameters) use ($user) {
+        Validator::extend('matches_original', function ($attribute, $value, $parameters) use ($user) {
             return Hash::check($value, $user->password);
         });
 
-        $rules = [ 'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()] ];
+        $rules = ['password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::defaults()]];
         // Admin users can reset another user's password without the original
-        if ($user->id == Auth::user()->id || !permission('Admin')) $rules['original_password'] = 'required|matches_original';
+        if ($user->id == Auth::user()->id || !permission('Admin')) $rules['original_password'] = ['required', 'matches_original'];
 
-        $this->validate(Request::instance(), $rules, [
+        $this->validate($request, $rules, [
             'matches_original' => 'This doesn\'t match your current password.'
         ]);
 
         $user->update([
-            'password' => Hash::make(Request::input('password')),
+            'password' => Hash::make($request->input('password')),
             'legacy_password' => ''
         ]);
-        return redirect('panel/index/'.$id);
+        return redirect('panel/index/' . $id);
     }
 
-    public function getEditAvatar($id = 0) {
+    public function getEditAvatar(int|null $id = null)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/edit-avatar', [
             'user' => $user,
@@ -165,21 +188,22 @@ class PanelController extends Controller {
         ]);
     }
 
-    public function postEditAvatar() {
-        $id = Request::input('id');
+    public function postEditAvatar(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        $this->validate(Request::instance(), [
-            'type' => 'in:upload,preset',
-            'upload' => 'required_if:type,upload|mimetypes:image/gif,image/jpeg,image/png|dimensions:max_width=1000,max_height=1000',
-            'preset' => 'required_if:type,preset'
+        $this->validate($request, [
+            'type' => ['in:upload,preset'],
+            'upload' => ['required_if:type,upload', 'mimetypes:image/gif,image/jpeg,image/png', 'dimensions:max_width=1000,max_height=1000'],
+            'preset' => ['required_if:type,preset']
         ], [
             'mimetypes' => 'Only the following file formats are allowed: gif, jpg, png',
             'dimensions' => 'The image can\'t be larger than 1000px square. It will be resized to 100px anyway, please upload a smaller image!'
         ]);
 
-        if (Request::input('type') == 'upload') {
-            $upload = Request::file('upload');
+        if ($request->input('type') == 'upload') {
+            $upload = $request->file('upload');
             $slug = str_pad(strval(rand(0, 99999)), 5, '0', STR_PAD_LEFT);
             $uid = str_pad(strval($user->id), 5, '0', STR_PAD_LEFT);
             $name = $uid . '_' . $slug;
@@ -192,56 +216,60 @@ class PanelController extends Controller {
             $thumbs = Image::MakeThumbnails($temp_dir . '/' . $temp_name, Image::$avatar_image_sizes, public_path('uploads/avatars/'), $name, true);
             unlink($temp_dir . '/' . $temp_name);
 
-            $user->update([ 'avatar_custom' => true, 'avatar_file' => pathinfo($thumbs[0], PATHINFO_BASENAME) ]);
+            $user->update(['avatar_custom' => true, 'avatar_file' => pathinfo($thumbs[0], PATHINFO_BASENAME)]);
         } else {
-            $preset = Request::input('preset');
+            $preset = $request->input('preset');
             // Make sure it's in our list before doing anything
             foreach (PanelController::$preset_avatars as $group => $avatars) {
                 if (array_search($preset, $avatars) !== false) {
                     $user->deleteAvatar();
-                    $user->update([ 'avatar_custom' => false, 'avatar_file' => $preset ]);
+                    $user->update(['avatar_custom' => false, 'avatar_file' => $preset]);
                     break;
                 }
             }
         }
-        return redirect('panel/index/'.$id);
+        return redirect('panel/index/' . $id);
     }
 
-    public function getEditKeys($id = 0) {
+    public function getEditKeys(int|null $id = null)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/edit-keys', [
             'user' => $user
         ]);
     }
 
-    public function postAddKey() {
-        $id = Request::input('id');
+    public function postAddKey(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        $this->validate(Request::instance(), [
-            'app' => 'required|max:255'
+        $this->validate($request, [
+            'app' => ['required', 'max:255']
         ]);
 
         $key = ApiKey::create([
             'user_id' => $user->id,
             'key' => ApiKey::GenerateKey($user->id),
-            'app' => Request::input('app'),
-            'ip' => Request::ip(),
+            'app' => $request->input('app'),
+            'ip' => $request->ip(),
         ]);
 
-        return redirect('panel/edit-keys/'.$user->id);
+        return redirect('panel/edit-keys/' . $user->id);
     }
 
-    public function postDeleteKey() {
-        $id = Request::input('id');
+    public function postDeleteKey(Request $request)
+    {
+        $id = $request->integer('id');
         $key = ApiKey::findOrFail($id);
         $user = PanelController::GetUser($key->user_id);
         if ($user->id !== $key->user_id) abort(404);
         $key->delete();
-        return redirect('panel/edit-keys/'.$user->id);
+        return redirect('panel/edit-keys/' . $user->id);
     }
 
-    public function getNotifications($id = 0) {
+    public function getNotifications(int|null $id = null)
+    {
         $user = PanelController::GetUser($id);
         $notifications = UserNotificationDetails::whereUserId($user->id)->whereIsUnread(true)->get();
         $subscriptions = UserSubscriptionDetails::whereUserId($user->id)->whereIsOwnArticle(0)->get();
@@ -252,34 +280,40 @@ class PanelController extends Controller {
         ]);
     }
 
-    public function postClearNotifications() {
-        $id = Request::input('id');
+    public function postClearNotifications(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
-        DB::statement("UPDATE user_notifications SET is_unread = 0 WHERE user_id = ? AND is_unread = 1", [ $user->id ]);
-        return redirect('panel/notifications/'.$id);
+        DB::statement("UPDATE user_notifications SET is_unread = 0 WHERE user_id = ? AND is_unread = 1", [$user->id]);
+        return redirect('panel/notifications/' . $id);
     }
 
-    public function postDeleteSubscription() {
-        $id = Request::input('id');
-	    $sub = UserSubscription::findOrFail($id);
+    public function postDeleteSubscription(Request $request)
+    {
+        $id = $request->integer('id');
+        $sub = UserSubscription::findOrFail($id);
         $user = PanelController::GetUser($sub->user_id);
         if ($user->id !== $sub->user_id) abort(404);
         $sub->delete();
-        return redirect('panel/notifications/'.$user->id);
+        return redirect('panel/notifications/' . $user->id);
     }
 
-    public function getEditName($id = 0) {
+    // ADMIN ACTIONS
+
+    public function getEditName(int $id)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/edit-name', [
             'user' => $user
         ]);
     }
 
-    public function postEditName() {
-        $id = Request::input('id');
+    public function postEditName(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        $this->validate(Request::instance(), [
+        $this->validate($request, [
             'new_name' => [
                 'required',
                 'max:64',
@@ -291,96 +325,106 @@ class PanelController extends Controller {
         ]);
 
         $orig_name = $user->name;
-        $user->update([ 'name' => Request::input('new_name') ]);
+        $user->update(['name' => $request->input('new_name')]);
         UserNameHistory::create([
             'user_id' => $user->id,
             'name' => $orig_name
         ]);
-        return redirect('panel/index/'.$id);
+        return redirect('panel/index/' . $id);
     }
 
-    public function getEditBans($id = 0) {
+    public function getEditBans(int $id)
+    {
         $user = PanelController::GetUser($id);
-        $bans = Ban::whereUserId($id)->get();
+        $bans = Ban::whereUserId($user->id)->get();
         return view('user/panel/edit-bans', [
             'user' => $user,
             'bans' => $bans
         ]);
     }
 
-    public function postAddBan() {
-        $id = Request::input('id');
+    public function postAddBan(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        $this->validate(Request::instance(), [
-            'reason' => 'required|max:255',
-            'duration' => 'required|integer',
-            'unit' => 'required|integer'
+        $this->validate($request, [
+            'reason' => ['required', 'max:255'],
+            'duration' => ['required', 'integer'],
+            'unit' => ['required', 'integer']
         ]);
 
-        $hours = intval(Request::input('duration')) * intval(Request::input('unit'));
+        $hours = intval($request->input('duration')) * intval($request->input('unit'));
         $ban = Ban::create([
             'user_id' => $user->id,
-            'ip' => (Request::input('ip_ban') && $user->last_access_ip ? $user->last_access_ip : null),
+            'ip' => ($request->input('ip_ban') && $user->last_access_ip ? $user->last_access_ip : null),
             'ends_at' => $hours < 0 ? null : Carbon::now()->addHours($hours),
-            'reason' => Request::input('reason')
+            'reason' => $request->input('reason')
         ]);
 
-        return redirect('panel/edit-bans/'.$id);
+        return redirect('panel/edit-bans/' . $id);
     }
 
-    public function postDeleteBan() {
-        $id = Request::input('id');
+    public function postDeleteBan(Request $request)
+    {
+        $id = $request->integer('id');
         $ban = Ban::findOrFail($id);
         $ban->delete();
-        return redirect('panel/edit-bans/'.$ban->user_id);
+        return redirect('panel/edit-bans/' . $ban->user_id);
     }
 
-    public function getEditPermissions($id = 0) {
+    public function getEditPermissions(int $id)
+    {
         $user = PanelController::GetUser($id);
-        $permissions = UserPermission::with(['permission'])->whereUserId($id)->get();
+        $permissions = UserPermission::with(['permission'])->whereUserId($user->id)->get();
         return view('user/panel/edit-permissions', [
             'user' => $user,
             'permissions' => $permissions
         ]);
     }
 
-    public function postAddPermission() {
-        $id = Request::input('id');
+    public function postAddPermission(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        $this->validate(Request::instance(), [
-            'permission_id' => 'required|integer'
+        $this->validate($request, [
+            'permission_id' => ['required', 'integer']
         ]);
 
         $perm = UserPermission::create([
             'user_id' => $user->id,
-            'permission_id' => Request::input('permission_id')
+            'permission_id' => $request->integer('permission_id')
         ]);
 
-        return redirect('panel/edit-permissions/'.$id);
+        return redirect('panel/edit-permissions/' . $id);
     }
 
-    public function postDeletePermission() {
-        $id = Request::input('id');
+    public function postDeletePermission(Request $request)
+    {
+        $id = $request->integer('id');
         $perm = UserPermission::findOrFail($id);
         $perm->delete();
-        return redirect('panel/edit-permissions/'.$perm->user_id);
+        return redirect('panel/edit-permissions/' . $perm->user_id);
     }
 
-    public function getObliterate($id) {
+    // OBLITERATE / REMOVE
+
+    public function getObliterate(int $id)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/obliterate', [
             'user' => $user
         ]);
     }
 
-    public function postObliterate() {
-        $id = Request::input('id');
+    public function postObliterate(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        $this->validate(Request::instance(), [
-            'sure' => 'required|confirmed'
+        $this->validate($request, [
+            'sure' => ['required', 'confirmed']
         ], [
             'required' => 'You must check both boxes if you want to obliterate this user.',
             'confirmed' => 'You must check both boxes if you want to obliterate this user.'
@@ -392,19 +436,21 @@ class PanelController extends Controller {
         return redirect('/');
     }
 
-    public function getRemove($id) {
+    public function getRemove(int $id)
+    {
         $user = PanelController::GetUser($id);
         return view('user/panel/remove', [
             'user' => $user
         ]);
     }
 
-    public function postRemove() {
-        $id = Request::input('id');
+    public function postRemove(Request $request)
+    {
+        $id = $request->integer('id');
         $user = PanelController::GetUser($id);
 
-        $this->validate(Request::instance(), [
-            'sure' => 'required|confirmed'
+        $this->validate($request, [
+            'sure' => ['required', 'confirmed']
         ], [
             'required' => 'You must check both boxes if you want to remove this user.',
             'confirmed' => 'You must check both boxes if you want to remove this user.'

@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 #[TypedRouting]
 class PollController extends Controller
 {
-
     public function __construct()
     {
         $this->anonymous(['index', 'view']);
