@@ -1,64 +1,73 @@
-<?php namespace App\Http\Controllers\Competitions;
+<?php
 
+namespace App\Http\Controllers\Competitions;
+
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use App\Models\Competitions\Competition;
 use App\Models\Competitions\CompetitionJudgeType;
 use App\Models\Competitions\CompetitionRestrictionGroup;
 use App\Models\Competitions\CompetitionStatus;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
-class CompetitionAdminController extends Controller {
+#[TypedRouting]
+class CompetitionAdminController extends Controller
+{
+    public function __construct()
+    {
+        $this->permission(['create', 'edit', 'editRules', 'delete', 'restore'], 'CompetitionAdmin');
+    }
 
-	public function __construct() {
-        $this->permission(['create', 'edit', 'editrules', 'delete', 'restore'], 'CompetitionAdmin');
-	}
+    public function getCreate()
+    {
+        return view('competitions/admin/create');
+    }
 
-	public function getCreate() {
-        return view('competitions/admin/create', [
-
-        ]);
-	}
-
-    public function postCreate() {
-        Validator::extend('valid_extension_file', function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        });
-        $this->validate(Request::instance(), [
-            'competition_name' => 'required|max:255',
-            'status_id' => 'required|numeric',
-            'type_id' => 'required|numeric',
-            'judge_type_id' => 'required|numeric',
-            'engines' => 'required|array',
-            'judges' => 'array',
-            'brief_text' => 'required|max:10000',
-            'open_date' => 'required|date_format:d/m/Y',
-            'close_date' => 'required|date_format:d/m/Y',
-            'voting_close_date' => 'required_if:judge_type_id,' . CompetitionJudgeType::COMMUNITY_VOTE . '|date_format:d/m/Y',
-            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg|mimetypes:application/pdf,image/png,image/jpeg,application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed'
+    public function postCreate(Request $request)
+    {
+        $this->validate($request, [
+            'competition_name' => ['required', 'max:255'],
+            'status_id' => ['required', 'numeric'],
+            'type_id' => ['required', 'numeric'],
+            'judge_type_id' => ['required', 'numeric'],
+            'engines' => ['required', 'array'],
+            'judges' => ['array'],
+            'brief_text' => ['required', 'max:10000'],
+            'open_date' => ['required', 'date_format:d/m/Y'],
+            'close_date' => ['required', 'date_format:d/m/Y'],
+            'voting_close_date' => [
+                Rule::requiredIf(fn() => $request->integer('judge_type_id') === CompetitionJudgeType::COMMUNITY_VOTE),
+                'date_format:d/m/Y',
+            ],
+            'brief_attachment' => [
+                'max:16384',
+                'extensions:zip,rar,7z,pdf,png,jpg,jpeg',
+                'mimetypes:application/pdf,image/png,image/jpeg,application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed',
+            ],
         ], [
-            'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
+            'extensions' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
         ]);
 
         $competition = Competition::Create([
-            'status_id' => Request::input('status_id'),
-            'type_id' => Request::input('type_id'),
-            'judge_type_id' => Request::input('judge_type_id'),
-            'name' => Request::input('competition_name'),
-            'brief_text' => Request::input('brief_text'),
-            'brief_html' => bbcode(Request::input('brief_text')),
-            'open_date' => Carbon::createFromFormat('d/m/Y', Request::input('open_date')),
-            'close_date' => Carbon::createFromFormat('d/m/Y', Request::input('close_date')),
-            'voting_close_date' => Request::input('voting_close_date') ? Carbon::createFromFormat('d/m/Y', Request::input('voting_close_date')) : null,
+            'status_id' => $request->integer('status_id'),
+            'type_id' => $request->integer('type_id'),
+            'judge_type_id' => $request->integer('judge_type_id'),
+            'name' => $request->input('competition_name'),
+            'brief_text' => $request->input('brief_text'),
+            'brief_html' => bbcode($request->input('brief_text')),
+            'open_date' => Carbon::createFromFormat('d/m/Y', $request->input('open_date')),
+            'close_date' => Carbon::createFromFormat('d/m/Y', $request->input('close_date')),
+            'voting_close_date' => $request->input('voting_close_date') ? Carbon::createFromFormat('d/m/Y', $request->input('voting_close_date')) : null,
         ]);
 
-        $engines = Request::input('engines');
-        $judges = Request::input('judges');
+        $engines = $request->input('engines');
+        $judges = $request->input('judges');
         if (is_array($engines)) $competition->engines()->attach($engines);
         if (is_array($judges)) $competition->judges()->attach($judges);
 
-        $attachment = Request::file('brief_attachment');
+        $attachment = $request->file('brief_attachment');
         if ($attachment) {
             $dir = public_path('uploads/competition/attachments');
             if (!is_dir($dir)) mkdir($dir, 0755, true);
@@ -68,43 +77,52 @@ class CompetitionAdminController extends Controller {
             $competition->save();
         }
 
-        return redirect('competition/brief/'.$competition->id);
+        return redirect('competition/brief/' . $competition->id);
     }
 
-    public function getEdit($id) {
+    public function getEdit(int $id)
+    {
         $comp = Competition::findOrFail($id);
         return view('competitions/admin/edit', [
             'comp' => $comp
         ]);
     }
 
-    public function postEdit() {
-        Validator::extend('valid_extension_file', function($attribute, $value, $parameters) {
-            return in_array(strtolower($value->getClientOriginalExtension()), $parameters);
-        });
-        $this->validate(Request::instance(), [
-            'competition_name' => 'required|max:255',
-            'status_id' => 'required|numeric',
-            'type_id' => 'required|numeric',
-            'judge_type_id' => 'required|numeric',
-            'engines' => 'required|array',
-            'judges' => 'array',
-            'brief_text' => 'required|max:10000',
-            'results_intro_text' => 'required_if:status_id,' . CompetitionStatus::CLOSED . '|max:10000',
-            'results_outro_text' => 'max:10000',
-            'open_date' => 'required|date_format:d/m/Y',
-            'close_date' => 'required|date_format:d/m/Y',
-            'voting_close_date' => 'required_if:judge_type_id,' . CompetitionJudgeType::COMMUNITY_VOTE . '|date_format:d/m/Y',
-            'brief_attachment' => 'max:16384|valid_extension_file:zip,rar,7z,pdf,png,jpg,jpeg|mimetypes:application/pdf,image/png,image/jpeg,application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed'
+    public function postEdit(Request $request)
+    {
+        $this->validate($request, [
+            'competition_name' => ['required', 'max:255'],
+            'status_id' => ['required', 'numeric'],
+            'type_id' => ['required', 'numeric'],
+            'judge_type_id' => ['required', 'numeric'],
+            'engines' => ['required', 'array'],
+            'judges' => ['array'],
+            'brief_text' => ['required', 'max:10000'],
+            'results_intro_text' => [
+                Rule::requiredIf(fn() => $request->integer('status_id') === CompetitionStatus::CLOSED),
+                'max:10000',
+            ],
+            'results_outro_text' => ['max:10000'],
+            'open_date' => ['required', 'date_format:d/m/Y'],
+            'close_date' => ['required', 'date_format:d/m/Y'],
+            'voting_close_date' => [
+                Rule::requiredIf(fn() => $request->integer('judge_type_id') === CompetitionJudgeType::COMMUNITY_VOTE),
+                'date_format:d/m/Y',
+            ],
+            'brief_attachment' => [
+                'max:16384',
+                'extensions:zip,rar,7z,pdf,png,jpg,jpeg',
+                'mimetypes:application/pdf,image/png,image/jpeg,application/zip,application/x-zip-compressed,application/x-rar-compressed,application/vnd.rar,application/x-7z-compressed',
+            ],
         ], [
-            'valid_extension_file' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
+            'extensions' => 'Only the following file formats are allowed: zip, rar, 7z, pdf, png, jpg, jpeg'
         ]);
-        $id = Request::input('id');
+        $id = $request->integer('id');
         $comp = Competition::findOrFail($id);
 
-        $in = Request::input('results_intro_text');
+        $in = $request->input('results_intro_text');
         if (!$in) $in = '';
-        $out = Request::input('results_outro_text');
+        $out = $request->input('results_outro_text');
         if (!$out) $out = '';
 
         $brief_attachment = $comp->brief_attachment;
@@ -112,43 +130,44 @@ class CompetitionAdminController extends Controller {
         if (!is_dir($dir)) mkdir($dir, 0755, true);
         $path = strlen($comp->brief_attachment) == 0 ? null : $dir . '/' . $comp->brief_attachment;
 
-        $attachment = Request::file('brief_attachment');
+        $attachment = $request->file('brief_attachment');
         if ($attachment) {
             if ($path && file_exists($path) && is_file($path)) unlink($path);
             $name = 'twhl-competition-' . $comp->id . '.' . strtolower($attachment->getClientOriginalExtension());
             $attachment->move($dir, $name);
             $brief_attachment = $name;
-        } else if (Request::input('delete_attachment')) {
+        } else if ($request->input('delete_attachment')) {
             if ($path && file_exists($path) && is_file($path)) unlink($path);
             $brief_attachment = '';
         }
 
         $comp->update([
-            'status_id' => Request::input('status_id'),
-            'type_id' => Request::input('type_id'),
-            'judge_type_id' => Request::input('judge_type_id'),
-            'name' => Request::input('competition_name'),
-            'brief_text' => Request::input('brief_text'),
-            'brief_html' => bbcode(Request::input('brief_text')),
+            'status_id' => $request->integer('status_id'),
+            'type_id' => $request->integer('type_id'),
+            'judge_type_id' => $request->integer('judge_type_id'),
+            'name' => $request->input('competition_name'),
+            'brief_text' => $request->input('brief_text'),
+            'brief_html' => bbcode($request->input('brief_text')),
             'brief_attachment' => $brief_attachment,
-            'open_date' => Carbon::createFromFormat('d/m/Y', Request::input('open_date')),
-            'close_date' => Carbon::createFromFormat('d/m/Y', Request::input('close_date')),
-            'voting_close_date' => Request::input('voting_close_date') ? Carbon::createFromFormat('d/m/Y', Request::input('voting_close_date')) : null,
+            'open_date' => Carbon::createFromFormat('d/m/Y', $request->input('open_date')),
+            'close_date' => Carbon::createFromFormat('d/m/Y', $request->input('close_date')),
+            'voting_close_date' => $request->input('voting_close_date') ? Carbon::createFromFormat('d/m/Y', $request->input('voting_close_date')) : null,
             'results_intro_text' => $in,
             'results_intro_html' => bbcode($in),
             'results_outro_text' => $out,
             'results_outro_html' => bbcode($out),
         ]);
 
-        $engines = Request::input('engines');
-        $judges = Request::input('judges');
+        $engines = $request->input('engines');
+        $judges = $request->input('judges');
         if (is_array($engines)) $comp->engines()->sync($engines);
         if (is_array($judges)) $comp->judges()->sync($judges);
 
-        return redirect('competition/brief/'.$comp->id);
+        return redirect('competition/brief/' . $comp->id);
     }
 
-    public function getEditRules($id) {
+    public function getEditRules(int $id)
+    {
         $comp = Competition::with(['restrictions'])->findOrFail($id);
         $groups = CompetitionRestrictionGroup::with(['restrictions'])->get();
         return view('competitions/admin/edit-rules', [
@@ -157,11 +176,12 @@ class CompetitionAdminController extends Controller {
         ]);
     }
 
-    public function postEditRules() {
-        $id = Request::input('id');
+    public function postEditRules(Request $request)
+    {
+        $id = $request->integer('id');
         $comp = Competition::findOrFail($id);
 
-        $groups = Request::input('restrictions');
+        $groups = $request->input('restrictions');
         if (!is_array($groups)) $groups = [];
 
         $ids = [];
@@ -173,18 +193,22 @@ class CompetitionAdminController extends Controller {
         }
 
         $comp->restrictions()->sync($ids);
-        return redirect('competition/brief/'.$comp->id);
+        return redirect('competition/brief/' . $comp->id);
     }
 
-    public function getDelete($id) {
+    public function getDelete(int $id)
+    {
+        $comp = Competition::findOrFail($id);
         return view('competitions/admin/delete', [
-
+            'comp' => $comp
         ]);
     }
 
-    public function getRestore($id) {
+    public function getRestore(int $id)
+    {
+        $comp = Competition::findOrFail($id);
         return view('competitions/admin/restore', [
-
+            'comp' => $comp
         ]);
     }
 }

@@ -1,13 +1,20 @@
 <?php namespace App\Http\Controllers\Auth;
 
+use App\Helpers\TypedRouting;
 use App\Http\Controllers\Controller;
 use Auth;
 use Request;
 use Carbon\Carbon;
 use App\Models\Accounts\Ban;
 
+#[TypedRouting]
 class BanController extends Controller
 {
+    public function __construct()
+    {
+        $this->anonymous(['index']);
+    }
+
     public function getIndex()
     {
         $id = !Auth::user() ? -1 : Auth::user()->id;
