@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::currentPageResolver(LimitGuestPagination::pageResolver(...));
 
         Gate::define('viewPulse', function (User $user) {
-            return $user->id == 1983;
+            return $user->hasPermission('PulseDashboardAdmin');
         });
         Pulse::user(fn (User $user) => [
             'name' => $user->name,
