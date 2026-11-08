@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // add a hyperlink to the heading id
                 const icon = document.createElement('span');
-                icon.className = 'fa fa-link';
+                icon.className = 'fas fa-link';
 
                 const link = document.createElement('a');
                 link.href = '#' + h.id;

@@ -5,7 +5,7 @@
     @include('wiki.nav')
 
     <h1>
-        <span class="fa fa-list-ul"></span>
+        <span class="fas fa-list-ul"></span>
         Wiki categories
     </h1>
 

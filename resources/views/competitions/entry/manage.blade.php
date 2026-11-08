@@ -23,7 +23,7 @@
                         </p>
                         @form(competition-entry/delete-screenshot)
                             @hidden(id $shot)
-                            <button type="submit" class="delete-button btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</button>
+                            <button type="submit" class="delete-button btn btn-danger btn-xs"><span class="fas fa-xmark"></span> Delete</button>
                         @endform
                     </div>
                 </li>

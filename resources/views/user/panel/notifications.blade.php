@@ -12,10 +12,10 @@
     <div class="alert alert-info">You are automatically subscribed to your own articles.</div>
 
     <h2>
-        <span class="fa fa-bell"></span> Notifications
+        <span class="fas fa-bell"></span> Notifications
         @form(panel/clear-notifications)
             @hidden(id $user)
-            <button type="submit" class="btn btn-xs btn-outline-primary"><span class="fa fa-check"></span> Mark all as read</button>
+            <button type="submit" class="btn btn-xs btn-outline-primary"><span class="fas fa-check"></span> Mark all as read</button>
         @endform
     </h2>
     <table class="table">
@@ -42,7 +42,7 @@
         </tbody>
     </table>
 
-    <h2><span class="fa fa-bell-o"></span> Subscriptions</h2>
+    <h2><span class="far fa-bell"></span> Subscriptions</h2>
     <table class="table">
         <thead>
             <tr>
@@ -59,7 +59,7 @@
                     <td class="text-end col-15p">
                         @form(panel/delete-subscription)
                             @hidden(id $subscription)
-                            <button type="submit" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span> Unsubscribe</button>
+                            <button type="submit" class="btn btn-xs btn-outline-danger"><span class="fas fa-xmark"></span> Unsubscribe</button>
                         @endform
                     </td>
                 </tr>

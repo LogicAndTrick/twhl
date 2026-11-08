@@ -3,10 +3,10 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-quote-left"></span>
+        <span class="fas fa-quote-left"></span>
         Journals
         @if (permission('JournalCreate'))
-            <a href="{{ act('journal', 'create') }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-plus"></span> Create new journal</a>
+            <a href="{{ act('journal', 'create') }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-plus"></span> Create new journal</a>
         @endif
     </h1>
 
@@ -30,11 +30,11 @@
                         <a href="{{ act('journal', 'view', $journal->id) }}">{{ $journal->getTitle() }}</a>
                         @if ($journal->isEditable())
                             <a href="{{ act('journal', 'delete', $journal->id) }}" class="btn btn-outline-danger btn-xs">
-                                <span class="fa fa-remove"></span>
+                                <span class="fas fa-xmark"></span>
                                 <span class="hidden-xs-down">Delete</span>
                             </a>
                             <a href="{{ act('journal', 'edit', $journal->id) }}" class="btn btn-outline-primary btn-xs">
-                                <span class="fa fa-pencil"></span>
+                                <span class="fas fa-pencil"></span>
                                 <span class="hidden-xs-down">Edit</span>
                             </a>
                         @endif
@@ -43,7 +43,7 @@
                         @avatar($journal->user text) &bull;
                         @date($journal->created_at) &bull;
                         <a href="{{ act('journal', 'view', $journal->id) }}">
-                            <span class="fa fa-comment"></span>
+                            <span class="fas fa-comment"></span>
                             {{ $journal->stat_comments }} comment{{$journal->stat_comments==1?'':'s'}}
                         </a>
                     </div>

@@ -7,13 +7,13 @@
             @form(comment/unsubscribe)
                 @hidden(type $article_type)
                 @hidden(article_id $article_id)
-                <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</button>
+                <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fas fa-bell"></span> Unsubscribe</button>
             @endform
         @else
             @form(comment/subscribe)
                 @hidden(type $article_type)
                 @hidden(article_id $article_id)
-                <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</button>
+                <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fas fa-bell"></span> Subscribe</button>
             @endform
         @endif
     @endif
@@ -38,15 +38,15 @@
                         </span>
                     @endif
                     @if($comment->isDeletable())
-                        <a href="{{ act('comment', 'delete', $comment->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> <span class="hidden-xs">Delete</span></a>
+                        <a href="{{ act('comment', 'delete', $comment->id) }}" class="btn btn-danger btn-xs"><span class="fas fa-xmark"></span> <span class="hidden-xs">Delete</span></a>
                     @endif
                     @if($comment->isEditable($comments))
-                        <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
+                        <a href="{{ act('comment', 'edit', $comment->id) }}" class="btn btn-primary btn-xs"><span class="fas fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
                     @endif
                 </div>
                 <div class="slot-subtitle">
                     Commented @date($comment->created_at)
-                    <a class="pull-right hidden-xs-down" href="#comment-{{ $comment->id }}">Comment #{{ $comment->id }}</a>
+                    <a class="float-end hidden-xs-down" href="#comment-{{ $comment->id }}">Comment #{{ $comment->id }}</a>
                 </div>
             </div>
             <div class="slot-main">

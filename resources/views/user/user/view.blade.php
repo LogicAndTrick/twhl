@@ -3,11 +3,11 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-user"></span>
+        <span class="fas fa-user"></span>
         {{ $user->name }}
         @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
             <a href="{{ act('panel', 'index', $user->id) }}" class="btn btn-xs btn-outline-info">
-                <span class="fa fa-cog"></span>
+                <span class="fas fa-gear"></span>
                 {{ (Auth::user() && Auth::user()->id == $user->id) ? 'My' : $user->name."'s" }} Control Panel
             </a>
         @endif
@@ -28,7 +28,7 @@
 
         <div class="col-md-6">
             <h2>
-                <span class="fa fa-database"></span>
+                <span class="fas fa-database"></span>
                 Recent Vault Items
                 <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'index').'?users='.$user->id }}">See All</a>
             </h2>
@@ -73,7 +73,7 @@
 
         <div class="col-md-6">
             <h2>
-                <span class="fa fa-quote-left"></span>
+                <span class="fas fa-quote-left"></span>
                 Recent Journals
                 <a class="btn btn-outline-primary btn-xs" href="{{ act('journal', 'index').'?user='.$user->id }}">See All</a>
             </h2>

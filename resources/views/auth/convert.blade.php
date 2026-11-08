@@ -4,7 +4,7 @@
 @section('content')
 
     <h1>
-        <span class="fa fa-smile-o"></span>
+        <span class="far fa-face-smile"></span>
         Welcome to the new and exciting TWHL!
     </h1>
 

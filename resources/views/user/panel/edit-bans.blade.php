@@ -30,7 +30,7 @@
                     @form(panel/delete-ban)
                         @hidden(id $ban)
                         <button class="btn btn-danger btn-xs" type="submit">
-                            <span class="fa fa-remove"></span>
+                            <span class="fas fa-xmark"></span>
                             Delete
                         </button>
                     @endform

@@ -58,7 +58,7 @@ header {
     }
   }
 
-  .dropdown-item .fa {
+  .dropdown-item :is(.fas, .far) {
       width: 24px;
       text-align: center;
   }
@@ -186,7 +186,7 @@ header {
       flex-flow: row nowrap;
       align-items: center;
 
-      img, .fa {
+      img, :is(.fas, .far) {
         margin-right: 0.25rem;
       }
     }

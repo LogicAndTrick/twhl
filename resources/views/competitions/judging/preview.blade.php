@@ -6,7 +6,7 @@
         Preview results: {{ $comp->name }}
 
         @if (permission('CompetitionAdmin') && $comp->isJudging())
-            <a href="{{ act('competition-judging', 'publish', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fa fa-arrow-right"></span> Publish Results</a>
+            <a href="{{ act('competition-judging', 'publish', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fas fa-arrow-right"></span> Publish Results</a>
         @endif
     </h1>
 

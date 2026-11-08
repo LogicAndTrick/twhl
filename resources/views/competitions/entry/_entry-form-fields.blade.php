@@ -25,7 +25,7 @@
 
 @if (!$entry)
     @file(screenshot) = Screenshot (Required)
-    <div class="alert alert-info"><span class="fa fa-info-circle"></span> You can add more screenshots to your entry later.</div>
+    <div class="alert alert-info"><span class="fas fa-circle-info"></span> You can add more screenshots to your entry later.</div>
 @endif
 
 <div class="wikicode-input">

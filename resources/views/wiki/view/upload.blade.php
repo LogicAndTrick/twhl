@@ -1,14 +1,18 @@
 
-<h1>
-    <span class="fa fa-upload"></span>
-    {{ $revision->getNiceTitle() }}
-    <small class="pull-right">
+<h1 class="d-flex align-items-center">
+    <span class="me-1">
+        <span class="fas fa-upload"></span>
+    </span>
+    <span class="me-auto">
+        {{ $revision->getNiceTitle() }}
+    </span>
+    <small>
         @if (!$revision->wiki_object->canEdit())
-            <span class="fa fa-lock" title="You do not have access to edit this page."></span>
+            <span class="fas fa-lock" title="You do not have access to edit this page."></span>
         @elseif ($revision->wiki_object->isProtected())
-            <span class="fa fa-lock faded" title="This page is protected."></span>
+            <span class="fas fa-lock faded" title="This page is protected."></span>
         @endif
-        Last edited @date($revision->created_at) by @avatar($revision->user inline)
+        Last edited @date($revision->created_at)
     </small>
 </h1>
 
@@ -19,7 +23,7 @@
 
 @if (!$revision->is_active)
     <div class="alert alert-warning">
-        <span class="fa fa-exclamation-triangle"></span> You are viewing an older revision of this image. Only the current revision is embedded on other pages.
+        <span class="fas fa-triangle-exclamation"></span> You are viewing an older revision of this image. Only the current revision is embedded on other pages.
         <a href="{{ act('wiki', 'page', $latest_revision->slug) }}">Click here</a> to see the current revision of this image.
     </div>
 @endif
@@ -43,7 +47,7 @@
 
     <div class="text-center">
         <a class="btn btn-success btn-lg" href="{{ $upload->getEmbeddableFileName() }}">
-            <span class="fa fa-download"></span> Download
+            <span class="fas fa-download"></span> Download
         </a>
     </div>
 

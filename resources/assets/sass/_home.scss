@@ -22,7 +22,7 @@
       }
 
       .notify-alert {
-        .fa {
+        :is(.fas, .far) {
           color: var(--bs-danger);
         }
       }

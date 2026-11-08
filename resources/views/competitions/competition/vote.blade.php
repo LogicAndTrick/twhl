@@ -5,7 +5,7 @@
     <h1>
         Competition voting: {{ $comp->name }}
         @if ($comp->canJudge())
-            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> View/Edit Results</a>
+            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-pencil"></span> View/Edit Results</a>
         @endif
     </h1>
 
@@ -54,13 +54,13 @@
                     </a>
                     @if ($entry->screenshots->count() > 1)
                         <button class="btn btn-info d-block w-100 gallery-button" type="button">
-                            <span class="fa fa-picture-o"></span>
+                            <span class="far fa-image"></span>
                             + {{ $entry->screenshots->count()-1 }} more screenshot{{ $entry->screenshots->count() == 2 ? '' : 's' }}
                         </button>
                     @endif
                     @if ($entry->getLinkUrl())
                         <a href="{{ $entry->getLinkUrl() }}" class="btn btn-sm btn-success mt-1">
-                            <span class="fa fa-download"></span> Download
+                            <span class="fas fa-download"></span> Download
                         </a>
                     @endif
                     <div class="tile-title">
@@ -72,7 +72,7 @@
                     </div>
                     @if ($comp->canVote())
                         <button class="btn btn-info d-block w-100 btn-sm vote-button {{ $votes->contains($entry->id) ? 'active' : '' }}" type="button">
-                            <span class="fa fa-check"></span>
+                            <span class="fas fa-check"></span>
                             <span class="vote-status">{{ $votes->contains($entry->id) ? 'You voted for this entry!' : 'Vote for this entry' }}</span>
                         </button>
                     @endif

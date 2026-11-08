@@ -3,7 +3,7 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-ban"></span>
+        <span class="fas fa-ban"></span>
         You have been banned
     </h1>
     <p>

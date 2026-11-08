@@ -9,8 +9,8 @@
     <h1>
         {{ $poll->title }}
         @if (permission('PollAdmin'))
-            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-outline-danger btn-xs"><span class="fas fa-xmark"></span> Delete</a>
+            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-pencil"></span> Edit</a>
         @endif
     </h1>
 

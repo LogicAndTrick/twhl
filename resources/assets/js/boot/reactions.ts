@@ -25,7 +25,7 @@ const plusReactionType: ReactionType = {
     is_image: false,
     name: 'Add reaction',
     orderindex: -999,
-    value: '☺',
+    value: 'icon:far fa-face-smile',
 };
 
 const MAX_TOOLTIP_USERNAMES = 5;
@@ -198,7 +198,7 @@ class ReactionHandler {
         this.loading = reaction_type_id;
         this.element.classList.remove('interactive');
         const btnImg = this.element.querySelector(`.reaction[data-reaction-type-id="${reaction_type_id}"] .img`);
-        if (btnImg) btnImg.innerHTML = '<span class="fa fa-circle-o-notch fa-spin"></span>';
+        if (btnImg) btnImg.innerHTML = '<span class="fas fa-circle-notch fa-spin"></span>';
 
         try {
             // post to the server
@@ -235,6 +235,10 @@ class ReactionHandler {
         if (type.is_image) {
             const i = document.createElement('img');
             i.src = window.urls.images.smiley_folder + '/' + type.value;
+            el.append(i);
+        } else if (type.value.startsWith('icon:')) {
+            const i = document.createElement('span');
+            i.className = type.value.slice(5);
             el.append(i);
         } else {
             el.innerText = type.value;
@@ -280,7 +284,7 @@ class ReactionHandler {
                 const plusImgEl = this._renderType(plusReactionType);
                 const plusNumEl = document.createElement('span');
                 plusNumEl.classList.add('num');
-                plusNumEl.innerHTML = '<span class="fa fa-plus"></span>';
+                plusNumEl.innerHTML = '<span class="fas fa-plus"></span>';
                 const plusEl = this._renderOuter(plusReactionType, false, [plusImgEl, plusNumEl]);
                 plusEl.classList.add('expand-button', 'has-tooltip');
                 els.push(plusEl);

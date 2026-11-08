@@ -8,7 +8,7 @@
 @section('content')
 
     <h1>
-        <span class="fa fa-user-plus"></span>
+        <span class="fas fa-user-plus"></span>
         Register a TWHL account
     </h1>
 

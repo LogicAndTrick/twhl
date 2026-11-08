@@ -3,18 +3,18 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-trophy"></span>
+        <span class="fas fa-trophy"></span>
         Competitions
         @if (permission('CompetitionAdmin'))
-            <a class="btn btn-outline-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="fa fa-pencil"></span> Modify Competition Restrictions</a>
-            <a class="btn btn-outline-primary btn-xs" href="{{ act('competition-admin', 'create') }}"><span class="fa fa-plus"></span> Create new Competition</a>
+            <a class="btn btn-outline-info btn-xs" href="{{ act('competition-restriction', 'index') }}"><span class="fas fa-pencil"></span> Modify Competition Restrictions</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('competition-admin', 'create') }}"><span class="fas fa-plus"></span> Create new Competition</a>
         @endif
     </h1>
     <div class="competition-list">
         @foreach ($comps->sortByDesc('close_date') as $comp)
         <div class="slot">
             <div class="slot-heading">
-                <small class="pull-right">{{ $comp->type->name }} &bull; {{ $comp->judge_type->name }}</small>
+                <small class="slot-end">{{ $comp->type->name }} &bull; {{ $comp->judge_type->name }}</small>
                 <div class="slot-title">
                     <a href="{{ act('competition', 'brief', $comp->id) }}">{{ $comp->name }}</a>
                 </div>
@@ -27,7 +27,7 @@
                         @if ($comp->isVotingOpen())
                             <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
                         @elseif ($comp->isJudging() && $comp->canJudge())
-                            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary"><span class="fa fa-eye"></span> Go to Judging Panel</a>
+                            <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary"><span class="fas fa-eye"></span> Go to Judging Panel</a>
                         @elseif ($comp->isClosed())
                             <div class="competition-winners">
                                 <h5>Winners</h5>

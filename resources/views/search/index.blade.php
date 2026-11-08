@@ -12,7 +12,7 @@
 
     <form action="{{ url('search/index') }}" method="get">
         <div class="input-group">
-            <span class="input-group-text"><span class="fa fa-search"></span></span>
+            <span class="input-group-text"><span class="fas fa-magnifying-glass"></span></span>
             <input type="text" class="form-control" name="search" placeholder="Search" value="{{ $search }}" maxlength="{{ $max_search_length  }}">
             <button type="submit" class="btn btn-light">Search</button>
         </div>

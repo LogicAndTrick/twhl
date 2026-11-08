@@ -34,7 +34,7 @@
                     @form(panel/delete-key)
                         @hidden(id $key)
                         <button class="btn btn-danger btn-xs" type="submit">
-                            <span class="fa fa-remove"></span>
+                            <span class="fas fa-xmark"></span>
                             Delete
                         </button>
                     @endform

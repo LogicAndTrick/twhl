@@ -4,10 +4,10 @@
 @section('content')
 
     <h1>
-        <span class="fa fa-envelope"></span>
+        <span class="fas fa-envelope"></span>
         Messages: {{ $user->name }}
         @if (Auth::user()->id == $user->id)
-            <a href="{{ act('message', 'send') }}" class="btn btn-outline-info btn-xs"><span class="fa fa-envelope"></span> Send New Message</a>
+            <a href="{{ act('message', 'send') }}" class="btn btn-outline-info btn-xs"><span class="fas fa-envelope"></span> Send New Message</a>
         @endif
     </h1>
 
@@ -38,7 +38,7 @@
                 <tr class="{{ $is_unread ? 'unread' : '' }}">
                     <td>
                         @if ($is_unread)
-                            <span class="fa fa-exclamation-triangle"></span>
+                            <span class="fas fa-triangle-exclamation"></span>
                         @endif
                         <a href="{{ act('message', 'view', $thread->id) }}">{{ $thread->subject }}</a>
                     </td>
@@ -47,7 +47,7 @@
                         @avatar($thread->last_message->user inline)
                     </td>
                     <td class="col-mod">
-                        <a href="{{ act('message', 'delete', $thread->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span></a>
+                        <a href="{{ act('message', 'delete', $thread->id) }}" class="btn btn-danger btn-xs"><span class="fas fa-xmark"></span></a>
                     </td>
                 </tr>
             @endforeach

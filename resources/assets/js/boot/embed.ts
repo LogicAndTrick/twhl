@@ -102,7 +102,7 @@ const embed_templates = {
     vault({ url, name, created, category, game_abbr, game_name, game_image, user_url, user_avatar, user_name, vault_slider }: VaultEmbedTemplateData) {
         const gameIcon = elem('img', 'game-icon', undefined, (d) => ([d.src, d.alt] = [game_image, game_name]));
         const gameAbbr = elem('small', 'd-block', game_abbr);
-        const game = elem('div', 'pull-right text-center', [gameIcon, gameAbbr], (d) => (d.title = game_name));
+        const game = elem('div', 'slot-end text-center', [gameIcon, gameAbbr], (d) => (d.title = game_name));
 
         const avatarImg = elem('img', undefined, undefined, (d) => ([d.src, d.alt] = [user_avatar, user_name]));
         const avatarUrl = elem('a', undefined, avatarImg, (d) => (d.href = user_url));

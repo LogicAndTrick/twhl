@@ -1,5 +1,5 @@
 <h1>
-    <span class="fa fa-frown-o"></span>
+    <span class="far fa-face-frown"></span>
     Page not found: {{ $slug }}
 </h1>
 

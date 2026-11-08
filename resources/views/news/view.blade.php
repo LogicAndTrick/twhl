@@ -10,8 +10,8 @@
     <h1>
         {{ $news->title }}
         @if (permission('NewsAdmin'))
-            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span></a>
-            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span></a>
+            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-outline-danger btn-xs"><span class="fas fa-xmark"></span></a>
+            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-pencil"></span></a>
         @endif
     </h1>
 

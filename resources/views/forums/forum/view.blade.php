@@ -7,7 +7,7 @@
         <span class="forum-icon {{ $forum->getIconClasses() }}"></span>
         {{ $forum->name }}
         @if (permission('ForumCreate'))
-            <a class="btn btn-outline-primary btn-xs" href="{{ act('thread', 'create', $forum->id) }}"><span class="fa fa-plus"></span> Create new thread</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('thread', 'create', $forum->id) }}"><span class="fas fa-plus"></span> Create new thread</a>
         @endif
     </h1>
     <ol class="breadcrumb">
@@ -63,10 +63,10 @@
                     @if (permission('ForumAdmin'))
                         <td class="col-mod">
                             @if ($thread->deleted_at)
-                                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fa fa-repeat"></span></a>
+                                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fas fa-arrow-rotate-right"></span></a>
                             @else
-                                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-pencil"></span></a>
-                                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span></a>
+                                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fas fa-pencil"></span></a>
+                                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fas fa-xmark"></span></a>
                             @endif
                         </td>
                     @endif

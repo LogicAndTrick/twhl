@@ -3,7 +3,7 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-users"></span>
+        <span class="fas fa-users"></span>
         TWHL members
     </h1>
 

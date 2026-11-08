@@ -5,7 +5,7 @@
     @include('wiki.nav', ['revision' => $revision])
 
     <h1>
-        <span class="fa fa-clock-o"></span>
+        <span class="far fa-clock"></span>
         History of {{ $revision->getNiceTitle() }}
     </h1>
 

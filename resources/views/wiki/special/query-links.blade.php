@@ -5,7 +5,7 @@
     @include('wiki.nav')
 
     <h1>
-        <span class="fa fa-star"></span>
+        <span class="fas fa-star"></span>
         Links to and from pages
     </h1>
 
@@ -21,7 +21,7 @@
 
     <form action="{{ url('wiki-special/query-links') }}" method="get">
         <div class="input-group">
-            <span class="input-group-text"><span class="fa fa-search"></span></span>
+            <span class="input-group-text"><span class="fas fa-magnifying-glass"></span></span>
             <input type="text" class="form-control" name="title" placeholder="Enter page title" value="{{ $title }}">
             <button type="submit" class="btn btn-primary">Go</button>
         </div>

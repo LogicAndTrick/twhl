@@ -71,10 +71,10 @@
                     @if (permission('ForumAdmin'))
                         <td class="col-mod">
                             @if ($thread->deleted_at)
-                                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fa fa-repeat"></span></a>
+                                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fas fa-arrow-rotate-right"></span></a>
                             @else
-                                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-pencil"></span></a>
-                                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span></a>
+                                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fas fa-pencil"></span></a>
+                                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fas fa-xmark"></span></a>
                             @endif
                         </td>
                     @endif

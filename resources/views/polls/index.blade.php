@@ -4,10 +4,10 @@
 @section('content')
     
     <h1>
-        <span class="fa fa-pie-chart"></span>
+        <span class="fas fa-chart-pie"></span>
         Polls
         @if (permission('PollAdmin'))
-            <a class="btn btn-outline-primary btn-xs" href="{{ act('poll', 'create') }}"><span class="fa fa-plus"></span> Create new poll</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('poll', 'create') }}"><span class="fas fa-plus"></span> Create new poll</a>
         @endif
     </h1>
 
@@ -20,15 +20,15 @@
                     <div class="slot-title">
                         <a href="{{ act('poll', 'view', $poll->id) }}">{{ $poll->title }}</a>
                         @if (permission('PollAdmin'))
-                            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-                            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+                            <a href="{{ act('poll', 'delete', $poll->id) }}" class="btn btn-outline-danger btn-xs"><span class="fas fa-xmark"></span> Delete</a>
+                            <a href="{{ act('poll', 'edit', $poll->id) }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-pencil"></span> Edit</a>
                         @endif
                     </div>
                     <div class="slot-subtitle">
                         Posted @date($poll->created_at) &bull;
                         {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }} &bull;
                         <a href="{{ act('poll', 'view', $poll->id) }}">
-                            <span class="fa fa-comment"></span>
+                            <span class="fas fa-comment"></span>
                             {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
                         </a>
                     </div>

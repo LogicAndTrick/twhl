@@ -10,11 +10,11 @@
         Competition: {{ $comp->name }}
 
         @if (permission('CompetitionAdmin'))
-            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fa fa-list"></span> Edit Rules</a>
-            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+            <a href="{{ act('competition-admin', 'delete', $comp->id) }}" class="btn btn-outline-danger btn-xs"><span class="fas fa-xmark"></span> Delete</a>
+            <a href="{{ act('competition-admin', 'edit-rules', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fas fa-list"></span> Edit Rules</a>
+            <a href="{{ act('competition-admin', 'edit', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-pencil"></span> Edit</a>
             @if ($comp->canJudge())
-                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-outline-secondary btn-xs"><span class="fa fa-eye"></span> Manage Entries</a>
+                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-outline-secondary btn-xs"><span class="fas fa-eye"></span> Manage Entries</a>
             @endif
         @endif
     </h1>
@@ -38,7 +38,7 @@
         <p class="text-center">
             <button id="collapse-button" class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#brief-container">
                 Show competition brief
-                <span class="fa fa-chevron-down"></span>
+                <span class="fas fa-chevron-down"></span>
             </button>
         </p>
     @endif
@@ -57,11 +57,11 @@
                             @elseif ($comp->isVotingOpen())
                                 <a href="{{ act('competition', 'vote', $comp->id) }}" class="btn btn-success btn-lg">{{ $comp->canVote() ? 'Vote Now' : 'View Entries' }}</a>
                             @elseif ($comp->isJudging() && $comp->canJudge())
-                                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary btn-lg"><span class="fa fa-eye"></span> Go to Judging Panel</a>
+                                <a href="{{ act('competition-judging', 'view', $comp->id) }}" class="btn btn-secondary btn-lg"><span class="fas fa-eye"></span> Go to Judging Panel</a>
                                 <hr/>
-                                <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
+                                <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-success btn-xs"><span class="fas fa-eye"></span> Preview Results</a>
                             @elseif ($comp->isClosed())
-                                <a href="#results" class="btn btn-success btn-lg"><span class="fa fa-eye"></span> View Results</a>
+                                <a href="#results" class="btn btn-success btn-lg"><span class="fas fa-eye"></span> View Results</a>
                             @endif
                         </div>
 
@@ -96,7 +96,7 @@
                             <div class="well well-sm">
                                 Attached file:
                                 <a href="{{ asset('uploads/competition/attachments/'.$comp->brief_attachment) }}" class="btn btn-success btn-xs">
-                                    <span class="fa fa-download"></span>
+                                    <span class="fas fa-download"></span>
                                     Click to download
                                 </a>
                             </div>
@@ -130,7 +130,7 @@
     @if ($comp->isOpen() && permission('CompetitionEnter'))
         <h2>{{ $user_entry ? 'Update' : 'Submit' }} Entry</h2>
         <div class="alert alert-info">
-            <span class="fa fa-info-circle"></span> You can update your entry as many times as you like, prior to the competition close date. Only the most recent submission will be used.
+            <span class="fas fa-circle-info"></span> You can update your entry as many times as you like, prior to the competition close date. Only the most recent submission will be used.
         </div>
         @form(competition-entry/submit upload=true)
             @include('competitions.entry._entry-form-fields', [ 'comp' => $comp, 'entry' => $user_entry ])

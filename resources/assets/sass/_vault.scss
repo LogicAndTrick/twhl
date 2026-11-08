@@ -88,7 +88,7 @@
             cursor: default;
         }
 
-        .fa {
+        :is(.fas, .far) {
             float: right;
             border-radius: 4px;
             padding: 5px;
@@ -125,7 +125,7 @@
                     background: var(--bs-border-color);
                 }
 
-                .fa {
+                :is(.fas, .far) {
                     display: none;
                 }
             }
@@ -236,7 +236,6 @@
     }
 
     .drag-handle {
-        display: inline-block;
         float: right;
         cursor: move;
 

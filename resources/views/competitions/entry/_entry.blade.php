@@ -9,8 +9,8 @@
 
             @if (!isset($deleting) || !$deleting)
                 @if (permission('CompetitionAdmin') || ( permission('CompetitionEnter') && Auth::user()->id == $entry->user_id && $comp->canEnter() ))
-                    <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete Entry</a>
-                    <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
+                    <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="fas fa-xmark"></span> Delete Entry</a>
+                    <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="far fa-image"></span> Edit Screenshots</a>
                 @endif
             @endif
         </div>
@@ -40,7 +40,7 @@
 
             @if ($entry->getLinkUrl())
             <p>
-                <a href="{{ $entry->getLinkUrl() }}" class="btn btn-sm btn-success"><span class="fa fa-download"></span> Download</a>
+                <a href="{{ $entry->getLinkUrl() }}" class="btn btn-sm btn-success"><span class="fas fa-download"></span> Download</a>
             </p>
             @endif
         </div>

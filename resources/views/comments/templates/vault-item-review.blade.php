@@ -15,8 +15,8 @@
 
         <div class="col-sm-4 text-sm-right mt-2 mt-sm-0">
             @if($obj->isEditable())
-                <a href="{{ act('vault-review', 'edit', $obj->id) }}" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
-                <a href="{{ act('vault-review', 'delete', $obj->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> <span class="hidden-xs">Delete</span></a>
+                <a href="{{ act('vault-review', 'edit', $obj->id) }}" class="btn btn-info btn-xs"><span class="fas fa-pencil"></span> <span class="hidden-xs">Edit</span></a>
+                <a href="{{ act('vault-review', 'delete', $obj->id) }}" class="btn btn-danger btn-xs"><span class="fas fa-xmark"></span> <span class="hidden-xs">Delete</span></a>
             @endif
         </div>
     </div>

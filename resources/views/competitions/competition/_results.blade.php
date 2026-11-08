@@ -1,8 +1,8 @@
 <a id="results"></a>
-<h1>
-    Results
+<h1 class="d-flex align-items-center">
+    <span class="me-auto">Results</span>
     @if ($comp->isJudged() && $comp->judges->count() > 0)
-        <small class="pull-right">
+        <small>
             Judged By:
             {? $i = 0; ?}
             @foreach ($comp->judges as $judge)
@@ -31,9 +31,9 @@
             {? $result = $comp->results->where('entry_id', $entry->id)->first(); ?}
             <div class="slot rank-{{ $result->rank }}" data-id="{{ $entry->id }}" data-title="{{ ($entry->title ? $entry->title : 'Unnamed entry') . ' - ' . $entry->user->name }}">
                 <div class="slot-heading">
-                    <div class="pull-right mt-2 hidden-xs-down">
+                    <div class="slot-end mt-2 hidden-xs-down">
                         @if ($entry->file_location)
-                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
+                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fas fa-download"></span> Download</a>
                         @endif
                     </div>
                     <div class="slot-avatar">
@@ -56,7 +56,7 @@
                 <div class="slot-main">
                     @if ($entry->file_location)
                         <div class="my-2 hidden-sm-up text-center">
-                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
+                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fas fa-download"></span> Download</a>
                         </div>
                     @endif
                     <div class="d-flex flex-column flex-lg-row">

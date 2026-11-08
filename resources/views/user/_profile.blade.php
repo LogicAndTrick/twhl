@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-4 text-center">
         @avatar($user full show_border=true)
-        <a href="{{ act('message', 'send', $user->id) }}" class="btn btn-xs btn-info"><span class="fa fa-envelope"></span> Send Message</a>
+        <a href="{{ act('message', 'send', $user->id) }}" class="btn btn-xs btn-info"><span class="fas fa-envelope"></span> Send Message</a>
         <hr title="Stats"/>
         <dl class="row">
             {? $age = $user->created_at->diffInDays(); if ($age == 0) $age = 1; ?}
@@ -41,9 +41,9 @@
                     @if (permission('Admin') || (Auth::user() && Auth::user()->id == $user->id))
                         <span class="badge bg-secondary">
                             @if ($user->show_email)
-                                <span class="fa fa-check"></span> Visible on public profile
+                                <span class="fas fa-check"></span> Visible on public profile
                             @else
-                                <span class="fa fa-remove"></span> Hidden on public profile
+                                <span class="fas fa-xmark"></span> Hidden on public profile
                             @endif
                         </span>
                     @endif

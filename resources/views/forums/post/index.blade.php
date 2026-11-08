@@ -27,16 +27,16 @@
                         </div>
                         <div class="slot-title hidden-md-up">
                             @avatar($post->user text)
-                            <div class="pull-right">
+                            <div class="float-end">
                                 @if ($post->isEditable($post->thread))
                                     <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
-                                        <span class="fa fa-pencil"></span>
+                                        <span class="fas fa-pencil"></span>
                                         <span class="hidden-xs-down">Edit</span>
                                     </a>
                                 @endif
                                 @if (permission('ForumAdmin'))
                                     <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
-                                        <span class="fa fa-remove"></span>
+                                        <span class="fas fa-xmark"></span>
                                         <span class="hidden-xs-down">Delete</span>
                                     </a>
                                 @endif
@@ -47,7 +47,7 @@
                             <br class="hidden-md-up" />
                             in <a href="{{ act('thread', 'view', $post->thread_id) }}">{{ $post->thread->title }}</a>
                             @auth
-                                <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
+                                <a class="float-end" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
                             @endauth
                         </div>
                     </div>
@@ -60,13 +60,13 @@
                             @avatar($post->user full)
                             @if ($post->isEditable($post->thread))
                                 <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
-                                    <span class="fa fa-pencil"></span>
+                                    <span class="fas fa-pencil"></span>
                                     Edit
                                 </a>
                             @endif
                             @if (permission('ForumAdmin'))
                                 <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
-                                    <span class="fa fa-remove"></span>
+                                    <span class="fas fa-xmark"></span>
                                     Delete
                                 </a>
                             @endif

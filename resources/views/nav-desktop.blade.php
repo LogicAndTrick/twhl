@@ -41,7 +41,7 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <button type="button" class="nav-link theme-toggle">
-                    <span class="fa fa-lightbulb-o"></span>
+                    <span class="far fa-lightbulb"></span>
                 </button>
             </li>
             @if (Auth::guest())
@@ -72,21 +72,21 @@
                     <a class="nav-link dropdown-toggle nav-avatar" href="{{ act('panel', 'index') }}" data-bs-toggle="dropdown">
                         <img src="{{ Auth::user()->getAvatarUrl('inline') }}" alt="{{ Auth::user()->name }}"/>
                         @if ($unread_count + $notify_count > 0)
-                            <span class="fa fa-exclamation-triangle"></span>
+                            <span class="fas fa-triangle-exclamation"></span>
                         @endif
                         <span class="name">{{ Auth::user()->name }}</span>
                         <span class="caret"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item {{ $notify_count > 0 ? 'has-notification' : '' }}" href="{{ act('panel', 'notifications') }}">
-                            <span class="fa fa-bell"></span> {{ $notify_count != 0 ? $notify_count : '' }} Notification{{ $notify_count == 1 ? '' : 's' }}
+                            <span class="fas fa-bell"></span> {{ $notify_count != 0 ? $notify_count : '' }} Notification{{ $notify_count == 1 ? '' : 's' }}
                         </a>
                         <a class="dropdown-item {{ $unread_count > 0 ? 'has-notification' : '' }}" href="{{ act('message', 'index') }}">
-                            <span class="fa fa-envelope"></span> {{ $unread_count != 0 ? $unread_count : '' }} Private Message{{ $unread_count == 1 ? '' : 's' }}
+                            <span class="fas fa-envelope"></span> {{ $unread_count != 0 ? $unread_count : '' }} Private Message{{ $unread_count == 1 ? '' : 's' }}
                         </a>
-                        <a class="dropdown-item" href="{{ act('user', 'view', Auth::user()->id) }}"><span class="fa fa-user"></span> My Profile</a>
-                        <a class="dropdown-item" href="{{ act('panel', 'index') }}"><span class="fa fa-cogs"></span> Control Panel</a>
-                        <a class="dropdown-item" href="{{ url('/auth/logout') . '?_token=' . csrf_token() }}"><span class="fa fa-sign-out"></span> Logout</a>
+                        <a class="dropdown-item" href="{{ act('user', 'view', Auth::user()->id) }}"><span class="fas fa-user"></span> My Profile</a>
+                        <a class="dropdown-item" href="{{ act('panel', 'index') }}"><span class="fas fa-gears"></span> Control Panel</a>
+                        <a class="dropdown-item" href="{{ url('/auth/logout') . '?_token=' . csrf_token() }}"><span class="fas fa-right-from-bracket"></span> Logout</a>
                     </div>
                 </li>
             @endif
@@ -95,7 +95,7 @@
                     <div class="navbar-form navbar-search-form">
                         <div class="form-group">
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text"><span class="fa fa-search"></span></span>
+                                <span class="input-group-text"><span class="fas fa-magnifying-glass"></span></span>
                                 <input type="text" class="form-control" name="search" placeholder="Search">
                             </div>
                         </div>

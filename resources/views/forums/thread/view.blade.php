@@ -7,18 +7,17 @@
 
 @section('content')
 
-    <h1>
-        {{ $thread->title }}
-
+    <h1 class="d-flex align-items-center">
+        <span class="me-auto">{{ $thread->title }}</span>
+        <small class="hidden-sm-down">Created @date($thread->created_at) by @avatar($thread->user inline)</small>
         @if (permission('ForumAdmin'))
             @if ($thread->deleted_at)
-                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fa fa-repeat"></span></a>
+                <a href="{{ act('thread', 'restore', $thread->id) }}" class="btn btn-xs btn-outline-info"><span class="fas fa-arrow-rotate-right"></span></a>
             @else
-                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fa fa-remove"></span></a>
-                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fa fa-pencil"></span></a>
+                <a href="{{ act('thread', 'delete', $thread->id) }}" class="btn btn-xs btn-outline-danger"><span class="fas fa-xmark"></span></a>
+                <a href="{{ act('thread', 'edit', $thread->id) }}" class="btn btn-xs btn-outline-primary"><span class="fas fa-pencil"></span></a>
             @endif
         @endif
-        <small class="pull-right hidden-sm-down">Created @date($thread->created_at) by @avatar($thread->user inline)</small>
     </h1>
 
     <ol class="breadcrumb">
@@ -30,12 +29,12 @@
                 @if ($subscription)
                     @form(thread/unsubscribe)
                         @hidden(id $thread->id)
-                        <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Unsubscribe</button>
+                        <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fas fa-bell"></span> Unsubscribe</button>
                     @endform
                 @else
                     @form(thread/subscribe)
                         @hidden(id $thread->id)
-                        <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fa fa-bell"></span> Subscribe</button>
+                        <button type="submit" class="btn btn-xs btn-outline-inverse"><span class="fas fa-bell"></span> Subscribe</button>
                     @endform
                 @endif
             @endif
@@ -55,16 +54,16 @@
                     </div>
                     <div class="slot-title hidden-md-up">
                         @avatar($post->user text)
-                        <div class="pull-right">
+                        <div class="float-end">
                             @if ($post->isEditable($thread))
                                 <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
-                                    <span class="fa fa-pencil"></span>
+                                    <span class="fas fa-pencil"></span>
                                     <span class="hidden-xs-down">Edit</span>
                                 </a>
                             @endif
                             @if (permission('ForumAdmin'))
                                 <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
-                                    <span class="fa fa-remove"></span>
+                                    <span class="fas fa-xmark"></span>
                                     <span class="hidden-xs-down">Delete</span>
                                 </a>
                             @endif
@@ -73,7 +72,7 @@
                     <div class="slot-subtitle">
                         Posted @date($post->created_at)
                         @auth
-                            <a class="pull-right" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
+                            <a class="float-end" href="{{ act('thread', 'locate-post', $post->id) }}">Post #{{ $post->id }}</a>
                         @endauth
                     </div>
                 </div>
@@ -86,13 +85,13 @@
                         @avatar($post->user full)
                         @if ($post->isEditable($thread))
                             <a href="{{ act('post', 'edit', $post->id) }}" class="btn btn-xs btn-outline-primary">
-                                <span class="fa fa-pencil"></span>
+                                <span class="fas fa-pencil"></span>
                                 Edit
                             </a>
                         @endif
                         @if (permission('ForumAdmin'))
                             <a href="{{ act('post', 'delete', $post->id) }}" class="btn btn-xs btn-outline-danger">
-                                <span class="fa fa-remove"></span>
+                                <span class="fas fa-xmark"></span>
                                 Delete
                             </a>
                         @endif

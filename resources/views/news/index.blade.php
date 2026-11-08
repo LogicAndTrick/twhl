@@ -3,10 +3,10 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-newspaper-o"></span>
+        <span class="far fa-newspaper"></span>
         News posts
         @if (permission('NewsAdmin'))
-            <a class="btn btn-outline-primary btn-xs" href="{{ act('news', 'create') }}"><span class="fa fa-plus"></span> Create new news post</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('news', 'create') }}"><span class="fas fa-plus"></span> Create new news post</a>
         @endif
     </h1>
 
@@ -22,15 +22,15 @@
                     <div class="slot-title">
                         <a href="{{ act('news', 'view', $news->id) }}">{{ $news->title }}</a>
                         @if (permission('NewsAdmin'))
-                            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-outline-danger btn-xs"><span class="fa fa-remove"></span> Delete</a>
-                            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+                            <a href="{{ act('news', 'delete', $news->id) }}" class="btn btn-outline-danger btn-xs"><span class="fas fa-xmark"></span> Delete</a>
+                            <a href="{{ act('news', 'edit', $news->id) }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-pencil"></span> Edit</a>
                         @endif
                     </div>
                     <div class="slot-subtitle">
                         @avatar($news->user text) &bull;
                         @date($news->created_at) &bull;
                         <a href="{{ act('news', 'view', $news->id) }}">
-                            <span class="fa fa-comment"></span>
+                            <span class="fas fa-comment"></span>
                             {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
                         </a>
                     </div>

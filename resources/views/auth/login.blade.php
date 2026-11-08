@@ -3,7 +3,7 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-user-circle-o"></span>
+        <span class="far fa-circle-user"></span>
         Login to TWHL
     </h1>
 

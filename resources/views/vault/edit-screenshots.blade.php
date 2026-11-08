@@ -17,7 +17,7 @@
 
     <div class="screenshots-dnd-explanation">
         Drag and drop to re-order the screenshots
-        <span class="fa fa-arrow-down"></span>
+        <span class="fas fa-arrow-down"></span>
     </div>
 
     <ul class="list-unstyled screenshot-list container">
@@ -45,12 +45,12 @@
             </div>
             <div class="col-9">
                 <div class="drag-handle">
-                    <span class="fa fa-bars"></span>
+                    <span class="fas fa-bars"></span>
                 </div>
                 <p>
                     <a href="{{ asset('uploads/vault/{image_full}') }}" target="_blank">See full image</a>
                 </p>
-                <button type="button" class="delete-button btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete</button>
+                <button type="button" class="delete-button btn btn-danger btn-xs"><span class="fas fa-xmark"></span> Delete</button>
             </div>
         </li>
     </script>

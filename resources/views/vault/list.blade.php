@@ -4,10 +4,10 @@
 @section('content')
 
     <h1>
-        <span class="fa fa-database"></span>
+        <span class="fas fa-database"></span>
         Vault items
         @if (permission('VaultCreate') && !$items->hasPages())
-            <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
+            <a class="btn btn-outline-primary btn-xs" href="{{ act('vault', 'create') }}"><span class="fas fa-plus"></span> Upload to the Vault</a>
         @endif
     </h1>
 
@@ -20,7 +20,7 @@
         @endif
 
         @if (permission('VaultCreate') && $items->hasPages())
-            <a class="btn btn-primary ms-auto" href="{{ act('vault', 'create') }}"><span class="fa fa-plus"></span> Upload to the Vault</a>
+            <a class="btn btn-primary ms-auto" href="{{ act('vault', 'create') }}"><span class="fas fa-plus"></span> Upload to the Vault</a>
         @endif
     </div>
 
@@ -35,30 +35,30 @@
         <input type="hidden" data-filter="filter-rating" name="rate" value="{{ Request::get('rate') }}"/>
         <input type="hidden" data-filter="filter-sort" name="sort" value="{{ Request::get('sort') }}"/>
         <div class="input-group vault-filter-container">
-            <span class="input-group-text"><span class="fa fa-search"></span></span>
+            <span class="input-group-text"><span class="fas fa-magnifying-glass"></span></span>
             <input name="search" type="text" value="{{ Request::get('search') }}" placeholder="Type here to search" class="form-control">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Games</span></button>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fas fa-arrows-rotate"></span> Games</span></button>
             <ul class="dropdown-menu vault-filter filter-games">
                 <li class="loading">Loading...</li>
             </ul>
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Categories</span></button>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fas fa-arrows-rotate"></span> Categories</span></button>
             <ul class="dropdown-menu vault-filter filter-categories">
                 <li class="loading">Loading...</li>
             </ul>
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Types</span></button>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fas fa-arrows-rotate"></span> Types</span></button>
             <ul class="dropdown-menu vault-filter filter-types">
                 <li class="loading">Loading...</li>
             </ul>
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Users</span></button>
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fas fa-arrows-rotate"></span> Users</span></button>
             <ul class="dropdown-menu vault-filter remove-item filter-users">
                 <li class="loading">Loading...</li>
             </ul>
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fa fa-refresh"></span> Includes</span></button>
-            <ul class="dropdown-menu pull-right vault-filter filter-includes">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info"><span class="fas fa-arrows-rotate"></span> Includes</span></button>
+            <ul class="dropdown-menu dropdown-menu-end vault-filter filter-includes">
                 <li class="loading">Loading...</li>
             </ul>
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Min. Rating: Any</span></button>
-            <ul class="dropdown-menu pull-right vault-filter filter-one filter-rating">
+            <ul class="dropdown-menu dropdown-menu-end vault-filter filter-one filter-rating">
                 <li class="filter-action" data-filter-value="5">5</li>
                 <li class="filter-action" data-filter-value="4.5">4.5</li>
                 <li class="filter-action" data-filter-value="4">4</li>
@@ -68,10 +68,10 @@
                 <li class="filter-action" data-filter-value="2">2</li>
                 <li class="filter-action" data-filter-value="1.5">1.5</li>
                 <li class="filter-action" data-filter-value="1">1</li>
-                <li class="clear-filter static-control filter-action"><span class="fa fa-remove"></span> Clear Filter</li>
+                <li class="clear-filter static-control filter-action"><span class="fas fa-xmark"></span> Clear Filter</li>
             </ul>
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"><span class="filter-info">Sort: Created</span></button>
-            <ul class="dropdown-menu pull-right vault-filter filter-one filter-sort">
+            <ul class="dropdown-menu dropdown-menu-end vault-filter filter-one filter-sort">
                 <li class="filter-action" data-filter-value="date" data-text="Created">Date Created</li>
                 <li class="filter-action" data-filter-value="update" data-text="Updated">Date Updated</li>
                 <li class="filter-action" data-filter-value="rating">Rating</li>
@@ -114,7 +114,7 @@
                         @if ($item->link_broken)
                             &bull;
                             <span class="broken-download-warning">
-                                <span class="fa fa-chain-broken broken-download-icon"></span>
+                                <span class="fas fa-link-slash broken-download-icon"></span>
                                 Broken Download
                             </span>
                         @endif
@@ -137,7 +137,7 @@
             'item:filter-categories': '<li class="filter-action" data-filter-value="{id}">{name}</li>',
             'item:filter-types': '<li class="filter-action" data-filter-value="{id}">{name}</li>',
             'item:filter-includes': '<li class="filter-action" data-filter-value="{id}">{name}</li>',
-            'item:filter-users': '<li class="user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>',
+            'item:filter-users': '<li class="user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fas fa-xmark filter-action"></span></li>',
             'append:filter-users': '<li class="static-control search-form user-search"><input class="form-control w-100" type="text" placeholder="Search users..." /><ul class="search-results"></ul></li>'
         };
 
@@ -147,7 +147,7 @@
 
             obj = obj || {};
             el.replaceChildren(...items.map(x => nanoTemplateHtml(templ, {...obj, ...x})));
-            el.append(nanoTemplateHtml('<li class="clear-filter static-control filter-action"><span class="fa fa-remove"></span> Clear Filter</li>'));
+            el.append(nanoTemplateHtml('<li class="clear-filter static-control filter-action"><span class="fas fa-xmark"></span> Clear Filter</li>'));
             if (append) el.append(nanoTemplateHtml(append));
 
             const input = document.querySelector(`[data-filter=${cls}]`);
@@ -272,7 +272,7 @@
                         const resp = await fetch('{{ url("api/users") }}?filter=' + encodeURIComponent(el.value));
                         const data = await resp.json();
                         results.replaceChildren(...data.map(u => {
-                            return nanoTemplateHtml('<li class="user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fa fa-remove filter-action"></span></li>', u);
+                            return nanoTemplateHtml('<li class="user-item" data-filter-value="{id}" data-avatar="{avatar_inline}"><img src="{avatar_inline}" alt="avatar" /> {name} <span class="fas fa-xmark filter-action"></span></li>', u);
                         }));
                     }, 500);
                 });

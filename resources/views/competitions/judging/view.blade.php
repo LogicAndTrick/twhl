@@ -6,10 +6,10 @@
         Competition judging: {{ $comp->name }}
 
         @if (permission('CompetitionAdmin') && $comp->isJudging())
-            <a href="{{ act('competition-judging', 'publish', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fa fa-arrow-right"></span> Publish Results</a>
+            <a href="{{ act('competition-judging', 'publish', $comp->id) }}" class="btn btn-outline-info btn-xs"><span class="fas fa-arrow-right"></span> Publish Results</a>
         @endif
-        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-outline-success btn-xs"><span class="fa fa-eye"></span> Preview Results</a>
-        <a href="{{ act('competition-judging', 'create-entry', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fa fa-plus"></span> Add Entry</a>
+        <a href="{{ act('competition-judging', 'preview', $comp->id) }}" class="btn btn-outline-success btn-xs"><span class="fas fa-eye"></span> Preview Results</a>
+        <a href="{{ act('competition-judging', 'create-entry', $comp->id) }}" class="btn btn-outline-primary btn-xs"><span class="fas fa-plus"></span> Add Entry</a>
     </h1>
 
     <ol class="breadcrumb">
@@ -34,12 +34,12 @@
                         @avatar($entry->user text)
 
                         @if (permission('CompetitionAdmin'))
-                            <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="fa fa-remove"></span> Delete Entry</a>
+                            <a href="{{ act('competition-entry', 'delete', $entry->id) }}" class="btn btn-danger btn-xs"><span class="fas fa-xmark"></span> Delete Entry</a>
                         @endif
-                        <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
-                        <a href="{{ act('competition-judging', 'edit-entry', $entry->id) }}" class="btn btn-primary btn-xs"><span class="fa fa-pencil"></span> Edit</a>
+                        <a href="{{ act('competition-entry', 'manage', $entry->id) }}" class="btn btn-info btn-xs"><span class="far fa-image"></span> Edit Screenshots</a>
+                        <a href="{{ act('competition-judging', 'edit-entry', $entry->id) }}" class="btn btn-primary btn-xs"><span class="fas fa-pencil"></span> Edit</a>
                         @if ($entry->getLinkUrl())
-                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fa fa-download"></span> Download</a>
+                            <a href="{{ $entry->getLinkUrl() }}" class="btn btn-success btn-xs"><span class="fas fa-download"></span> Download</a>
                         @endif
                     </div>
                     <div class="slot-subtitle">

@@ -5,7 +5,7 @@
     @include('wiki.nav')
 
     <h1>
-        <span class="fa fa-star"></span>
+        <span class="fas fa-star"></span>
         {{ $title }}
     </h1>
 

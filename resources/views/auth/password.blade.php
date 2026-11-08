@@ -3,7 +3,7 @@
 
 @section('content')
     <h1>
-        <span class="fa fa-life-ring"></span>
+        <span class="fas fa-life-ring"></span>
         Request password reset
     </h1>
 

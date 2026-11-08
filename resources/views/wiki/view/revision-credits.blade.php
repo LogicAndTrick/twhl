@@ -4,7 +4,7 @@
         @foreach ($revision->wiki_revision_credits->where('type', '!=', \App\Models\Wiki\WikiRevisionCredit::FULL) as $cred)
             <li>
                 @if ($cred->type == \App\Models\Wiki\WikiRevisionCredit::CREDIT)
-                    <span class="fa fa-pencil"></span>
+                    <span class="fas fa-pencil"></span>
                     @if ($cred->user_id)
                         @avatar($cred->user inline)
                     @elseif ($cred->url)
@@ -15,7 +15,7 @@
                     &ndash;
                     {{$cred->description}}
                 @elseif ($cred->type == \App\Models\Wiki\WikiRevisionCredit::ARCHIVE)
-                    <span class="fa fa-globe"></span>
+                    <span class="fas fa-earth-americas"></span>
                     This article contains archived content from
                     <strong>{{$cred->name}}</strong>@if($cred->description) &ndash; <em>{{$cred->description}}</em>@endif.
                     @if ($cred->url)
@@ -29,7 +29,7 @@
         @endforeach
         @if ($revision->wiki_revision_credits->where('type', '=', \App\Models\Wiki\WikiRevisionCredit::ARCHIVE)->count() > 0)
             <li>
-                <span class="fa fa-info-circle"></span>
+                <span class="fas fa-circle-info"></span>
                 TWHL only publishes archived articles from defunct websites, or with permission.
                 For more information on TWHL's archiving efforts, please visit the
                 <a href="{{ url('wiki/page/TWHL_Archiving_Project') }}" title="TWHL Archiving Project">TWHL Archiving Project</a> page.
@@ -44,21 +44,21 @@
             <div class="card card-info">
                 <div class="card-body">
                     <div>
-                        <span class="fa fa-globe"></span>
+                        <span class="fas fa-earth-americas"></span>
                         This article was originally published on <strong>{{$cred->name}}</strong>@if($cred->description) as <em>{{$cred->description}}</em>@endif.
                     </div>
                     @if ($cred->url)
                         <div class="ms-3">
-                            <span class="fa fa-link"></span> The original URL of the article was <a href="{{$cred->url}}">{{$cred->url}}</a>.
+                            <span class="fas fa-link"></span> The original URL of the article was <a href="{{$cred->url}}">{{$cred->url}}</a>.
                         </div>
                     @endif
                     @if ($cred->wayback_url)
                         <div class="ms-3">
-                            <span class="fa fa-archive"></span> The archived page is available <a href="{{$cred->wayback_url}}">here</a>.
+                            <span class="fas fa-box-archive"></span> The archived page is available <a href="{{$cred->wayback_url}}">here</a>.
                         </div>
                     @endif
                     <div>
-                        <span class="fa fa-info-circle"></span>
+                        <span class="fas fa-circle-info"></span>
                         TWHL only publishes archived articles from defunct websites, or with permission.
                         For more information on TWHL's archiving efforts, please visit the
                         <a href="{{ url('wiki/page/TWHL_Archiving_Project') }}" title="TWHL Archiving Project">TWHL Archiving Project</a> page.

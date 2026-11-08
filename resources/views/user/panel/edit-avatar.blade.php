@@ -44,8 +44,9 @@
     {? $sel = $user->avatar_custom ? '' : $user->avatar_file; ?}
     @foreach ($avatar_groups as $title => $avatars)
         <div class="card mt-3">
-            <div class="card-header">
-                {{ $title }} <span class="pull-right">Click an avatar to use it</span>
+            <div class="card-header d-flex align-items-center">
+                <span class="me-auto">{{ $title }}</span>
+                <span>Click an avatar to use it</span>
             </div>
             <div class="card-body">
                 <div class="row avatar-preset-chooser">

@@ -1,15 +1,19 @@
-<h1>
-    <span class="fa fa-list-ul"></span>
-    Category: {{ str_replace('_', ' ', str_replace('+', ' > ', $cat_name)) }}
+<h1 class="d-flex align-items-center">
+    <span class="me-1">
+        <span class="fas fa-list-ul"></span>
+    </span>
+    <span class="me-auto">
+        Category: {{ str_replace('_', ' ', str_replace('+', ' > ', $cat_name)) }}
+    </span>
 
     @if ($revision)
-        <small class="pull-right">
+        <small>
             @if (!$revision->wiki_object->canEdit())
-                <span class="fa fa-lock" title="You do not have access to edit this page."></span>
+                <span class="fas fa-lock" title="You do not have access to edit this page."></span>
             @elseif ($revision->wiki_object->isProtected())
-                <span class="fa fa-lock faded" title="This page is protected."></span>
+                <span class="fas fa-lock faded" title="This page is protected."></span>
             @endif
-            Last edited @date($revision->created_at) by @avatar($revision->user inline)
+            Last edited @date($revision->created_at)
         </small>
     @endif
 </h1>

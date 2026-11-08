@@ -315,18 +315,18 @@ async function save() {
     <div :class="'shoutbox ' + classes" @click="state = 'open'">
         <h1>
             Shoutbox
-            <span v-if="loading" class="refresh-icon fa fa-refresh"></span>
+            <span v-if="loading" class="refresh-icon fas fa-arrows-rotate"></span>
             <a href="#" class="minimise-button" @click.prevent.stop="state = 'closed'">
-                <span class="fa fa-caret-down"></span>
+                <span class="fas fa-caret-down fa-width-auto"></span>
             </a>
             <a href="#" class="expand-button" @click.prevent.stop="state = 'open'">
-                <span class="fa fa-caret-up"></span>
+                <span class="fas fa-caret-up fa-width-auto"></span>
             </a>
             <a href="#" v-if="position !== 'left'" class="minimise-button position-button" @click.prevent.stop="position = 'left'">
-                <span class="fa fa-caret-left"></span>
+                <span class="fas fa-caret-left fa-width-auto"></span>
             </a>
             <a href="#" v-if="position !== 'right'" class="minimise-button position-button" @click.prevent.stop="position = 'right'">
-                <span class="fa fa-caret-right"></span>
+                <span class="fas fa-caret-right fa-width-auto"></span>
             </a>
         </h1>
         <ul ref="shoutsList" class="shouts">
@@ -339,16 +339,12 @@ async function save() {
                     <span class="time" :title="s.date">{{ formatTime(s.created) }}</span>
                     <button v-if="moderator" class="btn btn-outline-inverse btn-xxs delete" @click="beginDelete(s)">D</button>
                     <button v-if="moderator" class="btn btn-outline-inverse btn-xxs edit" @click="beginEdit(s)">E</button>
-                    <span class="user"
-                        ><a :href="s.user.url">{{ s.user.name }}</a></span
-                    >
+                    <span class="user"><a :href="s.user.url">{{ s.user.name }}</a></span>
                     <span class="text" v-html="s.formatted_content" />
                 </span>
             </li>
         </ul>
-        <div class="error" v-if="errorMessage">
-            <span class="fa fa-remove"></span><span class="message">{{ errorMessage }}</span>
-        </div>
+        <div class="error" v-if="errorMessage"><span class="fas fa-xmark"></span><span class="message">{{ errorMessage }}</span></div>
         <form method="get" @submit.prevent="save()" v-if="active">
             <div class="input-group">
                 <input
@@ -363,7 +359,7 @@ async function save() {
                 <button :disabled="loading" v-if="editing" class="btn btn-info btn-sm edit-button" type="submit" @click="save()">Edit</button>
                 <button :disabled="loading" v-if="deleting" class="btn btn-danger btn-sm delete-button" type="submit" @click="save()">Delete</button>
                 <button :disabled="loading" v-if="editing || deleting" class="btn btn-outline-inverse btn-sm cancel-button" type="button" @click="cancelEdit()">
-                    <span class="fa fa-remove"></span>
+                    <span class="fas fa-xmark"></span>
                 </button>
                 <button :disabled="loading" v-if="!editing && !deleting" class="btn btn-primary btn-sm shout-button" type="submit" @click="save()">
                     Shout!

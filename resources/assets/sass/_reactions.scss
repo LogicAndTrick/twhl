@@ -54,11 +54,10 @@
                 opacity: 1;
                 background-color: rgb(127 127 127 / 0.25);
             }
-
-            .img {
-                position: relative;
-                top: -0.1rem;
-                min-width: 1.5rem;
+            .fas,
+            .far {
+                display: inline;
+                line-height: 150%;
             }
             .num {
                 font-size: 90%;

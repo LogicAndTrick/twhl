@@ -5,7 +5,7 @@
     @include('wiki.nav')
 
     <h1>
-        <span class="fa fa-upload"></span>
+        <span class="fas fa-upload"></span>
         Wiki uploads
     </h1>
 

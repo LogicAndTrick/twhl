@@ -5,7 +5,7 @@
     @include('wiki.nav')
 
     <h1>
-        <span class="fa fa-files-o"></span>
+        <span class="far fa-copy"></span>
         Wiki pages
     </h1>
 

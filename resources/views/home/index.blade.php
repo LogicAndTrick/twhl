@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-8 order-last order-md-first">
             <h1>
-                <a href="{{ act('news', 'index') }}"><span class="fa fa-newspaper-o"></span> Latest News</a>
+                <a href="{{ act('news', 'index') }}"><span class="far fa-newspaper"></span> Latest News</a>
                 <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('news', 'index') }}">See all</a>
             </h1>
             <div class="news">
@@ -24,7 +24,7 @@
                                 @avatar($news->user text) &bull;
                                 @date($news->created_at) &bull;
                                 <a href="{{ act('news', 'view', $news->id) }}">
-                                    <span class="fa fa-comment"></span>
+                                    <span class="fas fa-comment"></span>
                                     {{ $news->stat_comments }} comment{{$news->stat_comments==1?'':'s'}}
                                 </a>
                             </div>
@@ -41,7 +41,7 @@
             <div class="welcome">
                 @if (Auth::check())
                     <h1>
-                        <span class="fa fa-user"></span>
+                        <span class="fas fa-user"></span>
                         Welcome back!
                         <a class="btn btn-outline-primary btn-xs hidden-md-down" href="{{ act('user', 'view', Auth::user()->id) }}">My profile</a>
                     </h1>
@@ -60,7 +60,7 @@
                                 <h3>{{$user->name}}</h3>
                                 <a href="{{ act('message', 'index') }}" class="{{ $unread_count > 0 ? 'notify-alert' : '' }}">
                                     <span>
-                                        <span class="fa fa-envelope"></span>
+                                        <span class="fas fa-envelope"></span>
                                         {{ $unread_count == 0 ? 'Private messages' : $unread_count . ' new private message' . ($unread_count == 1 ? '' : 's') }}
                                     </span>
                                 </a>
@@ -68,7 +68,7 @@
                                 <br class="hidden-sm-down hidden-xl-up" />
                                 <a href="{{ act('panel', 'notifications') }}" class="d-inline-block pb-1 {{ $notify_count > 0 ? 'notify-alert' : '' }}">
                                     <span>
-                                        <span class="fa fa-bell"></span>
+                                        <span class="fas fa-bell"></span>
                                         {{ $notify_count == 0 ? 'Notifications' : $notify_count . ' new notification' . ($notify_count == 1 ? '' : 's') }}
                                     </span>
                                 </a>
@@ -95,7 +95,7 @@
                     <ul class="pl-4">
                         @if (Auth::check())
                             <li style="list-style-type: none; margin-left: -1rem;">
-                                <span class="fa fa-sign-in"></span>
+                                <span class="fas fa-right-to-bracket"></span>
                                 This is your <strong>{{ Auth::user()->stat_logins }}</strong><sup>{{ ordinal(Auth::user()->stat_logins, false) }}</sup> login
                             </li>
                         @endif
@@ -123,16 +123,16 @@
                     <h3>Let's get started!</h3>
                     <p class="mb-1">Ready to start modding? Our <a href="{{ act('wiki', 'index') }}">wiki</a> has all the information you need! Start here:</p>
                     <ul class="mb-2">
-                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('Tools and Resources')) }}"><span class="fa fa-rocket"></span> Tools and Resources</a></li>
-                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Tutorials')) }}"><span class="fa fa-book"></span> Tutorials</a></li>
-                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Entity Guides')) }}"><span class="fa fa-info-circle"></span> Entity Guides</a></li>
+                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('Tools and Resources')) }}"><span class="fas fa-rocket"></span> Tools and Resources</a></li>
+                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Tutorials')) }}"><span class="fas fa-book"></span> Tutorials</a></li>
+                        <li><a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Entity Guides')) }}"><span class="fas fa-circle-info"></span> Entity Guides</a></li>
                     </ul>
 <?php
                     $wiki_spotlight = count($wiki_articles['featured_tutorials']) > 0 ? $wiki_articles['featured_tutorials'][0] : null;
 ?>
                     @if ($wiki_spotlight)
                         <div class="text-center">
-                            <span class="fa fa-star"></span> Today's featured tutorial:<br/>
+                            <span class="fas fa-star"></span> Today's featured tutorial:<br/>
                             <a href="{{ act('wiki', 'page', $wiki_spotlight->slug) }}">{{ $wiki_spotlight->title }}</a>
                         </div>
                     @endif
@@ -143,7 +143,7 @@
 
     @if (count($competitions) > 0)
         <h1>
-            <a href="{{ act('competition', 'index') }}"><span class="fa fa-trophy"></span> Active Competitions</a>
+            <a href="{{ act('competition', 'index') }}"><span class="fas fa-trophy"></span> Active Competitions</a>
             <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('competition', 'index') }}">See all</a>
         </h1>
         <div class="competition-list">
@@ -184,7 +184,7 @@
     @endif
 
     <h1>
-        <a href="{{ act('vault', 'index') }}"><span class="fa fa-database"></span> New in the Vault</a>
+        <a href="{{ act('vault', 'index') }}"><span class="fas fa-database"></span> New in the Vault</a>
         <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('vault', 'index') }}">See all</a>
     </h1>
     <div class="vault-items">
@@ -192,7 +192,7 @@
             @foreach ($new_maps as $item)
                 <a href="{{ act('vault', 'view', $item->id) }}" class="tile tagged">
                     @if ($item->created_at < $item->updated_at->subWeeks(2))
-                        <span class="tag"><span class="fa fa-certificate"></span> Updated</span>
+                        <span class="tag"><span class="fas fa-certificate"></span> Updated</span>
                     @endif
                     <span class="tile-main">
                         <img alt="{{ $item->name }}" src="{{ asset($item->getMediumAsset()) }}">
@@ -208,7 +208,7 @@
 
         <div class="col-md-8">
             <h1>
-                <a href="{{ act('forum', 'index') }}"><span class="fa fa-comment"></span> From the Forums</a>
+                <a href="{{ act('forum', 'index') }}"><span class="fas fa-comment"></span> From the Forums</a>
                 <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('forum', 'index') }}">See all</a>
             </h1>
             <div class="forum">
@@ -225,7 +225,7 @@
                                 @avatar($thread->last_post->user text) &bull;
                                 @date($thread->last_post->updated_at) &bull;
                                 <a href="{{ act('thread', 'view', $thread->id) }}?page=last">
-                                    <span class="fa fa-reply"></span>
+                                    <span class="fas fa-reply"></span>
                                     {{ $thread->stat_posts-1 }} repl{{$thread->stat_posts-1==1?'y':'ies'}}
                                 </a>
                             </div>
@@ -238,7 +238,7 @@
             </div>
 
             <h1>
-                <a href="{{ act('poll', 'index') }}"><span class="fa fa-pie-chart"></span> Poll</a>
+                <a href="{{ act('poll', 'index') }}"><span class="fas fa-chart-pie"></span> Poll</a>
                 <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('poll', 'index') }}">See all</a>
             </h1>
             <div class="poll">
@@ -252,7 +252,7 @@
                                 Posted @date($poll->created_at) &bull;
                                 {{ $poll->isOpen() ? 'Voting now!' : 'Voting closed' }} &bull;
                                 <a href="{{ act('poll', 'view', $poll->id) }}">
-                                    <span class="fa fa-comment"></span>
+                                    <span class="fas fa-comment"></span>
                                     {{ $poll->stat_comments }} comment{{$poll->stat_comments==1?'':'s'}}
                                 </a>
                             </div>
@@ -276,7 +276,7 @@
         <div class="col-md-4">
 
             <h1>
-                <a href="{{ act('journal', 'index') }}"><span class="fa fa-quote-left"></span> Journals</a>
+                <a href="{{ act('journal', 'index') }}"><span class="fas fa-quote-left"></span> Journals</a>
                 <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('journal', 'index') }}">See all</a>
             </h1>
             <div class="journals">
@@ -292,7 +292,7 @@
                             <span class="slip-subtitle">
                                 @avatar($journal->user text link=false) &bull;
                                 <span class="hidden-md-only">@date($journal->created_at) &bull;</span>
-                                <span class="fa fa-comment"></span> {{ $journal->stat_comments }}
+                                <span class="fas fa-comment"></span> {{ $journal->stat_comments }}
                             </span>
                         </span>
                     </a>
@@ -300,7 +300,7 @@
             </div>
 
             <h1>
-                <a href="{{ act('wiki', 'index') }}"><span class="fa fa-lightbulb-o"></span> Resources</a>
+                <a href="{{ act('wiki', 'index') }}"><span class="far fa-lightbulb"></span> Resources</a>
                 <a class="btn btn-outline-primary btn-xs hidden-sm-down" href="{{ act('wiki', 'index') }}">View wiki</a>
             </h1>
             <div class="slot wiki-feature">
@@ -314,7 +314,7 @@
                 </ul>
                 <div class="text-center my-2">
                     <a href="{{ act('wiki', 'page', \App\Models\Wiki\WikiRevision::CreateSlug('category:Tutorials')) }}" class="btn btn-primary btn-xs">
-                        <span class="fa fa-chevron-circle-right"></span>
+                        <span class="fas fa-circle-chevron-right"></span>
                         See all tutorials
                     </a>
                 </div>
@@ -331,7 +331,7 @@
             </div>
 
             <h1>
-                <span class="fa fa-globe"></span> Active Users
+                <span class="fas fa-earth-americas"></span> Active Users
             </h1>
             <div class="slot active-users">
                 <ul class="list-unstyled">

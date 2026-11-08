@@ -69,14 +69,14 @@ const buttons: Array<ButtonDefinition[]> = [
         { icon: 'code', title: 'Code', template: '`CUR1`', cur1: 'code', cur2: '' },
     ],
     [
-        { icon: 'header', text: '1', title: 'Header 1', template: '= CUR1', cur1: 'Header', cur2: '' },
-        { icon: 'header', text: '2', title: 'Header 2', template: '== CUR1', cur1: 'Header', cur2: '' },
-        { icon: 'header', text: '3', title: 'Header 3', template: '=== CUR1', cur1: 'Header', cur2: '' },
+        { icon: 'heading', text: '1', title: 'Header 1', template: '= CUR1', cur1: 'Header', cur2: '' },
+        { icon: 'heading', text: '2', title: 'Header 2', template: '== CUR1', cur1: 'Header', cur2: '' },
+        { icon: 'heading', text: '3', title: 'Header 3', template: '=== CUR1', cur1: 'Header', cur2: '' },
     ],
     [
         { icon: 'link', title: 'Link', template: '[CUR2|CUR1]', cur1: 'link text', cur2: 'http://example.com/' },
-        { icon: 'picture-o', title: 'Image', template: '[img:CUR2|CUR1]', cur1: 'caption text', cur2: 'http://example.com/image.jpg' },
-        { icon: 'video-camera', title: 'Youtube', template: '[youtube:CUR2|CUR1]', cur1: 'caption text', cur2: 'youtube_id' },
+        { icon: 'image', title: 'Image', template: '[img:CUR2|CUR1]', cur1: 'caption text', cur2: 'http://example.com/image.jpg' },
+        { icon: 'video', title: 'Youtube', template: '[youtube:CUR2|CUR1]', cur1: 'caption text', cur2: 'youtube_id' },
         { icon: 'quote-right', title: 'Quote', template: '> CUR1', cur1: 'quoted text', cur2: '', force_newline: true },
     ],
     [
@@ -150,7 +150,7 @@ function addButtons(container: HTMLElement, textarea: HTMLTextAreaElement) {
             const b = el('button', 'btn btn-outline-inverse btn-xs');
             b.setAttribute('type', 'button');
             b.setAttribute('title', btn.title);
-            if (btn.icon) b.append(el('span', 'fa fa-' + btn.icon));
+            if (btn.icon) b.append(el('span', 'fas fa-' + btn.icon));
             if (btn.text) b.append(el('span', '', ' ' + btn.text));
             group.append(b);
             b.addEventListener('click', (event) => {
@@ -166,7 +166,7 @@ function addButtons(container: HTMLElement, textarea: HTMLTextAreaElement) {
         const smiley = el('button', 'btn btn-outline-inverse btn-xs dropdown-toggle');
         smiley.setAttribute('type', 'button');
         smiley.setAttribute('data-bs-toggle', 'dropdown');
-        smiley.append(el('span', 'fa fa-smile-o'));
+        smiley.append(el('span', 'far fa-face-smile'));
 
         for (let i = 0; i < smilies.length; i++) {
             const s = smilies[i];
@@ -204,9 +204,10 @@ window.addEventListener('DOMContentLoaded', () => {
             form = input.closest('form')!,
             ta = input.querySelector('textarea')!,
             name = ta.getAttribute('name')!,
-            help = el('a', 'pull-right', 'Formatting help', (x) => {
+            help = el('a', undefined, 'Formatting help', (x) => {
                 x.target = '_blank';
                 x.href = window.urls.wiki.formatting_guide;
+                x.style.float = 'right';
             }),
             btnCon = el('div', 'mb-1'),
             livePreviewInput = el('input', 'form-check-input', undefined, (x) => {
@@ -216,7 +217,7 @@ window.addEventListener('DOMContentLoaded', () => {
             livePreviewLabel = el('label', 'form-check ms-3', 'Live preview'),
             fullscreen = el('a', 'ms-2 hidden-sm-down', '', (x) => {
                 x.href = '#';
-                x.innerHTML = '<span class="fa fa-arrows-alt"></span> Full screen editor';
+                x.innerHTML = '<span class="fas fa-maximize"></span> Full screen editor';
             });
 
         livePreviewLabel.prepend(livePreviewInput);

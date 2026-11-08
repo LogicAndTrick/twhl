@@ -15,9 +15,9 @@
         {{ $item->name }}
 
         @if ($item->isEditable())
-            <a class="btn btn-xs btn-outline-danger" href="{{ act('vault', 'delete', $item->id) }}"><span class="fa fa-remove"></span> Delete</a>
-            <a class="btn btn-xs btn-outline-info" href="{{ act('vault', 'edit-screenshots', $item->id) }}"><span class="fa fa-picture-o"></span> Edit Screenshots</a>
-            <a class="btn btn-xs btn-outline-primary" href="{{ act('vault', 'edit', $item->id) }}"><span class="fa fa-pencil"></span> Edit</a>
+            <a class="btn btn-xs btn-outline-danger" href="{{ act('vault', 'delete', $item->id) }}"><span class="fas fa-xmark"></span> Delete</a>
+            <a class="btn btn-xs btn-outline-info" href="{{ act('vault', 'edit-screenshots', $item->id) }}"><span class="far fa-image"></span> Edit Screenshots</a>
+            <a class="btn btn-xs btn-outline-primary" href="{{ act('vault', 'edit', $item->id) }}"><span class="fas fa-pencil"></span> Edit</a>
         @endif
 
     </h1>
@@ -29,7 +29,7 @@
 
     <div class="slot vault-details">
         <div class="slot-heading">
-            <div class="pull-right text-center" title="{{ $item->game->name }}">
+            <div class="slot-end text-center" title="{{ $item->game->name }}">
                 <img class="game-icon" src="{{ $item->game->getIconUrl() }}" alt="{{ $item->game->name }}" />
                 <small class="d-block">{{ $item->game->abbreviation }}</small>
             </div>
@@ -120,23 +120,23 @@
                             @endif
                             @if ($item->license_id == 1)
                                 <button type="button" class="btn d-block w-100 btn-outline-inverse license-button" data-bs-toggle="tooltip" data-placement="top" title="{{ $item->license->description }}">
-                                    <span class="fa fa-copyright"></span>
+                                    <span class="fas fa-copyright"></span>
                                     License: {{ $item->license->name }}
                                 </button>
                             @else
                                 <a href="{{ preg_replace('%.*(http://[^ ]*).*%i', '$1', $item->license->description) }}" target="_blank" class="btn d-block w-100 btn-outline-secondary license-button" data-bs-toggle="tooltip" data-placement="top" title="{{
                                     preg_replace('%\s*(http://[^ ]*)\s*%i', '', $item->license->description)
                                 }}">
-                                    <span class="fa fa-copyright"></span>
+                                    <span class="fas fa-copyright"></span>
                                     License: {{ $item->license->name }}
                                 </a>
                             @endif
                             <a href="{{ act('vault', 'download', $item->id) }}" target="_blank" class="btn d-block w-100 btn-{{ $item->link_broken ? 'warning' : 'success' }}">
                                 @if ($item->link_broken)
-                                    <span class="fa fa-chain-broken"></span>
+                                    <span class="fas fa-link-slash"></span>
                                     Broken Download (Hosted Externally)
                                 @else
-                                    <span class="fa fa-download"></span>
+                                    <span class="fas fa-download"></span>
                                     Download
                                     @if ($item->file_size > 0)
                                         ({{ format_filesize($item->file_size) }})
@@ -149,12 +149,12 @@
                                 <div class="text-center review-info">
                                     @if ($user_review)
                                         <a class="btn btn-link" href="#comment-{{ $user_review->comment_id }}">
-                                            <span class="fa fa-star"></span>
+                                            <span class="fas fa-star"></span>
                                             Your review score: <strong class="rating-{{ $user_review->getStarRating() }}">{{ number_format(round($user_review->getRating() * 10) / 10, 1) }}</strong>
                                         </a>
                                     @elseif ($item->canReview())
                                         <a class="btn btn-primary" href="{{ act('vault-review', 'create', $item->id) }}">
-                                            <span class="fa fa-star"></span>
+                                            <span class="fas fa-star"></span>
                                             Post a review
                                         </a>
                                     @endif
@@ -167,7 +167,7 @@
                     @foreach ($item->motms as $motm)
                         <div class="alert alert-success">
                             <h3>
-                                <span class="fa fa-certificate"></span>
+                                <span class="fas fa-certificate"></span>
                                 Map of the Month winner for {{ $motm->getDateString() }}!
                             </h3>
                         </div>
