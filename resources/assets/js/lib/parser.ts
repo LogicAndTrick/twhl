@@ -28,7 +28,7 @@ class LineMarkersProcessor implements INodeProcessor {
         return node instanceof UnprocessablePlainTextNode || node instanceof PlainTextNode;
     }
 
-    Process(_parser: Parser, _data: ParseData, node: PlainTextNode | UnprocessablePlainTextNode, _scope: string) {
+    Process(_parser: Parser, _data: ParseData, parentNode: INode | null, node: PlainTextNode | UnprocessablePlainTextNode, _scope: string) {
         let text = node.Text;
 
         if (node instanceof UnprocessablePlainTextNode) {
