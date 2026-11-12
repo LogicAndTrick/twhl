@@ -9,6 +9,12 @@ php_value post_max_size 65M
 
     RewriteEngine On
 
+    # Forward the Authorization header to an environment variable
+    # which Laravel can detect. Apache doesn't pass it to PHP by default.
+    # This is for the API keys
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ /$1 [L,R=301]
 
