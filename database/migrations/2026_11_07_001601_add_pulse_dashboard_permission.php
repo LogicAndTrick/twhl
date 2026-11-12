@@ -16,10 +16,10 @@ return new class extends Migration
             'description' => 'Access to the Pulse Dashboard',
             'is_default' => false
         ]);
-        UserPermission::create([
-            'user_id' => 1983,
-            'permission_id' => $perm->id,
-        ]);
+        // UserPermission::create([
+        //     'user_id' => 1983, // In production, 1983 is Penguinboy
+        //     'permission_id' => $perm->id,
+        // ]);
     }
 
     /**
