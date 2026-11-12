@@ -1,10 +1,10 @@
 <?php namespace App\Models\Accounts;
 
 use App\Models\Comments\Comment;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use DB;
 
-class UserNotification extends Model {
+class UserNotification extends ModelWithExtraTypeInfo {
 
     const WIKI_OBJECT = 'wo';
     const WIKI_REVISION = 'wr';
@@ -18,6 +18,14 @@ class UserNotification extends Model {
 	protected $table = 'user_notifications';
 	protected $fillable = [ 'user_id', 'article_type', 'article_id', 'is_unread', 'is_processed', 'stat_hits' ];
     public $visible = [ ];
+    protected $casts = [
+        'is_processed' => 'boolean',
+        'is_unread' => 'boolean',
+        'stat_hits' => 'integer',
+    ];
+    protected $formats = [
+        'stat_hits' => 'uint32',
+    ];
     protected $appends = ['type_description', 'link'];
 
     public function getTypeDescriptionAttribute() {

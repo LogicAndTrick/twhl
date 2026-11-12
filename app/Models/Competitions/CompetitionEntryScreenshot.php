@@ -1,8 +1,8 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CompetitionEntryScreenshot extends Model {
+class CompetitionEntryScreenshot extends ModelWithExtraTypeInfo {
 
 	public $table = 'competition_entry_screenshots';
     public $timestamps = false;

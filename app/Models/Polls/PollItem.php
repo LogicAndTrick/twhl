@@ -1,11 +1,17 @@
 <?php namespace App\Models\Polls;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class PollItem extends Model {
+class PollItem extends ModelWithExtraTypeInfo {
 
     protected $table = 'poll_items';
     protected $fillable = ['poll_id', 'text', 'stat_votes'];
+    protected $casts = [
+        'stat_votes' => 'integer',
+    ];
+    protected $formats = [
+        'stat_votes' => 'uint32',
+    ];
     public $timestamps = false;
 
     public function poll()

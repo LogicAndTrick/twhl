@@ -1,8 +1,8 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CompetitionJudgeType extends Model {
+class CompetitionJudgeType extends ModelWithExtraTypeInfo {
 
     const JUDGED_SEPARATE = 1;
     const JUDGED_TOGETHER = 2;
