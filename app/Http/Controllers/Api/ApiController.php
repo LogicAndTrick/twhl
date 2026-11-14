@@ -770,7 +770,11 @@ class ApiController extends Controller {
 
         foreach ($desc['methods'] ?? [] as $method) {
             $auth = $desc['auth'][$method] ?? null;
-            $security = [ $auth ? new \stdClass() : [ 'httpBearerToken' => [] ] ];
+            $security = [ [ 'httpBearerToken' => [] ] ];
+            if (!isset($desc['auth'][$method])) {
+                // Unauthenticated access is allowed for this method
+                $security[] = new \stdClass();
+            }
             $params = $desc['parameters'][$method] ?? [];
             if ($method == 'get') {
                 $allParameters = [
