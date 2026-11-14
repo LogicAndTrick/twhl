@@ -1,0 +1,8 @@
+# Podman-specific overrides for use together with the main compose file.
+#
+# `keep-id` maps your host user to the same user ID inside the container.
+# This is needed for Apache & PHP to be able to write log files and file uploads.
+# Docker doesn't need this and doesn't support the `userns_mode` setting.
+services:
+  php-apache:
+    userns_mode: keep-id

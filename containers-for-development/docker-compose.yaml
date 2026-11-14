@@ -7,7 +7,7 @@ services:
       - COMPOSER_IGNORE_PLATFORM_REQS=1
     image: composer:latest
     volumes:
-       - ../:/var/twhl
+       - ../:/var/twhl:z
     working_dir: /var/twhl
   db:
     command:
@@ -43,14 +43,12 @@ services:
     environment:
       - APP_KEY=base64:PB2xpacpFD+vjAcrcj/tBEQ7RzAtvUyufGd4KznJ81k=
       - DB_DATABASE=twhl
-      - DB_HOST=twhl-mysql-db
+      - DB_HOST=db
       - DB_PASSWORD=cs_canbunk2
       - DB_USERNAME=root
     image: twhl-dev/migration-runner
-    links:
-      - "db:twhl-mysql-db"
     volumes:
-       - ../:/var/twhl
+       - ../:/var/twhl:z
   node:
     container_name: twhl-dev-node
     command: npm install
@@ -58,8 +56,12 @@ services:
     secrets:
        - source: npmrc
          target: /root/.npmrc
+    # Lets the container read `~/.npmrc` on SELinux hosts such as Fedora, where
+    # the `user_home_t` label would otherwise block access
+    security_opt:
+       - label=disable
     volumes:
-       - ../:/var/twhl
+       - ../:/var/twhl:z
     working_dir: /var/twhl
   php-apache:
     build:
@@ -80,18 +82,18 @@ services:
         required: false
     environment:
       - APP_KEY=base64:PB2xpacpFD+vjAcrcj/tBEQ7RzAtvUyufGd4KznJ81k=
+      - APP_URL=http://localhost:1082
       - DB_DATABASE=twhl
-      - DB_HOST=twhl-mysql-db
+      - DB_HOST=db
       - DB_PASSWORD=cs_canbunk2
       - DB_USERNAME=root
     image: twhl-dev/php-apache
-    links:
-      - "db:twhl-mysql-db"
     ports:
-      - "82:80"
+      - "1082:1082"
+    user: "${UID:-1000}:${GID:-1000}"
     volumes:
-      - ../:/var/www/html/twhl
-      - ./php-apache/twhl-dev-php-conf.d:/usr/local/etc/php/conf.d
+      - ../:/var/www/html/twhl:z
+      - ./php-apache/twhl-dev-php-conf.d:/usr/local/etc/php/conf.d:z
 secrets:
   npmrc:
     file: ~/.npmrc
