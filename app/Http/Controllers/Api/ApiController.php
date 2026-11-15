@@ -1405,7 +1405,7 @@ class ApiController extends Controller {
             'content_text' => Request::input('content_text'),
             'content_html' => bbcode(Request::input('content_text')),
         ]);
-        return $thread;
+        return $thread->fresh();
     }
 
     private function post_comments()
@@ -1616,7 +1616,7 @@ class ApiController extends Controller {
         if (substr(Request::input('title'), 0, 9) == 'category:') $type = WikiType::CATEGORY;
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = WikiController::createRevision($object);
-        return $revision;
+        return $revision->fresh();
     }
 
     private function put_wiki_revisions(): WikiRevision
@@ -1678,7 +1678,7 @@ class ApiController extends Controller {
             'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
         $revision = WikiController::createRevision($obj, $rev);
-        return $revision;
+        return $revision->fresh();
     }
 
     private function post_wiki_revisions_upload(): WikiRevision
@@ -1719,7 +1719,7 @@ class ApiController extends Controller {
         $type = WikiType::UPLOAD;
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = WikiController::createRevision($object);
-        return $revision;
+        return $revision->fresh();
     }
 
     private function post_wiki_objects_page_information(): array
