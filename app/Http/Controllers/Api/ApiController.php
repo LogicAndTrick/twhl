@@ -1189,8 +1189,8 @@ class ApiController extends Controller {
                 ]
             ],
             'externalDocs' => [
-                'url' => asset('/'),
-                'description' => 'TWHL main website'
+                'url' => asset('/wiki/page/TWHL_API_Documentation'),
+                'description' => 'Usage instructions in TWHL\'s wiki.'
             ],
             'info' => [
                 'title' => 'TWHL JSON API',
