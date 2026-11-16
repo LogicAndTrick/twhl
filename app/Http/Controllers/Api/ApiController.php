@@ -269,7 +269,7 @@ class ApiController extends Controller {
         ],
         'wiki-objects' => [
             'description' => 'Wiki Objects',
-            'methods' => ['post'],
+            'methods' => [],
             'object' => WikiObject::class,
             'filter_columns' => [],
             'additional_methods' => [
@@ -781,7 +781,6 @@ class ApiController extends Controller {
     private function getPathItems($key, $desc): array
     {
         $items = [];
-        $items["/$key"] = [];
 
         [$name, $pluralName] = $this->objectNamesFromDescriptor($desc);
         $filterCols = implode(', ', $desc['filter_columns'] ?? []);
@@ -943,11 +942,6 @@ class ApiController extends Controller {
                 ];
             }
 
-        }
-
-        if (count($items) == 1 && count($items["/$key"]) == 0)
-        {
-            $items = [];
         }
 
         return $items;
@@ -1248,13 +1242,17 @@ class ApiController extends Controller {
             $key = str_replace('-', '_', strtolower(implode('_', $parameters)));
             $method = strtolower($request->getMethod());
             $operation = "{$method}_{$key}";
+            $allowedMethods = array_merge(
+                $desc['methods'] ?? [],
+                array_column($desc['additional_methods'] ?? [], 'method')
+            );
 
             if ($method != 'get' && !permission(true) && (!isset($desc['allow_unauthenticated']) || $desc['allow_unauthenticated'] !== true)) {
                 return response()->json([
                     'message' => 'Unauthorised'
                 ])->setStatusCode(401);
             }
-            else if (array_search($method, $desc['methods']) === false) {
+            else if (!in_array($method, $allowedMethods, true)) {
                 // Also Failure
             }
             else if (method_exists($this, $operation)) {
