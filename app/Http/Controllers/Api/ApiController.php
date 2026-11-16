@@ -769,8 +769,7 @@ class ApiController extends Controller {
         $filterCols = implode(', ', $desc['filter_columns'] ?? []);
 
         foreach ($desc['methods'] ?? [] as $method) {
-            $auth = $desc['auth'][$method] ?? null;
-            $security = [ $auth ? new \stdClass() : [ 'httpBearerToken' => [] ] ];
+            $security = $this->securityForMethod($desc, $method);
             $params = $desc['parameters'][$method] ?? [];
             if ($method == 'get') {
                 $allParameters = [
@@ -898,10 +897,10 @@ class ApiController extends Controller {
 
         foreach ($desc['additional_methods'] ?? [] as $op => $add) {
             $params = $add['parameters'] ?? [];
-
+            $httpMethod = $add['method'];
             $responseName = $this->responseName($add['operationId'], $name);
-            $parameterSet = $this->makeParameterSet($add['method'] === 'get' ? $params : []);
-            $items["/$key/$op"][$add['method']] = [
+            $parameterSet = $this->makeParameterSet($httpMethod === 'get' ? $params : []);
+            $items["/$key/$op"][$httpMethod] = [
                 'tags' => [$key],
                 'operationId' => $add['operationId'],
                 'parameters' => $parameterSet,
@@ -915,12 +914,13 @@ class ApiController extends Controller {
                     422 => [
                         '$ref' => '#/components/responses/ValidationFailedErrorResult'
                     ]
-                ]
+                ],
+                'security' => $this->securityForMethod($desc, $httpMethod)
             ];
 
-            if ($add['method'] !== 'get') {
+            if ($httpMethod !== 'get') {
                 $requestBodyName = $this->requestBodyName($add['operationId'], $name);
-                $items["/$key/$op"][$add['method']]['requestBody'] = [
+                $items["/$key/$op"][$httpMethod]['requestBody'] = [
                     '$ref' => "#/components/requestBodies/{$requestBodyName}"
                 ];
             }
@@ -1186,6 +1186,22 @@ class ApiController extends Controller {
         return response()->json($openapi, 200, [], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
 
+    public function securityForMethod(array $desc, string $method): array
+    {
+        $security = [ [ 'httpBearerToken' => [] ] ];
+        if (!$this->methodRequiresAuthentication($desc, $method)) {
+            // Unauthenticated access is accepted, too
+            $security[] = new \stdClass();
+        }
+        return $security;
+    }
+
+    public function methodRequiresAuthentication(array $desc, string $method): bool
+    {
+        $allowUnauthenticatedFlag = $desc['allow_unauthenticated'] ?? false;
+        return $method !== 'get' && !$allowUnauthenticatedFlag;
+    }
+
     public function missingMethod($parameters = [])
     {
         if (!is_array($parameters)) {
@@ -1200,7 +1216,7 @@ class ApiController extends Controller {
             $method = strtolower($request->getMethod());
             $operation = "{$method}_{$key}";
 
-            if ($method != 'get' && !permission(true) && (!isset($desc['allow_unauthenticated']) || $desc['allow_unauthenticated'] !== true)) {
+            if ($this->methodRequiresAuthentication($desc, $method) && !permission(true)) {
                 return response()->json([
                     'message' => 'Unauthorised'
                 ])->setStatusCode(401);
