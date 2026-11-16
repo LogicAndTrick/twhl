@@ -743,12 +743,17 @@ class ApiController extends Controller {
                 } else {
                     $responseName = $this->responseName($method, $name);
 
+                    $schemaName = $name;
+                    if ($method === 'delete') {
+                        $schemaName = 'SuccessResult';
+                    }
+
                     $responses[$responseName] = [
                         'description' => 'Operation successful',
                         'content' => [
                             'application/json' => [
                                 'schema' => [
-                                    '$ref' => "#/components/schemas/$name"
+                                    '$ref' => "#/components/schemas/$schemaName"
                                 ]
                             ]
                         ],
@@ -1173,6 +1178,16 @@ class ApiController extends Controller {
                             ]
                         ],
                         'required' => ['message'],
+                        'type' => 'object'
+                    ],
+                    'SuccessResult' => [ // For successful DELETEs
+                        'properties' => [
+                            'success' => [
+                                'const' => true,
+                                'type' => 'boolean'
+                            ]
+                        ],
+                        'required' => ['success'],
                         'type' => 'object'
                     ],
                     ...$this->objectSchemasFromDescriptors()
