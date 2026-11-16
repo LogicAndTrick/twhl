@@ -15,8 +15,10 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Apache listens on TCP port 80, so expose that
-EXPOSE 80/tcp
+# Listen on an unprivileged port so Apache can run as a regular user
+RUN sed -ri 's/^Listen 80$/Listen 1082/' /etc/apache2/ports.conf && grep -q 'Listen 1082' /etc/apache2/ports.conf
+RUN sed -ri 's/<VirtualHost \*:80>/<VirtualHost *:1082>/' /etc/apache2/sites-available/000-default.conf && grep -q '<VirtualHost \*:1082>' /etc/apache2/sites-available/000-default.conf
+EXPOSE 1082/tcp
 
 # If we wanted to store the PHP files etc. in a volume:
 # VOLUME /var/www/html/twhl
