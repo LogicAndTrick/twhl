@@ -261,10 +261,7 @@ class ApiController extends Controller {
                     'response' => [
                         'description' => 'Revision page',
                         'schema' => [
-                            'type' => 'array',
-                            'items' => [
-                                '$ref' => '#/components/schemas/WikiRevision'
-                            ]
+                            '$ref' => '#/components/schemas/WikiRevision'
                         ]
                     ]
                 ]
@@ -296,8 +293,7 @@ class ApiController extends Controller {
                     'response' => [
                         'description' => 'Page information',
                         'schema' => [
-                            'type' => 'array',
-                            'items'=> [ '$ref' => '#/components/schemas/WikiPageInformation' ],
+                            '$ref' => '#/components/schemas/WikiPageInformation'
                         ]
                     ]
                 ]
