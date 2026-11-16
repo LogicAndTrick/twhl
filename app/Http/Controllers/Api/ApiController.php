@@ -1177,7 +1177,7 @@ class ApiController extends Controller {
                     'SuccessResult' => [ // For successful DELETEs
                         'properties' => [
                             'success' => [
-                                'const' => true,
+                                //'const' => true, // TODO: Uncomment this when openapi-generator supports non-string `const`
                                 'type' => 'boolean'
                             ]
                         ],
