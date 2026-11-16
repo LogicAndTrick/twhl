@@ -8,7 +8,7 @@ class CompetitionRestrictionGroup extends ModelWithExtraTypeInfo {
     public $timestamps = false;
     public $fillable = ['title', 'is_multiple'];
     public $visible = ['id','title','is_multiple'];
-    public $casts = [
+    protected $casts = [
         'is_multiple' => 'boolean',
     ];
 

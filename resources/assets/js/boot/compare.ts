@@ -7,7 +7,7 @@ type WikiRevision = {
     content_text: string;
     created_at: string;
     id: number;
-    is_active: number;
+    is_active: boolean;
     message: string;
     object_id: number;
     slug: string;
