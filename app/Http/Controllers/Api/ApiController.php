@@ -251,10 +251,11 @@ class ApiController extends Controller {
             'additional_methods' => [
                 'upload' => [
                     'method' => 'post',
+                    'multipart' => true,
                     'operationId' => 'uploadPost',
                     'parameters' => [
                         'title' => [ 'required' => true, 'type' => 'string', 'description' => 'The title of the page to create' ],
-                        'file' => [ 'required' => true, 'type' => 'string', 'description' => 'The file to upload' ],
+                        'file' => [ 'required' => true, 'type' => 'string', 'description' => 'The file to upload', 'file' => true ],
                         'content_text' => [ 'required' => true, 'type' => 'string', 'description' => 'The text of the page to create']
                     ],
                     'response' => [
@@ -531,10 +532,11 @@ class ApiController extends Controller {
             'description' => 'Image Upload',
             'expand' => [],
             'methods' => ['post'],
+            'multipart' => ['post'],
             'auth' => [],
             'parameters' => [
                 'post' => [
-                    'image' => [ 'required' => true, 'type' => 'string', 'format' => 'binary', 'description' => 'The image data. Maximum size: 2MB' ]
+                    'image' => [ 'required' => true, 'type' => 'string', 'description' => 'The image data. Maximum size: 2MB', 'file' => 'image/*' ]
                 ]
             ],
             'object' => \stdClass::class,
@@ -658,6 +660,12 @@ class ApiController extends Controller {
                 $required[] = $key;
             }
             unset($parameters[$key]['required']);
+            if ($this->isFileParameter($def)) {
+                // Don't worry about the MIME type here, OpenAPI is just being weird.
+                // If we need to specify the MIME type it goes in the request body's `encoding`.
+                $parameters[$key]['contentMediaType'] = 'application/octet-stream';
+            }
+            unset($parameters[$key]['file']);
         }
 
         $result = [
@@ -974,15 +982,36 @@ class ApiController extends Controller {
         return "{$prefix}Result";
     }
 
-    private function makeRequestBodyObject($params): array
+    private function isFileParameter(array $def): bool
+    {
+        $file = $def['file'] ?? false;
+        return $file !== false;
+    }
+
+    private function makeRequestBodyObject(array $params, bool $multipart): array
     {
         $bodyRequired = array_any($params, fn ($p) => $p['required'] ?? false);
+        $mediaType = $multipart ? 'multipart/form-data' : 'application/json';
+        $content = [
+            'schema' => $this->objectShemaFromParameterDescription($params)
+        ];
+
+        if ($multipart) {
+            // Set MIME types for file parameters
+            $encoding = [];
+            foreach ($params as $key => $def) {
+                if (is_string($def['file'] ?? null)) {
+                    $encoding[$key] = [ 'contentType' => $def['file'] ];
+                }
+            }
+            if ($encoding) {
+                $content['encoding'] = $encoding;
+            }
+        }
 
         return [
             'content' => [
-                'application/json' => [
-                    'schema' => $this->objectShemaFromParameterDescription($params)
-                ]
+                $mediaType => $content
             ],
             'description' => "Posted data",
             'required' => $bodyRequired
@@ -1001,8 +1030,9 @@ class ApiController extends Controller {
                 }
 
                 $params = $desc['parameters'][$method] ?? [];
+                $multipart = in_array($method, $desc['multipart'] ?? [], true);
                 $requestBodyName = $this->requestBodyName($method, $name);
-                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params);
+                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params, $multipart);
             }
 
             foreach (($desc['additional_methods'] ?? []) as $op => $add) {
@@ -1012,7 +1042,7 @@ class ApiController extends Controller {
 
                 $params = $add['parameters'] ?? [];
                 $requestBodyName = $this->requestBodyName($add['operationId'], $name);
-                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params);
+                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params, $add['multipart'] ?? false);
             }
         }
 
@@ -1058,7 +1088,6 @@ class ApiController extends Controller {
             $tags[] = ['name' => $key, 'description' => $desc['description']];
         }
         $openapi = [
-            '$schema'=> 'https://spec.openapis.org/oas/3.1/schema-base/2026-08-03',
             'components' => [
                 'headers' => [
                     'RateLimitLimit' => [
@@ -1164,7 +1193,7 @@ class ApiController extends Controller {
                 'description' => 'TWHL main website'
             ],
             'info' => [
-                'title' => 'THWL JSON API',
+                'title' => 'TWHL JSON API',
                 'description' => 'An unnecessarily feature-complete JSON API for TWHL.',
                 'termsOfService' => asset('/wiki/page/TWHL:_Terms_of_Service'),
                 'contact' => [
