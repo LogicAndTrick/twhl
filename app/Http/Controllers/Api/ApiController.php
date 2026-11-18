@@ -25,6 +25,7 @@ use App\Models\Forums\ForumPost;
 use App\Models\Forums\ForumThread;
 use App\Models\Game;
 use App\Models\License;
+use App\Models\ModelWithExtraTypeInfo;
 use App\Models\Shout;
 use App\Models\Vault\Motm;
 use App\Models\Vault\VaultCategory;
@@ -42,9 +43,11 @@ use App\Models\Wiki\WikiRevisionMeta;
 use App\Models\Wiki\WikiType;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -248,19 +251,17 @@ class ApiController extends Controller {
             'additional_methods' => [
                 'upload' => [
                     'method' => 'post',
+                    'multipart' => true,
                     'operationId' => 'uploadPost',
                     'parameters' => [
                         'title' => [ 'required' => true, 'type' => 'string', 'description' => 'The title of the page to create' ],
-                        'file' => [ 'required' => true, 'type' => 'string', 'description' => 'The file to upload' ],
+                        'file' => [ 'required' => true, 'type' => 'string', 'description' => 'The file to upload', 'file' => true ],
                         'content_text' => [ 'required' => true, 'type' => 'string', 'description' => 'The text of the page to create']
                     ],
                     'response' => [
                         'description' => 'Revision page',
                         'schema' => [
-                            'type' => 'array',
-                            'items' => [
-                                '$ref' => '#/components/schemas/WikiRevision'
-                            ]
+                            '$ref' => '#/components/schemas/WikiRevision'
                         ]
                     ]
                 ]
@@ -268,7 +269,7 @@ class ApiController extends Controller {
         ],
         'wiki-objects' => [
             'description' => 'Wiki Objects',
-            'methods' => ['post'],
+            'methods' => [],
             'object' => WikiObject::class,
             'filter_columns' => [],
             'additional_methods' => [
@@ -292,8 +293,7 @@ class ApiController extends Controller {
                     'response' => [
                         'description' => 'Page information',
                         'schema' => [
-                            'type' => 'array',
-                            'items'=> [ '$ref' => '#/components/schemas/WikiPageInformation' ],
+                            '$ref' => '#/components/schemas/WikiPageInformation'
                         ]
                     ]
                 ]
@@ -528,10 +528,11 @@ class ApiController extends Controller {
             'description' => 'Image Upload',
             'expand' => [],
             'methods' => ['post'],
+            'multipart' => ['post'],
             'auth' => [],
             'parameters' => [
                 'post' => [
-                    'image' => [ 'required' => true, 'type' => 'string', 'format' => 'binary', 'description' => 'The image data. Maximum size: 2MB' ]
+                    'image' => [ 'required' => true, 'type' => 'string', 'description' => 'The image data. Maximum size: 2MB', 'file' => 'image/*' ]
                 ]
             ],
             'object' => \stdClass::class,
@@ -551,30 +552,59 @@ class ApiController extends Controller {
         ],
     ];
 
-    private function getRelatedClass($obj, $prop): ?array
+   
+    /**
+     * Returns the OpenAPI type and format for an attribute
+     */
+    private function getAttributeTypeInfo(ModelWithExtraTypeInfo $model, string $property): array
     {
-        $rel = null;
-        $o = $obj;
-        foreach (explode('.', $prop) as $name) {
-            if (!method_exists($o, $name)) return null;
-            $rel = $o->$name();
-            if (!$rel instanceof Relation) return null;
-            $o = $rel->getRelated();
-        }
+        $type = 'string';
+        $format = $model->getFormat($property);
+        if ($property === 'id' || str_ends_with($property, '_id')) {
+            // IDs are uint32
+            $type = 'integer';
+            $format ??= 'uint32';
+        } else if ($model->hasCast($property, [ 'int', 'integer' ])) {
+            // Integers default to int32
+            $type = 'integer';
+            $format ??= 'int32';
+        } else if ($model->hasCast($property, 'decimal')) {
+            // Decimals are output as strings
+            $type = 'string';
+            $format ??= 'decimal';
+        } else if ($model->hasCast($property, [ 'float', 'double', 'real' ])) {
+            $type = 'number';
+            $format ??= 'double';
+        } else if ($model->hasCast($property, [ 'bool', 'boolean' ])) {
+            $type = 'boolean';
+        } 
+        $info = [ 'type' => $type ];
+        if ($format) $info['format'] = $format;
+        if ($model->isNullable($property)) return [ 'anyOf' => [ $info, [ 'type' => 'null' ] ] ];
+        return $info;
+    }
 
-        if ($rel && $o) {
-            $rel_expl = explode('\\', get_class($o));
-            $rel_name = $rel_expl[count($rel_expl) - 1];
-            $type = "#/components/schemas/$rel_name";
-            if ($rel instanceof HasMany) {
-                $type = 'array';
+    /**
+     * Returns the OpenAPI type and format for a relation, or `null` if it's not a relation
+     */
+    private function getRelationTypeInfo(ModelWithExtraTypeInfo $model, string $property): ?array {
+        if (method_exists($model, $property)) {
+            $relation = $model->$property();
+            if ($relation instanceof Relation) {
+                $ref = '#/components/schemas/' . class_basename($relation->getRelated());
+                if ($relation instanceof BelongsTo || $relation instanceof HasOne) {
+                    return [ 'anyOf' => [ [ '$ref' => $ref ], [ 'type' => 'null' ] ] ];
+                }
+                if ($relation instanceof BelongsToMany || $relation instanceof HasMany) {
+                    return [
+                        'items' => [ '$ref' => $ref ],
+                        'type' => 'array',
+                    ];
+                }
+                // Unrecognized relation type, could be any object or array of objects
+                return [ 'anyOf' => [ [ 'type' => 'array' ], [ 'type' => 'null' ], [ 'type' => 'object' ] ] ];
             }
-            return [
-                'ref' => "#/components/schemas/$rel_name",
-                'type' => $type
-            ];
         }
-
         return null;
     }
 
@@ -583,8 +613,7 @@ class ApiController extends Controller {
             return $descriptor['object_names'];
         }
 
-        $expl = explode('\\', $descriptor['object']);
-        $single = $expl[count($expl) - 1];
+        $single = class_basename($descriptor['object']);
         $plural = "{$single}s";
         return [$single, $plural];
     }
@@ -597,44 +626,22 @@ class ApiController extends Controller {
             $obj = new $desc['object'];
             [$name] = $this->objectNamesFromDescriptor($desc);
             $props = [];
-            $visible = $obj instanceof Model ? $obj->getVisible() : [];
+            $required = [];
+            $visible = $obj instanceof ModelWithExtraTypeInfo ? $obj->getVisible() : [];
             foreach ($visible as $prop) {
-                $props[$prop] = [];
-
-                $format = null;
-                $type = 'string';
-                $type_key = 'type';
-                if ($obj->hasCast($prop, 'boolean')) {
-                    $type = 'boolean';
-                } else if ($prop == 'id' || $prop == 'orderindex' || $prop == 'order_index' || str_ends_with($prop, '_id')) {
-                    $format = 'double-int'; // Integer that can fit in an IEEE 754 double
-                    $type = 'integer';
-                } else if (
-                    $prop == 'created_at' ||
-                    $prop == 'updated_at' ||
-                    $prop == 'deleted_at' ||
-                    in_array($prop, $obj->dates ?? []) ||
-                    $obj->hasCast($prop, 'datetime')
-                ) {
-                    $format = 'date-time';
-                } else {
-                    $rel = $this->getRelatedClass($obj, $prop);
-                    if ($rel) {
-                        $type = $rel['type'];
-                        if ($type == 'array') {
-                            $props[$prop]['items'] = [ '$ref' => $rel['ref'] ];
-                        } else {
-                            $type_key = '$ref';
-                        }
-                    }
+                $props[$prop] = $this->getRelationTypeInfo($obj, $prop);
+                if (!$props[$prop]) {
+                    $props[$prop] = $this->getAttributeTypeInfo($obj, $prop);
+                    $required[] = $prop;
                 }
-                $props[$prop][$type_key] = $type;
-                if ($format) $props[$prop]['format'] = $format;
             }
             $objectSchemas[$name] = [
                 'type' => 'object',
-                'properties' => count($props) == 0 ? new \stdClass() : $props
+                'properties' => count($props) == 0 ? new \stdClass() : $props,
             ];
+            if ($required) {
+                $objectSchemas[$name]['required'] = $required;
+            }
         }
 
         return $objectSchemas;
@@ -649,6 +656,12 @@ class ApiController extends Controller {
                 $required[] = $key;
             }
             unset($parameters[$key]['required']);
+            if ($this->isFileParameter($def)) {
+                // Don't worry about the MIME type here, OpenAPI is just being weird.
+                // If we need to specify the MIME type it goes in the request body's `encoding`.
+                $parameters[$key]['contentMediaType'] = 'application/octet-stream';
+            }
+            unset($parameters[$key]['file']);
         }
 
         $result = [
@@ -730,12 +743,17 @@ class ApiController extends Controller {
                 } else {
                     $responseName = $this->responseName($method, $name);
 
+                    $schemaName = $name;
+                    if ($method === 'delete') {
+                        $schemaName = 'SuccessResult';
+                    }
+
                     $responses[$responseName] = [
                         'description' => 'Operation successful',
                         'content' => [
                             'application/json' => [
                                 'schema' => [
-                                    '$ref' => "#/components/schemas/$name"
+                                    '$ref' => "#/components/schemas/$schemaName"
                                 ]
                             ]
                         ],
@@ -763,7 +781,6 @@ class ApiController extends Controller {
     private function getPathItems($key, $desc): array
     {
         $items = [];
-        $items["/$key"] = [];
 
         [$name, $pluralName] = $this->objectNamesFromDescriptor($desc);
         $filterCols = implode(', ', $desc['filter_columns'] ?? []);
@@ -927,11 +944,6 @@ class ApiController extends Controller {
 
         }
 
-        if (count($items) == 1 && count($items["/$key"]) == 0)
-        {
-            $items = [];
-        }
-
         return $items;
     }
 
@@ -965,15 +977,36 @@ class ApiController extends Controller {
         return "{$prefix}Result";
     }
 
-    private function makeRequestBodyObject($params): array
+    private function isFileParameter(array $def): bool
+    {
+        $file = $def['file'] ?? false;
+        return $file !== false;
+    }
+
+    private function makeRequestBodyObject(array $params, bool $multipart): array
     {
         $bodyRequired = array_any($params, fn ($p) => $p['required'] ?? false);
+        $mediaType = $multipart ? 'multipart/form-data' : 'application/json';
+        $content = [
+            'schema' => $this->objectShemaFromParameterDescription($params)
+        ];
+
+        if ($multipart) {
+            // Set MIME types for file parameters
+            $encoding = [];
+            foreach ($params as $key => $def) {
+                if (is_string($def['file'] ?? null)) {
+                    $encoding[$key] = [ 'contentType' => $def['file'] ];
+                }
+            }
+            if ($encoding) {
+                $content['encoding'] = $encoding;
+            }
+        }
 
         return [
             'content' => [
-                'application/json' => [
-                    'schema' => $this->objectShemaFromParameterDescription($params)
-                ]
+                $mediaType => $content
             ],
             'description' => "Posted data",
             'required' => $bodyRequired
@@ -992,8 +1025,9 @@ class ApiController extends Controller {
                 }
 
                 $params = $desc['parameters'][$method] ?? [];
+                $multipart = in_array($method, $desc['multipart'] ?? [], true);
                 $requestBodyName = $this->requestBodyName($method, $name);
-                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params);
+                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params, $multipart);
             }
 
             foreach (($desc['additional_methods'] ?? []) as $op => $add) {
@@ -1003,7 +1037,7 @@ class ApiController extends Controller {
 
                 $params = $add['parameters'] ?? [];
                 $requestBodyName = $this->requestBodyName($add['operationId'], $name);
-                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params);
+                $requestBodies[$requestBodyName] = $this->makeRequestBodyObject($params, $add['multipart'] ?? false);
             }
         }
 
@@ -1049,7 +1083,6 @@ class ApiController extends Controller {
             $tags[] = ['name' => $key, 'description' => $desc['description']];
         }
         $openapi = [
-            '$schema'=> 'https://spec.openapis.org/oas/3.0/schema/2024-10-18',
             'components' => [
                 'headers' => [
                     'RateLimitLimit' => [
@@ -1141,6 +1174,16 @@ class ApiController extends Controller {
                         'required' => ['message'],
                         'type' => 'object'
                     ],
+                    'SuccessResult' => [ // For successful DELETEs
+                        'properties' => [
+                            'success' => [
+                                //'const' => true, // TODO: Uncomment this when openapi-generator supports non-string `const`
+                                'type' => 'boolean'
+                            ]
+                        ],
+                        'required' => ['success'],
+                        'type' => 'object'
+                    ],
                     ...$this->objectSchemasFromDescriptors()
                 ],
                 'securitySchemes' => [
@@ -1151,11 +1194,11 @@ class ApiController extends Controller {
                 ]
             ],
             'externalDocs' => [
-                'url' => asset('/'),
-                'description' => 'TWHL main website'
+                'url' => asset('/wiki/page/TWHL_API_Documentation'),
+                'description' => 'Usage instructions in TWHL\'s wiki.'
             ],
             'info' => [
-                'title' => 'THWL JSON API',
+                'title' => 'TWHL JSON API',
                 'description' => 'An unnecessarily feature-complete JSON API for TWHL.',
                 'termsOfService' => asset('/wiki/page/TWHL:_Terms_of_Service'),
                 'contact' => [
@@ -1168,7 +1211,7 @@ class ApiController extends Controller {
                 ],
                 'version' => 'latest'
             ],
-            'openapi' => '3.0.4',
+            'openapi' => '3.1.2',
             'paths' => $api_desc,
             'security' => [
                 new \stdClass(), // Security token is optional
@@ -1199,13 +1242,17 @@ class ApiController extends Controller {
             $key = str_replace('-', '_', strtolower(implode('_', $parameters)));
             $method = strtolower($request->getMethod());
             $operation = "{$method}_{$key}";
+            $allowedMethods = array_merge(
+                $desc['methods'] ?? [],
+                array_column($desc['additional_methods'] ?? [], 'method')
+            );
 
             if ($method != 'get' && !permission(true) && (!isset($desc['allow_unauthenticated']) || $desc['allow_unauthenticated'] !== true)) {
                 return response()->json([
                     'message' => 'Unauthorised'
                 ])->setStatusCode(401);
             }
-            else if (array_search($method, $desc['methods']) === false) {
+            else if (!in_array($method, $allowedMethods, true)) {
                 // Also Failure
             }
             else if (method_exists($this, $operation)) {
@@ -1396,7 +1443,7 @@ class ApiController extends Controller {
             'content_text' => Request::input('content_text'),
             'content_html' => bbcode(Request::input('content_text')),
         ]);
-        return $thread;
+        return $thread->fresh();
     }
 
     private function post_comments()
@@ -1607,7 +1654,7 @@ class ApiController extends Controller {
         if (substr(Request::input('title'), 0, 9) == 'category:') $type = WikiType::CATEGORY;
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = WikiController::createRevision($object);
-        return $revision;
+        return $revision->fresh();
     }
 
     private function put_wiki_revisions(): WikiRevision
@@ -1669,7 +1716,7 @@ class ApiController extends Controller {
             'valid_extension' => 'Only the following file formats are allowed: jpg, png, gif'
         ]);
         $revision = WikiController::createRevision($obj, $rev);
-        return $revision;
+        return $revision->fresh();
     }
 
     private function post_wiki_revisions_upload(): WikiRevision
@@ -1710,7 +1757,7 @@ class ApiController extends Controller {
         $type = WikiType::UPLOAD;
         $object = WikiObject::Create([ 'type_id' => $type ]);
         $revision = WikiController::createRevision($object);
-        return $revision;
+        return $revision->fresh();
     }
 
     private function post_wiki_objects_page_information(): array

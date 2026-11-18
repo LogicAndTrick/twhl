@@ -1,8 +1,8 @@
 <?php namespace App\Models\Wiki;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class WikiType extends Model {
+class WikiType extends ModelWithExtraTypeInfo {
 
     const PAGE = 1;
     const UPLOAD = 2;
@@ -11,6 +11,9 @@ class WikiType extends Model {
 	//
     protected $table = 'wiki_types';
     protected $fillable = ['name', 'description'];
+    protected $casts = [
+        'orderindex' => 'integer',
+    ];
     public $timestamps = false;
 
 }

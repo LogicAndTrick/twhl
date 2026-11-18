@@ -1,9 +1,9 @@
 <?php namespace App\Models\Messages;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 use Auth;
 
-class MessageThread extends Model {
+class MessageThread extends ModelWithExtraTypeInfo {
 
     protected $table = 'message_threads';
     protected $fillable = ['user_id', 'subject', 'last_message_id'];

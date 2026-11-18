@@ -10,16 +10,16 @@ import { b64EncodeUnicode, b64DecodeUnicode, escapeHtml, readableTime } from '..
  */
 
 // Increment this to clear everyone's cached local storage
-const TWHL_SHOUTBOX_DATA_FORMAT_VERSION = '1';
+const TWHL_SHOUTBOX_DATA_FORMAT_VERSION = '2';
 
 type User = {
     id: number;
     name: string;
     last_login_time: string;
     last_access_time: string;
-    avatar_custom: number;
+    avatar_custom: boolean;
     avatar_file: string;
-    title_custom: number;
+    title_custom: boolean;
     title_text: string;
     avatar_full: string;
     avatar_small: string;

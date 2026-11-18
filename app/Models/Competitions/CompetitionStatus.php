@@ -1,8 +1,8 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CompetitionStatus extends Model {
+class CompetitionStatus extends ModelWithExtraTypeInfo {
 
     const DRAFT = 1;
     const ACTIVE = 2;

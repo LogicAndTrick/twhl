@@ -18,5 +18,8 @@ sudo -u www-data php artisan migrate --force --no-interaction
 # clear + reset the laravel caches
 sudo -u www-data php artisan optimize
 
+# clear the application cache so outdated serialized models with the wrong types aren't used by the new code
+sudo -u www-data php artisan cache:clear
+
 # make sure the web user owns the cached config and view files
 sudo chown -R www-data:www-data storage bootstrap/cache

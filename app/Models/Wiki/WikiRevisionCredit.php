@@ -2,9 +2,9 @@
 
 namespace App\Models\Wiki;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class WikiRevisionCredit extends Model
+class WikiRevisionCredit extends ModelWithExtraTypeInfo
 {
     const CREDIT = 'c';
     const ARCHIVE = 'a';
@@ -13,6 +13,12 @@ class WikiRevisionCredit extends Model
     protected $table = 'wiki_revision_credits';
     protected $fillable = ['type', 'revision_id', 'description', 'user_id', 'name', 'url', 'wayback_url'];
     public $visible = ['id', 'type', 'revision_id', 'description', 'user_id', 'name', 'url', 'wayback_url', 'user'];
+    protected $nullable = [
+        'name',
+        'url',
+        'user_id',
+        'wayback_url',
+    ];
     public $timestamps = false;
 
     public function wiki_revision()

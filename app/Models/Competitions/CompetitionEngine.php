@@ -1,8 +1,8 @@
 <?php namespace App\Models\Competitions;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelWithExtraTypeInfo;
 
-class CompetitionEngine extends Model {
+class CompetitionEngine extends ModelWithExtraTypeInfo {
 
 	public $table = 'competition_engines';
     public $timestamps = false;
